@@ -72,7 +72,7 @@ useColorMode();
 </script>
 
 <template>
-    <Head title="Welcome" />
+    <Head title="Stempeluhr" />
     <div class="flex h-dvh select-none flex-col">
         <div class="flex justify-end">
             <!--

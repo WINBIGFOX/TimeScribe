@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
-class SettingController extends Controller
+class SettingsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return 'test';
+        return Inertia::render('Settings/Index');
     }
 
     /**

@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\MenubarController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,7 +15,7 @@ Route::name('menubar.')->prefix('menubar')->group(function () {
     Route::get('open-setting', [MenubarController::class, 'openSetting'])->name('openSetting');
 });
 
-Route::resource('setting', SettingController::class)->only(['index', 'store']);
+Route::resource('settings', SettingsController::class)->only(['index', 'store']);
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
