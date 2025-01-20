@@ -21,6 +21,7 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+/.vite
 /dist
 
 # Project exclude paths
