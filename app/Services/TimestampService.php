@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Enums\TimestampTypeEnum;
 use App\Models\Timestamp;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class TimestampService
 {
@@ -85,31 +87,48 @@ class TimestampService
         }
     }
 
-    private static function getTime(TimestampTypeEnum $type): int
+    private static function getTime(TimestampTypeEnum $type, ?Carbon $date): int
     {
-        $timestamps = Timestamp::whereDate('started_at', '>=', now()->startOfDay())
+        if (! $date) {
+            $date = Carbon::now();
+        }
+        $timestamps = Timestamp::whereDate('started_at', '>=', $date->startOfDay())
+            ->whereDate('started_at', '<=', $date->endOfDay())
             ->where('type', $type)
             ->get();
 
-        return $timestamps->sum(function ($timestamp) {
-            $diffTime = $timestamp->ended_at ?? now();
+        return $timestamps->sum(function (Timestamp $timestamp) use ($date) {
+            if ($date->isToday()) {
+                $fallbackTime = now();
+            } else {
+                $fallbackTime = $timestamp->last_ping_at;
+            }
+            $diffTime = $timestamp->ended_at ?? $fallbackTime;
 
             return $timestamp->started_at->diff($diffTime)->totalSeconds;
         });
     }
 
-    public static function getWorkTime(): int
+    public static function getWorkTime(?Carbon $date = null): int
     {
-        return self::getTime(TimestampTypeEnum::WORK);
+        return self::getTime(TimestampTypeEnum::WORK, $date);
     }
 
-    public static function getBreakTime(): int
+    public static function getBreakTime(?Carbon $date = null): int
     {
-        return self::getTime(TimestampTypeEnum::BREAK);
+        return self::getTime(TimestampTypeEnum::BREAK, $date);
     }
 
     public static function getCurrentType(): ?TimestampTypeEnum
     {
         return Timestamp::whereNull('ended_at')->first()?->type;
+    }
+
+    public static function getTimestamps(Carbon $date): Collection
+    {
+        return Timestamp::whereDate('started_at', '>=', $date->startOfDay())
+            ->whereDate('started_at', '<=', $date->endOfDay())
+            ->orderBy('started_at')
+            ->get();
     }
 }

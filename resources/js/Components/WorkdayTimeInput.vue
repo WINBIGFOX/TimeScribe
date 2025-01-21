@@ -36,7 +36,7 @@ watch(active, (newVal) => {
             <NumberField
                 v-if="active"
                 class="w-32"
-                v-model="hours"
+                v-model.lazy="hours"
                 :min="0"
                 :max="15"
                 :step="0.5"

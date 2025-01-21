@@ -144,7 +144,15 @@ useColorMode();
         </div>
         <div class="">
             <div class="flex gap-2 p-2">
-                <Button class="flex-1" variant="outline" size="sm">
+                <Button
+                    :as="Link"
+                    :href="route('menubar.openOverview')"
+                    preserve-scroll
+                    preserve-state
+                    class="flex-1"
+                    variant="outline"
+                    size="sm"
+                >
                     <ChartPie />
                     Übersicht
                 </Button>

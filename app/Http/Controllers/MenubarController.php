@@ -52,16 +52,33 @@ class MenubarController extends Controller
     public function openSetting(): void
     {
         Window::open('settings')
-            ->title('Einstellungen')
+            ->rememberState()
             ->maximizable(false)
             ->minimizable(false)
-            ->route('settings.index')
+            ->route('settings.edit')
             ->hideDevTools()
             ->width(400)
             ->minWidth(400)
             ->maxWidth(500)
             ->minHeight(600)
             ->height(600)
+            ->maxHeight(800)
+            ->titleBarHidden()
+            ->resizable();
+    }
+
+    public function openOverview(): void
+    {
+        Window::open('overview')
+            ->rememberState()
+            ->maximizable(false)
+            ->route('overview.index')
+            ->hideDevTools()
+            ->width(800)
+            ->minWidth(800)
+            ->maxWidth(1000)
+            ->minHeight(400)
+            ->height(400)
             ->maxHeight(800)
             ->titleBarHidden()
             ->resizable();

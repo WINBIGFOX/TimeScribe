@@ -3,20 +3,33 @@ import { Switch } from '@/Components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/ui/tabs';
 import WorkdayTimeInput from '@/Components/WorkdayTimeInput.vue';
 import { Head, useForm } from '@inertiajs/vue3';
-import { useColorMode } from '@vueuse/core';
+import { useColorMode, useDebounceFn } from '@vueuse/core';
 import { CalendarClock, KeyRound } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
+
+const props = defineProps<{
+    startOnLogin?: boolean;
+    workdays: {
+        monday?: number;
+        tuesday?: number;
+        wednesday?: number;
+        thursday?: number;
+        friday?: number;
+        saturday?: number;
+        sunday?: number;
+    };
+}>();
 
 const form = useForm({
-    startOnLogin: false,
+    startOnLogin: props.startOnLogin ?? false,
     workdays: {
-        monday: 0,
-        tuesday: 0,
-        wednesday: 0,
-        thursday: 0,
-        friday: 0,
-        saturday: 0,
-        sunday: 0,
+        monday: props.workdays?.monday ?? 0,
+        tuesday: props.workdays?.tuesday ?? 0,
+        wednesday: props.workdays?.wednesday ?? 0,
+        thursday: props.workdays?.thursday ?? 0,
+        friday: props.workdays?.friday ?? 0,
+        saturday: props.workdays?.saturday ?? 0,
+        sunday: props.workdays?.sunday ?? 0,
     },
 });
 
@@ -24,18 +37,28 @@ const weekWorkTime = computed(() => {
     return Object.values(form.workdays).reduce((acc, curr) => acc + curr, 0);
 });
 
+const submit = () => {
+    form.patch(route('settings.update'), {
+        preserveScroll: true,
+        preserveState: true,
+    });
+};
+
+const debouncedSubmit = useDebounceFn(submit, 500);
+watch(form, debouncedSubmit);
+
 useColorMode();
 </script>
 
 <template>
     <Head title="Stempeluhr" />
     <div
-        class="flex h-10 sticky top-0 backdrop-blur items-center justify-center font-medium"
+        class="sticky top-0 flex h-10 items-center justify-center font-medium backdrop-blur"
         style="-webkit-app-region: drag"
     >
         Einstellungen
     </div>
-    <div class="p-2">
+    <div class="select-none p-2">
         <Tabs default-value="workingplan">
             <div class="text-center">
                 <TabsList>
@@ -52,7 +75,7 @@ useColorMode();
                             Bei Anmeldung starten
                         </p>
                     </div>
-                    <Switch />
+                    <Switch v-model:checked="form.startOnLogin" />
                 </div>
             </TabsContent>
             <TabsContent value="workingplan" class="space-y-4 p-2">
