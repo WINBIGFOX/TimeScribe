@@ -1,0 +1,10 @@
+composer.lock
+package-lock.json
+.eslintrc.json
+.prettierrc.json
+tsconfig.json
+.github/
+storage/
+resources/js/ziggy.d.ts
+resources/js/ziggy.js
+resources/js/Components/ui/*

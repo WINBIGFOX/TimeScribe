@@ -3,7 +3,7 @@ import { Calendar } from '@/Components/ui/calendar';
 import WeekdayColumn from '@/Components/WeekdayColumn.vue';
 import WorktimeProgressBar from '@/Components/WorktimeProgressBar.vue';
 import { Date, WeekdayObject } from '@/types';
-import { Head, router } from '@inertiajs/vue3';
+import { Head, router, usePoll } from '@inertiajs/vue3';
 import { CalendarDate, type DateValue } from '@internationalized/date';
 import { useColorMode } from '@vueuse/core';
 import moment from 'moment';
@@ -52,8 +52,9 @@ watch(
     },
 );
 
-const isDateUnavailable: CalendarRootProps['isDateUnavailable'] = (date) => {
-    console.log(date);
+const isDateUnavailable: CalendarRootProps['isDateUnavailable'] = (
+    date: DateValue,
+) => {
     return (
         props.holidays.filter((holiday) => {
             const day = date.day < 10 ? `0${date.day}` : date.day;
@@ -62,18 +63,20 @@ const isDateUnavailable: CalendarRootProps['isDateUnavailable'] = (date) => {
         }).length > 0
     );
 };
+
+usePoll(10000);
 </script>
 
 <template>
     <Head title="Stempeluhr" />
 
     <div
-        class="sticky top-0 flex h-10 items-center justify-center font-medium backdrop-blur"
+        class="sticky top-0 flex h-10 items-center justify-center font-medium backdrop-blur-sm"
         style="-webkit-app-region: drag"
     >
         Stempeluhr
     </div>
-    <div class="flex select-none gap-4">
+    <div class="flex gap-4 select-none">
         <div>
             <Calendar
                 fixed-weeks
@@ -117,11 +120,11 @@ const isDateUnavailable: CalendarRootProps['isDateUnavailable'] = (date) => {
         </div>
         <div class="flex flex-col gap-4 px-4">
             <div class="flex h-14 flex-col items-center">
-                <span class="font-medium leading-none text-muted-foreground">
+                <span class="text-muted-foreground leading-none font-medium">
                     Woche
                 </span>
                 <span
-                    class="mt-0.5 flex grow items-center text-3xl font-bold leading-none text-foreground"
+                    class="text-foreground mt-0.5 flex grow items-center text-3xl leading-none font-bold"
                 >
                     {{ props.week }}
                 </span>
@@ -131,6 +134,9 @@ const isDateUnavailable: CalendarRootProps['isDateUnavailable'] = (date) => {
                     (props.weekWorkTime / (props.weekPlan * 60 * 60)) * 100
                 "
                 :plan="props.weekPlan"
+                :fallback-plan="props.weekPlan"
+                :work-time="props.weekWorkTime"
+                :break-time="props.weekBreakTime"
             />
         </div>
     </div>

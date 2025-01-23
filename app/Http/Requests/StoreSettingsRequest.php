@@ -23,6 +23,7 @@ class StoreSettingsRequest extends FormRequest
     {
         return [
             'startOnLogin' => ['required', 'boolean'],
+            'showTimerOnUnlock' => ['required', 'boolean'],
             'workdays' => ['required', 'array'],
             'workdays.monday' => ['required', 'decimal:0,1', 'between:0,15'],
             'workdays.tuesday' => ['required', 'decimal:0,1', 'between:0,15'],
@@ -32,6 +33,7 @@ class StoreSettingsRequest extends FormRequest
             'workdays.saturday' => ['required', 'decimal:0,1', 'between:0,15'],
             'workdays.sunday' => ['required', 'decimal:0,1', 'between:0,15'],
             'holidayRegion' => ['nullable', 'string', 'max:5', 'min:2'],
+            'stopBreakAutomatic' => ['nullable', 'string'],
         ];
     }
 }

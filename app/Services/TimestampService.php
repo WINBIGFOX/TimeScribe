@@ -72,7 +72,7 @@ class TimestampService
             $timestamp->update(['last_ping_at' => now()]);
 
             if ($timestamp->started_at->isYesterday()) {
-                $timestamp->update(['ended_at' => now()]);
+                $timestamp->update(['ended_at' => $timestamp->started_at->endOfDay()]);
                 Timestamp::create([
                     'type' => $timestamp->type,
                     'started_at' => now()->startOfDay(),
@@ -102,7 +102,7 @@ class TimestampService
             $endDate = $date->copy();
         }
 
-        $holiday = self::getHoliday($date->year);
+        $holiday = self::getHoliday([$date->year, $endDate->year]);
         $workdays = Settings::get('workdays', []);
 
         $timestamps = Timestamp::whereDate('started_at', '>=', $date->startOfDay())
@@ -114,9 +114,11 @@ class TimestampService
 
         $periode = CarbonPeriod::create($date, $endDate);
 
-        foreach ($periode as $rangeDate) {
-            if ($holiday->filter(fn (Carbon $holiday) => $holiday->isSameDay($rangeDate))->isNotEmpty()) {
-                $holidayTime += ($workdays[strtolower($rangeDate->locale('en')->dayName)] ?? 0) * 60 * 60;
+        if ($type === TimestampTypeEnum::WORK) {
+            foreach ($periode as $rangeDate) {
+                if ($holiday->filter(fn (Carbon $holiday) => $holiday->isSameDay($rangeDate))->isNotEmpty()) {
+                    $holidayTime += ($workdays[strtolower($rangeDate->locale('en')->dayName)] ?? 0) * 60 * 60;
+                }
             }
         }
 
@@ -187,5 +189,28 @@ class TimestampService
         )->map(function ($holiday) {
             return Carbon::create($holiday);
         });
+    }
+
+    public static function getPlan($dayName): float
+    {
+        $workdays = Settings::get('workdays', []);
+
+        return $workdays[$dayName] ?? 0;
+    }
+
+    public static function getWeekPlan(): float
+    {
+        $workdays = Settings::get('workdays', []);
+
+        return array_sum($workdays);
+    }
+
+    public static function getFallbackPlan(?Carbon $date = null, ?Carbon $endDate = null): float
+    {
+        $workTime = self::getWorkTime($date, $endDate) / 3600;
+
+        $workdays = collect(Settings::get('workdays', []))->values()->unique()->sort();
+
+        return $workdays->filter(fn ($value) => $value >= $workTime)->first() ?? $workdays->last();
     }
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@/Components/ui/button';
+import { secToFormat } from '@/lib/utils';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { useColorMode } from '@vueuse/core';
 import {
@@ -10,7 +11,7 @@ import {
     Play,
     Square,
 } from 'lucide-vue-next';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 const props = defineProps<{
     currentType?: 'work' | 'break';
@@ -22,16 +23,6 @@ let timer: undefined | number = undefined;
 
 const workSeconds = ref(props.workTime);
 const breakSeconds = ref(props.breakTime);
-
-const secToFormat = (seconds: number, withoutHours?: boolean) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = Math.floor(seconds % 60);
-    if (withoutHours) {
-        return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    }
-    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-};
 
 const workTimeFormatted = computed(() => secToFormat(workSeconds.value));
 const breakTimeFormatted = computed(() =>
@@ -54,6 +45,10 @@ onMounted(() => {
     timer = setInterval(tick, 1000);
 });
 
+onBeforeUnmount(() => {
+    clearInterval(timer);
+});
+
 watch(
     () => props.workTime,
     (newVal) => {
@@ -73,7 +68,7 @@ useColorMode();
 
 <template>
     <Head title="Stempeluhr" />
-    <div class="flex h-dvh select-none flex-col">
+    <div class="flex h-dvh flex-col select-none">
         <div class="flex justify-end">
             <!--
             <Button size="icon" variant="ghost">
@@ -108,7 +103,7 @@ useColorMode();
                     {{ workTimeFormatted }}
                 </div>
                 <div
-                    class="uppercase text-muted-foreground transition-all duration-1000"
+                    class="text-muted-foreground uppercase transition-all duration-1000"
                     :class="{
                         'text-[0.70rem]': props.currentType !== 'break',
                         'text-[0.50rem]': props.currentType === 'break',
@@ -135,7 +130,7 @@ useColorMode();
                         {{ breakTimeFormatted }}
                     </div>
                     <div
-                        class="text-[0.70rem] uppercase text-muted-foreground transition-all duration-1000"
+                        class="text-muted-foreground text-[0.70rem] uppercase transition-all duration-1000"
                     >
                         Pause
                     </div>
@@ -161,7 +156,7 @@ useColorMode();
                     Abwesenheiten
                 </Button>
             </div>
-            <div class="flex gap-2 bg-muted p-2">
+            <div class="bg-muted flex gap-2 p-2">
                 <Button
                     :as="Link"
                     :href="route('menubar.storeWork')"

@@ -3,19 +3,11 @@ import WeekdayHeader from '@/Components/WeekdayHeader.vue';
 import WorktimeProgressBar from '@/Components/WorktimeProgressBar.vue';
 import { WeekdayObject } from '@/types';
 import moment from 'moment';
-import { computed } from 'vue';
 
 const props = defineProps<{
     weekdayName: string;
     weekday: WeekdayObject;
 }>();
-
-const percentage = computed(() => {
-    return Math.min(
-        (props.weekday.workTime / (props.weekday.plan * 60 * 60)) * 100,
-        100,
-    );
-});
 </script>
 
 <template>
@@ -30,8 +22,10 @@ const percentage = computed(() => {
             />
         </div>
         <WorktimeProgressBar
-            :progress="percentage"
             :plan="props.weekday.plan"
+            :fallback-plan="props.weekday.fallbackPlan"
+            :work-time="props.weekday.workTime"
+            :break-time="props.weekday.breakTime"
         />
     </div>
 </template>

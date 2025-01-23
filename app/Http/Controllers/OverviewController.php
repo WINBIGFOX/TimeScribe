@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Native\Laravel\Facades\Settings;
 
 class OverviewController extends Controller
 {
@@ -47,7 +46,6 @@ class OverviewController extends Controller
         $endOfWeek = $date->copy()->endOfWeek();
 
         CarbonPeriod::between($startOfWeek, $endOfWeek)->toArray();
-        $workdays = Settings::get('workdays', []);
 
         return Inertia::render('Overview/Show', [
             'date' => $date->format('Y-m-d'),
@@ -56,13 +54,15 @@ class OverviewController extends Controller
             'endOfWeek' => $endOfWeek,
             'weekWorkTime' => TimestampService::getWorkTime($startOfWeek, $endOfWeek),
             'weekBreakTime' => TimestampService::getBreakTime($startOfWeek, $endOfWeek),
-            'weekPlan' => array_sum($workdays),
+            'weekPlan' => TimestampService::getWeekPlan(),
+            'weekFallbackPlan' => TimestampService::getFallbackPlan($startOfWeek, $endOfWeek),
             'holidays' => TimestampService::getHoliday(range($date->year - 5, $date->year + 5))->map(function ($holidayDate) {
                 return DateHelper::toResourceArray($holidayDate);
             }),
             'weekdays' => [
                 'monday' => [
-                    'plan' => $workdays['monday'] ?? 0,
+                    'plan' => TimestampService::getPlan('monday'),
+                    'fallbackPlan' => TimestampService::getFallbackPlan($startOfWeek),
                     'date' => DateHelper::toResourceArray($startOfWeek),
                     'workTime' => TimestampService::getWorkTime($startOfWeek),
                     'breakTime' => TimestampService::getBreakTime($startOfWeek),
@@ -70,7 +70,8 @@ class OverviewController extends Controller
                     'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek),
                 ],
                 'tuesday' => [
-                    'plan' => $workdays['tuesday'] ?? 0,
+                    'plan' => TimestampService::getPlan('tuesday'),
+                    'fallbackPlan' => TimestampService::getFallbackPlan($startOfWeek->copy()->addDay()),
                     'date' => DateHelper::toResourceArray($startOfWeek->copy()->addDay()),
                     'workTime' => TimestampService::getWorkTime($startOfWeek->copy()->addDay()),
                     'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDay()),
@@ -78,7 +79,8 @@ class OverviewController extends Controller
                     'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDay()),
                 ],
                 'wednesday' => [
-                    'plan' => $workdays['wednesday'] ?? 0,
+                    'plan' => TimestampService::getPlan('wednesday'),
+                    'fallbackPlan' => TimestampService::getFallbackPlan($startOfWeek->copy()->addDays(2)),
                     'date' => DateHelper::toResourceArray($startOfWeek->copy()->addDays(2)),
                     'workTime' => TimestampService::getWorkTime($startOfWeek->copy()->addDays(2)),
                     'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDays(2)),
@@ -86,7 +88,8 @@ class OverviewController extends Controller
                     'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDays(2)),
                 ],
                 'thursday' => [
-                    'plan' => $workdays['thursday'] ?? 0,
+                    'plan' => TimestampService::getPlan('thursday'),
+                    'fallbackPlan' => TimestampService::getFallbackPlan($startOfWeek->copy()->addDays(3)),
                     'date' => DateHelper::toResourceArray($startOfWeek->copy()->addDays(3)),
                     'workTime' => TimestampService::getWorkTime($startOfWeek->copy()->addDays(3)),
                     'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDays(3)),
@@ -94,7 +97,8 @@ class OverviewController extends Controller
                     'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDays(3)),
                 ],
                 'friday' => [
-                    'plan' => $workdays['friday'] ?? 0,
+                    'plan' => TimestampService::getPlan('friday'),
+                    'fallbackPlan' => TimestampService::getFallbackPlan($startOfWeek->copy()->addDays(4)),
                     'date' => DateHelper::toResourceArray($startOfWeek->copy()->addDays(4)),
                     'workTime' => TimestampService::getWorkTime($startOfWeek->copy()->addDays(4)),
                     'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDays(4)),
@@ -102,7 +106,8 @@ class OverviewController extends Controller
                     'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDays(4)),
                 ],
                 'saturday' => [
-                    'plan' => $workdays['saturday'] ?? 0,
+                    'plan' => TimestampService::getPlan('saturday'),
+                    'fallbackPlan' => TimestampService::getFallbackPlan($startOfWeek->copy()->addDays(5)),
                     'date' => DateHelper::toResourceArray($startOfWeek->copy()->addDays(5)),
                     'workTime' => TimestampService::getWorkTime($startOfWeek->copy()->addDays(5)),
                     'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDays(5)),
@@ -110,7 +115,8 @@ class OverviewController extends Controller
                     'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDays(5)),
                 ],
                 'sunday' => [
-                    'plan' => $workdays['sunday'] ?? 0,
+                    'plan' => TimestampService::getPlan('sunday'),
+                    'fallbackPlan' => TimestampService::getFallbackPlan($startOfWeek->copy()->addDays(6)),
                     'date' => DateHelper::toResourceArray($startOfWeek->copy()->addDays(6)),
                     'workTime' => TimestampService::getWorkTime($startOfWeek->copy()->addDays(6)),
                     'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDays(6)),

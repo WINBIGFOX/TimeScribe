@@ -14,6 +14,7 @@ export interface Date {
 
 export interface WeekdayObject {
     plan: number;
+    fallbackPlan: number;
     date: Date;
     workTime: number;
     breakTime: number;

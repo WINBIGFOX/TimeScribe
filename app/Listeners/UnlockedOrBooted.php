@@ -5,6 +5,7 @@ namespace App\Listeners;
 use Native\Laravel\Events\App\ApplicationBooted;
 use Native\Laravel\Events\PowerMonitor\ScreenUnlocked;
 use Native\Laravel\Facades\MenuBar;
+use Native\Laravel\Facades\Settings;
 
 class UnlockedOrBooted
 {
@@ -21,7 +22,9 @@ class UnlockedOrBooted
      */
     public function handle(ScreenUnlocked|ApplicationBooted $event): void
     {
-        MenuBar::clearResolvedInstances();
-        MenuBar::show();
+        if (Settings::get('showTimerOnUnlock')) {
+            MenuBar::clearResolvedInstances();
+            MenuBar::show();
+        }
     }
 }

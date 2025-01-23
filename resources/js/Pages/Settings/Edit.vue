@@ -15,6 +15,7 @@ import { useColorMode, useDebounceFn } from '@vueuse/core';
 import {
     CalendarClock,
     CalendarMinus,
+    Eye,
     KeyRound,
     LockKeyhole,
 } from 'lucide-vue-next';
@@ -22,6 +23,7 @@ import { computed, ref, watch } from 'vue';
 
 const props = defineProps<{
     startOnLogin?: boolean;
+    showTimerOnUnlock?: boolean;
     workdays: {
         monday?: number;
         tuesday?: number;
@@ -32,10 +34,12 @@ const props = defineProps<{
         sunday?: number;
     };
     holidayRegion?: string;
+    stopBreakAutomatic?: string;
 }>();
 
 const form = useForm({
     startOnLogin: props.startOnLogin ?? false,
+    showTimerOnUnlock: props.showTimerOnUnlock ?? false,
     workdays: {
         monday: props.workdays?.monday ?? 0,
         tuesday: props.workdays?.tuesday ?? 0,
@@ -46,6 +50,7 @@ const form = useForm({
         sunday: props.workdays?.sunday ?? 0,
     },
     holidayRegion: props.holidayRegion ?? '',
+    stopBreakAutomatic: props.stopBreakAutomatic ?? '',
 });
 
 const weekWorkTime = computed(() => {
@@ -60,12 +65,18 @@ const submit = () => {
 };
 
 const holidayCheck = ref(props.holidayRegion !== null);
+const stopBreakAutomatikCheck = ref(props.stopBreakAutomatic !== null);
 
 const debouncedSubmit = useDebounceFn(submit, 500);
 watch(form, debouncedSubmit);
 watch(holidayCheck, () => {
     if (holidayCheck.value === false) {
         form.holidayRegion = '';
+    }
+});
+watch(stopBreakAutomatikCheck, () => {
+    if (stopBreakAutomatikCheck.value === false) {
+        form.stopBreakAutomatic = '';
     }
 });
 
@@ -75,12 +86,12 @@ useColorMode();
 <template>
     <Head title="Stempeluhr" />
     <div
-        class="sticky top-0 flex h-10 items-center justify-center font-medium backdrop-blur"
+        class="sticky top-0 flex h-10 items-center justify-center font-medium backdrop-blur-sm"
         style="-webkit-app-region: drag"
     >
         Einstellungen
     </div>
-    <div class="select-none p-2">
+    <div class="p-2 select-none">
         <Tabs default-value="general">
             <div class="text-center">
                 <TabsList>
@@ -93,46 +104,65 @@ useColorMode();
                 <div class="flex items-center space-x-4 rounded-md border p-4">
                     <KeyRound />
                     <div class="flex-1 space-y-1">
-                        <p class="text-sm font-medium leading-none">
+                        <p class="text-sm leading-none font-medium">
                             Bei Anmeldung starten
                         </p>
                     </div>
                     <Switch v-model:checked="form.startOnLogin" />
                 </div>
                 <div class="flex items-center space-x-4 rounded-md border p-4">
-                    <LockKeyhole />
-                    <div class="flex-1 space-y-2">
-                        <p class="text-sm font-medium leading-none">
-                            Stempeluhr wenn Computer gesperrt wird
+                    <Eye />
+                    <div class="flex-1 space-y-1">
+                        <p class="text-sm leading-none font-medium">
+                            Timer automatisch einblenden
                         </p>
-                        <div class="mt-4">
-                            <Select>
+                        <p class="text-muted-foreground text-sm">
+                            Wenn der Rechner entsperrt wird, kann der Timer
+                            eingeblendet werden.
+                        </p>
+                    </div>
+                    <Switch v-model:checked="form.showTimerOnUnlock" />
+                </div>
+                <div class="flex items-start space-x-4 rounded-md border p-4">
+                    <LockKeyhole />
+                    <div class="flex-1 space-y-1">
+                        <p class="text-sm leading-none font-medium">
+                            Stop/Pause-Automatik
+                        </p>
+                        <p class="text-muted-foreground text-sm">
+                            Wenn der Rechner gesperrt wird, kann die Arbeitszeit
+                            automatisch gestoppt oder die Pause gestartet
+                            werden.
+                        </p>
+                        <div class="mt-4" v-if="stopBreakAutomatikCheck">
+                            <Select v-model="form.stopBreakAutomatic">
                                 <SelectTrigger>
                                     <SelectValue placeholder="Aktion" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="apple">
-                                        Nichts
+                                    <SelectItem value="stop">
+                                        Arbeitszeit stoppen
                                     </SelectItem>
-                                    <SelectItem value="banana">
-                                        Stoppen
-                                    </SelectItem>
-                                    <SelectItem value="blueberry">
+                                    <SelectItem value="break">
                                         Pause starten
                                     </SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
                     </div>
+                    <Switch v-model:checked="stopBreakAutomatikCheck" />
                 </div>
 
-                <div class="flex items-center space-x-4 rounded-md border p-4">
+                <div class="flex items-start space-x-4 rounded-md border p-4">
                     <CalendarMinus />
-                    <div class="flex-1 space-y-2">
-                        <p class="text-sm font-medium leading-none">
+                    <div class="flex-1 space-y-1">
+                        <p class="text-sm leading-none font-medium">
                             Feiertage berücksichtigen
                         </p>
-                        <div class="mt-4" v-if="holidayCheck">
+                        <p class="text-muted-foreground text-sm">
+                            Die Arbeitszeit wird an Feiertagen voll angerechnet.
+                        </p>
+                        <div class="mt-2" v-if="holidayCheck">
                             <Select size="5" v-model="form.holidayRegion">
                                 <SelectTrigger>
                                     <SelectValue placeholder="Region" />
@@ -201,7 +231,7 @@ useColorMode();
                 <div class="flex items-center space-x-4 rounded-md border p-4">
                     <CalendarClock />
                     <div class="flex-1 space-y-1">
-                        <p class="text-sm font-medium leading-none">
+                        <p class="text-sm leading-none font-medium">
                             Wochenarbeitszeit
                         </p>
                     </div>
