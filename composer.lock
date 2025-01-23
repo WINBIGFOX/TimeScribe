@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1f100770ddc17bd631c91872a36ac491",
+    "content-hash": "9257adb2d54c124f043ce3572619fa5d",
     "packages": [
         {
             "name": "brick/math",
@@ -6085,6 +6085,63 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/v2.3.0"
             },
             "time": "2024-12-21T16:25:41+00:00"
+        },
+        {
+            "name": "umulmrum/holiday",
+            "version": "0.11.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/umulmrum/holiday.git",
+                "reference": "14753775ac237a527a058affcc3045ed6f9fba04"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/umulmrum/holiday/zipball/14753775ac237a527a058affcc3045ed6f9fba04",
+                "reference": "14753775ac237a527a058affcc3045ed6f9fba04",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2"
+            },
+            "require-dev": {
+                "ext-json": "*",
+                "friendsofphp/php-cs-fixer": "^3.65",
+                "phpstan/phpstan": "~1.12.11",
+                "phpunit/phpunit": "~11.4",
+                "symfony/console": "~5.4|~6.4|~7.0",
+                "symfony/translation": "~5.4|~6.4|~7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Umulmrum\\Holiday\\": [
+                        "src"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Kruppa",
+                    "email": "stefan@umulmrum.de"
+                }
+            ],
+            "description": "A PHP library to compute holidays. It's something :-)",
+            "keywords": [
+                "calendar",
+                "date",
+                "holiday",
+                "holidays",
+                "time"
+            ],
+            "support": {
+                "issues": "https://github.com/umulmrum/holiday/issues",
+                "source": "https://github.com/umulmrum/holiday/tree/0.11.1"
+            },
+            "time": "2024-11-27T21:50:43+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

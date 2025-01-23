@@ -15,7 +15,8 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10",
         "nativephp/electron": "^1.0.0-beta.1",
-        "tightenco/ziggy": "^2.4"
+        "tightenco/ziggy": "^2.4",
+        "umulmrum/holiday": "^0.11.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.24",

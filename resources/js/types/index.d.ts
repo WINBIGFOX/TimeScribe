@@ -6,10 +6,10 @@ export interface User {
 }
 
 export interface Date {
-    diff: string
-    formatted: string
-    date: string
-    day: string
+    diff: string;
+    formatted: string;
+    date: string;
+    day: string;
 }
 
 export interface WeekdayObject {
@@ -17,6 +17,7 @@ export interface WeekdayObject {
     date: Date;
     workTime: number;
     breakTime: number;
+    noWorkTime: number;
     timestamps: unknown[];
 }
 

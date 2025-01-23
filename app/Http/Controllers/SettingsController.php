@@ -16,6 +16,7 @@ class SettingsController extends Controller
         return Inertia::render('Settings/Edit', [
             'startOnLogin' => Settings::get('startOnLogin'),
             'workdays' => Settings::get('workdays'),
+            'holidayRegion' => Settings::get('holidayRegion'),
         ]);
     }
 
@@ -28,6 +29,7 @@ class SettingsController extends Controller
 
         Settings::set('startOnLogin', $data['startOnLogin']);
         Settings::set('workdays', $data['workdays']);
+        Settings::set('holidayRegion', $data['holidayRegion']);
 
         return redirect()->route('settings.edit');
     }

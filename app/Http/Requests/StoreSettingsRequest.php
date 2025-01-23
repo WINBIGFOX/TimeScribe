@@ -31,6 +31,7 @@ class StoreSettingsRequest extends FormRequest
             'workdays.friday' => ['required', 'decimal:0,1', 'between:0,15'],
             'workdays.saturday' => ['required', 'decimal:0,1', 'between:0,15'],
             'workdays.sunday' => ['required', 'decimal:0,1', 'between:0,15'],
+            'holidayRegion' => ['nullable', 'string', 'max:5', 'min:2'],
         ];
     }
 }

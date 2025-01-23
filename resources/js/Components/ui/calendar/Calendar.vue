@@ -4,7 +4,7 @@ import { CalendarRoot, type CalendarRootEmits, type CalendarRootProps, useForwar
 import { computed, type HTMLAttributes } from 'vue'
 import { CalendarCell, CalendarCellTrigger, CalendarGrid, CalendarGridBody, CalendarGridHead, CalendarGridRow, CalendarHeadCell, CalendarHeader, CalendarHeading, CalendarNextButton, CalendarPrevButton } from '.'
 
-const props = defineProps<CalendarRootProps & { class?: HTMLAttributes['class'] }>()
+const props = defineProps<CalendarRootProps & { class?: HTMLAttributes['class'], highlighted?: string[] }>()
 
 const emits = defineEmits<CalendarRootEmits>()
 
@@ -58,3 +58,5 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
     </div>
   </CalendarRoot>
 </template>
+
+<!--class="before:absolute before:top-[5px] before:block before:rounded-full before:w-1 before:h-1 before:bg-white"-->

@@ -5,7 +5,13 @@ namespace App\Services;
 use App\Enums\TimestampTypeEnum;
 use App\Models\Timestamp;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Support\Collection;
+use Native\Laravel\Facades\Settings;
+use Umulmrum\Holiday\Constant\HolidayType;
+use Umulmrum\Holiday\Filter\IncludeTypeFilter;
+use Umulmrum\Holiday\Formatter\DateFormatter;
+use Umulmrum\Holiday\HolidayCalculator;
 
 class TimestampService
 {
@@ -87,18 +93,35 @@ class TimestampService
         }
     }
 
-    private static function getTime(TimestampTypeEnum $type, ?Carbon $date): int
+    private static function getTime(TimestampTypeEnum $type, ?Carbon $date, ?Carbon $endDate = null, ?bool $fallbackNow = true): int
     {
         if (! $date) {
             $date = Carbon::now();
         }
+        if (! $endDate) {
+            $endDate = $date->copy();
+        }
+
+        $holiday = self::getHoliday($date->year);
+        $workdays = Settings::get('workdays', []);
+
         $timestamps = Timestamp::whereDate('started_at', '>=', $date->startOfDay())
-            ->whereDate('started_at', '<=', $date->endOfDay())
+            ->whereDate('started_at', '<=', $endDate->endOfDay())
             ->where('type', $type)
             ->get();
 
-        return $timestamps->sum(function (Timestamp $timestamp) use ($date) {
-            if ($date->isToday()) {
+        $holidayTime = 0;
+
+        $periode = CarbonPeriod::create($date, $endDate);
+
+        foreach ($periode as $rangeDate) {
+            if ($holiday->filter(fn (Carbon $holiday) => $holiday->isSameDay($rangeDate))->isNotEmpty()) {
+                $holidayTime += ($workdays[strtolower($rangeDate->locale('en')->dayName)] ?? 0) * 60 * 60;
+            }
+        }
+
+        return $timestamps->sum(function (Timestamp $timestamp) use ($date, $fallbackNow) {
+            if ($date->isToday() && $fallbackNow) {
                 $fallbackTime = now();
             } else {
                 $fallbackTime = $timestamp->last_ping_at;
@@ -106,17 +129,35 @@ class TimestampService
             $diffTime = $timestamp->ended_at ?? $fallbackTime;
 
             return $timestamp->started_at->diff($diffTime)->totalSeconds;
-        });
+        }) + $holidayTime;
     }
 
-    public static function getWorkTime(?Carbon $date = null): int
+    public static function getWorkTime(?Carbon $date = null, ?Carbon $endDate = null): int
     {
-        return self::getTime(TimestampTypeEnum::WORK, $date);
+        return self::getTime(TimestampTypeEnum::WORK, $date, $endDate);
     }
 
-    public static function getBreakTime(?Carbon $date = null): int
+    public static function getBreakTime(?Carbon $date = null, ?Carbon $endDate = null): int
     {
-        return self::getTime(TimestampTypeEnum::BREAK, $date);
+        return self::getTime(TimestampTypeEnum::BREAK, $date, $endDate);
+    }
+
+    public static function getNoWorkTime(?Carbon $date = null): int
+    {
+        $timestamps = self::getTimestamps($date);
+
+        if ($timestamps->isEmpty()) {
+            return 0;
+        }
+
+        $firstWorkTimestamp = $timestamps->firstWhere('type', TimestampTypeEnum::WORK);
+        $lastWorkTimestamp = $timestamps->last();
+
+        $workTimeRange = $firstWorkTimestamp->started_at->diffInSeconds($lastWorkTimestamp->ended_at ?? $lastWorkTimestamp->last_ping_at);
+
+        $workTime = self::getTime(TimestampTypeEnum::WORK, $date, null, false);
+
+        return max($workTimeRange - $workTime, 0);
     }
 
     public static function getCurrentType(): ?TimestampTypeEnum
@@ -130,5 +171,21 @@ class TimestampService
             ->whereDate('started_at', '<=', $date->endOfDay())
             ->orderBy('started_at')
             ->get();
+    }
+
+    public static function getHoliday(int|array $year): Collection
+    {
+        if (Settings::get('holidayRegion') === null) {
+            return collect();
+        }
+        $holidayCalculator = new HolidayCalculator;
+
+        return collect(
+            $holidayCalculator->calculate(Settings::get('holidayRegion'), $year)
+                ->filter(new IncludeTypeFilter(HolidayType::OFFICIAL))
+                ->format(new DateFormatter)
+        )->map(function ($holiday) {
+            return Carbon::create($holiday);
+        });
     }
 }

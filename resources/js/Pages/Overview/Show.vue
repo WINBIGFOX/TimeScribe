@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { Calendar } from '@/Components/ui/calendar';
 import WeekdayColumn from '@/Components/WeekdayColumn.vue';
-import { WeekdayObject } from '@/types';
+import WorktimeProgressBar from '@/Components/WorktimeProgressBar.vue';
+import { Date, WeekdayObject } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
 import { CalendarDate, type DateValue } from '@internationalized/date';
 import { useColorMode } from '@vueuse/core';
 import moment from 'moment';
+import { CalendarRootProps } from 'radix-vue';
 import { Ref, ref, watch } from 'vue';
 
 const props = defineProps<{
@@ -13,6 +15,10 @@ const props = defineProps<{
     week: number;
     startOfWeek: string;
     endOfWeek: string;
+    weekWorkTime: number;
+    weekBreakTime: number;
+    weekPlan: number;
+    holidays: Date[];
     weekdays: {
         monday: WeekdayObject;
         tuesday: WeekdayObject;
@@ -45,6 +51,17 @@ watch(
         );
     },
 );
+
+const isDateUnavailable: CalendarRootProps['isDateUnavailable'] = (date) => {
+    console.log(date);
+    return (
+        props.holidays.filter((holiday) => {
+            const day = date.day < 10 ? `0${date.day}` : date.day;
+            const month = date.month < 10 ? `0${date.month}` : date.month;
+            return holiday.date === `${date.year}-${month}-${day}`;
+        }).length > 0
+    );
+};
 </script>
 
 <template>
@@ -56,9 +73,14 @@ watch(
     >
         Stempeluhr
     </div>
-    <div class="flex gap-4">
+    <div class="flex select-none gap-4">
         <div>
-            <Calendar v-model="selectedDate" locale="de-DE" />
+            <Calendar
+                fixed-weeks
+                :is-date-unavailable="isDateUnavailable"
+                v-model="selectedDate"
+                locale="de-DE"
+            />
         </div>
         <div class="flex grow flex-col">
             <div class="grid grow grid-cols-7">
@@ -93,15 +115,23 @@ watch(
                 />
             </div>
         </div>
-        <div class="px-4">
-            <div class="flex flex-col items-center">
+        <div class="flex flex-col gap-4 px-4">
+            <div class="flex h-14 flex-col items-center">
                 <span class="font-medium leading-none text-muted-foreground">
                     Woche
                 </span>
-                <span class="mt-0.5 text-3xl font-bold leading-none text-foreground">
+                <span
+                    class="mt-0.5 flex grow items-center text-3xl font-bold leading-none text-foreground"
+                >
                     {{ props.week }}
                 </span>
             </div>
+            <WorktimeProgressBar
+                :progress="
+                    (props.weekWorkTime / (props.weekPlan * 60 * 60)) * 100
+                "
+                :plan="props.weekPlan"
+            />
         </div>
     </div>
 </template>

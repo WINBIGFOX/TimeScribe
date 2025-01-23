@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import WeekdayHeader from '@/Components/WeekdayHeader.vue';
+import WorktimeProgressBar from '@/Components/WorktimeProgressBar.vue';
 import { WeekdayObject } from '@/types';
+import moment from 'moment';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -22,19 +24,14 @@ const percentage = computed(() => {
             <WeekdayHeader
                 :day="props.weekday.date.day"
                 :weekday-name="props.weekdayName"
+                :active="
+                    props.weekday.date.date === moment().format('YYYY-MM-DD')
+                "
             />
         </div>
-
-        <div
-            v-if="weekday.plan"
-            class="relative mx-auto w-14 grow rounded-lg bg-muted"
-        >
-            <div
-                class="absolute inset-x-0 bottom-0 rounded-lg bg-primary transition-all duration-300"
-                :style="{
-                    height: `${percentage}%`,
-                }"
-            />
-        </div>
+        <WorktimeProgressBar
+            :progress="percentage"
+            :plan="props.weekday.plan"
+        />
     </div>
 </template>
