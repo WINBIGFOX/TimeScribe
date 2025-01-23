@@ -18,6 +18,7 @@ const props = defineProps<{
     weekWorkTime: number;
     weekBreakTime: number;
     weekPlan: number;
+    weekDatesWithTimestamps: string[];
     holidays: Date[];
     weekdays: {
         monday: WeekdayObject;
@@ -54,16 +55,9 @@ watch(
 
 const isDateUnavailable: CalendarRootProps['isDateUnavailable'] = (
     date: DateValue,
-) => {
-    return (
-        props.holidays.filter((holiday) => {
-            const day = date.day < 10 ? `0${date.day}` : date.day;
-            const month = date.month < 10 ? `0${date.month}` : date.month;
-            return holiday.date === `${date.year}-${month}-${day}`;
-        }).length > 0
-    );
-};
-
+) =>
+    props.holidays.filter((holiday) => holiday.date === date.toString())
+        .length > 0;
 usePoll(10000);
 </script>
 
@@ -82,6 +76,7 @@ usePoll(10000);
                 fixed-weeks
                 :is-date-unavailable="isDateUnavailable"
                 v-model="selectedDate"
+                :highlighted="props.weekDatesWithTimestamps"
                 locale="de-DE"
             />
         </div>

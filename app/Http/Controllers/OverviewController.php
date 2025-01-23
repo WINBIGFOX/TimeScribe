@@ -56,6 +56,7 @@ class OverviewController extends Controller
             'weekBreakTime' => TimestampService::getBreakTime($startOfWeek, $endOfWeek),
             'weekPlan' => TimestampService::getWeekPlan(),
             'weekFallbackPlan' => TimestampService::getFallbackPlan($startOfWeek, $endOfWeek),
+            'weekDatesWithTimestamps' => TimestampService::getDatesWithTimestamps($date->copy()->subYear()->startOfYear(), $date->copy()->addYear()->endOfYear()),
             'holidays' => TimestampService::getHoliday(range($date->year - 5, $date->year + 5))->map(function ($holidayDate) {
                 return DateHelper::toResourceArray($holidayDate);
             }),

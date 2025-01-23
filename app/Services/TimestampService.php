@@ -167,10 +167,14 @@ class TimestampService
         return Timestamp::whereNull('ended_at')->first()?->type;
     }
 
-    public static function getTimestamps(Carbon $date): Collection
+    public static function getTimestamps(Carbon $date, ?Carbon $endDate = null): Collection
     {
+        if (! $endDate) {
+            $endDate = $date->copy();
+        }
+
         return Timestamp::whereDate('started_at', '>=', $date->startOfDay())
-            ->whereDate('started_at', '<=', $date->endOfDay())
+            ->whereDate('started_at', '<=', $endDate->endOfDay())
             ->orderBy('started_at')
             ->get();
     }
@@ -212,5 +216,23 @@ class TimestampService
         $workdays = collect(Settings::get('workdays', []))->values()->unique()->sort();
 
         return $workdays->filter(fn ($value) => $value >= $workTime)->first() ?? $workdays->last();
+    }
+
+    public static function getDatesWithTimestamps(?Carbon $date, ?Carbon $endDate = null): Collection
+    {
+        if (! $date) {
+            $date = Carbon::now();
+        }
+        if (! $endDate) {
+            $endDate = $date->copy();
+        }
+        $holiday = self::getHoliday(range($date->year, $endDate->year))->map(function (Carbon $holiday) {
+            return $holiday->format('Y-m-d');
+        });
+        $timestampDates = self::getTimestamps($date, $endDate)->map(function (Timestamp $timestamp) {
+            return $timestamp->started_at->format('Y-m-d');
+        });
+
+        return $timestampDates->merge($holiday)->unique()->sort()->values();
     }
 }

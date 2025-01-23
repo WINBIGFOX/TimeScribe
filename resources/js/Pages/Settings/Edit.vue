@@ -108,7 +108,7 @@ useColorMode();
                             Bei Anmeldung starten
                         </p>
                     </div>
-                    <Switch v-model:checked="form.startOnLogin" />
+                    <Switch v-model:checked="form.startOnLogin" disabled />
                 </div>
                 <div class="flex items-center space-x-4 rounded-md border p-4">
                     <Eye />
