@@ -18,6 +18,7 @@ const props = defineProps<{
     weekWorkTime: number;
     weekBreakTime: number;
     weekPlan: number;
+    weekFallbackPlan: number;
     weekDatesWithTimestamps: string[];
     holidays: Date[];
     weekdays: {
@@ -147,7 +148,7 @@ usePoll(10000);
                     (props.weekWorkTime / (props.weekPlan * 60 * 60)) * 100
                 "
                 :plan="props.weekPlan"
-                :fallback-plan="props.weekPlan"
+                :fallback-plan="props.weekFallbackPlan"
                 :work-time="props.weekWorkTime"
                 :break-time="props.weekBreakTime"
             />

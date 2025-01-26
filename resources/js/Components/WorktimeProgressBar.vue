@@ -62,7 +62,7 @@ const percentageOverTime = computed(() => {
             </div>
             <div
                 v-if="percentageOverTime"
-                class="absolute inset-x-0 bottom-0 flex flex-col bg-amber-400 transition-all duration-300"
+                class="absolute inset-x-0 bottom-0 flex flex-col bg-amber-400 transition-all duration-300 starting:h-0"
                 :style="{
                     height: `${percentageOverTime}%`,
                 }"
