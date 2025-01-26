@@ -59,7 +59,7 @@ const setVisitDate = (date: string) => {
     const dateObject = moment(date);
     selectedDate.value = new CalendarDate(
         dateObject.year(),
-        dateObject.month(),
+        dateObject.month() + 1,
         dateObject.date(),
     );
 };
