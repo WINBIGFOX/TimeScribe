@@ -25,7 +25,7 @@ export function secToFormat(
         output += `:${String(secs).padStart(2, '0')}`;
     }
 
-    if (noLeadingZero && output.startsWith('00:')) {
+    if (noLeadingZero && output.startsWith('0')) {
         output = output.slice(1, output.length);
     }
     return output;

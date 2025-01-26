@@ -20,6 +20,7 @@ export interface WeekdayObject {
     breakTime: number;
     noWorkTime: number;
     timestamps: unknown[];
+    activeWork: boolean;
 }
 
 export type PageProps<

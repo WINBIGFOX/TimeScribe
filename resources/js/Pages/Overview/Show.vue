@@ -40,18 +40,29 @@ const selectedDate = ref(
 
 watch(
     () => selectedDate.value,
-    (newVal) => {
-        router.visit(
-            route('overview.show', {
-                date: `${newVal.year}-${newVal.month}-${newVal.day}`,
-            }),
-            {
-                preserveScroll: true,
-                preserveState: true,
-            },
-        );
-    },
+    (newVal) => visitDate(newVal.toString()),
 );
+
+const visitDate = (date: string) => {
+    router.visit(
+        route('overview.show', {
+            date: date,
+        }),
+        {
+            preserveScroll: true,
+            preserveState: true,
+        },
+    );
+};
+
+const setVisitDate = (date: string) => {
+    const dateObject = moment(date);
+    selectedDate.value = new CalendarDate(
+        dateObject.year(),
+        dateObject.month(),
+        dateObject.date(),
+    );
+};
 
 const isDateUnavailable: CalendarRootProps['isDateUnavailable'] = (
     date: DateValue,
@@ -65,7 +76,7 @@ usePoll(10000);
     <Head title="Stempeluhr" />
 
     <div
-        class="sticky top-0 flex h-10 items-center justify-center font-medium backdrop-blur-sm"
+        class="sticky top-0 flex h-10 items-center justify-center font-medium"
         style="-webkit-app-region: drag"
     >
         Stempeluhr
@@ -81,39 +92,46 @@ usePoll(10000);
             />
         </div>
         <div class="flex grow flex-col">
-            <div class="grid grow grid-cols-7">
+            <div class="flex grow justify-between">
                 <WeekdayColumn
+                    @click="setVisitDate(props.weekdays.monday.date.date)"
                     weekday-name="Mo"
                     :weekday="props.weekdays.monday"
                 />
 
                 <WeekdayColumn
+                    @click="setVisitDate(props.weekdays.tuesday.date.date)"
                     weekday-name="Di"
                     :weekday="props.weekdays.tuesday"
                 />
                 <WeekdayColumn
+                    @click="setVisitDate(props.weekdays.wednesday.date.date)"
                     weekday-name="Mi"
                     :weekday="props.weekdays.wednesday"
                 />
                 <WeekdayColumn
+                    @click="setVisitDate(props.weekdays.thursday.date.date)"
                     weekday-name="Do"
                     :weekday="props.weekdays.thursday"
                 />
                 <WeekdayColumn
+                    @click="setVisitDate(props.weekdays.friday.date.date)"
                     weekday-name="Fr"
                     :weekday="props.weekdays.friday"
                 />
                 <WeekdayColumn
+                    @click="setVisitDate(props.weekdays.saturday.date.date)"
                     weekday-name="Sa"
                     :weekday="props.weekdays.saturday"
                 />
                 <WeekdayColumn
+                    @click="setVisitDate(props.weekdays.sunday.date.date)"
                     weekday-name="So"
                     :weekday="props.weekdays.sunday"
                 />
             </div>
         </div>
-        <div class="flex flex-col gap-4 px-4">
+        <div class="mx-4 flex w-14 flex-col gap-4">
             <div class="flex h-14 flex-col items-center">
                 <span class="text-muted-foreground leading-none font-medium">
                     Woche

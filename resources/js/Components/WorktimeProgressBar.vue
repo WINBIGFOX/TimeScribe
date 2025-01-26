@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { secToFormat } from '@/lib/utils';
-import { BriefcaseBusiness, Coffee,TriangleAlert } from 'lucide-vue-next';
+import { BriefcaseBusiness, Coffee, TriangleAlert } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 const props = withDefaults(
@@ -9,6 +9,7 @@ const props = withDefaults(
         fallbackPlan?: number;
         workTime?: number;
         breakTime?: number;
+        activeWork?: boolean;
     }>(),
     {
         plan: 0,
@@ -16,6 +17,7 @@ const props = withDefaults(
         progress: 0,
         workTime: 0,
         breakTime: 0,
+        activeWork: false,
     },
 );
 
@@ -40,10 +42,7 @@ const percentageOverTime = computed(() => {
 </script>
 
 <template>
-    <div
-        class="mx-auto flex w-14 grow flex-col"
-        v-if="props.plan || props.workTime"
-    >
+    <div class="flex grow flex-col" v-if="props.plan || props.workTime">
         <div
             class="border-muted bg-background text-muted-foreground rounded-t-lg border text-center text-xs"
         >
@@ -51,29 +50,42 @@ const percentageOverTime = computed(() => {
         </div>
         <div class="bg-muted relative grow overflow-hidden rounded-b-lg">
             <div
-                class="bg-primary absolute inset-x-0 bottom-0 transition-all duration-300"
+                class="bg-primary absolute inset-x-0 bottom-0 flex flex-col transition-all duration-300"
                 :style="{
                     height: `${percentageWorkTime}%`,
                 }"
-            />
+            >
+                <div
+                    v-if="props.activeWork"
+                    class="animate-progress grow bg-gradient-to-t from-transparent via-transparent to-white/40"
+                />
+            </div>
             <div
-                class="absolute inset-x-0 bottom-0 bg-amber-400 transition-all duration-300"
+                v-if="percentageOverTime"
+                class="absolute inset-x-0 bottom-0 flex flex-col bg-amber-400 transition-all duration-300"
                 :style="{
                     height: `${percentageOverTime}%`,
                 }"
-            />
+            >
+                <div
+                    v-if="props.activeWork"
+                    class="animate-progress grow bg-gradient-to-t from-transparent via-transparent to-white/40"
+                />
+            </div>
         </div>
-        <div class="mt-2 h-9 space-y-1">
+        <div class="mt-2 h-10 space-y-1">
             <div
-                class="text-muted-foreground flex items-center gap-1 text-xs"
-                v-if="props.workTime && props.workTime - props.plan * 60 * 60 < 0"
+                class="text-muted-foreground flex items-center justify-between gap-1 text-xs"
+                v-if="
+                    props.workTime && props.workTime - props.plan * 60 * 60 < 0
+                "
             >
                 <BriefcaseBusiness class="size-4 shrink-0" />
                 {{ secToFormat(props.workTime ?? 0, false, true) }}
             </div>
             <div
                 v-if="props.workTime - props.plan * 60 * 60 > 0"
-                class="flex items-center gap-1 text-xs text-amber-400"
+                class="flex items-center justify-between gap-1 text-xs text-amber-400"
             >
                 <TriangleAlert class="size-4 shrink-0" />
                 +{{
@@ -81,12 +93,12 @@ const percentageOverTime = computed(() => {
                         props.workTime - props.plan * 60 * 60,
                         false,
                         true,
-                        true
+                        true,
                     )
                 }}
             </div>
             <div
-                class="text-muted-foreground flex items-center gap-1 text-xs"
+                class="text-muted-foreground flex items-center justify-between gap-1 text-xs"
                 v-if="props.breakTime"
             >
                 <Coffee class="size-4 shrink-0" />

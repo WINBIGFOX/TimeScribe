@@ -93,7 +93,7 @@ class TimestampService
         }
     }
 
-    private static function getTime(TimestampTypeEnum $type, ?Carbon $date, ?Carbon $endDate = null, ?bool $fallbackNow = true): int
+    private static function getTime(TimestampTypeEnum $type, ?Carbon $date, ?Carbon $endDate = null, ?bool $fallbackNow = true): float
     {
         if (! $date) {
             $date = Carbon::now();
@@ -134,17 +134,17 @@ class TimestampService
         }) + $holidayTime;
     }
 
-    public static function getWorkTime(?Carbon $date = null, ?Carbon $endDate = null): int
+    public static function getWorkTime(?Carbon $date = null, ?Carbon $endDate = null): float
     {
         return self::getTime(TimestampTypeEnum::WORK, $date, $endDate);
     }
 
-    public static function getBreakTime(?Carbon $date = null, ?Carbon $endDate = null): int
+    public static function getBreakTime(?Carbon $date = null, ?Carbon $endDate = null): float
     {
         return self::getTime(TimestampTypeEnum::BREAK, $date, $endDate);
     }
 
-    public static function getNoWorkTime(?Carbon $date = null): int
+    public static function getNoWorkTime(?Carbon $date = null): float
     {
         $timestamps = self::getTimestamps($date);
 
@@ -234,5 +234,10 @@ class TimestampService
         });
 
         return $timestampDates->merge($holiday)->unique()->sort()->values();
+    }
+
+    public static function getActiveWork(Carbon $date): bool
+    {
+        return $date->isToday() && self::getCurrentType() === TimestampTypeEnum::WORK;
     }
 }

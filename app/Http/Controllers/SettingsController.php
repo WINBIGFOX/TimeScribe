@@ -19,6 +19,7 @@ class SettingsController extends Controller
             'workdays' => Settings::get('workdays'),
             'holidayRegion' => Settings::get('holidayRegion'),
             'stopBreakAutomatic' => Settings::get('stopBreakAutomatic'),
+            'stopBreakAutomaticActivationTime' => Settings::get('stopBreakAutomaticActivationTime'),
         ]);
     }
 
@@ -34,6 +35,7 @@ class SettingsController extends Controller
         Settings::set('workdays', $data['workdays']);
         Settings::set('holidayRegion', $data['holidayRegion']);
         Settings::set('stopBreakAutomatic', $data['stopBreakAutomatic']);
+        Settings::set('stopBreakAutomaticActivationTime', $data['stopBreakAutomaticActivationTime']);
 
         return redirect()->route('settings.edit');
     }

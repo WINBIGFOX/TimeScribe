@@ -69,6 +69,7 @@ class OverviewController extends Controller
                     'breakTime' => TimestampService::getBreakTime($startOfWeek),
                     'timestamps' => TimestampService::getTimestamps($startOfWeek),
                     'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek),
+                    'activeWork' => TimestampService::getActiveWork($startOfWeek),
                 ],
                 'tuesday' => [
                     'plan' => TimestampService::getPlan('tuesday'),
@@ -78,6 +79,7 @@ class OverviewController extends Controller
                     'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDay()),
                     'timestamps' => TimestampService::getTimestamps($startOfWeek->copy()->addDay()),
                     'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDay()),
+                    'activeWork' => TimestampService::getActiveWork($startOfWeek->copy()->addDay()),
                 ],
                 'wednesday' => [
                     'plan' => TimestampService::getPlan('wednesday'),
@@ -87,6 +89,7 @@ class OverviewController extends Controller
                     'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDays(2)),
                     'timestamps' => TimestampService::getTimestamps($startOfWeek->copy()->addDays(2)),
                     'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDays(2)),
+                    'activeWork' => TimestampService::getActiveWork($startOfWeek->copy()->addDays(2)),
                 ],
                 'thursday' => [
                     'plan' => TimestampService::getPlan('thursday'),
@@ -96,6 +99,7 @@ class OverviewController extends Controller
                     'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDays(3)),
                     'timestamps' => TimestampService::getTimestamps($startOfWeek->copy()->addDays(3)),
                     'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDays(3)),
+                    'activeWork' => TimestampService::getActiveWork($startOfWeek->copy()->addDays(3)),
                 ],
                 'friday' => [
                     'plan' => TimestampService::getPlan('friday'),
@@ -105,6 +109,7 @@ class OverviewController extends Controller
                     'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDays(4)),
                     'timestamps' => TimestampService::getTimestamps($startOfWeek->copy()->addDays(4)),
                     'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDays(4)),
+                    'activeWork' => TimestampService::getActiveWork($startOfWeek->copy()->addDays(4)),
                 ],
                 'saturday' => [
                     'plan' => TimestampService::getPlan('saturday'),
@@ -114,6 +119,7 @@ class OverviewController extends Controller
                     'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDays(5)),
                     'timestamps' => TimestampService::getTimestamps($startOfWeek->copy()->addDays(5)),
                     'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDays(5)),
+                    'activeWork' => TimestampService::getActiveWork($startOfWeek->copy()->addDays(5)),
                 ],
                 'sunday' => [
                     'plan' => TimestampService::getPlan('sunday'),
@@ -123,6 +129,7 @@ class OverviewController extends Controller
                     'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDays(6)),
                     'timestamps' => TimestampService::getTimestamps($startOfWeek->copy()->addDays(6)),
                     'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDays(6)),
+                    'activeWork' => TimestampService::getActiveWork($startOfWeek->copy()->addDays(6)),
                 ],
             ],
         ]);

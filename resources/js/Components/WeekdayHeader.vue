@@ -8,12 +8,12 @@ const props = defineProps<{
 
 <template>
     <div
-        class="mx-auto flex size-14 flex-col items-center justify-center rounded-lg bg-muted text-center text-muted-foreground"
+        class="bg-muted text-muted-foreground flex size-14 flex-col items-center justify-center rounded-lg text-center"
         :class="{
-            'ring-2 ring-inset ring-primary': props.active,
+            'ring-primary ring-2 ring-inset': props.active,
         }"
     >
-        <span class="font-medium leading-none text-foreground">
+        <span class="text-foreground leading-none font-medium">
             {{ props.weekdayName }}
         </span>
         <span class="mt-0.5 text-xs leading-none">{{ props.day }}.</span>

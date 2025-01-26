@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Enums\TimestampTypeEnum;
 use App\Services\TimestampService;
+use Carbon\Carbon;
 use Native\Laravel\Events\PowerMonitor\ScreenLocked;
 use Native\Laravel\Events\PowerMonitor\Shutdown;
 use Native\Laravel\Facades\Settings;
@@ -24,7 +25,29 @@ class StandbyOrLocked
     public function handle(ScreenLocked|Shutdown $event): void
     {
         $stopBreakAutomatic = Settings::get('stopBreakAutomatic');
-        if ($stopBreakAutomatic && TimestampService::getCurrentType() === TimestampTypeEnum::WORK) {
+        if (! $stopBreakAutomatic) {
+            return;
+        }
+
+        $stopBreakAutomaticActivationTime = Settings::get('stopBreakAutomaticActivationTime');
+
+        if ($stopBreakAutomaticActivationTime) {
+            if (
+                ! Carbon::now()->between(
+                    Carbon::now()->setTime(0, 0, 0),
+                    Carbon::now()->setTime(4, 59, 59)
+                )
+                &&
+                ! Carbon::now()->between(
+                    Carbon::now()->setTime($stopBreakAutomaticActivationTime, 0, 0),
+                    Carbon::now()->setTime(23, 59, 59)
+                )
+            ) {
+                return;
+            }
+        }
+
+        if (TimestampService::getCurrentType() === TimestampTypeEnum::WORK) {
             if ($stopBreakAutomatic === 'break') {
                 TimestampService::startBreak();
             }

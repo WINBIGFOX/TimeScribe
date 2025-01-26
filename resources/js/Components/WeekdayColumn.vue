@@ -11,7 +11,9 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div class="flex flex-col gap-4">
+    <div
+        class="hover:ring-offset-background hover:ring-primary/30 flex w-14 flex-col gap-4 rounded-lg transition-all hover:ring-2 hover:ring-offset-2"
+    >
         <div>
             <WeekdayHeader
                 :day="props.weekday.date.day"
@@ -26,6 +28,7 @@ const props = defineProps<{
             :fallback-plan="props.weekday.fallbackPlan"
             :work-time="props.weekday.workTime"
             :break-time="props.weekday.breakTime"
+            :active-work="props.weekday.activeWork"
         />
     </div>
 </template>
