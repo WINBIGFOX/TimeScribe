@@ -67,7 +67,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
                                 :month="month.value"
                             >
                                 <div
-                                    class="absolute rounded bottom-1 h-1 w-1/3 bg-primary group-data-selected:bg-foreground/50"
+                                    class="absolute rounded-sm bottom-1 h-1 w-1/3 bg-primary group-data-selected:bg-foreground/50"
                                     v-if="props.highlighted?.includes(weekDate.toString())" />
 
                                 {{ weekDate.day }}
@@ -79,5 +79,3 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
         </div>
     </CalendarRoot>
 </template>
-
-<!--class="before:absolute before:top-[5px] before:block before:rounded-full before:w-1 before:h-1 before:bg-white"-->
