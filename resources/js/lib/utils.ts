@@ -10,10 +10,11 @@ export function secToFormat(
     withoutHours?: boolean,
     withoutSeconds?: boolean,
     noLeadingZero?: boolean,
+    withAbs?: boolean,
 ) {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = Math.floor(seconds % 60);
+    const hours = Math.abs(Math.floor(seconds / 3600));
+    const minutes = Math.abs(Math.floor((seconds % 3600) / 60));
+    const secs = Math.abs(Math.floor(seconds % 60));
 
     let output = '';
 
@@ -28,5 +29,10 @@ export function secToFormat(
     if (noLeadingZero && output.startsWith('0')) {
         output = output.slice(1, output.length);
     }
+
+    if (withAbs) {
+        output = `${seconds < 0 ? '-' : '+'}${output}`;
+    }
+
     return output;
 }

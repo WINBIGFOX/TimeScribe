@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { secToFormat } from '@/lib/utils';
-import { BriefcaseBusiness, Coffee, TriangleAlert } from 'lucide-vue-next';
+import {
+    BriefcaseBusiness,
+    ClockArrowDown,
+    ClockArrowUp,
+    Coffee,
+} from 'lucide-vue-next';
 import { computed } from 'vue';
 
 const props = withDefaults(
@@ -28,12 +33,14 @@ const percentageWorkTime = computed(() => {
     return Math.min((props.workTime / (props.plan * 60 * 60)) * 100, 100);
 });
 
+const timePlanDifference = computed(() => {
+    return props.workTime - props.plan * 60 * 60;
+});
+
 const percentageOverTime = computed(() => {
     return Math.max(
         Math.min(
-            ((props.workTime - props.plan * 60 * 60) /
-                (props.fallbackPlan * 60 * 60)) *
-                100,
+            (timePlanDifference.value / (props.fallbackPlan * 60 * 60)) * 100,
             100,
         ),
         0,
@@ -73,29 +80,31 @@ const percentageOverTime = computed(() => {
                 />
             </div>
         </div>
-        <div class="mt-2 h-10 space-y-1">
+        <div class="mt-2 h-14 space-y-1">
             <div
                 class="text-muted-foreground flex items-center justify-between gap-1 text-xs"
-                v-if="
-                    props.workTime && props.workTime - props.plan * 60 * 60 < 0
-                "
+                v-if="props.workTime"
             >
                 <BriefcaseBusiness class="size-4 shrink-0" />
                 {{ secToFormat(props.workTime ?? 0, false, true) }}
             </div>
             <div
-                v-if="props.workTime - props.plan * 60 * 60 > 0"
-                class="flex items-center justify-between gap-1 text-xs text-amber-400"
+                v-if="timePlanDifference !== 0 && props.workTime"
+                class="flex items-center justify-between gap-1 text-xs"
+                :class="{
+                    'text-green-500': timePlanDifference < 0,
+                    'text-amber-400': timePlanDifference > 0,
+                }"
             >
-                <TriangleAlert class="size-4 shrink-0" />
-                +{{
-                    secToFormat(
-                        props.workTime - props.plan * 60 * 60,
-                        false,
-                        true,
-                        true,
-                    )
-                }}
+                <ClockArrowUp
+                    class="size-4 shrink-0"
+                    v-if="timePlanDifference > 0"
+                />
+                <ClockArrowDown
+                    class="size-4 shrink-0"
+                    v-if="timePlanDifference < 0"
+                />
+                {{ secToFormat(timePlanDifference, false, true, true, true) }}
             </div>
             <div
                 class="text-muted-foreground flex items-center justify-between gap-1 text-xs"
