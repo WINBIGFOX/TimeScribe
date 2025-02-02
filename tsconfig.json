@@ -11,6 +11,7 @@
         "forceConsistentCasingInFileNames": true,
         "noEmit": true,
         "skipLibCheck": true,
+        "noImplicitAny": false,
         "paths": {
             "@/*": ["./resources/js/*"],
             "ziggy-js": ["./vendor/tightenco/ziggy"]

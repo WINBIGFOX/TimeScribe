@@ -195,21 +195,21 @@ class TimestampService
         });
     }
 
-    public static function getPlan($dayName): float
+    public static function getPlan($dayName): ?float
     {
         $workdays = Settings::get('workdays', []);
 
         return $workdays[$dayName] ?? 0;
     }
 
-    public static function getWeekPlan(): float
+    public static function getWeekPlan(): ?float
     {
         $workdays = Settings::get('workdays', []);
 
         return array_sum($workdays);
     }
 
-    public static function getFallbackPlan(?Carbon $date = null, ?Carbon $endDate = null): float
+    public static function getFallbackPlan(?Carbon $date = null, ?Carbon $endDate = null): ?float
     {
         $workTime = self::getWorkTime($date, $endDate) / 3600;
 

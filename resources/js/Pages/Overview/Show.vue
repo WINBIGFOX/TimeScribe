@@ -17,8 +17,8 @@ const props = defineProps<{
     endOfWeek: string;
     weekWorkTime: number;
     weekBreakTime: number;
-    weekPlan: number;
-    weekFallbackPlan: number;
+    weekPlan?: number;
+    weekFallbackPlan?: number;
     weekDatesWithTimestamps: string[];
     holidays: Date[];
     weekdays: {
@@ -36,7 +36,7 @@ useColorMode();
 const routeDate = moment(props.date);
 
 const selectedDate = ref(
-    new CalendarDate(routeDate.year(), routeDate.month(), routeDate.date()),
+    new CalendarDate(routeDate.year(), routeDate.month() + 1, routeDate.date()),
 ) as Ref<DateValue>;
 
 watch(
@@ -144,6 +144,7 @@ usePoll(10000);
                 </span>
             </div>
             <WorktimeProgressBar
+                v-if="props.weekPlan"
                 :progress="
                     (props.weekWorkTime / (props.weekPlan * 60 * 60)) * 100
                 "
