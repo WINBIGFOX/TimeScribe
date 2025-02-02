@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9257adb2d54c124f043ce3572619fa5d",
+    "content-hash": "a45d5acc6ec099ff1c8de733ec457cfd",
     "packages": [
         {
             "name": "brick/math",
@@ -2248,23 +2248,23 @@
         },
         {
             "name": "nativephp/electron",
-            "version": "1.0.0-beta.1",
+            "version": "0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NativePHP/electron.git",
-                "reference": "b0718db6e5a22198449f976468ec4889754fb0df"
+                "reference": "2156a831e469c4dc135f5f703e24f20df3ae6f23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NativePHP/electron/zipball/b0718db6e5a22198449f976468ec4889754fb0df",
-                "reference": "b0718db6e5a22198449f976468ec4889754fb0df",
+                "url": "https://api.github.com/repos/NativePHP/electron/zipball/2156a831e469c4dc135f5f703e24f20df3ae6f23",
+                "reference": "2156a831e469c4dc135f5f703e24f20df3ae6f23",
                 "shasum": ""
             },
             "require": {
                 "illuminate/contracts": "^10.0|^11.0",
                 "laravel/prompts": "^0.1.1|^0.2|^0.3",
                 "nativephp/laravel": "*",
-                "nativephp/php-bin": "^0.5.1",
+                "nativephp/php-bin": "^0.5",
                 "php": "^8.1",
                 "spatie/laravel-package-tools": "^1.14.0"
             },
@@ -2321,7 +2321,7 @@
                 "nativephp"
             ],
             "support": {
-                "source": "https://github.com/NativePHP/electron/tree/1.0.0-beta.1"
+                "source": "https://github.com/NativePHP/electron/tree/0.9.0"
             },
             "funding": [
                 {
@@ -2333,7 +2333,7 @@
                     "type": "opencollective"
                 }
             ],
-            "time": "2025-01-21T13:15:02+00:00"
+            "time": "2024-12-18T18:27:23+00:00"
         },
         {
             "name": "nativephp/laravel",
@@ -9636,9 +9636,7 @@
     ],
     "aliases": [],
     "minimum-stability": "beta",
-    "stability-flags": {
-        "nativephp/electron": 10
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

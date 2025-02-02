@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\TimestampService;
+use Illuminate\Support\Facades\Artisan;
 use Inertia\Inertia;
 use Native\Laravel\Facades\MenuBar;
 use Native\Laravel\Facades\Window;
@@ -11,7 +12,7 @@ class MenubarController extends Controller
 {
     public function index()
     {
-        \Artisan::call('menubar:refresh');
+        Artisan::call('menubar:refresh');
 
         TimestampService::ping();
         $currentType = TimestampService::getCurrentType();
@@ -56,7 +57,7 @@ class MenubarController extends Controller
             ->maximizable(false)
             ->minimizable(false)
             ->route('settings.edit')
-            ->hideDevTools()
+            ->showDevTools(false)
             ->width(400)
             ->minWidth(400)
             ->maxWidth(500)
@@ -70,18 +71,13 @@ class MenubarController extends Controller
     public function openOverview(): void
     {
         Window::open('overview')
-            ->rememberState()
             ->maximizable(false)
             ->fullscreen(false)
             ->route('overview.index')
-            ->hideDevTools()
             ->width(850)
-            ->minWidth(850)
-            ->maxWidth(850)
-            ->minHeight(400)
-            ->height(400)
-            ->maxHeight(800)
+            ->height(415)
             ->titleBarHidden()
-            ->resizable();
+            ->resizable(false)
+            ->showDevTools(false);
     }
 }

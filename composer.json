@@ -12,9 +12,8 @@
         "php": "^8.2",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^11.38",
-        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10",
-        "nativephp/electron": "^1.0.0-beta.1",
+        "nativephp/electron": "^0.9.0",
         "tightenco/ziggy": "^2.4",
         "umulmrum/holiday": "^0.11.1"
     },
