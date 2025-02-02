@@ -23,7 +23,3 @@ yarn-error.log
 /.zed
 /.vite
 /dist
-
-# Project exclude paths
-/storage/app/
-/storage/framework/
