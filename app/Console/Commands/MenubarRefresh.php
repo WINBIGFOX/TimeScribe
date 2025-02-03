@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Enums\TimestampTypeEnum;
@@ -43,6 +45,6 @@ class MenubarRefresh extends Command
             return;
         }
 
-        MenuBar::label(gmdate('G:i', $time));
+        MenuBar::label(gmdate('G:i', (int) $time));
     }
 }

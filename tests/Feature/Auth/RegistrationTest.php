@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 test('registration screen can be rendered', function () {
     $response = $this->get('/register');
 

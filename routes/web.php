@@ -1,12 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\MenubarController;
 use App\Http\Controllers\OverviewController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::name('menubar.')->prefix('menubar')->group(function () {
     Route::get('', [MenubarController::class, 'index'])->name('index');
