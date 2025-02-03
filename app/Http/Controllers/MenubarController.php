@@ -56,6 +56,7 @@ class MenubarController extends Controller
             ->rememberState()
             ->maximizable(false)
             ->minimizable(false)
+            ->fullscreenable(false)
             ->route('settings.edit')
             ->showDevTools(false)
             ->width(400)
@@ -78,6 +79,7 @@ class MenubarController extends Controller
             ->height(415)
             ->titleBarHidden()
             ->resizable(false)
+            ->fullscreenable(false)
             ->showDevTools(false);
     }
 }
