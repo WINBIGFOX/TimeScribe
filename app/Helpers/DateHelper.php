@@ -15,7 +15,7 @@ class DateHelper
             return null;
         }
 
-        if ($withTime) {
+        if ($withTime && $format === 'd.m.Y') {
             $format = 'd.m.Y H:i:s';
         }
 

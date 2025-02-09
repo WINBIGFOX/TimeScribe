@@ -16,6 +16,14 @@ export interface WeekdayObject {
     activeWork: boolean;
 }
 
+export interface Timestamp {
+    id: number;
+    type: string;
+    started_at: Date;
+    ended_at?: Date;
+    last_ping_at?: Date;
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {};

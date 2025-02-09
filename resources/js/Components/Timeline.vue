@@ -1,0 +1,170 @@
+<script setup lang="ts">
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/Components/ui/tooltip';
+import { Timestamp } from '@/types';
+import { BriefcaseBusiness, Coffee } from 'lucide-vue-next';
+import { ref } from 'vue';
+
+const props = withDefaults(
+    defineProps<{
+        timestamps: Timestamp[];
+        overtime?: number;
+    }>(),
+    {
+        overtime: 0,
+    },
+);
+
+const timeline = ref<Record<number, Timestamp | undefined>>({});
+
+const parseTimestamps = () => {
+    props.timestamps.forEach((timestamp) => {
+        const start =
+            Math.floor(parseInt(timestamp.started_at.formatted) / 10) * 10;
+        const ended_at = timestamp.ended_at ?? timestamp.last_ping_at;
+        let end = Math.floor(parseInt(ended_at?.formatted ?? '') / 10) * 10;
+        if (end.toString().endsWith('60')) {
+            end = end - 60 + 100;
+        }
+        if (end === 2400) {
+            end = end - 50;
+        }
+
+        for (let j = start; j <= end; j += 10) {
+            timeline.value[j] = { ...timestamp };
+
+            if (j.toString().endsWith('50')) {
+                j += 40;
+            }
+        }
+    });
+    markOvertime();
+};
+
+const markOvertime = () => {
+    let overtimeCount = Math.ceil(props.overtime / 600);
+    for (const [key, value] of Object.entries(timeline.value).reverse()) {
+        console.log(value);
+        if (value?.type === 'work' && overtimeCount > 0) {
+            console.log(`${key}: ${value}`);
+            timeline.value[key] = { ...value, type: 'overtime' };
+            overtimeCount--;
+        } else if (overtimeCount <= 0) {
+            break;
+        }
+    }
+};
+
+const createTimeline = () => {
+    for (let i = 0; i < 2400; i += 100) {
+        for (let j = 0; j < 60; j += 10) {
+            timeline.value[j + i] = undefined;
+        }
+    }
+    parseTimestamps();
+};
+
+createTimeline();
+</script>
+
+<template>
+    <div class="relative h-24">
+        <div
+            class="absolute inset-x-0 top-3 mx-0.5 flex justify-between gap-0.5"
+        >
+            <TooltipProvider
+                v-for="(time, index) in timeline"
+                :key="index"
+                :delayDuration="0"
+            >
+                <Tooltip>
+                    <TooltipTrigger class="group flex-1 hover:z-10">
+                        <div
+                            class="bg-accent ring-offset-background h-14 shrink-0 rounded ring-offset-1 transition-transform duration-100 group-hover:scale-110 group-hover:ring-2"
+                            :class="{
+                                'bg-primary ring-primary':
+                                    time?.type === 'work' ||
+                                    time?.type === 'overtime',
+                                'bg-pink-400 ring-pink-400':
+                                    time?.type === 'break',
+                                'ring-gray-300 hover:bg-gray-300 dark:ring-gray-600 dark:hover:bg-gray-600':
+                                    !time,
+                            }"
+                        />
+                        <div
+                            class="mt-0.5 aspect-square shrink-0 rounded"
+                            :class="{
+                                'bg-amber-400 ring-amber-400':
+                                    time?.type === 'overtime',
+                            }"
+                        />
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">
+                        <div>
+                            {{
+                                index > 100
+                                    ? index.toString().slice(0, -2)
+                                    : '0'
+                            }}:{{
+                                index > 10 ? index.toString().slice(-2) : '00'
+                            }}
+                        </div>
+                        <div class="flex justify-center">
+                            <BriefcaseBusiness
+                                class="my-1 size-5 shrink-0"
+                                :class="{
+                                    'text-primary': time?.type === 'work',
+                                    'text-amber-400': time?.type === 'overtime',
+                                }"
+                                v-if="
+                                    time?.type === 'work' ||
+                                    time?.type === 'overtime'
+                                "
+                            />
+                            <Coffee
+                                class="my-1 size-5 shrink-0 text-pink-400"
+                                v-if="time?.type === 'break'"
+                            />
+                        </div>
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
+        </div>
+        <div
+            class="pointer-events-none absolute inset-x-0 top-0 mx-0.5 flex justify-between gap-0.5"
+        >
+            <div
+                v-for="index in 49"
+                :key="index"
+                class="h-20 flex-1 border-l"
+                :class="{
+                    'flex-none': index === 49,
+                    'border-gray-300 dark:border-gray-600': index % 4 === 1,
+                    'border-gray-100 dark:border-gray-800':
+                        index % 4 !== 1 && index % 2 !== 1,
+                    'border-gray-200 dark:border-gray-700':
+                        index % 2 === 1 && index % 4 !== 1,
+                }"
+            ></div>
+        </div>
+        <div
+            class="pointer-events-none absolute inset-x-0 top-20 mx-0.5 flex justify-between gap-0.5"
+        >
+            <div
+                v-for="index in 13"
+                :key="index"
+                class="text-muted-foreground flex h-4 flex-1 items-end border-l border-gray-300 text-xs leading-none dark:border-gray-600"
+                :class="{
+                    'flex-none': index === 13,
+                    'pl-1': index !== 13,
+                }"
+            >
+                {{ index < 13 ? (index - 1) * 2 + ':00' : '' }}
+            </div>
+        </div>
+    </div>
+</template>

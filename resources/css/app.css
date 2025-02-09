@@ -10,6 +10,19 @@
   If we ever want to remove these styles, we need to add an explicit border
   color utility to any element that depends on these defaults.
 */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+#app {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+html {
+    overflow: hidden;
+}
+
 @layer base {
     *,
     ::after,

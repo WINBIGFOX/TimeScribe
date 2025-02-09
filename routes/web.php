@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\DayController;
 use App\Http\Controllers\MenubarController;
 use App\Http\Controllers\OverviewController;
 use App\Http\Controllers\SettingsController;
@@ -23,5 +24,11 @@ Route::name('settings.')->prefix('settings')->group(function () {
 
 Route::name('overview.')->prefix('overview')->group(function () {
     Route::get('', [OverviewController::class, 'index'])->name('index');
-    Route::get('{date}', [OverviewController::class, 'show'])->name('show');
+    Route::get('{date}', [OverviewController::class, 'show'])->name('show')->where('date', '\d{4}-\d{2}-\d{2}');
+    Route::get('{date}/edit', [OverviewController::class, 'edit'])->name('edit')->where('date', '\d{4}-\d{2}-\d{2}');
+});
+
+Route::name('day.')->prefix('day')->group(function () {
+    Route::get('{date}/edit', [DayController::class, 'edit'])->name('edit')->where('date', '\d{4}-\d{2}-\d{2}');
+    Route::patch('{date}', [DayController::class, 'update'])->name('update')->where('date', '\d{4}-\d{2}-\d{2}');
 });

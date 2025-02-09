@@ -42,3 +42,7 @@ export function secToFormat(
 
     return output;
 }
+
+export function insertColon(str: string, index: number) {
+    return str.substring(0, index) + ':' + str.substring(index);
+}

@@ -71,6 +71,13 @@ const isDateUnavailable: CalendarRootProps['isDateUnavailable'] = (
     props.holidays.filter((holiday) => holiday.date === date.toString())
         .length > 0;
 usePoll(10000);
+
+const openDayView = (date: string) => {
+    router.visit(route('overview.edit', { date }), {
+        preserveScroll: true,
+        preserveState: true,
+    });
+};
 </script>
 
 <template>
@@ -96,37 +103,44 @@ usePoll(10000);
             <div class="flex grow justify-between">
                 <WeekdayColumn
                     @click="setVisitDate(props.weekdays.monday.date.date)"
+                    @dblclick="openDayView(props.weekdays.monday.date.date)"
                     weekday-name="Mo"
                     :weekday="props.weekdays.monday"
                 />
 
                 <WeekdayColumn
                     @click="setVisitDate(props.weekdays.tuesday.date.date)"
+                    @dblclick="openDayView(props.weekdays.tuesday.date.date)"
                     weekday-name="Di"
                     :weekday="props.weekdays.tuesday"
                 />
                 <WeekdayColumn
                     @click="setVisitDate(props.weekdays.wednesday.date.date)"
+                    @dblclick="openDayView(props.weekdays.wednesday.date.date)"
                     weekday-name="Mi"
                     :weekday="props.weekdays.wednesday"
                 />
                 <WeekdayColumn
                     @click="setVisitDate(props.weekdays.thursday.date.date)"
+                    @dblclick="openDayView(props.weekdays.thursday.date.date)"
                     weekday-name="Do"
                     :weekday="props.weekdays.thursday"
                 />
                 <WeekdayColumn
                     @click="setVisitDate(props.weekdays.friday.date.date)"
+                    @dblclick="openDayView(props.weekdays.friday.date.date)"
                     weekday-name="Fr"
                     :weekday="props.weekdays.friday"
                 />
                 <WeekdayColumn
                     @click="setVisitDate(props.weekdays.saturday.date.date)"
+                    @dblclick="openDayView(props.weekdays.saturday.date.date)"
                     weekday-name="Sa"
                     :weekday="props.weekdays.saturday"
                 />
                 <WeekdayColumn
                     @click="setVisitDate(props.weekdays.sunday.date.date)"
+                    @dblclick="openDayView(props.weekdays.sunday.date.date)"
                     weekday-name="So"
                     :weekday="props.weekdays.sunday"
                 />

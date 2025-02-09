@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Native\Laravel\Facades\Window;
 
 class OverviewController extends Controller
 {
@@ -140,9 +141,23 @@ class OverviewController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $date)
     {
-        //
+        Window::close('day-edit');
+
+        Window::open('day-edit')
+            ->rememberState()
+            ->alwaysOnTop()
+            ->maximizable(false)
+            ->fullscreen(false)
+            ->route('day.edit', ['date' => $date])
+            ->width(850)
+            ->height(415)
+            ->minWidth(700)
+            ->titleBarHidden()
+            ->resizable(true)
+            ->fullscreenable(false)
+            ->showDevTools(false);
     }
 
     /**

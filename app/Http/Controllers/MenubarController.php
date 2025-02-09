@@ -74,6 +74,7 @@ class MenubarController extends Controller
     public function openOverview(): void
     {
         Window::open('overview')
+            ->rememberState()
             ->maximizable(false)
             ->fullscreen(false)
             ->route('overview.index')
