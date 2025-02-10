@@ -13,9 +13,11 @@ const props = withDefaults(
     defineProps<{
         timestamps: Timestamp[];
         overtime?: number;
+        workTime?: number;
     }>(),
     {
         overtime: 0,
+        workTime: 0,
     },
 );
 
@@ -48,9 +50,10 @@ const parseTimestamps = () => {
 const markOvertime = () => {
     let overtimeCount = Math.ceil(props.overtime / 600);
     for (const [key, value] of Object.entries(timeline.value).reverse()) {
-        console.log(value);
-        if (value?.type === 'work' && overtimeCount > 0) {
-            console.log(`${key}: ${value}`);
+        if (
+            value?.type === 'work' &&
+            (overtimeCount > 0 || props.overtime === props.workTime)
+        ) {
             timeline.value[key] = { ...value, type: 'overtime' };
             overtimeCount--;
         } else if (overtimeCount <= 0) {
@@ -69,12 +72,55 @@ const createTimeline = () => {
 };
 
 createTimeline();
+
+const drag = ref(false);
+const startDragIndex = ref<number | undefined>(undefined);
+const currentDragIndex = ref<number | undefined>(undefined);
+
+const ifSelected = (index: number) => {
+    if (
+        startDragIndex.value === undefined ||
+        currentDragIndex.value === undefined
+    ) {
+        return false;
+    }
+    const min = Math.min(startDragIndex.value, currentDragIndex.value);
+    const max = Math.max(startDragIndex.value, currentDragIndex.value);
+    return index >= min && index <= max;
+};
+
+const dragStart = (index: number) => {
+    dragReset();
+    drag.value = true;
+    startDragIndex.value = index;
+};
+const dragOver = (index: number) => {
+    if (drag.value && startDragIndex.value !== undefined) {
+        currentDragIndex.value = index;
+    }
+};
+
+const dragStop = () => {
+    drag.value = false;
+};
+
+const dragReset = () => {
+    drag.value = false;
+    startDragIndex.value = undefined;
+    currentDragIndex.value = undefined;
+};
+
+const dragLeave = () => {
+    if (drag.value) {
+        dragReset();
+    }
+};
 </script>
 
 <template>
-    <div class="relative h-24">
+    <div class="relative h-24" @mouseleave="dragLeave" @mouseup="dragStop">
         <div
-            class="absolute inset-x-0 top-3 mx-0.5 flex justify-between gap-0.5"
+            class="absolute inset-x-0 top-3 z-10 mx-0.5 flex justify-between gap-0.5"
         >
             <TooltipProvider
                 v-for="(time, index) in timeline"
@@ -82,9 +128,11 @@ createTimeline();
                 :delayDuration="0"
             >
                 <Tooltip>
-                    <TooltipTrigger class="group flex-1 hover:z-10">
+                    <TooltipTrigger class="group flex-1">
                         <div
-                            class="bg-accent ring-offset-background h-14 shrink-0 rounded ring-offset-1 transition-transform duration-100 group-hover:scale-110 group-hover:ring-2"
+                            @mousedown="dragStart(index)"
+                            @mouseover="dragOver(index)"
+                            class="bg-accent ring-offset-background h-14 shrink-0 rounded-full ring-offset-1 transition-transform duration-100 group-hover:scale-110 group-hover:ring-2"
                             :class="{
                                 'bg-primary ring-primary':
                                     time?.type === 'work' ||
@@ -93,10 +141,12 @@ createTimeline();
                                     time?.type === 'break',
                                 'ring-gray-300 hover:bg-gray-300 dark:ring-gray-600 dark:hover:bg-gray-600':
                                     !time,
+                                'bg-gray-400 ring-gray-400 hover:bg-gray-500 hover:ring-gray-500 dark:ring-gray-500 dark:hover:bg-gray-500':
+                                    ifSelected(index),
                             }"
                         />
                         <div
-                            class="mt-0.5 aspect-square shrink-0 rounded"
+                            class="mt-0.5 aspect-square shrink-0 rounded-full"
                             :class="{
                                 'bg-amber-400 ring-amber-400':
                                     time?.type === 'overtime',
