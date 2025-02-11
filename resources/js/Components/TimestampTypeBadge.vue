@@ -12,52 +12,39 @@ const props = defineProps<{
     duration: number;
 }>();
 
-const badgeTitle = (() => {
-    switch (props.type) {
-        case 'work':
-            return 'Arbeitszeit';
-        case 'break':
-            return 'Pausenzeit';
-        case 'overtime':
-            return 'Überstunden';
-        case 'plan':
-            return 'Regelarbeitszeit';
-        case 'noWork':
-            return 'Auszeit';
-        default:
-            return 'Unbekannt';
-    }
-})();
+const badgeDetails = {
+    work: {
+        title: 'Arbeitszeit',
+        icon: BriefcaseBusiness,
+        color: 'bg-primary text-primary-foreground',
+    },
+    break: {
+        title: 'Pausenzeit',
+        icon: Coffee,
+        color: 'bg-pink-400 text-primary-foreground',
+    },
+    overtime: {
+        title: 'Überstunden',
+        icon: ClockArrowUp,
+        color: 'bg-amber-400 text-primary-foreground',
+    },
+    noWork: {
+        title: 'Auszeit',
+        icon: ChevronsLeftRightEllipsis,
+        color: 'bg-rose-400 text-primary-foreground',
+    },
+    default: {
+        title: 'Unbekannt',
+        icon: undefined,
+        color: 'bg-muted text-muted-foreground',
+    },
+};
 
-const badgeIcon = (() => {
-    switch (props.type) {
-        case 'work':
-            return BriefcaseBusiness;
-        case 'break':
-            return Coffee;
-        case 'overtime':
-            return ClockArrowUp;
-        case 'noWork':
-            return ChevronsLeftRightEllipsis;
-        default:
-            return undefined;
-    }
-})();
-
-const badgeColor = (() => {
-    switch (props.type) {
-        case 'work':
-            return 'bg-primary text-primary-foreground';
-        case 'break':
-            return 'bg-pink-400 text-primary-foreground';
-        case 'overtime':
-            return 'bg-amber-400 text-primary-foreground';
-        case 'noWork':
-            return 'bg-rose-400 text-primary-foreground';
-        default:
-            return 'bg-muted text-muted-foreground';
-    }
-})();
+const {
+    title: badgeTitle,
+    icon: badgeIcon,
+    color: badgeColor,
+} = badgeDetails[props.type] || badgeDetails.default;
 
 const durationLabel = secToFormat(props.duration, true, true, true);
 const durationType = durationLabel.includes(':') ? 'Std.' : 'Min.';

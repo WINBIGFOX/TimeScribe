@@ -17,14 +17,11 @@ class MenubarController extends Controller
         Artisan::call('menubar:refresh');
 
         TimestampService::ping();
-        $currentType = TimestampService::getCurrentType();
-        $workTime = TimestampService::getWorkTime();
-        $breakTime = TimestampService::getBreakTime();
 
         return Inertia::render('MenuBar', [
-            'currentType' => $currentType,
-            'workTime' => $workTime,
-            'breakTime' => $breakTime,
+            'currentType' => TimestampService::getCurrentType(),
+            'workTime' => TimestampService::getWorkTime(),
+            'breakTime' => TimestampService::getBreakTime(),
         ]);
     }
 
