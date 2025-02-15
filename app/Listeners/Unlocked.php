@@ -6,12 +6,11 @@ namespace App\Listeners;
 
 use App\Jobs\CalculateWeekBalance;
 use App\Services\TimestampService;
-use Native\Laravel\Events\App\ApplicationBooted;
 use Native\Laravel\Events\PowerMonitor\ScreenUnlocked;
 use Native\Laravel\Facades\MenuBar;
 use Native\Laravel\Facades\Settings;
 
-class UnlockedOrBooted
+class Unlocked
 {
     /**
      * Create the event listener.
@@ -24,7 +23,7 @@ class UnlockedOrBooted
     /**
      * Handle the event.
      */
-    public function handle(ScreenUnlocked|ApplicationBooted $event): void
+    public function handle(ScreenUnlocked $event): void
     {
         TimestampService::checkStopTimeReset();
 
