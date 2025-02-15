@@ -99,15 +99,15 @@ const openDayView = (date: string) => {
                 class="bg-muted text-muted-foreground flex h-6 items-center rounded-full p-[2px] pl-3 text-xs leading-none"
             >
                 <ArrowLeftToLine class="size-3.5" />
-                <span class="mr-2 flex h-full items-center"
-                    >KW {{ props.lastCalendarWeek }}</span
-                >
+                <span class="mr-2 flex h-full items-center">
+                    KW {{ props.lastCalendarWeek }}
+                </span>
                 <div
                     :class="{
                         'text-green-500': props.balance < 0,
                         'text-amber-400': props.balance > 0,
                     }"
-                    class="bg-background fle flex h-full items-center gap-1 rounded-full px-2"
+                    class="bg-background fle flex h-full items-center gap-1 rounded-full pr-2 pl-1"
                 >
                     <ClockArrowUp
                         class="size-3.5 shrink-0"
