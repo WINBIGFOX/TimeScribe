@@ -24,7 +24,9 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             ->resizable(false)
             ->withContextMenu(
                 Menu::make(
-                    Menu::quit()->label('Beenden')
+                    Menu::quit()->label('Beenden'),
+                    Menu::separator(),
+                    Menu::about()->label('Über '.config('app.name')),
                 )
             );
     }
