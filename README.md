@@ -8,7 +8,7 @@
 </picture>
 </p>
 
-## Menübar
+## Wochenansicht
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/overview.png?raw=true">
