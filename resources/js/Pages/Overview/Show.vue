@@ -2,10 +2,12 @@
 import { Calendar } from '@/Components/ui/calendar';
 import WeekdayColumn from '@/Components/WeekdayColumn.vue';
 import WorktimeProgressBar from '@/Components/WorktimeProgressBar.vue';
+import { secToFormat } from '@/lib/utils';
 import { Date, WeekdayObject } from '@/types';
 import { Head, router, usePoll } from '@inertiajs/vue3';
 import { CalendarDate, type DateValue } from '@internationalized/date';
 import { useColorMode } from '@vueuse/core';
+import { ArrowLeftToLine, ClockArrowDown, ClockArrowUp } from 'lucide-vue-next';
 import moment from 'moment';
 import { CalendarRootProps } from 'radix-vue';
 import { Ref, ref, watch } from 'vue';
@@ -21,6 +23,8 @@ const props = defineProps<{
     weekFallbackPlan?: number;
     weekDatesWithTimestamps: string[];
     holidays: Date[];
+    balance: number;
+    lastCalendarWeek: number;
     weekdays: {
         monday: WeekdayObject;
         tuesday: WeekdayObject;
@@ -84,10 +88,39 @@ const openDayView = (date: string) => {
     <Head title="Stempeluhr" />
 
     <div
-        class="sticky top-0 flex h-10 items-center justify-center font-medium"
+        class="sticky top-0 flex h-10 shrink-0 items-center justify-center font-medium"
         style="-webkit-app-region: drag"
     >
         Stempeluhr
+        <div
+            class="absolute top-0 right-2 bottom-0 flex items-center font-normal"
+        >
+            <div
+                class="bg-muted text-muted-foreground flex h-6 items-center rounded-full p-[2px] pl-3 text-xs leading-none"
+            >
+                <ArrowLeftToLine class="size-3.5" />
+                <span class="mr-2 flex h-full items-center"
+                    >KW {{ props.lastCalendarWeek }}</span
+                >
+                <div
+                    :class="{
+                        'text-green-500': props.balance < 0,
+                        'text-amber-400': props.balance > 0,
+                    }"
+                    class="bg-background fle flex h-full items-center gap-1 rounded-full px-2"
+                >
+                    <ClockArrowUp
+                        class="size-3.5 shrink-0"
+                        v-if="props.balance >= 0"
+                    />
+                    <ClockArrowDown
+                        class="size-4 shrink-0"
+                        v-if="props.balance < 0"
+                    />
+                    {{ secToFormat(props.balance, false, true, true, true) }}
+                </div>
+            </div>
+        </div>
     </div>
     <div class="flex gap-4 select-none">
         <div>

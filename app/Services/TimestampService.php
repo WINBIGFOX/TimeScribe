@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\TimestampTypeEnum;
+use App\Jobs\CalculateWeekBalance;
 use App\Models\Timestamp;
+use App\Models\WeekBalance;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Collection;
@@ -66,9 +68,10 @@ class TimestampService
 
     public static function ping(): void
     {
+        self::checkStopTimeReset();
 
         $activeTimestamps = Timestamp::whereNull('ended_at')
-            ->where('last_ping_at', '>=', now()->subHour())->get();
+            ->where('last_ping_at', '>=', now()->subHours(8))->get();
 
         foreach ($activeTimestamps as $timestamp) {
             $timestamp->update(['last_ping_at' => now()]);
@@ -80,9 +83,31 @@ class TimestampService
                     'started_at' => now()->startOfDay(),
                     'last_ping_at' => now(),
                 ]);
+                CalculateWeekBalance::dispatch();
             }
         }
         self::createStopByOldTimestamps();
+    }
+
+    public static function checkStopTimeReset(): void
+    {
+        $workTimeReset = Settings::get('stopWorkTimeReset');
+        $breakTimeReset = Settings::get('stopBreakTimeReset');
+
+        $activeTimestamps = Timestamp::whereNull('ended_at')->get();
+
+        foreach ($activeTimestamps as $timestamp) {
+            if ($workTimeReset && $workTimeReset > 0 && $timestamp->type === TimestampTypeEnum::WORK) {
+                if ($timestamp->last_ping_at->diffInMinutes(now()) >= $workTimeReset) {
+                    $timestamp->update(['ended_at' => $timestamp->last_ping_at]);
+                }
+            }
+            if ($breakTimeReset && $breakTimeReset > 0 && $timestamp->type === TimestampTypeEnum::BREAK) {
+                if ($timestamp->last_ping_at->diffInMinutes(now()) >= $breakTimeReset) {
+                    $timestamp->update(['ended_at' => $timestamp->last_ping_at]);
+                }
+            }
+        }
     }
 
     private static function createStopByOldTimestamps(): void
@@ -245,5 +270,11 @@ class TimestampService
     public static function getActiveWork(Carbon $date): bool
     {
         return $date->isToday() && self::getCurrentType() === TimestampTypeEnum::WORK;
+    }
+
+    public static function getBalance(Carbon $currentDate): float
+    {
+        return WeekBalance::where('end_week_at', '<', $currentDate->startOfWeek())
+            ->sum('balance') ?? 0;
     }
 }

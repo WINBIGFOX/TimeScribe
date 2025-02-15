@@ -1,0 +1,21 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class WeekBalance extends Model
+{
+    protected $fillable = [
+        'start_week_at',
+        'end_week_at',
+        'balance',
+    ];
+
+    protected $casts = [
+        'start_week_at' => 'datetime',
+        'end_week_at' => 'datetime',
+    ];
+}

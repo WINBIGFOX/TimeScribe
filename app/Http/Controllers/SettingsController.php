@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSettingsRequest;
+use App\Jobs\CalculateWeekBalance;
 use Inertia\Inertia;
 use Native\Laravel\Facades\Settings;
 
@@ -22,6 +23,8 @@ class SettingsController extends Controller
             'holidayRegion' => Settings::get('holidayRegion'),
             'stopBreakAutomatic' => Settings::get('stopBreakAutomatic'),
             'stopBreakAutomaticActivationTime' => Settings::get('stopBreakAutomaticActivationTime'),
+            'stopWorkTimeReset' => Settings::get('stopWorkTimeReset'),
+            'stopBreakTimeReset' => Settings::get('stopBreakTimeReset'),
         ]);
     }
 
@@ -38,6 +41,10 @@ class SettingsController extends Controller
         Settings::set('holidayRegion', $data['holidayRegion']);
         Settings::set('stopBreakAutomatic', $data['stopBreakAutomatic']);
         Settings::set('stopBreakAutomaticActivationTime', $data['stopBreakAutomaticActivationTime']);
+        Settings::set('stopWorkTimeReset', (int) $data['stopWorkTimeReset']);
+        Settings::set('stopBreakTimeReset', (int) $data['stopBreakTimeReset']);
+
+        CalculateWeekBalance::dispatch();
 
         return redirect()->route('settings.edit');
     }

@@ -37,6 +37,8 @@ class StoreSettingsRequest extends FormRequest
             'holidayRegion' => ['nullable', 'string', 'max:5', 'min:2'],
             'stopBreakAutomatic' => ['nullable', 'string'],
             'stopBreakAutomaticActivationTime' => ['nullable', 'integer', 'min:13', 'max:23'],
+            'stopWorkTimeReset' => ['nullable', 'string'],
+            'stopBreakTimeReset' => ['nullable', 'string'],
         ];
     }
 }

@@ -19,6 +19,7 @@ import {
     Eye,
     KeyRound,
     LockKeyhole,
+    TimerReset,
 } from 'lucide-vue-next';
 import { computed, ref, watch } from 'vue';
 
@@ -37,6 +38,8 @@ const props = defineProps<{
     holidayRegion?: string;
     stopBreakAutomatic?: string;
     stopBreakAutomaticActivationTime?: string;
+    stopWorkTimeReset?: number;
+    stopBreakTimeReset?: number;
 }>();
 
 const form = useForm({
@@ -55,6 +58,8 @@ const form = useForm({
     stopBreakAutomatic: props.stopBreakAutomatic ?? '',
     stopBreakAutomaticActivationTime:
         props.stopBreakAutomaticActivationTime ?? '',
+    stopWorkTimeReset: props.stopWorkTimeReset?.toString() ?? '0',
+    stopBreakTimeReset: props.stopBreakTimeReset?.toString() ?? '0',
 });
 
 const weekWorkTime = computed(() => {
@@ -72,6 +77,9 @@ const holidayCheck = ref(props.holidayRegion !== null);
 const stopBreakAutomatikCheck = ref(props.stopBreakAutomatic !== null);
 const stopBreakAutomatikActivationCheck = ref(
     props.stopBreakAutomaticActivationTime !== null,
+);
+const stopTimeResetCheck = ref(
+    !!(props.stopWorkTimeReset || props.stopBreakTimeReset),
 );
 
 const debouncedSubmit = useDebounceFn(submit, 500);
@@ -92,6 +100,12 @@ watch(stopBreakAutomatikActivationCheck, () => {
         form.stopBreakAutomaticActivationTime = '';
     }
 });
+watch(stopTimeResetCheck, () => {
+    if (stopTimeResetCheck.value === false) {
+        form.stopWorkTimeReset = '0';
+        form.stopBreakTimeReset = '0';
+    }
+});
 
 useColorMode();
 </script>
@@ -99,7 +113,7 @@ useColorMode();
 <template>
     <Head title="Stempeluhr" />
     <div
-        class="sticky top-0 flex h-10 items-center justify-center font-medium backdrop-blur-sm"
+        class="sticky top-0 z-10 flex h-10 shrink-0 items-center justify-center font-medium backdrop-blur-sm"
         style="-webkit-app-region: drag"
     >
         Einstellungen
@@ -110,6 +124,9 @@ useColorMode();
                 <TabsList>
                     <TabsTrigger value="general">Allgemein</TabsTrigger>
                     <TabsTrigger value="workingplan">Arbeitsplan</TabsTrigger>
+                    <TabsTrigger value="startStop">
+                        Start/Pause Automatik
+                    </TabsTrigger>
                 </TabsList>
             </div>
 
@@ -135,88 +152,6 @@ useColorMode();
                         </p>
                     </div>
                     <Switch v-model:checked="form.showTimerOnUnlock" />
-                </div>
-                <div class="rounded-md border">
-                    <div class="flex items-start space-x-4 p-4">
-                        <LockKeyhole />
-                        <div class="flex-1 space-y-1">
-                            <p class="text-sm leading-none font-medium">
-                                Stop/Pause-Automatik
-                            </p>
-                            <p class="text-muted-foreground text-sm">
-                                Wenn der Rechner gesperrt wird, kann die
-                                Arbeitszeit automatisch gestoppt oder die Pause
-                                gestartet werden.
-                            </p>
-                            <div class="mt-4" v-if="stopBreakAutomatikCheck">
-                                <Select v-model="form.stopBreakAutomatic">
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Aktion" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="stop">
-                                            Arbeitszeit stoppen
-                                        </SelectItem>
-                                        <SelectItem value="break">
-                                            Pause starten
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-                        <Switch v-model:checked="stopBreakAutomatikCheck" />
-                    </div>
-                    <div
-                        class="flex items-start space-x-4 border-t p-4"
-                        v-if="stopBreakAutomatikCheck"
-                    >
-                        <AlarmClockCheck />
-                        <div class="flex-1 space-y-1">
-                            <p class="text-sm leading-none font-medium">
-                                Zeitbedingt aktivieren
-                            </p>
-                            <p class="text-muted-foreground text-sm">
-                                Die Start/Pause-Automatik wird erst ab einer
-                                bestimmten Uhrzeit aktiv.
-                            </p>
-                            <div
-                                class="mt-4"
-                                v-if="stopBreakAutomatikActivationCheck"
-                            >
-                                <Select
-                                    v-model="
-                                        form.stopBreakAutomaticActivationTime
-                                    "
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Uhrzeit" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem
-                                            :key="hour"
-                                            :value="`${hour + 12}`"
-                                            v-for="hour in 11"
-                                        >
-                                            ab {{ hour + 12 }}:00 Uhr
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <p
-                                class="text-muted-foreground text-xs italic"
-                                v-if="
-                                    stopBreakAutomatikActivationCheck &&
-                                    form.stopBreakAutomaticActivationTime
-                                "
-                            >
-                                Bis 05:00 Uhr des Folgetages ist die Automatik
-                                aktiv.
-                            </p>
-                        </div>
-                        <Switch
-                            v-model:checked="stopBreakAutomatikActivationCheck"
-                        />
-                    </div>
                 </div>
 
                 <div class="flex items-start space-x-4 rounded-md border p-4">
@@ -332,6 +267,200 @@ useColorMode();
                         workday="Sonntag"
                         v-model="form.workdays.sunday"
                     />
+                </div>
+            </TabsContent>
+
+            <TabsContent value="startStop" class="space-y-4 p-2">
+                <div class="rounded-md border">
+                    <div class="flex items-start space-x-4 p-4">
+                        <LockKeyhole />
+                        <div class="flex-1 space-y-1">
+                            <p class="text-sm leading-none font-medium">
+                                Stop/Pause-Automatik
+                            </p>
+                            <p class="text-muted-foreground text-sm">
+                                Wenn der Rechner gesperrt wird, kann die
+                                Arbeitszeit automatisch gestoppt oder die Pause
+                                gestartet werden.
+                            </p>
+                            <div class="mt-4" v-if="stopBreakAutomatikCheck">
+                                <Select v-model="form.stopBreakAutomatic">
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Aktion" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="stop">
+                                            Arbeitszeit stoppen
+                                        </SelectItem>
+                                        <SelectItem value="break">
+                                            Pause starten
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+                        <Switch v-model:checked="stopBreakAutomatikCheck" />
+                    </div>
+                    <div
+                        class="flex items-start space-x-4 border-t p-4"
+                        v-if="stopBreakAutomatikCheck"
+                    >
+                        <AlarmClockCheck />
+                        <div class="flex-1 space-y-1">
+                            <p class="text-sm leading-none font-medium">
+                                Zeitbedingt aktivieren
+                            </p>
+                            <p class="text-muted-foreground text-sm">
+                                Die Start/Pause-Automatik wird erst ab einer
+                                bestimmten Uhrzeit aktiv.
+                            </p>
+                            <div
+                                class="mt-4"
+                                v-if="stopBreakAutomatikActivationCheck"
+                            >
+                                <Select
+                                    v-model="
+                                        form.stopBreakAutomaticActivationTime
+                                    "
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Uhrzeit" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem
+                                            :key="hour"
+                                            :value="`${hour + 12}`"
+                                            v-for="hour in 11"
+                                        >
+                                            ab {{ hour + 12 }}:00 Uhr
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <p
+                                class="text-muted-foreground text-xs italic"
+                                v-if="
+                                    stopBreakAutomatikActivationCheck &&
+                                    form.stopBreakAutomaticActivationTime
+                                "
+                            >
+                                Bis 05:00 Uhr des Folgetages ist die Automatik
+                                aktiv.
+                            </p>
+                        </div>
+                        <Switch
+                            v-model:checked="stopBreakAutomatikActivationCheck"
+                        />
+                    </div>
+                </div>
+                <div class="rounded-md border">
+                    <div class="flex items-start space-x-4 p-4">
+                        <TimerReset />
+                        <div class="flex-1 space-y-1">
+                            <p class="text-sm leading-none font-medium">
+                                Vergessener Stop
+                            </p>
+                            <p class="text-muted-foreground text-sm">
+                                Wenn du vergisst, die Arbeits- oder Pausenzeit
+                                zu stoppen, wird sie automatisch rückwirkend
+                                gestoppt.
+                            </p>
+                            <p
+                                class="text-muted-foreground my-2 text-xs italic"
+                            >
+                                Bei einer Abwesenheit von mehr als die
+                                eingestellte Zeit wird die Arbeits- oder
+                                Pausenzeit rückwirkend gestoppt.
+                            </p>
+                            <div class="mt-4" v-if="stopTimeResetCheck">
+                                <p class="mb-2 text-sm leading-none">
+                                    Arbeitszeit stoppen nach:
+                                </p>
+                                <Select v-model="form.stopWorkTimeReset">
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Zeit" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="0">Nie</SelectItem>
+                                        <SelectItem value="5">
+                                            5 Minuten
+                                        </SelectItem>
+                                        <SelectItem value="10">
+                                            10 Minuten
+                                        </SelectItem>
+                                        <SelectItem value="20">
+                                            20 Minuten
+                                        </SelectItem>
+                                        <SelectItem value="30">
+                                            30 Minuten
+                                        </SelectItem>
+                                        <SelectItem value="40">
+                                            40 Minuten
+                                        </SelectItem>
+                                        <SelectItem value="50">
+                                            50 Minuten
+                                        </SelectItem>
+                                        <SelectItem value="60">
+                                            1:00 Stunde
+                                        </SelectItem>
+                                        <SelectItem value="90">
+                                            1:30 Stunde
+                                        </SelectItem>
+                                        <SelectItem value="120">
+                                            2:00 Stunden
+                                        </SelectItem>
+                                        <SelectItem value="150">
+                                            2:30 Stunden
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div class="mt-4" v-if="stopTimeResetCheck">
+                                <p class="mb-2 text-sm leading-none">
+                                    Pausenzeit stoppen nach:
+                                </p>
+                                <Select v-model="form.stopBreakTimeReset">
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Zeit" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="0">Nie</SelectItem>
+                                        <SelectItem value="5">
+                                            5 Minuten
+                                        </SelectItem>
+                                        <SelectItem value="10">
+                                            10 Minuten
+                                        </SelectItem>
+                                        <SelectItem value="20">
+                                            20 Minuten
+                                        </SelectItem>
+                                        <SelectItem value="30">
+                                            30 Minuten
+                                        </SelectItem>
+                                        <SelectItem value="40">
+                                            40 Minuten
+                                        </SelectItem>
+                                        <SelectItem value="50">
+                                            50 Minuten
+                                        </SelectItem>
+                                        <SelectItem value="60">
+                                            1:00 Stunde
+                                        </SelectItem>
+                                        <SelectItem value="90">
+                                            1:30 Stunde
+                                        </SelectItem>
+                                        <SelectItem value="120">
+                                            2:00 Stunden
+                                        </SelectItem>
+                                        <SelectItem value="150">
+                                            2:30 Stunden
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+                        <Switch v-model:checked="stopTimeResetCheck" />
+                    </div>
                 </div>
             </TabsContent>
         </Tabs>

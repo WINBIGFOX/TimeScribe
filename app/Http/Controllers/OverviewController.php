@@ -63,6 +63,8 @@ class OverviewController extends Controller
             'holidays' => TimestampService::getHoliday(range($date->year - 5, $date->year + 5))->map(function ($holidayDate) {
                 return DateHelper::toResourceArray($holidayDate);
             }),
+            'balance' => TimestampService::getBalance($startOfWeek),
+            'lastCalendarWeek' => $date->copy()->subWeek()->weekOfYear,
             'weekdays' => [
                 'monday' => [
                     'plan' => TimestampService::getPlan('monday'),
