@@ -6,6 +6,7 @@ use App\Http\Controllers\DayController;
 use App\Http\Controllers\MenubarController;
 use App\Http\Controllers\OverviewController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\TimestampController;
 use Illuminate\Support\Facades\Route;
 
 Route::name('menubar.')->prefix('menubar')->group(function () {
@@ -32,3 +33,5 @@ Route::name('day.')->prefix('day')->group(function () {
     Route::get('{date}/edit', [DayController::class, 'edit'])->name('edit')->where('date', '\d{4}-\d{2}-\d{2}');
     Route::patch('{date}', [DayController::class, 'update'])->name('update')->where('date', '\d{4}-\d{2}-\d{2}');
 });
+
+Route::resource('timestamp', TimestampController::class)->only(['store', 'update', 'destroy']);

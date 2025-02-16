@@ -10,6 +10,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "emargareten/inertia-modal": "^1.4",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^11.38",
         "laravel/tinker": "^2.10",

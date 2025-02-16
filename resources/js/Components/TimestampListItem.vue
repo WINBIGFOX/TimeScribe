@@ -8,7 +8,7 @@ import {
 } from '@/Components/ui/tooltip';
 import { insertColon, secToFormat } from '@/lib/utils';
 import { Timestamp } from '@/types';
-import { usePoll } from '@inertiajs/vue3';
+import { router, usePoll } from '@inertiajs/vue3';
 import {
     BriefcaseBusiness,
     Coffee,
@@ -35,6 +35,21 @@ const duration = computed(() =>
 if (duration.value < 60) {
     usePoll(1000);
 }
+
+const destroy = () => {
+    router.delete(
+        route('timestamp.destroy', {
+            timestamp: props.timestamp.id,
+        }),
+        {
+            data: {
+                confirm: false,
+            },
+            preserveScroll: true,
+            preserveState: 'errors',
+        },
+    );
+};
 </script>
 
 <template>
@@ -138,6 +153,7 @@ if (duration.value < 60) {
                             size="icon"
                             class="text-destructive hover:bg-destructive hover:text-destructive-foreground size-8"
                             variant="ghost"
+                            @click="destroy"
                         >
                             <Trash />
                         </Button>

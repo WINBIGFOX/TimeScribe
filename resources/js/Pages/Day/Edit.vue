@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ConfirmationDialog from '@/Components/dialogs/ConfirmationDialog.vue';
 import Timeline from '@/Components/Timeline.vue';
 import TimestampListItem from '@/Components/TimestampListItem.vue';
 import TimestampListPlaceholderItem from '@/Components/TimestampListPlaceholderItem.vue';
@@ -6,6 +7,7 @@ import TimestampTypeBadge from '@/Components/TimestampTypeBadge.vue';
 import { Timestamp } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { useColorMode } from '@vueuse/core';
+import { Modal } from 'inertia-modal';
 import moment from 'moment';
 
 const props = defineProps<{
@@ -18,7 +20,7 @@ const props = defineProps<{
     dayNoWorkTime: number;
 }>();
 
-const color = useColorMode();
+useColorMode();
 </script>
 
 <template>
@@ -86,4 +88,6 @@ const color = useColorMode();
             </div>
         </div>
     </div>
+    <Modal />
+    <ConfirmationDialog />
 </template>

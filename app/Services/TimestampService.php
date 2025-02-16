@@ -180,6 +180,11 @@ class TimestampService
         }
 
         $firstWorkTimestamp = $timestamps->firstWhere('type', TimestampTypeEnum::WORK);
+
+        if (! $firstWorkTimestamp) {
+            return 0;
+        }
+
         $lastWorkTimestamp = $timestamps->last();
 
         $workTimeRange = $firstWorkTimestamp->started_at->diffInSeconds($lastWorkTimestamp->ended_at ?? $lastWorkTimestamp->last_ping_at);

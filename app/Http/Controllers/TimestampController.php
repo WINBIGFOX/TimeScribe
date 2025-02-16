@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DestroyTimestampRequest;
 use App\Http\Requests\StoreTimestampRequest;
 use App\Http\Requests\UpdateTimestampRequest;
 use App\Models\Timestamp;
@@ -61,8 +62,12 @@ class TimestampController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Timestamp $timestamp)
+    public function destroy(DestroyTimestampRequest $request, Timestamp $timestamp)
     {
-        //
+        $date = $timestamp->created_at->format('Y-m-d');
+        $request->validated();
+        $timestamp->delete();
+
+        return redirect()->route('day.edit', ['date' => $date]);
     }
 }
