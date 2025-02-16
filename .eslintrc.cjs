@@ -3,7 +3,6 @@ require('@rushstack/eslint-patch/modern-module-resolution');
 
 module.exports = {
     root: true,
-    ignores: ['resources/js/Components/ui/*'],
     extends: [
         'plugin:vue/vue3-essential',
         'eslint:recommended',

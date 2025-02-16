@@ -137,21 +137,21 @@ useColorMode();
                 </div>
             </transition>
         </div>
-        <div class="">
+        <div>
             <div class="flex gap-2 p-2">
                 <Button
                     :as="Link"
                     :href="route('menubar.openOverview')"
                     preserve-scroll
                     preserve-state
-                    class="flex-1"
+                    class="flex-1 shrink-0"
                     variant="outline"
                     size="sm"
                 >
                     <ChartPie />
                     Übersicht
                 </Button>
-                <Button class="flex-1" variant="outline" size="sm">
+                <Button class="flex-1 shrink-0" variant="outline" size="sm">
                     <CalendarDays />
                     Abwesenheiten
                 </Button>
@@ -164,7 +164,7 @@ useColorMode();
                     preserve-scroll
                     preserve-state
                     v-if="props.currentType === null"
-                    class="flex-1 shrink-0"
+                    class="flex-1 shrink-0 px-0"
                     size="lg"
                 >
                     <Play />
@@ -177,7 +177,7 @@ useColorMode();
                     preserve-scroll
                     preserve-state
                     v-if="props.currentType !== null"
-                    class="flex-1 shrink-0"
+                    class="flex-1 shrink-0 px-0"
                     size="lg"
                     variant="destructive"
                 >
@@ -186,30 +186,30 @@ useColorMode();
                 </Button>
                 <Button
                     :as="Link"
-                    :href="route('menubar.storeWork')"
-                    method="POST"
-                    preserve-scroll
-                    preserve-state
-                    v-if="props.currentType === 'break'"
-                    class="flex-1 shrink-0"
-                    size="lg"
-                >
-                    <Play />
-                    Weiter
-                </Button>
-                <Button
-                    :as="Link"
                     :href="route('menubar.storeBreak')"
                     method="POST"
                     preserve-scroll
                     preserve-state
                     v-if="props.currentType === 'work'"
-                    class="flex-1 shrink-0"
+                    class="flex-1 shrink-0 px-0"
                     size="lg"
                     variant="outline"
                 >
                     <Coffee />
                     Pause
+                </Button>
+                <Button
+                    :as="Link"
+                    :href="route('menubar.storeWork')"
+                    method="POST"
+                    preserve-scroll
+                    preserve-state
+                    v-if="props.currentType === 'break'"
+                    class="flex-1 shrink-0 px-0"
+                    size="lg"
+                >
+                    <Play />
+                    Weiter
                 </Button>
             </div>
         </div>
