@@ -199,7 +199,7 @@ class TimestampService
         return Timestamp::whereNull('ended_at')->first()?->type;
     }
 
-    public static function getTimestamps(Carbon $date, ?Carbon $endDate = null): Collection
+    public static function getTimestamps(Carbon $date, ?Carbon $endDate = null, ?bool $withEditAttributes = false): Collection
     {
         if (! $endDate) {
             $endDate = $date->copy();
@@ -208,7 +208,8 @@ class TimestampService
         return Timestamp::whereDate('started_at', '>=', $date->startOfDay())
             ->whereDate('started_at', '<=', $endDate->endOfDay())
             ->orderBy('started_at')
-            ->get();
+            ->get()
+            ->append($withEditAttributes ? ['can_start_edit', 'can_end_edit'] : []);
     }
 
     public static function getHoliday(int|array $year): Collection

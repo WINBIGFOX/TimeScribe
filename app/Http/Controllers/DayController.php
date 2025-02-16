@@ -22,7 +22,7 @@ class DayController extends Controller
         $endDay = $date->copy()->endOfDay();
 
         return Inertia::render('Day/Edit', [
-            'timestamps' => TimestampResource::collection(TimestampService::getTimestamps($startDay, $endDay)),
+            'timestamps' => TimestampResource::collection(TimestampService::getTimestamps($startDay, $endDay, true)),
             'dayWorkTime' => TimestampService::getWorkTime($startDay, $endDay),
             'dayBreakTime' => TimestampService::getBreakTime($startDay, $endDay),
             'dayPlan' => TimestampService::getPlan(strtolower($date->englishDayOfWeek)),

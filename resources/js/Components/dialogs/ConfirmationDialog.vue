@@ -82,7 +82,7 @@ const destroy = () => {
 
 <template>
     <AlertDialog v-model:open="openAlert">
-        <AlertDialogContent>
+        <AlertDialogContent class="sm:max-w-[425px]">
             <AlertDialogHeader>
                 <AlertDialogTitle>
                     {{ confirmationModalData?.title }}

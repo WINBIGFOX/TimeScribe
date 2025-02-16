@@ -34,4 +34,4 @@ Route::name('day.')->prefix('day')->group(function () {
     Route::patch('{date}', [DayController::class, 'update'])->name('update')->where('date', '\d{4}-\d{2}-\d{2}');
 });
 
-Route::resource('timestamp', TimestampController::class)->only(['store', 'update', 'destroy']);
+Route::resource('timestamp', TimestampController::class)->only(['edit', 'update', 'destroy']);

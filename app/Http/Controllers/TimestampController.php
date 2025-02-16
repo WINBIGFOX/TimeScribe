@@ -7,7 +7,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DestroyTimestampRequest;
 use App\Http\Requests\StoreTimestampRequest;
 use App\Http\Requests\UpdateTimestampRequest;
+use App\Http\Resources\TimestampResource;
 use App\Models\Timestamp;
+use Inertia\Inertia;
 
 class TimestampController extends Controller
 {
@@ -48,7 +50,12 @@ class TimestampController extends Controller
      */
     public function edit(Timestamp $timestamp)
     {
-        //
+        $timestamp->append(['can_start_edit', 'can_end_edit']);
+
+        return Inertia::modal('Timestamp/Edit', [
+            'submit_route' => route('timestamp.update', ['timestamp' => $timestamp->id]),
+            'timestamp' => TimestampResource::make($timestamp),
+        ])->baseRoute('day.edit', ['date' => $timestamp->created_at->format('Y-m-d')]);
     }
 
     /**
@@ -56,7 +63,7 @@ class TimestampController extends Controller
      */
     public function update(UpdateTimestampRequest $request, Timestamp $timestamp)
     {
-        //
+        return redirect()->route('day.edit', ['date' => $timestamp->created_at->format('Y-m-d')]);
     }
 
     /**

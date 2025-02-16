@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import { Button } from '@/Components/ui/button';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from '@/Components/ui/tooltip';
 import { insertColon, secToFormat } from '@/lib/utils';
 import { Timestamp } from '@/types';
-import { router, usePoll } from '@inertiajs/vue3';
+import { Link, router, usePoll } from '@inertiajs/vue3';
 import {
     BriefcaseBusiness,
     Coffee,
@@ -130,39 +124,33 @@ const destroy = () => {
             </div>
         </div>
         <div class="flex-1 text-right" v-if="props.timestamp.ended_at">
-            <TooltipProvider :delay-duration="0">
-                <Tooltip>
-                    <TooltipTrigger as-child>
-                        <Button
-                            size="icon"
-                            class="text-muted-foreground size-8"
-                            variant="ghost"
-                        >
-                            <Pencil />
-                        </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        <p>Bearbeiten</p>
-                    </TooltipContent>
-                </Tooltip>
-            </TooltipProvider>
-            <TooltipProvider :delay-duration="0">
-                <Tooltip>
-                    <TooltipTrigger as-child>
-                        <Button
-                            size="icon"
-                            class="text-destructive hover:bg-destructive hover:text-destructive-foreground size-8"
-                            variant="ghost"
-                            @click="destroy"
-                        >
-                            <Trash />
-                        </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        <p>Löschen</p>
-                    </TooltipContent>
-                </Tooltip>
-            </TooltipProvider>
+            <Button
+                v-if="
+                    props.timestamp.can_start_edit ||
+                    props.timestamp.can_end_edit
+                "
+                size="icon"
+                class="text-muted-foreground size-8"
+                variant="ghost"
+                :as="Link"
+                :href="
+                    route('timestamp.edit', {
+                        timestamp: props.timestamp.id,
+                    })
+                "
+                preserve-state
+                preserve-scroll
+            >
+                <Pencil />
+            </Button>
+            <Button
+                size="icon"
+                class="text-destructive hover:bg-destructive hover:text-destructive-foreground size-8"
+                variant="ghost"
+                @click="destroy"
+            >
+                <Trash />
+            </Button>
         </div>
     </div>
 </template>

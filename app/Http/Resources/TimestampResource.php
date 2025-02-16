@@ -25,6 +25,8 @@ class TimestampResource extends JsonResource
             'started_at' => DateHelper::toResourceArray($this->started_at, true, 'Gi'),
             'ended_at' => DateHelper::toResourceArray($this->ended_at, true, 'Gi') ?? null,
             'last_ping_at' => DateHelper::toResourceArray($this->last_ping_at, true, 'Gi') ?? null,
+            'can_start_edit' => $this->whenAppended('can_start_edit'),
+            'can_end_edit' => $this->whenAppended('can_end_edit'),
         ];
     }
 }

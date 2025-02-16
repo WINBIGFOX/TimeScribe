@@ -22,6 +22,8 @@ export interface Timestamp {
     started_at: Date;
     ended_at?: Date;
     last_ping_at?: Date;
+    can_start_edit?: boolean;
+    can_end_edit?: boolean;
 }
 
 export type PageProps<
