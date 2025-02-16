@@ -10,7 +10,7 @@ import {
 } from '@/Components/ui/number-field';
 import { secToFormat } from '@/lib/utils';
 import { Timestamp } from '@/types';
-import { useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import { BriefcaseBusiness, Coffee } from 'lucide-vue-next';
 import { ref } from 'vue';
 
@@ -45,6 +45,20 @@ const submit = () => {
         preserveState: 'errors',
     });
 };
+const destroy = () => {
+    router.delete(
+        route('timestamp.destroy', {
+            timestamp: props.timestamp.id,
+        }),
+        {
+            data: {
+                confirm: false,
+            },
+            preserveScroll: true,
+            preserveState: 'errors',
+        },
+    );
+};
 </script>
 
 <template>
@@ -53,6 +67,8 @@ const submit = () => {
         @submit="submit"
         close="Abbrechen"
         submit="Speichern"
+        destroy="Entfernen"
+        @destroy="destroy"
     >
         <template #title>
             <div class="flex items-center gap-2">
