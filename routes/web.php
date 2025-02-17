@@ -14,8 +14,8 @@ Route::name('menubar.')->prefix('menubar')->group(function () {
     Route::post('break', [MenubarController::class, 'storeBreak'])->name('storeBreak');
     Route::post('work', [MenubarController::class, 'storeWork'])->name('storeWork');
     Route::post('stop', [MenubarController::class, 'storeStop'])->name('storeStop');
-    Route::get('open-setting', [MenubarController::class, 'openSetting'])->name('openSetting');
-    Route::get('open-overview', [MenubarController::class, 'openOverview'])->name('openOverview');
+    Route::get('open-setting/{darkMode}', [MenubarController::class, 'openSetting'])->name('openSetting');
+    Route::get('open-overview/{darkMode}', [MenubarController::class, 'openOverview'])->name('openOverview');
 });
 
 Route::name('settings.')->prefix('settings')->group(function () {
@@ -26,7 +26,7 @@ Route::name('settings.')->prefix('settings')->group(function () {
 Route::name('overview.')->prefix('overview')->group(function () {
     Route::get('', [OverviewController::class, 'index'])->name('index');
     Route::get('{date}', [OverviewController::class, 'show'])->name('show')->where('date', '\d{4}-\d{2}-\d{2}');
-    Route::get('{date}/edit', [OverviewController::class, 'edit'])->name('edit')->where('date', '\d{4}-\d{2}-\d{2}');
+    Route::get('{date}/edit/{darkMode}', [OverviewController::class, 'edit'])->name('edit')->where('date', '\d{4}-\d{2}-\d{2}');
 });
 
 Route::name('day.')->prefix('day')->group(function () {

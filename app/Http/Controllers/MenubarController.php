@@ -49,14 +49,14 @@ class MenubarController extends Controller
         return redirect()->route('menubar.index');
     }
 
-    public function openSetting(): void
+    public function openSetting(bool $darkMode): void
     {
         Window::open('settings')
+            ->route('settings.edit')
             ->rememberState()
             ->maximizable(false)
             ->minimizable(false)
             ->fullscreenable(false)
-            ->route('settings.edit')
             ->showDevTools(false)
             ->width(400)
             ->minWidth(400)
@@ -65,21 +65,23 @@ class MenubarController extends Controller
             ->height(600)
             ->maxHeight(800)
             ->titleBarHidden()
+            ->backgroundColor($darkMode ? '#020817' : '#ffffff')
             ->resizable();
     }
 
-    public function openOverview(): void
+    public function openOverview(bool $darkMode): void
     {
         Window::open('overview')
+            ->route('overview.index')
             ->rememberState()
             ->maximizable(false)
             ->fullscreen(false)
-            ->route('overview.index')
             ->width(850)
             ->height(415)
             ->titleBarHidden()
             ->resizable(false)
             ->fullscreenable(false)
+            ->backgroundColor($darkMode ? '#020817' : '#ffffff')
             ->showDevTools(false);
     }
 }

@@ -83,7 +83,10 @@ useColorMode();
                     <TimestampListItem :timestamp="timestamp" />
                 </template>
                 <TimestampListPlaceholderItem
-                    v-if="props.date !== moment().format('DD.MM.YYYY')"
+                    v-if="
+                        props.date !== moment().format('DD.MM.YYYY') &&
+                        props.timestamps.length > 0
+                    "
                 />
             </div>
         </div>

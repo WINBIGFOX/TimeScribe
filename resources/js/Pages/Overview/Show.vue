@@ -76,11 +76,16 @@ const isDateUnavailable: CalendarRootProps['isDateUnavailable'] = (
         .length > 0;
 usePoll(10000);
 
+const { state } = useColorMode();
+
 const openDayView = (date: string) => {
-    router.visit(route('overview.edit', { date }), {
-        preserveScroll: true,
-        preserveState: true,
-    });
+    router.visit(
+        route('overview.edit', { date, darkMode: state.value === 'dark' }),
+        {
+            preserveScroll: true,
+            preserveState: true,
+        },
+    );
 };
 </script>
 

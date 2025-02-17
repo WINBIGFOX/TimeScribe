@@ -143,13 +143,12 @@ class OverviewController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $date)
+    public function edit(string $date, bool $darkMode)
     {
         Window::close('day-edit');
 
         Window::open('day-edit')
             ->rememberState()
-            ->alwaysOnTop()
             ->maximizable(false)
             ->fullscreen(false)
             ->route('day.edit', ['date' => $date])
@@ -158,6 +157,7 @@ class OverviewController extends Controller
             ->minWidth(700)
             ->titleBarHidden()
             ->resizable(true)
+            ->backgroundColor($darkMode ? '#020817' : '#ffffff')
             ->fullscreenable(false)
             ->showDevTools(false);
     }

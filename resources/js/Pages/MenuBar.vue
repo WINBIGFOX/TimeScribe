@@ -63,7 +63,7 @@ watch(
     },
 );
 
-useColorMode();
+const { state } = useColorMode();
 </script>
 
 <template>
@@ -77,7 +77,11 @@ useColorMode();
             -->
             <Button
                 :as="Link"
-                :href="route('menubar.openSetting')"
+                :href="
+                    route('menubar.openSetting', {
+                        darkMode: state === 'dark',
+                    })
+                "
                 size="icon"
                 preserve-scroll
                 preserve-state
@@ -141,7 +145,11 @@ useColorMode();
             <div class="flex gap-2 p-2">
                 <Button
                     :as="Link"
-                    :href="route('menubar.openOverview')"
+                    :href="
+                        route('menubar.openOverview', {
+                            darkMode: state === 'dark',
+                        })
+                    "
                     preserve-scroll
                     preserve-state
                     class="flex-1 shrink-0"
