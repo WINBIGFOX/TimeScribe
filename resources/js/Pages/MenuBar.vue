@@ -19,7 +19,7 @@ const props = defineProps<{
     breakTime: number;
 }>();
 
-let timer: undefined | number = undefined;
+let timer: NodeJS.Timeout;
 
 const workSeconds = ref(props.workTime);
 const breakSeconds = ref(props.breakTime);
