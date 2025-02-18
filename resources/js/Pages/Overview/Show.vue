@@ -80,7 +80,10 @@ const { state } = useColorMode();
 
 const openDayView = (date: string) => {
     router.visit(
-        route('overview.edit', { date, darkMode: state.value === 'dark' }),
+        route('overview.edit', {
+            date,
+            darkMode: state.value === 'dark' ? 1 : 0,
+        }),
         {
             preserveScroll: true,
             preserveState: true,

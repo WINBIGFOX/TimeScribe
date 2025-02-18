@@ -79,7 +79,7 @@ const { state } = useColorMode();
                 :as="Link"
                 :href="
                     route('menubar.openSetting', {
-                        darkMode: state === 'dark',
+                        darkMode: state === 'dark' ? 1 : 0,
                     })
                 "
                 size="icon"
@@ -147,7 +147,7 @@ const { state } = useColorMode();
                     :as="Link"
                     :href="
                         route('menubar.openOverview', {
-                            darkMode: state === 'dark',
+                            darkMode: state === 'dark' ? 1 : 0,
                         })
                     "
                     preserve-scroll
