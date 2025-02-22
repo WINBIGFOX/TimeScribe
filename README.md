@@ -34,6 +34,22 @@
 </picture>
 </p>
 
+## Einstellungen
+<p align="center">
+<picture >
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings1.png?raw=true">
+  <img width="32%" alt="Einstellungen" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings1Light.png?raw=true">
+</picture>
+<picture >
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings2.png?raw=true">
+  <img width="32%" alt="Einstellungen" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings2Light.png?raw=true">
+</picture>
+<picture >
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings3.png?raw=true">
+  <img width="32%" alt="Einstellungen" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings3Light.png?raw=true">
+</picture>
+</p>
+
 
 ## Beschreibung
 
