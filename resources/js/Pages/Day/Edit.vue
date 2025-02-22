@@ -4,7 +4,7 @@ import Timeline from '@/Components/Timeline.vue';
 import TimestampListItem from '@/Components/TimestampListItem.vue';
 import TimestampListPlaceholderItem from '@/Components/TimestampListPlaceholderItem.vue';
 import TimestampTypeBadge from '@/Components/TimestampTypeBadge.vue';
-import { Timestamp } from '@/types';
+import { Absence, Timestamp } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { useColorMode } from '@vueuse/core';
 import { Modal } from 'inertia-modal';
@@ -18,7 +18,11 @@ const props = defineProps<{
     dayPlan?: number;
     dayFallbackPlan?: number;
     dayNoWorkTime: number;
+    absences: Absence[];
 }>();
+
+const calcDuration = (startTimestamp: string, endTimestamp?: string) =>
+    Math.floor(moment(startTimestamp).diff(endTimestamp).valueOf() / 1000 / 60);
 
 useColorMode();
 </script>
@@ -42,7 +46,24 @@ useColorMode();
             :work-time="props.dayWorkTime"
         />
         <div class="bg-muted/50 flex gap-2 px-4 py-2">
-            <TimestampTypeBadge type="work" :duration="props.dayWorkTime" />
+            <TimestampTypeBadge
+                type="vacation"
+                v-if="
+                    props.absences.length &&
+                    props.absences[0].type === 'vacation'
+                "
+            />
+            <TimestampTypeBadge
+                type="sick"
+                v-if="
+                    props.absences.length && props.absences[0].type === 'sick'
+                "
+            />
+            <TimestampTypeBadge
+                type="work"
+                :duration="props.dayWorkTime"
+                v-if="!props.absences.length"
+            />
             <TimestampTypeBadge type="break" :duration="props.dayBreakTime" />
             <TimestampTypeBadge type="noWork" :duration="props.dayNoWorkTime" />
             <TimestampTypeBadge
@@ -68,10 +89,9 @@ useColorMode();
                 >
                     <TimestampListPlaceholderItem
                         :duration="
-                            parseInt(timestamp.started_at.formatted) -
-                            parseInt(
-                                props.timestamps[index - 1].ended_at
-                                    ?.formatted ?? '',
+                            calcDuration(
+                                timestamp.started_at.date,
+                                props.timestamps[index - 1].ended_at?.date,
                             )
                         "
                         v-if="

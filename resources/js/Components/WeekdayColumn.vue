@@ -29,6 +29,7 @@ const props = defineProps<{
             :work-time="props.weekday.workTime"
             :break-time="props.weekday.breakTime"
             :active-work="props.weekday.activeWork"
+            :absences="props.weekday.absences"
         />
     </div>
 </template>

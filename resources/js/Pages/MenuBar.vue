@@ -159,7 +159,19 @@ const { state } = useColorMode();
                     <ChartPie />
                     Übersicht
                 </Button>
-                <Button class="flex-1 shrink-0" variant="outline" size="sm">
+                <Button
+                    :as="Link"
+                    :href="
+                        route('menubar.openAbsence', {
+                            darkMode: state === 'dark' ? 1 : 0,
+                        })
+                    "
+                    preserve-scroll
+                    preserve-state
+                    class="flex-1 shrink-0"
+                    variant="outline"
+                    size="sm"
+                >
                     <CalendarDays />
                     Abwesenheiten
                 </Button>

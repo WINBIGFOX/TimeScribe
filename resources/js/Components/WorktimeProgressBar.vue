@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { secToFormat } from '@/lib/utils';
+import { Absence } from '@/types';
 import {
     BriefcaseBusiness,
     ClockArrowDown,
     ClockArrowUp,
     Coffee,
+    Cross,
+    TreePalm,
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 
@@ -15,6 +18,7 @@ const props = withDefaults(
         workTime?: number;
         breakTime?: number;
         activeWork?: boolean;
+        absences: Absence[];
     }>(),
     {
         plan: 0,
@@ -81,9 +85,26 @@ const percentageOverTime = computed(() => {
             </div>
         </div>
         <div class="mt-2 h-14 space-y-1">
+            <div v-if="props.absences.length">
+                <div
+                    class="flex items-center justify-center gap-1 text-xs text-emerald-500"
+                    v-if="props.absences[0].type === 'vacation'"
+                >
+                    <TreePalm class="size-4 shrink-0" />
+                    Urlaub
+                </div>
+
+                <div
+                    class="flex items-center justify-center gap-1 text-xs text-rose-400"
+                    v-if="props.absences[0].type === 'sick'"
+                >
+                    <Cross class="size-4 shrink-0" />
+                    Krank
+                </div>
+            </div>
             <div
                 class="text-muted-foreground flex items-center justify-between gap-1 text-xs"
-                v-if="props.workTime"
+                v-if="props.workTime && !props.absences.length"
             >
                 <BriefcaseBusiness class="size-4 shrink-0" />
                 {{ secToFormat(props.workTime ?? 0, false, true) }}
@@ -108,7 +129,7 @@ const percentageOverTime = computed(() => {
             </div>
             <div
                 class="text-muted-foreground flex items-center justify-between gap-1 text-xs"
-                v-if="props.breakTime"
+                v-if="props.breakTime && !props.absences.length"
             >
                 <Coffee class="size-4 shrink-0" />
                 {{ secToFormat(props.breakTime ?? 0, false, true) }}

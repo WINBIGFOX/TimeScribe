@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\DayController;
 use App\Http\Controllers\MenubarController;
 use App\Http\Controllers\OverviewController;
@@ -16,6 +17,7 @@ Route::name('menubar.')->prefix('menubar')->group(function () {
     Route::post('stop', [MenubarController::class, 'storeStop'])->name('storeStop');
     Route::get('open-setting/{darkMode}', [MenubarController::class, 'openSetting'])->name('openSetting');
     Route::get('open-overview/{darkMode}', [MenubarController::class, 'openOverview'])->name('openOverview');
+    Route::get('open-absence/{darkMode}', [MenubarController::class, 'openAbsence'])->name('openAbsence');
 });
 
 Route::name('settings.')->prefix('settings')->group(function () {
@@ -32,6 +34,13 @@ Route::name('overview.')->prefix('overview')->group(function () {
 Route::name('day.')->prefix('day')->group(function () {
     Route::get('{date}/edit', [DayController::class, 'edit'])->name('edit')->where('date', '\d{4}-\d{2}-\d{2}');
     Route::patch('{date}', [DayController::class, 'update'])->name('update')->where('date', '\d{4}-\d{2}-\d{2}');
+});
+
+Route::name('absence.')->prefix('absence')->group(function () {
+    Route::get('', [AbsenceController::class, 'index'])->name('index');
+    Route::get('{date}', [AbsenceController::class, 'show'])->name('show');
+    Route::post('{date}', [AbsenceController::class, 'store'])->name('store');
+    Route::delete('{date}/{absence}', [AbsenceController::class, 'destroy'])->name('destroy');
 });
 
 Route::resource('timestamp', TimestampController::class)->only(['edit', 'update', 'destroy']);

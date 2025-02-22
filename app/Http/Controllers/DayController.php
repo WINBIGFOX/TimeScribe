@@ -28,6 +28,7 @@ class DayController extends Controller
             'dayPlan' => TimestampService::getPlan(strtolower($date->englishDayOfWeek)),
             'dayFallbackPlan' => TimestampService::getFallbackPlan($startDay, $endDay),
             'dayNoWorkTime' => TimestampService::getNoWorkTime($startDay),
+            'absences' => TimestampService::getAbsence($startDay),
             'date' => $date->format('d.m.Y'),
         ]);
     }

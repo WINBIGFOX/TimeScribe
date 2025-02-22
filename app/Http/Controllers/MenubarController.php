@@ -84,4 +84,21 @@ class MenubarController extends Controller
             ->backgroundColor($darkMode ? '#020817' : '#ffffff')
             ->showDevTools(false);
     }
+
+    public function openAbsence(bool $darkMode): void
+    {
+        Window::open('absence')
+            ->route('absence.index')
+            ->rememberState()
+            ->maximizable(false)
+            ->fullscreen(false)
+            ->width(1100)
+            ->minWidth(1100)
+            ->minHeight(600)
+            ->height(800)
+            ->titleBarHidden()
+            ->fullscreenable(false)
+            ->backgroundColor($darkMode ? '#020817' : '#ffffff')
+            ->showDevTools(false);
+    }
 }

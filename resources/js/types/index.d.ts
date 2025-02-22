@@ -14,6 +14,7 @@ export interface WeekdayObject {
     noWorkTime: number;
     timestamps: unknown[];
     activeWork: boolean;
+    absences: Absence[];
 }
 
 export interface Timestamp {
@@ -24,6 +25,13 @@ export interface Timestamp {
     last_ping_at?: Date;
     can_start_edit?: boolean;
     can_end_edit?: boolean;
+}
+
+export interface Absence {
+    id: number;
+    type: 'vacation' | 'sick';
+    date: Date;
+    duration?: number;
 }
 
 export type PageProps<

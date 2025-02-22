@@ -4,7 +4,7 @@
 <p align="center">
 <picture >
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/menubar.png?raw=true">
-  <img style="border-radius: 10px; max-width: 380px" alt="Overview" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/menubarLight.png?raw=true">
+  <img style="border-radius: 10px; max-width: 380px" alt="Menübar" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/menubarLight.png?raw=true">
 </picture>
 <br/>
 <br/>
@@ -14,7 +14,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/overview.png?raw=true">
-  <img alt="Overview" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/overviewLight.png?raw=true">
+  <img alt="Wochenansicht" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/overviewLight.png?raw=true">
 </picture>
 </p>
 
@@ -22,9 +22,18 @@
 <p align="center">
 <picture >
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/day.png?raw=true">
-  <img alt="Overview" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/dayLight.png?raw=true">
+  <img alt="Detailansicht" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/dayLight.png?raw=true">
 </picture>
 </p>
+
+## Abwesenheitskalender
+<p align="center">
+<picture >
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/absence.png?raw=true">
+  <img alt="Abwesenheitskalender" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/absenceLight.png?raw=true">
+</picture>
+</p>
+
 
 ## Beschreibung
 

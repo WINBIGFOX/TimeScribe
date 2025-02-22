@@ -5,14 +5,26 @@ import {
     ChevronsLeftRightEllipsis,
     ClockArrowUp,
     Coffee,
+    Cross,
+    TreePalm,
 } from 'lucide-vue-next';
 
 const props = defineProps<{
     type: string;
-    duration: number;
+    duration?: number;
 }>();
 
 const badgeDetails = {
+    vacation: {
+        title: 'Urlaub',
+        icon: TreePalm,
+        color: 'bg-emerald-500 text-primary-foreground',
+    },
+    sick: {
+        title: 'Krank',
+        icon: Cross,
+        color: 'bg-rose-400 text-primary-foreground',
+    },
     work: {
         title: 'Arbeitszeit',
         icon: BriefcaseBusiness,
@@ -33,6 +45,11 @@ const badgeDetails = {
         icon: ChevronsLeftRightEllipsis,
         color: 'bg-rose-400 text-primary-foreground',
     },
+    plan: {
+        title: 'Plan',
+        icon: undefined,
+        color: 'bg-muted text-muted-foreground',
+    },
     default: {
         title: 'Unbekannt',
         icon: undefined,
@@ -46,7 +63,7 @@ const {
     color: badgeColor,
 } = badgeDetails[props.type] || badgeDetails.default;
 
-const durationLabel = secToFormat(props.duration, true, true, true);
+const durationLabel = secToFormat(props.duration ?? 0, true, true, true);
 const durationType = durationLabel.includes(':') ? 'Std.' : 'Min.';
 </script>
 
@@ -59,7 +76,10 @@ const durationType = durationLabel.includes(':') ? 'Std.' : 'Min.';
 
         <div class="space-y-1">
             <div class="text-xs leading-none">{{ badgeTitle }}</div>
-            <div class="text-sm leading-none font-bold">
+            <div
+                class="text-sm leading-none font-bold"
+                v-if="props.duration !== undefined"
+            >
                 {{ durationLabel }} {{ durationType }}
             </div>
         </div>

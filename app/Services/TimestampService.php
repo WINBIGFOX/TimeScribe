@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Enums\TimestampTypeEnum;
 use App\Jobs\CalculateWeekBalance;
+use App\Models\Absence;
 use App\Models\Timestamp;
 use App\Models\WeekBalance;
 use Carbon\Carbon;
@@ -130,6 +131,7 @@ class TimestampService
         }
 
         $holiday = self::getHoliday([$date->year, $endDate->year]);
+        $absence = self::getAbsence($date, $endDate);
         $workdays = Settings::get('workdays', []);
 
         $timestamps = Timestamp::whereDate('started_at', '>=', $date->startOfDay())
@@ -137,14 +139,17 @@ class TimestampService
             ->where('type', $type)
             ->get();
 
-        $holidayTime = 0;
+        $absenceTime = 0;
 
         $periode = CarbonPeriod::create($date, $endDate);
 
         if ($type === TimestampTypeEnum::WORK) {
             foreach ($periode as $rangeDate) {
-                if ($holiday->filter(fn (Carbon $holiday) => $holiday->isSameDay($rangeDate))->isNotEmpty()) {
-                    $holidayTime += ($workdays[strtolower($rangeDate->locale('en')->dayName)] ?? 0) * 60 * 60;
+                if (
+                    $holiday->filter(fn (Carbon $holiday) => $holiday->isSameDay($rangeDate))->isNotEmpty() ||
+                    $absence->filter(fn (Absence $absence) => $absence->date->isSameDay($rangeDate))->isNotEmpty()
+                ) {
+                    $absenceTime += ($workdays[strtolower($rangeDate->locale('en')->dayName)] ?? 0) * 60 * 60;
                 }
             }
         }
@@ -158,7 +163,7 @@ class TimestampService
             $diffTime = $timestamp->ended_at ?? $fallbackTime;
 
             return $timestamp->started_at->diff($diffTime)->totalSeconds;
-        }) + $holidayTime;
+        }) + $absenceTime;
     }
 
     public static function getWorkTime(?Carbon $date = null, ?Carbon $endDate = null): float
@@ -212,6 +217,17 @@ class TimestampService
             ->append($withEditAttributes ? ['can_start_edit', 'can_end_edit'] : []);
     }
 
+    public static function getAbsence(Carbon $date, ?Carbon $endDate = null): Collection
+    {
+        if (! $endDate) {
+            $endDate = $date->copy();
+        }
+
+        return Absence::whereBetween('date', [$date->startOfDay(), $endDate->endOfDay()])
+            ->orderBy('date')
+            ->get();
+    }
+
     public static function getHoliday(int|array $year): Collection
     {
         if (Settings::get('holidayRegion') === null) {
@@ -262,6 +278,11 @@ class TimestampService
         $holiday = self::getHoliday(range($date->year, $endDate->year))->map(function (Carbon $holiday) {
             return $holiday->format('Y-m-d');
         });
+
+        $absence = self::getAbsence($date, $endDate)->map(function (Absence $absence) {
+            return $absence->date->format('Y-m-d');
+        });
+
         $timestampDates = self::getTimestamps($date, $endDate)->map(function (Timestamp $timestamp) {
             return $timestamp->started_at->format('Y-m-d');
         });
@@ -270,7 +291,7 @@ class TimestampService
             return $holiday->unique()->sort()->values();
         }
 
-        return $timestampDates->merge($holiday)->unique()->sort()->values();
+        return $timestampDates->merge($holiday)->merge($absence)->unique()->sort()->values();
     }
 
     public static function getActiveWork(Carbon $date): bool

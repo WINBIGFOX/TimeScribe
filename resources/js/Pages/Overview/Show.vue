@@ -207,6 +207,7 @@ const openDayView = (date: string) => {
                 :fallback-plan="props.weekFallbackPlan"
                 :work-time="props.weekWorkTime"
                 :break-time="props.weekBreakTime"
+                :absences="[]"
             />
         </div>
     </div>
