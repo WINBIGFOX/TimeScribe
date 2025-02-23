@@ -1,60 +1,5 @@
 # Stempeluhr
 
-## Menübar
-
-<p align="center">
-<picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/menubar.png?raw=true">
-  <img style="border-radius: 10px; max-width: 380px" alt="Menübar" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/menubarLight.png?raw=true">
-</picture>
-<br/>
-<br/>
-</p>
-
-## Wochenansicht
-
-<p align="center">
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/overview.png?raw=true">
-  <img alt="Wochenansicht" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/overviewLight.png?raw=true">
-</picture>
-</p>
-
-## Detailansicht
-
-<p align="center">
-<picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/day.png?raw=true">
-  <img alt="Detailansicht" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/dayLight.png?raw=true">
-</picture>
-</p>
-
-## Abwesenheitskalender
-
-<p align="center">
-<picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/absence.png?raw=true">
-  <img alt="Abwesenheitskalender" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/absenceLight.png?raw=true">
-</picture>
-</p>
-
-## Einstellungen
-
-<p align="center">
-<picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings1.png?raw=true">
-  <img width="32%" alt="Einstellungen" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings1Light.png?raw=true">
-</picture>
-<picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings2.png?raw=true">
-  <img width="32%" alt="Einstellungen" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings2Light.png?raw=true">
-</picture>
-<picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings3.png?raw=true">
-  <img width="32%" alt="Einstellungen" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings3Light.png?raw=true">
-</picture>
-</p>
-
 ## Beschreibung
 
 Dieses Repository bietet eine moderne und flexible Stempeluhr-App zur präzisen Erfassung und Verwaltung persönlicher
@@ -76,6 +21,63 @@ Büro.
 - **Leichtgewichtig & Schnell**: Entwickelt für optimale Performance auf deinem Mac.
 
 Ideal für alle, die ihre Arbeitszeit effizient und unkompliziert tracken möchten!
+
+## Screenshots
+
+### Menübar
+
+<p align="center">
+<picture >
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/menubar.png?raw=true">
+  <img style="border-radius: 10px; max-width: 380px" alt="Menübar" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/menubarLight.png?raw=true">
+</picture>
+<br/>
+<br/>
+</p>
+
+### Wochenansicht
+
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/overview.png?raw=true">
+  <img alt="Wochenansicht" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/overviewLight.png?raw=true">
+</picture>
+</p>
+
+### Detailansicht
+
+<p align="center">
+<picture >
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/day.png?raw=true">
+  <img alt="Detailansicht" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/dayLight.png?raw=true">
+</picture>
+</p>
+
+### Abwesenheitskalender
+
+<p align="center">
+<picture >
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/absence.png?raw=true">
+  <img alt="Abwesenheitskalender" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/absenceLight.png?raw=true">
+</picture>
+</p>
+
+### Einstellungen
+
+<p align="center">
+<picture >
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings1.png?raw=true">
+  <img width="32%" alt="Einstellungen" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings1Light.png?raw=true">
+</picture>
+<picture >
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings2.png?raw=true">
+  <img width="32%" alt="Einstellungen" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings2Light.png?raw=true">
+</picture>
+<picture >
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings3.png?raw=true">
+  <img width="32%" alt="Einstellungen" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings3Light.png?raw=true">
+</picture>
+</p>
 
 ## Installation
 
