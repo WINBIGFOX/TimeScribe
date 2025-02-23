@@ -1,6 +1,7 @@
 # Stempeluhr
 
 ## Menübar
+
 <p align="center">
 <picture >
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/menubar.png?raw=true">
@@ -11,6 +12,7 @@
 </p>
 
 ## Wochenansicht
+
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/overview.png?raw=true">
@@ -19,6 +21,7 @@
 </p>
 
 ## Detailansicht
+
 <p align="center">
 <picture >
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/day.png?raw=true">
@@ -27,6 +30,7 @@
 </p>
 
 ## Abwesenheitskalender
+
 <p align="center">
 <picture >
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/absence.png?raw=true">
@@ -35,6 +39,7 @@
 </p>
 
 ## Einstellungen
+
 <p align="center">
 <picture >
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings1.png?raw=true">
@@ -50,20 +55,27 @@
 </picture>
 </p>
 
-
 ## Beschreibung
 
-Dieses Repository enthält eine moderne, flexible Stempeluhr-Anwendung zur präzisen Erfassung und Verwaltung von
-Arbeitszeiten. Egal ob für kleine Betriebe oder große Unternehmen – mit dieser App behalten Sie stets den Überblick über
-Ein- und Ausstempelzeiten, Pausen und Überstunden.
+Dieses Repository bietet eine moderne und flexible Stempeluhr-App zur präzisen Erfassung und Verwaltung persönlicher
+Arbeitszeiten. Perfekt für jeden, der seine Arbeitsstunden genau im Blick behalten möchte – ob im Homeoffice oder im
+Büro.
 
 ## Funktionen
 
-- **Einfaches Ein- und Ausstempeln:** Starten und beenden Sie Ihre Arbeitszeit per Knopfdruck.
-- **Pausenverwaltung:** Erfassen Sie Ihre Pausen, um die tatsächliche Arbeitszeit exakt zu berechnen.
-- **Übersichtliche Berichte:** Erzeugen Sie tägliche, wöchentliche oder monatliche Reports zur Auswertung Ihrer
-  Arbeitszeiten.
-- **Modulare Architektur:** Leicht anpassbar und erweiterbar, um individuelle Anforderungen zu erfüllen.
+- **Einfache Zeiterfassung**: Starte, stoppe und pausiere deine Arbeitszeit mit einem Klick.
+- **Übersichtliches Dashboard**: Behalte den Überblick über deine täglichen Arbeitsaktivitäten, inklusive Pausen.
+- **Anpassbare Arbeitspläne**: Passe deinen Wochenarbeitsplan individuell an.
+- **Feiertags-Integration**: Berücksichtigt regionale Feiertage für eine präzise Zeitplanung.
+- **Automatisierung**: Automatische Start-/Stopp-Funktionen für reibungsloses Timemanagement.
+- **Benachrichtigungen**: Erhalte Erinnerungen für Pausen und Arbeitszeiterfassungen.
+- **Auswertungen & Berichte (coming soon)**: Analysiere deine Arbeitsgewohnheiten mit grafischen Berichten.
+- **Export-Optionen (coming soon)**: Exportiere deine Zeiterfassungsdaten für die Weiterverwendung.
+- **Integration mit Kalendern (coming soon)**: Synchronisiere deine Arbeitszeiten mit gängigen Kalender-Apps.
+- **Datenschutz**: Deine Daten bleiben stets privat und sicher.
+- **Leichtgewichtig & Schnell**: Entwickelt für optimale Performance auf deinem Mac.
+
+Ideal für alle, die ihre Arbeitszeit effizient und unkompliziert tracken möchten!
 
 ## Installation
 
