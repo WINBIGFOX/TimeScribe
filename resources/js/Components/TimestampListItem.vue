@@ -26,7 +26,7 @@ const duration = computed(() =>
     ),
 );
 
-if (duration.value < 60) {
+if (duration.value < 60 && !props.timestamp.ended_at) {
     usePoll(1000);
 }
 

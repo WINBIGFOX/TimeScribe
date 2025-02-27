@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\TimestampTypeEnum;
+use App\Events\TimerStarted;
+use App\Events\TimerStopped;
 use App\Jobs\CalculateWeekBalance;
 use App\Models\Absence;
 use App\Models\Timestamp;
@@ -51,18 +53,21 @@ class TimestampService
 
     public static function startWork(): void
     {
+        TimerStarted::broadcast();
         self::makeEndings();
         self::create(TimestampTypeEnum::WORK);
     }
 
     public static function startBreak(): void
     {
+        TimerStopped::broadcast();
         self::makeEndings();
         self::create(TimestampTypeEnum::BREAK);
     }
 
     public static function stop(): void
     {
+        TimerStopped::broadcast();
         self::ping();
         self::makeEndings();
     }

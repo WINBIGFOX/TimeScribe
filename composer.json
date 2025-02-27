@@ -9,12 +9,12 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
-        "emargareten/inertia-modal": "^1.4",
+        "php": "^8.3",
+        "emargareten/inertia-modal": "^1.5",
         "inertiajs/inertia-laravel": "^2.0",
-        "laravel/framework": "^11.43",
+        "laravel/framework": "^11.44.0",
         "laravel/tinker": "^2.10",
-        "nativephp/electron": "^0.9.0",
+        "nativephp/electron": "1.0.0-beta.1",
         "tightenco/ziggy": "^2.5",
         "umulmrum/holiday": "^0.11.1"
     },
@@ -81,6 +81,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "beta",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

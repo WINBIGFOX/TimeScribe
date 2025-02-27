@@ -24,6 +24,14 @@ const props = defineProps<{
 const calcDuration = (startTimestamp: string, endTimestamp?: string) =>
     Math.floor(moment(startTimestamp).diff(endTimestamp).valueOf() / 1000 / 60);
 
+window.Native.on('App\\Events\\TimerStarted', () => {
+    window.location.reload();
+});
+
+window.Native.on('App\\Events\\TimerStopped', () => {
+    window.location.reload();
+});
+
 useColorMode();
 </script>
 
