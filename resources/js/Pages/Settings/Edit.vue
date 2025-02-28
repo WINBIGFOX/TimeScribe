@@ -20,6 +20,7 @@ import {
     KeyRound,
     LockKeyhole,
     TimerReset,
+    SunMoon,
 } from 'lucide-vue-next';
 import { computed, ref, watch } from 'vue';
 
@@ -107,7 +108,7 @@ watch(stopTimeResetCheck, () => {
     }
 });
 
-useColorMode();
+const { store } = useColorMode();
 </script>
 
 <template>
@@ -139,6 +140,35 @@ useColorMode();
                         </p>
                     </div>
                     <Switch v-model:checked="form.startOnLogin" disabled />
+                </div>
+                <div class="flex items-start space-x-4 rounded-md border p-4">
+                    <SunMoon />
+                    <div class="flex-1 space-y-1">
+                        <p class="text-sm leading-none font-medium">
+                            Darstellung
+                        </p>
+                        <p class="text-muted-foreground text-sm">
+                            Wähle das Erscheinungsbild der Anwendung.
+                        </p>
+                        <div class="mt-2">
+                            <Select size="5" v-model="store">
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Erscheinungsbild" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="auto">
+                                        Am Betriebssystem orientieren
+                                    </SelectItem>
+                                    <SelectItem value="light">
+                                        Hell
+                                    </SelectItem>
+                                    <SelectItem value="dark">
+                                        Dunkel
+                                    </SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex items-center space-x-4 rounded-md border p-4">
                     <Eye />

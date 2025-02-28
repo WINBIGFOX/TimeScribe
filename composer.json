@@ -12,9 +12,9 @@
         "php": "^8.3",
         "emargareten/inertia-modal": "^1.5",
         "inertiajs/inertia-laravel": "^2.0",
-        "laravel/framework": "^11.44.0",
+        "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10",
-        "nativephp/electron": "1.0.0-beta.1",
+        "nativephp/electron": "1.0.0-beta.3",
         "tightenco/ziggy": "^2.5",
         "umulmrum/holiday": "^0.11.1"
     },

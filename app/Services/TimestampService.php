@@ -242,7 +242,7 @@ class TimestampService
 
         return collect(
             $holidayCalculator->calculate(Settings::get('holidayRegion'), $year)
-                ->filter(new IncludeTypeFilter(HolidayType::OFFICIAL))
+                ->filter(new IncludeTypeFilter(HolidayType::DAY_OFF))
                 ->format(new DateFormatter)
         )->map(function ($holiday) {
             return Carbon::create($holiday);
