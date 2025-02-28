@@ -1,4 +1,4 @@
-# Stempeluhr
+# TimeScribe
 
 ## Beschreibung
 
@@ -83,11 +83,11 @@ Ideal für alle, die ihre Arbeitszeit effizient und unkompliziert tracken möcht
 
 1. Repository klonen:
    ```bash
-   git clone https://github.com/WINBIGFOX/Stempeluhr.git
+   git clone https://github.com/WINBIGFOX/timescribe.git
     ```
 2. In das Projektverzeichnis wechseln:
    ```bash
-   cd Stempeluhr
+   cd timescribe
     ```
 3. Abhängigkeiten installieren:
    ```bash

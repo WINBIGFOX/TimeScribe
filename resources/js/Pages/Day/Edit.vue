@@ -36,7 +36,7 @@ useColorMode();
 </script>
 
 <template>
-    <Head title="Stempeluhr" />
+    <Head title="TimeScribe" />
 
     <div
         class="flex h-10 shrink-0 items-center justify-center font-medium"

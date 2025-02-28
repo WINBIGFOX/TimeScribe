@@ -112,7 +112,7 @@ const { store } = useColorMode();
 </script>
 
 <template>
-    <Head title="Stempeluhr" />
+    <Head title="TimeScribe" />
     <div
         class="sticky top-0 z-10 flex h-10 shrink-0 items-center justify-center font-medium backdrop-blur-sm"
         style="-webkit-app-region: drag"

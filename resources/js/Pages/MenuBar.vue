@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from '@/Components/ui/button';
 import { secToFormat } from '@/lib/utils';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { useColorMode } from '@vueuse/core';
 import {
     CalendarDays,
@@ -67,7 +67,7 @@ const { state } = useColorMode();
 </script>
 
 <template>
-    <Head title="Stempeluhr" />
+    <Head title="TimeScribe" />
     <div class="flex h-dvh flex-col select-none">
         <div class="flex justify-end">
             <!--

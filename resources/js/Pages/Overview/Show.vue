@@ -93,13 +93,13 @@ const openDayView = (date: string) => {
 </script>
 
 <template>
-    <Head title="Stempeluhr" />
+    <Head title="TimeScribe" />
 
     <div
         class="sticky top-0 flex h-10 shrink-0 items-center justify-center font-medium"
         style="-webkit-app-region: drag"
     >
-        Stempeluhr
+        Übersicht
         <div
             class="absolute top-0 right-2 bottom-0 flex items-center font-normal"
         >
