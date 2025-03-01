@@ -10,7 +10,7 @@ import {
 } from '@/Components/ui/number-field';
 import { secToFormat } from '@/lib/utils';
 import { Timestamp } from '@/types';
-import { router, useForm } from '@inertiajs/vue3';
+import { Head, router, useForm } from '@inertiajs/vue3';
 import { BriefcaseBusiness, Coffee } from 'lucide-vue-next';
 import { ref } from 'vue';
 
@@ -62,6 +62,7 @@ const destroy = () => {
 </script>
 
 <template>
+    <Head title="Timestamp" />
     <MainDialog
         :loading="form.processing"
         @submit="submit"

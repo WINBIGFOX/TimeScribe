@@ -36,7 +36,7 @@ useColorMode();
 </script>
 
 <template>
-    <Head title="TimeScribe" />
+    <Head title="Day" />
 
     <div
         class="flex h-10 shrink-0 items-center justify-center font-medium"

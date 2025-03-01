@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title inertia>{{ config('app.name', 'Laravel') }}</title>
+    <title inertia/>
 
     <!-- Scripts -->
     @routes
@@ -13,5 +13,27 @@
 </head>
 <body class="font-sans antialiased h-dvh">
 @inertia
+
+@if (config('services.google.analytics.id'))
+    <script async
+            src="https://www.googletagmanager.com/gtag/js?id={{ config('services.google.analytics.id') }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', '{{ config('services.google.analytics.id') }}', {
+            'user_id': '{{ \Native\Laravel\Facades\Settings::get('id')  }}',
+            'user_properties': {
+                'app_version': '{{ config('nativephp.version') }}',
+                'locale': '{{ app()->getLocale() }}',
+            }
+        });
+    </script>
+@endif
 </body>
 </html>

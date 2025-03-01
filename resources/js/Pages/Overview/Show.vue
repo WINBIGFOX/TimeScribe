@@ -93,7 +93,7 @@ const openDayView = (date: string) => {
 </script>
 
 <template>
-    <Head title="TimeScribe" />
+    <Head title="Overview" />
 
     <div
         class="sticky top-0 flex h-10 shrink-0 items-center justify-center font-medium"

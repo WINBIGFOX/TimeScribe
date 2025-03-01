@@ -148,7 +148,7 @@ useColorMode();
 </script>
 
 <template>
-    <Head title="TimeScribe" />
+    <Head title="Absence" />
 
     <div
         class="sticky top-0 flex h-10 shrink-0 items-center justify-center font-medium"

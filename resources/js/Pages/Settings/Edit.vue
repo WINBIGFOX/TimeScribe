@@ -19,8 +19,8 @@ import {
     Eye,
     KeyRound,
     LockKeyhole,
-    TimerReset,
     SunMoon,
+    TimerReset,
 } from 'lucide-vue-next';
 import { computed, ref, watch } from 'vue';
 
@@ -112,7 +112,7 @@ const { store } = useColorMode();
 </script>
 
 <template>
-    <Head title="TimeScribe" />
+    <Head title="Settings" />
     <div
         class="sticky top-0 z-10 flex h-10 shrink-0 items-center justify-center font-medium backdrop-blur-sm"
         style="-webkit-app-region: drag"
@@ -153,7 +153,9 @@ const { store } = useColorMode();
                         <div class="mt-2">
                             <Select size="5" v-model="store">
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Erscheinungsbild" />
+                                    <SelectValue
+                                        placeholder="Erscheinungsbild"
+                                    />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="auto">

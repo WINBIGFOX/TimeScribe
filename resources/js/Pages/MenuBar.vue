@@ -67,7 +67,7 @@ const { state } = useColorMode();
 </script>
 
 <template>
-    <Head title="TimeScribe" />
+    <Head title="Menubar" />
     <div class="flex h-dvh flex-col select-none">
         <div class="flex justify-end">
             <!--

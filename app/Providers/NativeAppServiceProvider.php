@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use Illuminate\Support\Str;
 use Native\Laravel\Contracts\ProvidesPhpIni;
 use Native\Laravel\Facades\Menu;
 use Native\Laravel\Facades\MenuBar;
+use Native\Laravel\Facades\Settings;
 
 class NativeAppServiceProvider implements ProvidesPhpIni
 {
@@ -16,6 +18,10 @@ class NativeAppServiceProvider implements ProvidesPhpIni
      */
     public function boot(): void
     {
+        if (! Settings::get('id')) {
+            Settings::set('id', Str::uuid());
+        }
+
         MenuBar::create()
             ->showDockIcon(false)
             ->route('menubar.index')
