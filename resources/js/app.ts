@@ -7,7 +7,7 @@ import { createApp, DefineComponent, h } from 'vue';
 import { ZiggyVue } from 'ziggy-js';
 
 createInertiaApp({
-    title: (title) => `${title}`,
+    title: (title) => title,
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.vue`,
