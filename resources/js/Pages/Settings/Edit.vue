@@ -18,10 +18,12 @@ import {
     CalendarMinus,
     Eye,
     KeyRound,
+    Languages,
     LockKeyhole,
     SunMoon,
     TimerReset,
 } from 'lucide-vue-next';
+import moment from 'moment/min/moment-with-locales';
 import { computed, ref, watch } from 'vue';
 
 const props = defineProps<{
@@ -41,6 +43,7 @@ const props = defineProps<{
     stopBreakAutomaticActivationTime?: string;
     stopWorkTimeReset?: number;
     stopBreakTimeReset?: number;
+    locale: string;
 }>();
 
 const form = useForm({
@@ -61,6 +64,7 @@ const form = useForm({
         props.stopBreakAutomaticActivationTime ?? '',
     stopWorkTimeReset: props.stopWorkTimeReset?.toString() ?? '0',
     stopBreakTimeReset: props.stopBreakTimeReset?.toString() ?? '0',
+    locale: props.locale,
 });
 
 const weekWorkTime = computed(() => {
@@ -117,16 +121,20 @@ const { store } = useColorMode();
         class="sticky top-0 z-10 flex h-10 shrink-0 items-center justify-center font-medium backdrop-blur-sm"
         style="-webkit-app-region: drag"
     >
-        Einstellungen
+        {{ $t('app.settings') }}
     </div>
     <div class="p-2 select-none">
         <Tabs default-value="general">
             <div class="text-center">
                 <TabsList>
-                    <TabsTrigger value="general">Allgemein</TabsTrigger>
-                    <TabsTrigger value="workingplan">Arbeitsplan</TabsTrigger>
+                    <TabsTrigger value="general">
+                        {{ $t('app.general') }}
+                    </TabsTrigger>
+                    <TabsTrigger value="workingplan">
+                        {{ $t('app.work schedule') }}
+                    </TabsTrigger>
                     <TabsTrigger value="startStop">
-                        Start/Pause Automatik
+                        {{ $t('app.auto start/break') }}
                     </TabsTrigger>
                 </TabsList>
             </div>
@@ -136,36 +144,68 @@ const { store } = useColorMode();
                     <KeyRound />
                     <div class="flex-1 space-y-1">
                         <p class="text-sm leading-none font-medium">
-                            Bei Anmeldung starten
+                            {{ $t('app.start at login') }}
                         </p>
                     </div>
                     <Switch v-model:checked="form.startOnLogin" disabled />
                 </div>
                 <div class="flex items-start space-x-4 rounded-md border p-4">
+                    <Languages />
+                    <div class="flex-1 space-y-1">
+                        <p class="text-sm leading-none font-medium">
+                            {{ $t('app.language') }}
+                        </p>
+                        <div class="mt-2">
+                            <Select size="5" v-model="form.locale">
+                                <SelectTrigger>
+                                    <SelectValue
+                                        :placeholder="$t('app.language')"
+                                    />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="de-DE">
+                                        {{ $t('app.german') }}
+                                    </SelectItem>
+                                    <SelectItem value="en-GB">
+                                        {{ $t('app.english (UK)') }}
+                                    </SelectItem>
+                                    <SelectItem value="en-US">
+                                        {{ $t('app.english (US)') }}
+                                    </SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-4 rounded-md border p-4">
                     <SunMoon />
                     <div class="flex-1 space-y-1">
                         <p class="text-sm leading-none font-medium">
-                            Darstellung
+                            {{ $t('app.appearance') }}
                         </p>
-                        <p class="text-muted-foreground text-sm">
-                            Wähle das Erscheinungsbild der Anwendung.
+                        <p class="text-muted-foreground text-sm text-balance">
+                            {{
+                                $t(
+                                    'app.choose the appearance of the application.',
+                                )
+                            }}
                         </p>
                         <div class="mt-2">
                             <Select size="5" v-model="store">
                                 <SelectTrigger>
                                     <SelectValue
-                                        placeholder="Erscheinungsbild"
+                                        :placeholder="$t('app.appearance')"
                                     />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="auto">
-                                        Am Betriebssystem orientieren
+                                        {{ $t('app.system') }}
                                     </SelectItem>
                                     <SelectItem value="light">
-                                        Hell
+                                        {{ $t('app.light') }}
                                     </SelectItem>
                                     <SelectItem value="dark">
-                                        Dunkel
+                                        {{ $t('app.dark') }}
                                     </SelectItem>
                                 </SelectContent>
                             </Select>
@@ -176,11 +216,14 @@ const { store } = useColorMode();
                     <Eye />
                     <div class="flex-1 space-y-1">
                         <p class="text-sm leading-none font-medium">
-                            Timer automatisch einblenden
+                            {{ $t('app.show timer automatically') }}
                         </p>
-                        <p class="text-muted-foreground text-sm">
-                            Wenn der Rechner entsperrt wird, kann der Timer
-                            eingeblendet werden.
+                        <p class="text-muted-foreground text-sm text-balance">
+                            {{
+                                $t(
+                                    'app.when the computer is unlocked, the timer can be displayed.',
+                                )
+                            }}
                         </p>
                     </div>
                     <Switch v-model:checked="form.showTimerOnUnlock" />
@@ -190,10 +233,14 @@ const { store } = useColorMode();
                     <CalendarMinus />
                     <div class="flex-1 space-y-1">
                         <p class="text-sm leading-none font-medium">
-                            Feiertage berücksichtigen
+                            {{ $t('app.consider public holidays') }}
                         </p>
                         <p class="text-muted-foreground text-sm">
-                            Die Arbeitszeit wird an Feiertagen voll angerechnet.
+                            {{
+                                $t(
+                                    'app.working hours on public holidays are fully credited.',
+                                )
+                            }}
                         </p>
                         <div class="mt-2" v-if="holidayCheck">
                             <Select size="5" v-model="form.holidayRegion">
@@ -230,7 +277,7 @@ const { store } = useColorMode();
                                         Mecklenburg-Vorpommern
                                     </SelectItem>
                                     <SelectItem value="DE-NI">
-                                        Niedersachsen
+                                        {{ $t('app.never') }}dersachsen
                                     </SelectItem>
                                     <SelectItem value="DE-NW">
                                         Nordrhein-Westfalen
@@ -265,38 +312,39 @@ const { store } = useColorMode();
                     <CalendarClock />
                     <div class="flex-1 space-y-1">
                         <p class="text-sm leading-none font-medium">
-                            Wochenarbeitszeit
+                            {{ $t('app.weekly work hours') }}
                         </p>
                     </div>
-                    {{ weekWorkTime }} Stunden
+                    {{ weekWorkTime.toLocaleString($page.props.locale) }}
+                    {{ $t('app.hours') }}
                 </div>
                 <div class="flex flex-col gap-2 rounded-md border p-4">
                     <WorkdayTimeInput
-                        workday="Montag"
+                        :workday="$t('app.monday')"
                         v-model="form.workdays.monday"
                     />
                     <WorkdayTimeInput
-                        workday="Dienstag"
+                        :workday="$t('app.tuesday')"
                         v-model="form.workdays.tuesday"
                     />
                     <WorkdayTimeInput
-                        workday="Mittwoch"
+                        :workday="$t('app.wednesday')"
                         v-model="form.workdays.wednesday"
                     />
                     <WorkdayTimeInput
-                        workday="Donnerstag"
+                        :workday="$t('app.thursday')"
                         v-model="form.workdays.thursday"
                     />
                     <WorkdayTimeInput
-                        workday="Freitag"
+                        :workday="$t('app.friday')"
                         v-model="form.workdays.friday"
                     />
                     <WorkdayTimeInput
-                        workday="Samstag"
+                        :workday="$t('app.saturday')"
                         v-model="form.workdays.saturday"
                     />
                     <WorkdayTimeInput
-                        workday="Sonntag"
+                        :workday="$t('app.sunday')"
                         v-model="form.workdays.sunday"
                     />
                 </div>
@@ -308,12 +356,14 @@ const { store } = useColorMode();
                         <LockKeyhole />
                         <div class="flex-1 space-y-1">
                             <p class="text-sm leading-none font-medium">
-                                Stop/Pause-Automatik
+                                {{ $t('app.auto start/break') }}
                             </p>
                             <p class="text-muted-foreground text-sm">
-                                Wenn der Rechner gesperrt wird, kann die
-                                Arbeitszeit automatisch gestoppt oder die Pause
-                                gestartet werden.
+                                {{
+                                    $t(
+                                        'app.when the computer is locked, the working time can be automatically stopped, or the break can be started.',
+                                    )
+                                }}
                             </p>
                             <div class="mt-4" v-if="stopBreakAutomatikCheck">
                                 <Select v-model="form.stopBreakAutomatic">
@@ -322,10 +372,10 @@ const { store } = useColorMode();
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="stop">
-                                            Arbeitszeit stoppen
+                                            {{ $t('app.stop working time') }}
                                         </SelectItem>
                                         <SelectItem value="break">
-                                            Pause starten
+                                            {{ $t('app.start break') }}
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -340,11 +390,14 @@ const { store } = useColorMode();
                         <AlarmClockCheck />
                         <div class="flex-1 space-y-1">
                             <p class="text-sm leading-none font-medium">
-                                Zeitbedingt aktivieren
+                                {{ $t('app.activate based on time') }}
                             </p>
                             <p class="text-muted-foreground text-sm">
-                                Die Start/Pause-Automatik wird erst ab einer
-                                bestimmten Uhrzeit aktiv.
+                                {{
+                                    $t(
+                                        'app.the auto start/break feature will only be activated at a specified time.',
+                                    )
+                                }}
                             </p>
                             <div
                                 class="mt-4"
@@ -356,7 +409,9 @@ const { store } = useColorMode();
                                     "
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder="Uhrzeit" />
+                                        <SelectValue
+                                            :placeholder="$t('app.time')"
+                                        />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem
@@ -364,7 +419,14 @@ const { store } = useColorMode();
                                             :value="`${hour + 12}`"
                                             v-for="hour in 11"
                                         >
-                                            ab {{ hour + 12 }}:00 Uhr
+                                            {{
+                                                $t('app.from :time', {
+                                                    time: moment(
+                                                        hour + 12,
+                                                        'HH',
+                                                    ).format('LT'),
+                                                })
+                                            }}
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -376,8 +438,14 @@ const { store } = useColorMode();
                                     form.stopBreakAutomaticActivationTime
                                 "
                             >
-                                Bis 05:00 Uhr des Folgetages ist die Automatik
-                                aktiv.
+                                {{
+                                    $t(
+                                        'app.the automatic system is active until :time on the following day.',
+                                        {
+                                            time: moment(5, 'H').format('LT'),
+                                        },
+                                    )
+                                }}
                             </p>
                         </div>
                         <Switch
@@ -390,102 +458,110 @@ const { store } = useColorMode();
                         <TimerReset />
                         <div class="flex-1 space-y-1">
                             <p class="text-sm leading-none font-medium">
-                                Vergessener Stop
+                                {{ $t('app.forgotten stop') }}
                             </p>
                             <p class="text-muted-foreground text-sm">
-                                Wenn du vergisst, die Arbeits- oder Pausenzeit
-                                zu stoppen, wird sie automatisch rückwirkend
-                                gestoppt.
+                                {{
+                                    $t(
+                                        'app.if you forget to stop the working or break time, it will be automatically stopped retroactively.',
+                                    )
+                                }}
                             </p>
                             <p
                                 class="text-muted-foreground my-2 text-xs italic"
                             >
-                                Bei einer Abwesenheit von mehr als die
-                                eingestellte Zeit wird die Arbeits- oder
-                                Pausenzeit rückwirkend gestoppt.
+                                {{
+                                    $t(
+                                        'app.if an absence exceeds the configured time, the working or break time will be stopped retroactively.',
+                                    )
+                                }}
                             </p>
                             <div class="mt-4" v-if="stopTimeResetCheck">
                                 <p class="mb-2 text-sm leading-none">
-                                    Arbeitszeit stoppen nach:
+                                    {{ $t('app.stop working time after:') }}
                                 </p>
                                 <Select v-model="form.stopWorkTimeReset">
                                     <SelectTrigger>
                                         <SelectValue placeholder="Zeit" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="0">Nie</SelectItem>
+                                        <SelectItem value="0">
+                                            {{ $t('app.never') }}
+                                        </SelectItem>
                                         <SelectItem value="5">
-                                            5 Minuten
+                                            5 {{ $t('app.minutes') }}
                                         </SelectItem>
                                         <SelectItem value="10">
-                                            10 Minuten
+                                            10 {{ $t('app.minutes') }}
                                         </SelectItem>
                                         <SelectItem value="20">
-                                            20 Minuten
+                                            20 {{ $t('app.minutes') }}
                                         </SelectItem>
                                         <SelectItem value="30">
-                                            30 Minuten
+                                            30 {{ $t('app.minutes') }}
                                         </SelectItem>
                                         <SelectItem value="40">
-                                            40 Minuten
+                                            40 {{ $t('app.minutes') }}
                                         </SelectItem>
                                         <SelectItem value="50">
-                                            50 Minuten
+                                            50 {{ $t('app.minutes') }}
                                         </SelectItem>
                                         <SelectItem value="60">
-                                            1:00 Stunde
+                                            1:00 {{ $t('app.hour') }}
                                         </SelectItem>
                                         <SelectItem value="90">
-                                            1:30 Stunde
+                                            1:30 {{ $t('app.hour') }}
                                         </SelectItem>
                                         <SelectItem value="120">
-                                            2:00 Stunden
+                                            2:00 {{ $t('app.hours') }}
                                         </SelectItem>
                                         <SelectItem value="150">
-                                            2:30 Stunden
+                                            2:30 {{ $t('app.hours') }}
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
                             <div class="mt-4" v-if="stopTimeResetCheck">
                                 <p class="mb-2 text-sm leading-none">
-                                    Pausenzeit stoppen nach:
+                                    {{ $t('app.stop break time after:') }}
                                 </p>
                                 <Select v-model="form.stopBreakTimeReset">
                                     <SelectTrigger>
                                         <SelectValue placeholder="Zeit" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="0">Nie</SelectItem>
+                                        <SelectItem value="0">
+                                            {{ $t('app.never') }}
+                                        </SelectItem>
                                         <SelectItem value="5">
-                                            5 Minuten
+                                            5 {{ $t('app.minutes') }}
                                         </SelectItem>
                                         <SelectItem value="10">
-                                            10 Minuten
+                                            10 {{ $t('app.minutes') }}
                                         </SelectItem>
                                         <SelectItem value="20">
-                                            20 Minuten
+                                            20 {{ $t('app.minutes') }}
                                         </SelectItem>
                                         <SelectItem value="30">
-                                            30 Minuten
+                                            30 {{ $t('app.minutes') }}
                                         </SelectItem>
                                         <SelectItem value="40">
-                                            40 Minuten
+                                            40 {{ $t('app.minutes') }}
                                         </SelectItem>
                                         <SelectItem value="50">
-                                            50 Minuten
+                                            50 {{ $t('app.minutes') }}
                                         </SelectItem>
                                         <SelectItem value="60">
-                                            1:00 Stunde
+                                            1:00 {{ $t('app.hour') }}
                                         </SelectItem>
                                         <SelectItem value="90">
-                                            1:30 Stunde
+                                            1:30 {{ $t('app.hour') }}
                                         </SelectItem>
                                         <SelectItem value="120">
-                                            2:00 Stunden
+                                            2:00 {{ $t('app.hours') }}
                                         </SelectItem>
                                         <SelectItem value="150">
-                                            2:30 Stunden
+                                            2:30 {{ $t('app.hours') }}
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>

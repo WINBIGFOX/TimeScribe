@@ -8,7 +8,7 @@ import { Absence, Timestamp } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { useColorMode } from '@vueuse/core';
 import { Modal } from 'inertia-modal';
-import moment from 'moment';
+import moment from 'moment/min/moment-with-locales';
 
 const props = defineProps<{
     date: string;
@@ -42,7 +42,8 @@ useColorMode();
         class="flex h-10 shrink-0 items-center justify-center font-medium"
         style="-webkit-app-region: drag"
     >
-        Montag {{ props.date }}
+        {{ moment(props.date, 'DD.MM.YYYY').format('dddd') }}
+        {{ moment(props.date, 'DD.MM.YYYY').format('L') }}
     </div>
     <div class="flex grow flex-col overflow-hidden select-none">
         <Timeline

@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from 'clsx';
+import moment from 'moment/min/moment-with-locales';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -43,6 +44,28 @@ export function secToFormat(
     return output;
 }
 
-export function insertColon(str: string, index: number) {
-    return str.substring(0, index) + ':' + str.substring(index);
+export function localeWeekdays() {
+    const weekdaysKeys = [
+        'sunday',
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+    ];
+    const weekdaysName = moment.weekdays();
+    const weekdaysMin = moment.weekdaysMin();
+
+    const weekdays = weekdaysName.map((day, index) => ({
+        name: day,
+        short: weekdaysMin[index],
+        key: weekdaysKeys[index],
+    }));
+
+    weekdays.push(
+        weekdays.shift() as { name: string; short: string; key: string },
+    );
+
+    return weekdays;
 }

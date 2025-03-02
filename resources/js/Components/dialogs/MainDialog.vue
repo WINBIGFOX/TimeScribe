@@ -138,11 +138,13 @@ const internalSubmit = () => {
                                         class="mr-2 h-4 w-4 animate-spin"
                                         v-if="props.loading"
                                     />
-                                    Aktionen
+                                    {{ $t('app.actions') }}
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
-                                <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
+                                <DropdownMenuLabel
+                                    >{{ $t('app.actions') }}
+                                </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem @click="$emit('edit')">
                                     <Edit class="mr-2 h-4 w-4" />
@@ -260,11 +262,13 @@ const internalSubmit = () => {
                                         class="mr-2 h-4 w-4 animate-spin"
                                         v-if="props.loading"
                                     />
-                                    Aktionen
+                                    {{ $t('app.actions') }}
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
-                                <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
+                                <DropdownMenuLabel>
+                                    {{ $t('app.actions') }}
+                                </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem @click="$emit('edit')">
                                     <Edit class="mr-2 h-4 w-4" />

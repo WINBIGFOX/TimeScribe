@@ -16,13 +16,13 @@ const props = defineProps<{
     >
         <div v-if="props.duration">
             {{ props.duration }}
-            Minuten
+            {{ $t('app.minutes') }}
         </div>
         <div
             class="hover:bg-muted-foreground/10 active:bg-muted-foreground/20 flex items-center gap-1 rounded px-2 py-1 transition-colors"
         >
             <Plus class="size-4" />
-            Zeit hinzufügen
+            {{ $t('app.add time') }}
         </div>
     </div>
 </template>

@@ -12,6 +12,7 @@ import { secToFormat } from '@/lib/utils';
 import { Timestamp } from '@/types';
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { BriefcaseBusiness, Coffee } from 'lucide-vue-next';
+import moment from 'moment/min/moment-with-locales';
 import { ref } from 'vue';
 
 const props = defineProps<{
@@ -66,9 +67,9 @@ const destroy = () => {
     <MainDialog
         :loading="form.processing"
         @submit="submit"
-        close="Abbrechen"
-        submit="Speichern"
-        destroy="Entfernen"
+        :close="$t('app.cancel')"
+        :submit="$t('app.save')"
+        :destroy="$t('app.remove')"
         @destroy="destroy"
     >
         <template #title>
@@ -89,24 +90,36 @@ const destroy = () => {
                         v-if="props.timestamp.type === 'break'"
                     />
                 </div>
-                {{ props.timestamp.type === 'work' ? 'Arbeitszeit' : 'Pause' }}
-                bearbeiten
+                {{
+                    $t('app.edit :item', {
+                        item: $t(
+                            props.timestamp.type === 'work'
+                                ? 'app.work hours'
+                                : 'app.break',
+                        ),
+                    })
+                }}
             </div>
         </template>
         <div class="divide divide-accent mb-4 space-y-4 divide-y">
             <div class="flex items-center pb-4">
                 <div class="mt-4 flex flex-1 gap-2">
-                    Start um:
+                    {{ $t('app.start at:') }}
                     <div class="w-20 shrink-0 text-right font-medium">
                         {{
-                            secToFormat(
-                                startTimeHour * 3600 + startTimeMinute * 60,
-                                false,
-                                true,
-                                true,
-                            )
+                            $t('app.:time', {
+                                time: moment(
+                                    secToFormat(
+                                        startTimeHour * 3600 +
+                                            startTimeMinute * 60,
+                                        false,
+                                        true,
+                                        true,
+                                    ),
+                                    'HH:mm',
+                                ).format('LT'),
+                            })
                         }}
-                        Uhr
                     </div>
                 </div>
                 <div class="flex flex-1 gap-2">
@@ -118,7 +131,7 @@ const destroy = () => {
                         :max="23"
                         class="flex-1"
                     >
-                        <Label for="startHour">Stunde</Label>
+                        <Label for="startHour">{{ $t('app.hour') }}</Label>
                         <NumberFieldContent>
                             <NumberFieldDecrement />
                             <NumberFieldInput />
@@ -133,7 +146,7 @@ const destroy = () => {
                         :max="59"
                         class="flex-1"
                     >
-                        <Label for="startMin">Minute</Label>
+                        <Label for="startMin">{{ $t('app.minute') }}</Label>
                         <NumberFieldContent>
                             <NumberFieldDecrement />
                             <NumberFieldInput />
@@ -144,17 +157,21 @@ const destroy = () => {
             </div>
             <div class="flex items-center">
                 <div class="mt-4 flex flex-1 gap-2">
-                    Ende um:
+                    {{ $t('app.end at:') }}
                     <div class="w-20 shrink-0 text-right font-medium">
                         {{
-                            secToFormat(
-                                endTimeHour * 3600 + endTimeMinute * 60,
-                                false,
-                                true,
-                                true,
-                            )
+                            $t('app.:time', {
+                                time: moment(
+                                    secToFormat(
+                                        endTimeHour * 3600 + endTimeMinute * 60,
+                                        false,
+                                        true,
+                                        true,
+                                    ),
+                                    'HH:mm',
+                                ).format('LT'),
+                            })
                         }}
-                        Uhr
                     </div>
                 </div>
                 <div class="flex flex-1 gap-2">
@@ -166,7 +183,7 @@ const destroy = () => {
                         :max="23"
                         class="flex-1"
                     >
-                        <Label for="endHour">Stunde</Label>
+                        <Label for="endHour">{{ $t('app.hour') }}</Label>
                         <NumberFieldContent>
                             <NumberFieldDecrement />
                             <NumberFieldInput />
@@ -181,7 +198,7 @@ const destroy = () => {
                         :max="59"
                         class="flex-1"
                     >
-                        <Label for="endMinute">Minute</Label>
+                        <Label for="endMinute">{{ $t('app.minute') }}</Label>
                         <NumberFieldContent>
                             <NumberFieldDecrement />
                             <NumberFieldInput />

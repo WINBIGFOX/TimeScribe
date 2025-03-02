@@ -7,6 +7,7 @@ import {
 } from '@/Components/ui/tooltip';
 import { Timestamp } from '@/types';
 import { BriefcaseBusiness, Coffee } from 'lucide-vue-next';
+import moment from 'moment/min/moment-with-locales';
 import { ref } from 'vue';
 
 const props = withDefaults(
@@ -115,6 +116,19 @@ const dragLeave = () => {
         dragReset();
     }
 };
+
+const indexToTimeFormat = (index: number, withoutMinutesBy12H?: boolean) => {
+    const time = moment(
+        (index > 100 ? index.toString().slice(0, -2) : '0') +
+            ':' +
+            (index > 10 ? index.toString().slice(-2) : '00'),
+        'H:mm',
+    )
+        .format('LT')
+        .replace(/^0([0-9])/g, '$1');
+
+    return withoutMinutesBy12H ? time.replace(/:00 (PM|AM)/, ' $1') : time;
+};
 </script>
 
 <template>
@@ -155,13 +169,7 @@ const dragLeave = () => {
                     </TooltipTrigger>
                     <TooltipContent side="bottom">
                         <div>
-                            {{
-                                index > 100
-                                    ? index.toString().slice(0, -2)
-                                    : '0'
-                            }}:{{
-                                index > 10 ? index.toString().slice(-2) : '00'
-                            }}
+                            {{ indexToTimeFormat(index) }}
                         </div>
                         <div class="flex justify-center">
                             <BriefcaseBusiness
@@ -213,7 +221,11 @@ const dragLeave = () => {
                     'pl-1': index !== 13,
                 }"
             >
-                {{ index < 13 ? (index - 1) * 2 + ':00' : '' }}
+                {{
+                    index < 13
+                        ? indexToTimeFormat((index - 1) * 2 * 100, true)
+                        : ''
+                }}
             </div>
         </div>
     </div>

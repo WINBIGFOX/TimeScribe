@@ -15,8 +15,6 @@ import {
 import moment from 'moment/min/moment-with-locales';
 import { computed } from 'vue';
 
-moment.locale('de');
-
 const props = defineProps<{
     absences: Absence[];
     holidays: Date[];
@@ -154,7 +152,7 @@ useColorMode();
         class="sticky top-0 flex h-10 shrink-0 items-center justify-center font-medium"
         style="-webkit-app-region: drag"
     >
-        Abwesenheiten
+        {{ $t('app.absences') }}
     </div>
     <div class="flex items-center justify-between px-4 py-2 select-none">
         <div class="text-3xl font-bold">
@@ -170,7 +168,7 @@ useColorMode();
                 <ChevronLeft />
             </Button>
             <Button class="h-6 font-light" variant="outline" @click="setToday">
-                Heute
+                {{ $t('app.today') }}
             </Button>
             <Button
                 size="icon"
@@ -226,7 +224,7 @@ useColorMode();
                             class="bg-muted text-muted-foreground mt-1 ml-1 flex items-center gap-1 rounded-full px-2 text-sm"
                         >
                             <BriefcaseBusiness class="size-4" />
-                            {{ workdaysPlan[dayIndex] }} Std.
+                            {{ workdaysPlan[dayIndex] }} {{ $t('app.h') }}
                         </div>
                     </div>
                     <Drama class="mt-1 ml-1 size-5" v-else />
@@ -283,7 +281,7 @@ useColorMode();
                         "
                     >
                         <Trash class="size-5" />
-                        Entfernen
+                        {{ $t('app.remove') }}
                     </div>
                     <div
                         class="text-background flex items-center gap-2 rounded-full bg-emerald-500 px-2 py-1 pr-3"
@@ -293,7 +291,7 @@ useColorMode();
                         "
                     >
                         <TreePalm class="size-5" />
-                        Urlaub
+                        {{ $t('app.leave') }}
                     </div>
 
                     <div
@@ -303,7 +301,7 @@ useColorMode();
                         "
                     >
                         <Cross class="size-5" />
-                        Krank
+                        {{ $t('app.sick') }}
                     </div>
                 </div>
             </div>

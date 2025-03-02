@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@/Components/ui/button';
-import { insertColon, secToFormat } from '@/lib/utils';
+import { secToFormat } from '@/lib/utils';
 import { Timestamp } from '@/types';
 import { Link, router, usePoll } from '@inertiajs/vue3';
 import {
@@ -11,7 +11,7 @@ import {
     Timer,
     Trash,
 } from 'lucide-vue-next';
-import moment from 'moment/moment';
+import moment from 'moment/min/moment-with-locales';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -71,45 +71,41 @@ const destroy = () => {
                 }}
             </span>
             <span class="text-muted-foreground text-xs">
-                {{ duration > 59 ? 'Std.' : 's' }}
+                {{ duration > 59 ? $t('app.h') : $t('app.s') }}
             </span>
         </div>
 
         <div class="ml-2 flex shrink-0 items-center gap-2">
-            <div class="flex w-12 flex-col items-center gap-1">
+            <div class="flex min-w-16 flex-col items-center gap-1">
                 <span class="text-muted-foreground text-xs leading-none">
-                    Start
+                    {{ $t('app.start') }}
                 </span>
                 <span class="leading-none font-medium">
                     {{
-                        insertColon(
+                        moment(
                             props.timestamp.started_at.formatted,
-                            props.timestamp.started_at.formatted.length > 3
-                                ? 2
-                                : 1,
-                        )
+                            'Hmm',
+                        ).format('LT')
                     }}
                 </span>
             </div>
             <MoveRight class="text-muted-foreground size-4" />
             <div
-                class="flex w-12 flex-col items-center gap-1"
+                class="flex min-w-16 flex-col items-center gap-1"
                 v-if="props.timestamp.ended_at"
             >
                 <span class="text-muted-foreground text-xs leading-none">
-                    Ende
+                    {{ $t('app.end') }}
                 </span>
                 <span class="leading-none font-medium">
                     {{
-                        insertColon(
+                        moment(
                             (
                                 props.timestamp.ended_at ??
                                 props.timestamp.last_ping_at
-                            )?.formatted ?? '',
-                            props.timestamp.ended_at.formatted.length > 3
-                                ? 2
-                                : 1,
-                        )
+                            )?.formatted,
+                            'Hmm',
+                        ).format('LT')
                     }}
                 </span>
             </div>
@@ -120,7 +116,7 @@ const destroy = () => {
                 <div
                     class="size-3 shrink-0 animate-pulse rounded-full bg-red-500"
                 />
-                Jetzt
+                {{ $t('app.now') }}
             </div>
         </div>
         <div class="flex-1 text-right" v-if="props.timestamp.ended_at">

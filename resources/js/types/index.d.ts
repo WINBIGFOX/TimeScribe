@@ -36,4 +36,6 @@ export interface Absence {
 
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
-> = T & {};
+> = T & {
+    locale: string;
+};

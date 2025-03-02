@@ -113,7 +113,7 @@ const { state } = useColorMode();
                         'text-[0.50rem]': props.currentType === 'break',
                     }"
                 >
-                    Arbeitszeit
+                    {{ $t('app.work hours') }}
                 </div>
             </div>
             <transition
@@ -136,7 +136,7 @@ const { state } = useColorMode();
                     <div
                         class="text-muted-foreground text-[0.70rem] uppercase transition-all duration-1000"
                     >
-                        Pause
+                        {{ $t('app.break') }}
                     </div>
                 </div>
             </transition>
@@ -157,7 +157,7 @@ const { state } = useColorMode();
                     size="sm"
                 >
                     <ChartPie />
-                    Übersicht
+                    {{ $t('app.overview') }}
                 </Button>
                 <Button
                     :as="Link"
@@ -173,7 +173,7 @@ const { state } = useColorMode();
                     size="sm"
                 >
                     <CalendarDays />
-                    Abwesenheiten
+                    {{ $t('app.absences') }}
                 </Button>
             </div>
             <div class="bg-muted flex gap-2 p-2">
@@ -188,7 +188,7 @@ const { state } = useColorMode();
                     size="lg"
                 >
                     <Play />
-                    Starten
+                    {{ $t('app.start') }}
                 </Button>
                 <Button
                     :as="Link"
@@ -202,7 +202,7 @@ const { state } = useColorMode();
                     variant="destructive"
                 >
                     <Square />
-                    Stoppen
+                    {{ $t('app.stop') }}
                 </Button>
                 <Button
                     :as="Link"
@@ -216,7 +216,7 @@ const { state } = useColorMode();
                     variant="outline"
                 >
                     <Coffee />
-                    Pause
+                    {{ $t('app.break') }}
                 </Button>
                 <Button
                     :as="Link"
@@ -229,7 +229,7 @@ const { state } = useColorMode();
                     size="lg"
                 >
                     <Play />
-                    Weiter
+                    {{ $t('app.continue') }}
                 </Button>
             </div>
         </div>

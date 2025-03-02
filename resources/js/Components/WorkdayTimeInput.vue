@@ -30,8 +30,8 @@ watch(active, (newVal) => {
 </script>
 
 <template>
-    <div class="h-10 flex items-center justify-between space-x-4">
-        <p class="text-sm font-medium leading-none">{{ props.workday }}</p>
+    <div class="flex h-10 items-center justify-between space-x-4">
+        <p class="text-sm leading-none font-medium">{{ props.workday }}</p>
         <div class="flex items-center gap-4">
             <NumberField
                 v-if="active"
@@ -44,7 +44,7 @@ watch(active, (newVal) => {
                     style: 'decimal',
                     minimumFractionDigits: 1,
                 }"
-                locale="de-DE"
+                :locale="$page.props.locale"
             >
                 <NumberFieldContent>
                     <NumberFieldDecrement />

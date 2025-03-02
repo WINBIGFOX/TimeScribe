@@ -1,5 +1,9 @@
 import './bootstrap';
 
+// prettier-ignore
+import { i18nVue } from 'laravel-vue-i18n';
+
+import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { modal } from 'inertia-modal';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -8,11 +12,14 @@ import { ZiggyVue } from 'ziggy-js';
 
 createInertiaApp({
     title: (title) => title,
-    resolve: (name) =>
-        resolvePageComponent(
+    resolve: async (name) => {
+        const page = await resolvePageComponent(
             `./Pages/${name}.vue`,
             import.meta.glob<DefineComponent>('./Pages/**/*.vue'),
-        ),
+        );
+        page.default.layout = DefaultLayout;
+        return page;
+    },
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(modal, {
@@ -24,6 +31,13 @@ createInertiaApp({
             })
             .use(plugin)
             .use(ZiggyVue)
+            .use(i18nVue, {
+                fallbackLang: 'en',
+                resolve: async (lang: string) => {
+                    const languages = import.meta.glob('../../lang/*.json');
+                    return await languages[`../../lang/${lang}.json`]();
+                },
+            })
             .mount(el);
     },
     progress: {

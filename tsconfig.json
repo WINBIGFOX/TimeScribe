@@ -1,5 +1,12 @@
 {
     "compilerOptions": {
+        "lib": [
+            "ESNext",
+            "dom"
+        ],
+        "types": [
+            "node"
+        ],
         "allowJs": true,
         "module": "ESNext",
         "moduleResolution": "bundler",
@@ -26,6 +33,7 @@
     },
     "include": [
         "resources/js/**/*.ts",
+        "resources/js/**/*.d.ts",
         "resources/js/**/*.vue"
     ]
 }

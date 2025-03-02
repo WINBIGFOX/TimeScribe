@@ -57,7 +57,8 @@ const percentageOverTime = computed(() => {
         <div
             class="border-muted bg-background text-muted-foreground rounded-t-lg border text-center text-xs"
         >
-            {{ props.plan.toLocaleString('de') }} Std.
+            {{ props.plan.toLocaleString($page.props.locale) }}
+            {{ $t('app.h') }}
         </div>
         <div class="bg-muted relative grow overflow-hidden rounded-b-lg">
             <div
@@ -91,7 +92,7 @@ const percentageOverTime = computed(() => {
                     v-if="props.absences[0].type === 'vacation'"
                 >
                     <TreePalm class="size-4 shrink-0" />
-                    Urlaub
+                    {{ $t('app.leave') }}
                 </div>
 
                 <div
@@ -99,7 +100,7 @@ const percentageOverTime = computed(() => {
                     v-if="props.absences[0].type === 'sick'"
                 >
                     <Cross class="size-4 shrink-0" />
-                    Krank
+                    {{ $t('app.sick') }}
                 </div>
             </div>
             <div

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Events\LocaleChanged;
 use App\Http\Requests\StoreSettingsRequest;
 use App\Jobs\CalculateWeekBalance;
 use Inertia\Inertia;
@@ -25,6 +26,7 @@ class SettingsController extends Controller
             'stopBreakAutomaticActivationTime' => Settings::get('stopBreakAutomaticActivationTime'),
             'stopWorkTimeReset' => Settings::get('stopWorkTimeReset'),
             'stopBreakTimeReset' => Settings::get('stopBreakTimeReset'),
+            'locale' => Settings::get('locale'),
         ]);
     }
 
@@ -43,6 +45,11 @@ class SettingsController extends Controller
         Settings::set('stopBreakAutomaticActivationTime', $data['stopBreakAutomaticActivationTime']);
         Settings::set('stopWorkTimeReset', (int) $data['stopWorkTimeReset']);
         Settings::set('stopBreakTimeReset', (int) $data['stopBreakTimeReset']);
+
+        if ($data['locale'] !== Settings::get('locale')) {
+            Settings::set('locale', $data['locale']);
+            LocaleChanged::broadcast();
+        }
 
         CalculateWeekBalance::dispatch();
 

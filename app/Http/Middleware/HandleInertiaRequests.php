@@ -6,6 +6,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Native\Laravel\Facades\Settings;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -33,6 +34,7 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
+            'locale' => Settings::get('locale', config('app.fallback_locale')),
         ];
     }
 }

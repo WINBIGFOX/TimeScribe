@@ -2,7 +2,7 @@
 import { Calendar } from '@/Components/ui/calendar';
 import WeekdayColumn from '@/Components/WeekdayColumn.vue';
 import WorktimeProgressBar from '@/Components/WorktimeProgressBar.vue';
-import { secToFormat } from '@/lib/utils';
+import { localeWeekdays, secToFormat } from '@/lib/utils';
 import { Date, WeekdayObject } from '@/types';
 import { Head, router, usePoll } from '@inertiajs/vue3';
 import { CalendarDate, type DateValue } from '@internationalized/date';
@@ -94,12 +94,11 @@ const openDayView = (date: string) => {
 
 <template>
     <Head title="Overview" />
-
     <div
         class="sticky top-0 flex h-10 shrink-0 items-center justify-center font-medium"
         style="-webkit-app-region: drag"
     >
-        Übersicht
+        {{ $t('app.overview') }}
         <div
             class="absolute top-0 right-2 bottom-0 flex items-center font-normal"
         >
@@ -108,7 +107,7 @@ const openDayView = (date: string) => {
             >
                 <ArrowLeftToLine class="size-3.5" />
                 <span class="mr-2 flex h-full items-center">
-                    KW {{ props.lastCalendarWeek }}
+                    {{ $t('app.cw') }} {{ props.lastCalendarWeek }}
                 </span>
                 <div
                     :class="{
@@ -137,60 +136,27 @@ const openDayView = (date: string) => {
                 :is-date-unavailable="isDateUnavailable"
                 v-model="selectedDate"
                 :highlighted="props.weekDatesWithTimestamps"
-                locale="de-DE"
+                :locale="$page.props.locale"
             />
         </div>
         <div class="flex grow flex-col">
             <div class="flex grow justify-between">
                 <WeekdayColumn
-                    @click="setVisitDate(props.weekdays.monday.date.date)"
-                    @dblclick="openDayView(props.weekdays.monday.date.date)"
-                    weekday-name="Mo"
-                    :weekday="props.weekdays.monday"
-                />
-
-                <WeekdayColumn
-                    @click="setVisitDate(props.weekdays.tuesday.date.date)"
-                    @dblclick="openDayView(props.weekdays.tuesday.date.date)"
-                    weekday-name="Di"
-                    :weekday="props.weekdays.tuesday"
-                />
-                <WeekdayColumn
-                    @click="setVisitDate(props.weekdays.wednesday.date.date)"
-                    @dblclick="openDayView(props.weekdays.wednesday.date.date)"
-                    weekday-name="Mi"
-                    :weekday="props.weekdays.wednesday"
-                />
-                <WeekdayColumn
-                    @click="setVisitDate(props.weekdays.thursday.date.date)"
-                    @dblclick="openDayView(props.weekdays.thursday.date.date)"
-                    weekday-name="Do"
-                    :weekday="props.weekdays.thursday"
-                />
-                <WeekdayColumn
-                    @click="setVisitDate(props.weekdays.friday.date.date)"
-                    @dblclick="openDayView(props.weekdays.friday.date.date)"
-                    weekday-name="Fr"
-                    :weekday="props.weekdays.friday"
-                />
-                <WeekdayColumn
-                    @click="setVisitDate(props.weekdays.saturday.date.date)"
-                    @dblclick="openDayView(props.weekdays.saturday.date.date)"
-                    weekday-name="Sa"
-                    :weekday="props.weekdays.saturday"
-                />
-                <WeekdayColumn
-                    @click="setVisitDate(props.weekdays.sunday.date.date)"
-                    @dblclick="openDayView(props.weekdays.sunday.date.date)"
-                    weekday-name="So"
-                    :weekday="props.weekdays.sunday"
+                    :key="weekday.key"
+                    v-for="weekday in localeWeekdays()"
+                    @click="setVisitDate(props.weekdays[weekday.key].date.date)"
+                    @dblclick="
+                        openDayView(props.weekdays[weekday.key].date.date)
+                    "
+                    :weekday-name="weekday.short"
+                    :weekday="props.weekdays[weekday.key]"
                 />
             </div>
         </div>
         <div class="mx-4 flex w-14 flex-col gap-4">
             <div class="flex h-14 flex-col items-center">
                 <span class="text-muted-foreground leading-none font-medium">
-                    Woche
+                    {{ $t('app.week') }}
                 </span>
                 <span
                     class="text-foreground mt-0.5 flex grow items-center text-3xl leading-none font-bold"

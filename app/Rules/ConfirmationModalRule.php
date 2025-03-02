@@ -12,9 +12,12 @@ class ConfirmationModalRule implements ValidationRule
     public function __construct(
         private readonly string $title,
         private readonly string $description,
-        private readonly string $confirmButtonText = 'Bestätigen',
-        private readonly string $cancelButtonText = 'Abbrechen'
-    ) {}
+        private ?string $confirmButtonText = null,
+        private ?string $cancelButtonText = null,
+    ) {
+        $this->confirmButtonText = $confirmButtonText ?? __('app.confirm');
+        $this->cancelButtonText = $cancelButtonText ?? __('app.cancel');
+    }
 
     /**
      * Run the validation rule.

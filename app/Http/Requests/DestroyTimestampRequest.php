@@ -27,9 +27,9 @@ class DestroyTimestampRequest extends FormRequest
         return [
             'confirm' => [
                 new ConfirmationModalRule(
-                    title: 'Bist du dir wirklich sicher?',
-                    description: 'Möchtest du diesen Eintrag entfernen?',
-                    confirmButtonText: 'Entfernen',
+                    title: __('app.are you really sure?'),
+                    description: __('app.do you want to remove this entry?'),
+                    confirmButtonText: __('app.remove'),
                 ),
             ],
         ];

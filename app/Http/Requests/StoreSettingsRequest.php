@@ -39,6 +39,7 @@ class StoreSettingsRequest extends FormRequest
             'stopBreakAutomaticActivationTime' => ['nullable', 'integer', 'min:13', 'max:23'],
             'stopWorkTimeReset' => ['nullable', 'string'],
             'stopBreakTimeReset' => ['nullable', 'string'],
+            'locale' => ['required', 'string', 'regex:/^[a-z]{2}-[A-Z]{2}$/'],
         ];
     }
 }
