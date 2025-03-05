@@ -33,7 +33,7 @@ const props = defineProps<{
 
 const calendar = computed(() => {
     const startMonth = momentSelectedDate.value.clone().startOf('month');
-    const startWeek = startMonth.clone().startOf('isoWeek');
+    const startWeek = startMonth.clone().startOf('week');
 
     const days = Array.from({ length: 6 * 7 }, (_, i) =>
         startWeek.clone().add(i, 'days'),
@@ -138,9 +138,15 @@ const holidays = computed(() =>
     ),
 );
 
-const workdaysPlan = computed(() => {
-    return Object.values(props.workdaysPlan);
-});
+const workdaysPlan = computed(() => [
+    props.workdaysPlan.sunday,
+    props.workdaysPlan.monday,
+    props.workdaysPlan.tuesday,
+    props.workdaysPlan.wednesday,
+    props.workdaysPlan.thursday,
+    props.workdaysPlan.friday,
+    props.workdaysPlan.saturday,
+]);
 
 useColorMode();
 </script>
@@ -206,7 +212,9 @@ useColorMode();
                 class="group relative flex flex-col gap-0.5 p-0.5"
                 :class="{
                     'bg-muted text-muted-foreground dark:bg-muted/50':
-                        dayIndex >= 5 || holidays[day.format('YYYY-MM-DD')],
+                        day.day() === 0 ||
+                        day.day() === 6 ||
+                        holidays[day.format('YYYY-MM-DD')],
                     'text-muted-foreground/50': !day.isSame(
                         momentSelectedDate,
                         'month',
@@ -216,7 +224,7 @@ useColorMode();
                 <div class="flex justify-between">
                     <div v-if="!holidays[day.format('YYYY-MM-DD')]">
                         <div
-                            v-if="workdaysPlan[dayIndex]"
+                            v-if="workdaysPlan[day.day()]"
                             :class="{
                                 'line-through decoration-red-500 decoration-2 opacity-25':
                                     absences[day.format('YYYY-MM-DD')],
@@ -224,7 +232,7 @@ useColorMode();
                             class="bg-muted text-muted-foreground mt-1 ml-1 flex items-center gap-1 rounded-full px-2 text-sm"
                         >
                             <BriefcaseBusiness class="size-4" />
-                            {{ workdaysPlan[dayIndex] }} {{ $t('app.h') }}
+                            {{ workdaysPlan[day.day()] }} {{ $t('app.h') }}
                         </div>
                     </div>
                     <Drama class="mt-1 ml-1 size-5" v-else />
@@ -250,7 +258,7 @@ useColorMode();
                     <Button
                         v-if="
                             !holidays[day.format('YYYY-MM-DD')] &&
-                            workdaysPlan[dayIndex]
+                            workdaysPlan[day.day()]
                         "
                         class="rounded-full"
                         variant="outline"

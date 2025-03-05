@@ -14,13 +14,13 @@
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10",
-        "nativephp/electron": "1.0.0-beta.3",
+        "nativephp/electron": "1.0.0-beta.4",
         "tightenco/ziggy": "^2.5",
-        "umulmrum/holiday": "^0.11.1"
+        "umulmrum/holiday": "^0.11.1",
+        "laravel-lang/lang": "^15.19"
     },
     "require-dev": {
         "fakerphp/faker": "^1.24",
-        "laravel-lang/lang": "^15.19",
         "laravel/breeze": "^2.3",
         "laravel/pail": "^1.2",
         "laravel/pint": "^1.21",
