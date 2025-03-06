@@ -2,10 +2,8 @@
 import WeekdayHeader from '@/Components/WeekdayHeader.vue';
 import WorktimeProgressBar from '@/Components/WorktimeProgressBar.vue';
 import { WeekdayObject } from '@/types';
-import moment from 'moment';
 
 const props = defineProps<{
-    weekdayName: string;
     weekday: WeekdayObject;
 }>();
 </script>
@@ -15,13 +13,7 @@ const props = defineProps<{
         class="hover:ring-offset-background hover:ring-primary/30 flex w-14 flex-col gap-4 rounded-lg transition-all hover:ring-2 hover:ring-offset-2"
     >
         <div>
-            <WeekdayHeader
-                :day="props.weekday.date.day"
-                :weekday-name="props.weekdayName"
-                :active="
-                    props.weekday.date.date === moment().format('YYYY-MM-DD')
-                "
-            />
+            <WeekdayHeader :date="props.weekday.date.date" />
         </div>
         <WorktimeProgressBar
             :plan="props.weekday.plan"

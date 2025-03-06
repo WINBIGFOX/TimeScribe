@@ -9,6 +9,8 @@ use App\Http\Resources\AbsenceResource;
 use App\Services\TimestampService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use DateInterval;
+use DatePeriod;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Native\Laravel\Facades\Window;
@@ -66,86 +68,23 @@ class OverviewController extends Controller
             }),
             'balance' => TimestampService::getBalance($startOfWeek),
             'lastCalendarWeek' => $date->copy()->subWeek()->weekOfYear,
-            'weekdays' => [
-                'monday' => [
-                    'plan' => TimestampService::getPlan('monday'),
-                    'fallbackPlan' => TimestampService::getFallbackPlan($startOfWeek),
-                    'date' => DateHelper::toResourceArray($startOfWeek),
-                    'workTime' => TimestampService::getWorkTime($startOfWeek),
-                    'breakTime' => TimestampService::getBreakTime($startOfWeek),
-                    'timestamps' => TimestampService::getTimestamps($startOfWeek),
-                    'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek),
-                    'activeWork' => TimestampService::getActiveWork($startOfWeek),
-                    'absences' => AbsenceResource::collection(TimestampService::getAbsence($startOfWeek)),
-                ],
-                'tuesday' => [
-                    'plan' => TimestampService::getPlan('tuesday'),
-                    'fallbackPlan' => TimestampService::getFallbackPlan($startOfWeek->copy()->addDay()),
-                    'date' => DateHelper::toResourceArray($startOfWeek->copy()->addDay()),
-                    'workTime' => TimestampService::getWorkTime($startOfWeek->copy()->addDay()),
-                    'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDay()),
-                    'timestamps' => TimestampService::getTimestamps($startOfWeek->copy()->addDay()),
-                    'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDay()),
-                    'activeWork' => TimestampService::getActiveWork($startOfWeek->copy()->addDay()),
-                    'absences' => AbsenceResource::collection(TimestampService::getAbsence($startOfWeek->copy()->addDay())),
-                ],
-                'wednesday' => [
-                    'plan' => TimestampService::getPlan('wednesday'),
-                    'fallbackPlan' => TimestampService::getFallbackPlan($startOfWeek->copy()->addDays(2)),
-                    'date' => DateHelper::toResourceArray($startOfWeek->copy()->addDays(2)),
-                    'workTime' => TimestampService::getWorkTime($startOfWeek->copy()->addDays(2)),
-                    'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDays(2)),
-                    'timestamps' => TimestampService::getTimestamps($startOfWeek->copy()->addDays(2)),
-                    'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDays(2)),
-                    'activeWork' => TimestampService::getActiveWork($startOfWeek->copy()->addDays(2)),
-                    'absences' => AbsenceResource::collection(TimestampService::getAbsence($startOfWeek->copy()->addDays(2))),
-                ],
-                'thursday' => [
-                    'plan' => TimestampService::getPlan('thursday'),
-                    'fallbackPlan' => TimestampService::getFallbackPlan($startOfWeek->copy()->addDays(3)),
-                    'date' => DateHelper::toResourceArray($startOfWeek->copy()->addDays(3)),
-                    'workTime' => TimestampService::getWorkTime($startOfWeek->copy()->addDays(3)),
-                    'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDays(3)),
-                    'timestamps' => TimestampService::getTimestamps($startOfWeek->copy()->addDays(3)),
-                    'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDays(3)),
-                    'activeWork' => TimestampService::getActiveWork($startOfWeek->copy()->addDays(3)),
-                    'absences' => AbsenceResource::collection(TimestampService::getAbsence($startOfWeek->copy()->addDays(3))),
-                ],
-                'friday' => [
-                    'plan' => TimestampService::getPlan('friday'),
-                    'fallbackPlan' => TimestampService::getFallbackPlan($startOfWeek->copy()->addDays(4)),
-                    'date' => DateHelper::toResourceArray($startOfWeek->copy()->addDays(4)),
-                    'workTime' => TimestampService::getWorkTime($startOfWeek->copy()->addDays(4)),
-                    'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDays(4)),
-                    'timestamps' => TimestampService::getTimestamps($startOfWeek->copy()->addDays(4)),
-                    'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDays(4)),
-                    'activeWork' => TimestampService::getActiveWork($startOfWeek->copy()->addDays(4)),
-                    'absences' => AbsenceResource::collection(TimestampService::getAbsence($startOfWeek->copy()->addDays(4))),
-                ],
-                'saturday' => [
-                    'plan' => TimestampService::getPlan('saturday'),
-                    'fallbackPlan' => TimestampService::getFallbackPlan($startOfWeek->copy()->addDays(5)),
-                    'date' => DateHelper::toResourceArray($startOfWeek->copy()->addDays(5)),
-                    'workTime' => TimestampService::getWorkTime($startOfWeek->copy()->addDays(5)),
-                    'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDays(5)),
-                    'timestamps' => TimestampService::getTimestamps($startOfWeek->copy()->addDays(5)),
-                    'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDays(5)),
-                    'activeWork' => TimestampService::getActiveWork($startOfWeek->copy()->addDays(5)),
-                    'absences' => AbsenceResource::collection(TimestampService::getAbsence($startOfWeek->copy()->addDays(5))),
-                ],
-                'sunday' => [
-                    'plan' => TimestampService::getPlan('sunday'),
-                    'fallbackPlan' => TimestampService::getFallbackPlan($startOfWeek->copy()->addDays(6)),
-                    'date' => DateHelper::toResourceArray($startOfWeek->copy()->addDays(6)),
-                    'workTime' => TimestampService::getWorkTime($startOfWeek->copy()->addDays(6)),
-                    'breakTime' => TimestampService::getBreakTime($startOfWeek->copy()->addDays(6)),
-                    'timestamps' => TimestampService::getTimestamps($startOfWeek->copy()->addDays(6)),
-                    'noWorkTime' => TimestampService::getNoWorkTime($startOfWeek->copy()->addDays(6)),
-                    'activeWork' => TimestampService::getActiveWork($startOfWeek->copy()->addDays(6)),
-                    'absences' => AbsenceResource::collection(TimestampService::getAbsence($startOfWeek->copy()->addDays(6))),
-                ],
-            ],
+            'weekdays' => collect(new DatePeriod($startOfWeek, new DateInterval('P1D'), $endOfWeek))->map(function (\DateTime $date) {
+                $date = Carbon::parse($date);
+
+                return [
+                    'plan' => TimestampService::getPlan(strtolower($date->format('l'))),
+                    'fallbackPlan' => TimestampService::getFallbackPlan($date),
+                    'date' => DateHelper::toResourceArray($date),
+                    'workTime' => TimestampService::getWorkTime($date),
+                    'breakTime' => TimestampService::getBreakTime($date),
+                    'timestamps' => TimestampService::getTimestamps($date),
+                    'noWorkTime' => TimestampService::getNoWorkTime($date),
+                    'activeWork' => TimestampService::getActiveWork($date),
+                    'absences' => AbsenceResource::collection(TimestampService::getAbsence($date)),
+                ];
+            })->toArray(),
         ]);
+
     }
 
     /**
