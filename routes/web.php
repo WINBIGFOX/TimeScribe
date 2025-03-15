@@ -44,3 +44,4 @@ Route::name('absence.')->prefix('absence')->group(function () {
 });
 
 Route::resource('timestamp', TimestampController::class)->only(['edit', 'update', 'destroy']);
+Route::post('timestamp/fill', [TimestampController::class, 'fill'])->name('timestamp.fill');

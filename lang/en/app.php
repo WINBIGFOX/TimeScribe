@@ -24,6 +24,8 @@ return [
     'end at:' => 'End at:',
     'english (UK)' => 'English (UK)',
     'english (US)' => 'English (US)',
+    'fill the gap' => 'Fill the gap',
+    'fill with' => 'Fill with',
     'forgotten stop' => 'Forgotten stop',
     'friday' => 'Friday',
     'from :time' => 'from :time',

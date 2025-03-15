@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DestroyTimestampRequest;
+use App\Http\Requests\FillTimestampRequest;
 use App\Http\Requests\StoreTimestampRequest;
 use App\Http\Requests\UpdateTimestampRequest;
 use App\Http\Resources\TimestampResource;
+use App\Jobs\CalculateWeekBalance;
 use App\Models\Timestamp;
 use Inertia\Inertia;
 
@@ -71,10 +73,31 @@ class TimestampController extends Controller
      */
     public function destroy(DestroyTimestampRequest $request, Timestamp $timestamp)
     {
-        $date = $timestamp->created_at->format('Y-m-d');
+        $date = $timestamp->started_at->format('Y-m-d');
         $request->validated();
         $timestamp->delete();
 
+        CalculateWeekBalance::dispatch();
+
         return redirect()->route('day.edit', ['date' => $date]);
+    }
+
+    public function fill(FillTimestampRequest $request)
+    {
+        $data = $request->validated();
+
+        $firstTimestamp = Timestamp::find($data['first_timestamp']);
+        $secondTimestamp = Timestamp::find($data['second_timestamp']);
+
+        Timestamp::create([
+            'type' => $data['fill_with'],
+            'started_at' => $firstTimestamp->ended_at,
+            'ended_at' => $secondTimestamp->started_at,
+            'last_ping_at' => $secondTimestamp->started_at,
+        ]);
+
+        CalculateWeekBalance::dispatch();
+
+        return redirect()->route('day.edit', ['date' => $firstTimestamp->created_at->format('Y-m-d')]);
     }
 }

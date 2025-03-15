@@ -97,6 +97,8 @@ useColorMode();
                     :key="timestamp.id"
                 >
                     <TimestampListPlaceholderItem
+                        :first-timestamp="props.timestamps[index - 1]"
+                        :second-timestamp="timestamp"
                         :duration="
                             calcDuration(
                                 timestamp.started_at.date,

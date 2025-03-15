@@ -24,6 +24,8 @@ return [
     'end at:' => 'Ende um:',
     'english (UK)' => 'Englisch (UK)',
     'english (US)' => 'Englisch (US)',
+    'fill the gap' => 'Lücke füllen',
+    'fill with' => 'Füllen mit',
     'forgotten stop' => 'Vergessener Stop',
     'friday' => 'Freitag',
     'from :time' => 'ab :time Uhr',
