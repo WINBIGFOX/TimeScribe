@@ -12,11 +12,11 @@
         "php": "^8.3",
         "emargareten/inertia-modal": "^1.5",
         "inertiajs/inertia-laravel": "^2.0",
-        "laravel/framework": "^12.0",
+        "laravel/framework": "^12.2",
         "laravel/tinker": "^2.10",
-        "nativephp/electron": "1.0.0-beta.4",
+        "nativephp/electron": "1.0.0-beta.5",
         "tightenco/ziggy": "^2.5",
-        "umulmrum/holiday": "^0.11.1",
+        "umulmrum/holiday": "^0.11.2",
         "laravel-lang/lang": "^15.19"
     },
     "require-dev": {
@@ -26,7 +26,7 @@
         "laravel/pint": "^1.21",
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.6",
+        "nunomaduro/collision": "^8.7",
         "pestphp/pest": "^3.7",
         "pestphp/pest-plugin-laravel": "^3.1"
     },
