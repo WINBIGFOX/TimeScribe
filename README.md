@@ -1,30 +1,18 @@
 # TimeScribe
 
-## Beschreibung
+## Description
 
-Dieses Repository bietet eine moderne und flexible Stempeluhr-App zur präzisen Erfassung und Verwaltung persönlicher
-Arbeitszeiten. Perfekt für jeden, der seine Arbeitsstunden genau im Blick behalten möchte – ob im Homeoffice oder im
-Büro.
+This repository offers a modern and flexible time clock app for accurately tracking and managing personal working hours. It's perfect for anyone who wants to keep a precise record of their work time, whether they're working from home or in an office.
 
 ## Funktionen
 
-- **Einfache Zeiterfassung**: Starte, stoppe und pausiere deine Arbeitszeit mit einem Klick.
-- **Übersichtliches Dashboard**: Behalte den Überblick über deine täglichen Arbeitsaktivitäten, inklusive Pausen.
-- **Anpassbare Arbeitspläne**: Passe deinen Wochenarbeitsplan individuell an.
-- **Feiertags-Integration**: Berücksichtigt regionale Feiertage für eine präzise Zeitplanung.
-- **Automatisierung**: Automatische Start-/Stopp-Funktionen für reibungsloses Timemanagement.
-- **Benachrichtigungen**: Erhalte Erinnerungen für Pausen und Arbeitszeiterfassungen.
-- **Auswertungen & Berichte (coming soon)**: Analysiere deine Arbeitsgewohnheiten mit grafischen Berichten.
-- **Export-Optionen (coming soon)**: Exportiere deine Zeiterfassungsdaten für die Weiterverwendung.
-- **Integration mit Kalendern (coming soon)**: Synchronisiere deine Arbeitszeiten mit gängigen Kalender-Apps.
-- **Datenschutz**: Deine Daten bleiben stets privat und sicher.
-- **Leichtgewichtig & Schnell**: Entwickelt für optimale Performance auf deinem Mac.
+TimeScribe lets you effortlessly start, stop, and pause your work time with just a click, ensuring a straightforward time tracking experience. The app provides an intuitive dashboard to monitor your daily activities, including breaks, and allows you to customize your weekly work schedule to suit your needs. It even accounts for regional public holidays, ensuring your time management is as precise as possible. With built-in automation features like automatic start/stop functions and notifications for breaks and work sessions, TimeScribe streamlines your time management. Upcoming features include detailed analytics and reports, export options for your tracking data, and integration with popular calendar apps. Prioritizing user privacy, your data remains secure and private, all while delivering lightweight, high-performance functionality tailored for macOS.
 
-Ideal für alle, die ihre Arbeitszeit effizient und unkompliziert tracken möchten!
+Ideal for anyone looking to track their work hours efficiently and effortlessly!
 
 ## Screenshots
 
-### Menübar
+### Menu Bar
 
 <p align="center">
 <picture >
@@ -35,7 +23,7 @@ Ideal für alle, die ihre Arbeitszeit effizient und unkompliziert tracken möcht
 <br/>
 </p>
 
-### Wochenansicht
+### Weekly Overview
 
 <p align="center">
 <picture>
@@ -44,7 +32,7 @@ Ideal für alle, die ihre Arbeitszeit effizient und unkompliziert tracken möcht
 </picture>
 </p>
 
-### Detailansicht
+### Detail View
 
 <p align="center">
 <picture >
@@ -53,7 +41,7 @@ Ideal für alle, die ihre Arbeitszeit effizient und unkompliziert tracken möcht
 </picture>
 </p>
 
-### Abwesenheitskalender
+### Absence Calendar
 
 <p align="center">
 <picture >
@@ -62,7 +50,7 @@ Ideal für alle, die ihre Arbeitszeit effizient und unkompliziert tracken möcht
 </picture>
 </p>
 
-### Einstellungen
+### Settings
 
 <p align="center">
 <picture >
@@ -81,20 +69,20 @@ Ideal für alle, die ihre Arbeitszeit effizient und unkompliziert tracken möcht
 
 ## Installation
 
-1. Repository klonen:
+1. Clone the repository:
    ```bash
    git clone https://github.com/WINBIGFOX/timescribe.git
     ```
-2. In das Projektverzeichnis wechseln:
+2. Navigate to the project directory:
    ```bash
    cd timescribe
     ```
-3. Abhängigkeiten installieren:
+3. Install dependencies:
    ```bash
    composer install
    npm install
     ```
-4. Mac Anwendung bauen:
+4. Build the macOS application:
    ```bash
    npm run build
    php artisan native:build mac
