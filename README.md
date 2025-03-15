@@ -27,8 +27,8 @@ Ideal for anyone looking to track their work hours efficiently and effortlessly!
 
 <p align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/overview.png?raw=true">
-  <img alt="Wochenansicht" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/overviewLight.png?raw=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/overview_en_dark.webp?raw=true">
+  <img alt="Wochenansicht" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/overview_en_light.webp?raw=true">
 </picture>
 </p>
 
@@ -36,8 +36,8 @@ Ideal for anyone looking to track their work hours efficiently and effortlessly!
 
 <p align="center">
 <picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/day.png?raw=true">
-  <img alt="Detailansicht" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/dayLight.png?raw=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/dayview_en_dark.webp?raw=true">
+  <img alt="Detailansicht" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/dayview_en_light.webp?raw=true">
 </picture>
 </p>
 
@@ -45,8 +45,8 @@ Ideal for anyone looking to track their work hours efficiently and effortlessly!
 
 <p align="center">
 <picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/absence.png?raw=true">
-  <img alt="Abwesenheitskalender" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/absenceLight.png?raw=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/absences_en_dark.webp?raw=true">
+  <img alt="Abwesenheitskalender" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/absences_en_light.webp?raw=true">
 </picture>
 </p>
 
@@ -54,16 +54,16 @@ Ideal for anyone looking to track their work hours efficiently and effortlessly!
 
 <p align="center">
 <picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings1.png?raw=true">
-  <img width="32%" alt="Einstellungen" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings1Light.png?raw=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings1_en_dark.webp?raw=true">
+  <img width="32%" alt="Einstellungen" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings1_en_light.webp?raw=true">
 </picture>
 <picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings2.png?raw=true">
-  <img width="32%" alt="Einstellungen" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings2Light.png?raw=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings2_en_dark.webp?raw=true">
+  <img width="32%" alt="Einstellungen" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings2_en_light.webp?raw=true">
 </picture>
 <picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings3.png?raw=true">
-  <img width="32%" alt="Einstellungen" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings3Light.png?raw=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings3_en_dark.webp?raw=true">
+  <img width="32%" alt="Einstellungen" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings3_en_light.webp?raw=true">
 </picture>
 </p>
 
