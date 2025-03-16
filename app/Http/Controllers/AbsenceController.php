@@ -11,6 +11,7 @@ use App\Http\Resources\AbsenceResource;
 use App\Models\Absence;
 use App\Services\TimestampService;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Inertia\Inertia;
 use Native\Laravel\Facades\Settings;
 
@@ -45,18 +46,54 @@ class AbsenceController extends Controller
      */
     public function show(string $date)
     {
+        $workdaysPlan = Settings::get('workdays', []);
         $date = Carbon::parse($date);
         $startDate = $date->clone()->subMonth();
         $endDate = $date->clone()->addMonth();
+        $absences = Absence::whereBetween('date', [$startDate, $endDate])->get();
+
+        $periode = CarbonPeriod::create($startDate, $endDate);
+
+        $dayOverviews = [];
+        foreach ($periode as $rangeDate) {
+            $plan = $workdaysPlan[strtolower($rangeDate->format('l'))] ?? 0;
+            if ($plan === 0) {
+                continue;
+            }
+            $workTime = TimestampService::getWorkTime($rangeDate);
+            $breakTime = TimestampService::getBreakTime($rangeDate);
+            $noWorkTime = TimestampService::getNoWorkTime($rangeDate);
+
+            if (! $workTime && ! $breakTime && ! $noWorkTime) {
+                continue;
+            }
+
+            $isAbsence = $absences->firstWhere('date', $rangeDate->format('Y-m-d 00:00:00'));
+
+            if ($isAbsence) {
+                $workTime = max($workTime - $plan * 3600, 0);
+                $plan = 0;
+            }
+
+            if (! $workTime) {
+                continue;
+            }
+
+            $dayOverviews[$rangeDate->format('Y-m-d')] = [
+                'planTime' => $plan * 3600,
+                'workTime' => $workTime,
+                'breakTime' => $breakTime,
+                'noWorkTime' => $noWorkTime,
+            ];
+        }
 
         return Inertia::render('Absence/Show', [
-            'absences' => AbsenceResource::collection(
-                Absence::whereBetween('date', [$startDate, $endDate])->get()
-            ),
+            'dayOverviews' => $dayOverviews,
+            'absences' => AbsenceResource::collection($absences),
             'holidays' => TimestampService::getHoliday([$startDate->year, $endDate->year])->map(function ($holidayDate) {
                 return DateHelper::toResourceArray($holidayDate);
             }),
-            'workdaysPlan' => Settings::get('workdays', []),
+            'workdaysPlan' => $workdaysPlan,
             'date' => $date->format('Y-m-d'),
         ]);
     }

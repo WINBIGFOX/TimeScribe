@@ -22,6 +22,7 @@ class SetLocaleMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $systemLocale = $request->server('HTTP_ACCEPT_LANGUAGE', config('app.fallback_locale'));
+        $systemLocale = preg_match('/^([a-zA]{2}[-_][A-Z]{2})/', $systemLocale, $matches) ? $matches[0] : config('app.fallback_locale');
         $locale = Settings::get('locale', $systemLocale);
 
         $locale = $this->parseLocale($locale);

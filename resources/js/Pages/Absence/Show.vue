@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import HourProgressbar from '@/Components/HourProgressbar.vue';
 import { Button } from '@/Components/ui/button';
 import { Absence, Date } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
@@ -16,6 +17,12 @@ import moment from 'moment/min/moment-with-locales';
 import { computed } from 'vue';
 
 const props = defineProps<{
+    dayOverviews: {
+        planTime: number;
+        workTime: number;
+        breakTime: number;
+        noWorkTime: number;
+    }[];
     absences: Absence[];
     holidays: Date[];
     workdaysPlan: Record<
@@ -148,7 +155,19 @@ const workdaysPlan = computed(() => [
     props.workdaysPlan.saturday,
 ]);
 
-useColorMode();
+const { state } = useColorMode();
+const openDayView = (date: string) => {
+    router.visit(
+        route('overview.edit', {
+            date,
+            darkMode: state.value === 'dark' ? 1 : 0,
+        }),
+        {
+            preserveScroll: true,
+            preserveState: true,
+        },
+    );
+};
 </script>
 
 <template>
@@ -220,6 +239,7 @@ useColorMode();
                         'month',
                     ),
                 }"
+                @dblclick="openDayView(day.format('YYYY-MM-DD'))"
             >
                 <div class="flex justify-between">
                     <div v-if="!holidays[day.format('YYYY-MM-DD')]">
@@ -252,8 +272,35 @@ useColorMode();
                     </div>
                 </div>
                 <div
+                    :key="day.format('YYYY-MM-DD')"
+                    class="px-1"
+                    v-if="
+                        props.dayOverviews[day.format('YYYY-MM-DD')] &&
+                        day.isSameOrBefore()
+                    "
+                >
+                    <HourProgressbar
+                        :plan-time="
+                            props.dayOverviews[day.format('YYYY-MM-DD')]
+                                .planTime
+                        "
+                        :work-time="
+                            props.dayOverviews[day.format('YYYY-MM-DD')]
+                                .workTime
+                        "
+                        :break-time="
+                            props.dayOverviews[day.format('YYYY-MM-DD')]
+                                .breakTime
+                        "
+                        :no-work-time="
+                            props.dayOverviews[day.format('YYYY-MM-DD')]
+                                .noWorkTime
+                        "
+                    />
+                </div>
+                <div
                     v-if="!absences[day.format('YYYY-MM-DD')]"
-                    class="text-foreground hidden items-center justify-center gap-2 group-hover:flex"
+                    class="text-foreground hidden h-full items-center justify-center gap-2 group-hover:flex"
                 >
                     <Button
                         v-if="
@@ -280,7 +327,7 @@ useColorMode();
                 </div>
                 <div
                     v-if="absences[day.format('YYYY-MM-DD')]"
-                    class="group/absence relative flex grow items-start justify-center text-sm"
+                    class="group/absence relative flex grow items-center justify-center text-sm"
                 >
                     <div
                         class="text-foreground absolute inset-x-1 top-0 bottom-1 flex items-center justify-center gap-2 rounded-lg opacity-0 backdrop-blur-3xl transition-all delay-200 duration-300 group-hover/absence:opacity-100"
