@@ -7,13 +7,13 @@ namespace App\Http\Controllers;
 use App\Helpers\DateHelper;
 use App\Http\Resources\AbsenceResource;
 use App\Services\TimestampService;
+use App\Services\WindowService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use DateInterval;
 use DatePeriod;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Native\Laravel\Facades\Window;
 
 class OverviewController extends Controller
 {
@@ -92,21 +92,8 @@ class OverviewController extends Controller
      */
     public function edit(string $date, bool $darkMode)
     {
-        Window::close('day-edit');
-
-        Window::open('day-edit')
-            ->rememberState()
-            ->maximizable(false)
-            ->fullscreen(false)
-            ->route('day.edit', ['date' => $date])
-            ->width(850)
-            ->height(415)
-            ->minWidth(700)
-            ->titleBarHidden()
-            ->resizable(true)
-            ->backgroundColor($darkMode ? '#020817' : '#ffffff')
-            ->fullscreenable(false)
-            ->showDevTools(false);
+        WindowService::closeDayEdit();
+        WindowService::openDayEdit($date, $darkMode);
     }
 
     /**

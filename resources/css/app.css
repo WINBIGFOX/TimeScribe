@@ -13,6 +13,46 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* latin */
+@font-face {
+    font-family: 'Lobster Two';
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url('fonts/LobsterTwo-Italic.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin */
+@font-face {
+    font-family: 'Lobster Two';
+    font-style: italic;
+    font-weight: 700;
+    font-display: swap;
+    src: url('fonts/LobsterTwo-BoldItalic.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin */
+@font-face {
+    font-family: 'Lobster Two';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('fonts/LobsterTwo-Regular.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin */
+@font-face {
+    font-family: 'Lobster Two';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('fonts/LobsterTwo-Bold.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 #app {
     height: 100dvh;
     display: flex;
@@ -34,6 +74,35 @@ html {
     }
 }
 
+.fade-backward-enter-active,
+.fade-backward-leave-active,
+.fade-forward-enter-active,
+.fade-forward-leave-active {
+    @apply transition-all duration-500 ease-in-out;
+}
+
+.fade-backward-enter-from,
+.fade-backward-leave-to,
+.fade-forward-enter-from,
+.fade-forward-leave-to {
+    opacity: 0;
+}
+
+.fade-forward-enter-from {
+    transform: translateX(20%);
+}
+
+.fade-forward-leave-to {
+    transform: translateX(-20%);
+}
+
+.fade-backward-enter-from {
+    transform: translateX(-20%);
+}
+
+.fade-backward-leave-to {
+    transform: translateX(20%);
+}
 
 @layer base {
     :root {
@@ -109,6 +178,7 @@ html {
 }
 
 @theme {
+    --font-lobster-two: 'Lobster Two';
     --color-border: hsl(var(--border));
     --color-input: hsl(var(--input));
     --color-ring: hsl(var(--ring));

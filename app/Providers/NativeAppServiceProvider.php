@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Services\WindowService;
 use Illuminate\Support\Str;
 use Native\Laravel\Contracts\ProvidesPhpIni;
 use Native\Laravel\Facades\Menu;
@@ -20,6 +21,10 @@ class NativeAppServiceProvider implements ProvidesPhpIni
     {
         if (! Settings::get('id')) {
             Settings::set('id', Str::uuid());
+        }
+
+        if (! Settings::get('workdays')) {
+            WindowService::openWelcome();
         }
 
         MenuBar::create()

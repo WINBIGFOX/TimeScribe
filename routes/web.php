@@ -8,7 +8,12 @@ use App\Http\Controllers\MenubarController;
 use App\Http\Controllers\OverviewController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TimestampController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('welcome', [WelcomeController::class, 'index'])->name('welcome.index');
+Route::patch('welcome', [WelcomeController::class, 'update'])->name('welcome.update');
+Route::get('welcome/finish/{openSettings?}', [WelcomeController::class, 'finish'])->name('welcome.finish');
 
 Route::name('menubar.')->prefix('menubar')->group(function () {
     Route::get('', [MenubarController::class, 'index'])->name('index');
@@ -23,6 +28,7 @@ Route::name('menubar.')->prefix('menubar')->group(function () {
 Route::name('settings.')->prefix('settings')->group(function () {
     Route::get('edit', [SettingsController::class, 'edit'])->name('edit');
     Route::patch('', [SettingsController::class, 'update'])->name('update');
+    Route::patch('locale', [SettingsController::class, 'updateLocale'])->name('updateLocale');
 });
 
 Route::name('overview.')->prefix('overview')->group(function () {

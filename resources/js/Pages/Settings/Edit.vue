@@ -68,7 +68,10 @@ const form = useForm({
 });
 
 const weekWorkTime = computed(() => {
-    return Object.values(form.workdays).reduce((acc, curr) => acc + curr, 0);
+    return Object.values(form.workdays).reduce(
+        (acc, curr) => (isNaN(curr) ? 0 : curr) + acc,
+        0,
+    );
 });
 
 const submit = () => {

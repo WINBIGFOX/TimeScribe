@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Events\LocaleChanged;
 use App\Http\Requests\StoreSettingsRequest;
+use App\Http\Requests\UpdateLocaleRequest;
 use App\Jobs\CalculateWeekBalance;
 use Inertia\Inertia;
 use Native\Laravel\Facades\Settings;
@@ -54,5 +55,14 @@ class SettingsController extends Controller
         CalculateWeekBalance::dispatch();
 
         return redirect()->route('settings.edit');
+    }
+
+    public function updateLocale(UpdateLocaleRequest $request)
+    {
+        $data = $request->validated();
+        if ($data['locale'] !== Settings::get('locale')) {
+            Settings::set('locale', $data['locale']);
+            LocaleChanged::broadcast();
+        }
     }
 }

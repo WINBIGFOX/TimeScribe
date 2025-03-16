@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import {Calendar} from '@/Components/ui/calendar';
+import { Calendar } from '@/Components/ui/calendar';
 import WeekdayColumn from '@/Components/WeekdayColumn.vue';
 import WorktimeProgressBar from '@/Components/WorktimeProgressBar.vue';
-import {secToFormat} from '@/lib/utils';
-import {Date, WeekdayObject} from '@/types';
-import {Head, router, usePoll} from '@inertiajs/vue3';
-import {CalendarDate, type DateValue} from '@internationalized/date';
-import {useColorMode} from '@vueuse/core';
-import {ArrowLeftToLine, ClockArrowDown, ClockArrowUp} from 'lucide-vue-next';
+import { secToFormat } from '@/lib/utils';
+import { Date, WeekdayObject } from '@/types';
+import { Head, router, usePoll } from '@inertiajs/vue3';
+import { CalendarDate, type DateValue } from '@internationalized/date';
+import { useColorMode } from '@vueuse/core';
+import { ArrowLeftToLine, ClockArrowDown, ClockArrowUp } from 'lucide-vue-next';
 import moment from 'moment';
-import {CalendarRootProps} from 'radix-vue';
-import {Ref, ref, watch} from 'vue';
+import { CalendarRootProps } from 'radix-vue';
+import { Ref, ref, watch } from 'vue';
 
 const props = defineProps<{
     date: string;
@@ -68,7 +68,7 @@ const isDateUnavailable: CalendarRootProps['isDateUnavailable'] = (
         .length > 0;
 usePoll(10000);
 
-const {state} = useColorMode();
+const { state } = useColorMode();
 
 const openDayView = (date: string) => {
     router.visit(
@@ -85,7 +85,7 @@ const openDayView = (date: string) => {
 </script>
 
 <template>
-    <Head title="Overview"/>
+    <Head title="Overview" />
     <div
         class="sticky top-0 flex h-10 shrink-0 items-center justify-center font-medium"
         style="-webkit-app-region: drag"
@@ -97,7 +97,7 @@ const openDayView = (date: string) => {
             <div
                 class="bg-muted text-muted-foreground flex h-6 items-center rounded-full p-[2px] pl-3 text-xs leading-none"
             >
-                <ArrowLeftToLine class="size-3.5"/>
+                <ArrowLeftToLine class="size-3.5" />
                 <span class="mr-2 flex h-full items-center">
                     {{ $t('app.cw') }} {{ props.lastCalendarWeek }}
                 </span>
@@ -137,9 +137,7 @@ const openDayView = (date: string) => {
                     :key="weekday.date.date"
                     v-for="weekday in props.weekdays"
                     @click="setVisitDate(weekday.date.date)"
-                    @dblclick="
-                        openDayView(weekday.date.date)
-                    "
+                    @dblclick="openDayView(weekday.date.date)"
                     :weekday="weekday"
                 />
             </div>
