@@ -53,13 +53,12 @@ class AbsenceController extends Controller
         $absences = Absence::whereBetween('date', [$startDate, $endDate])->get();
 
         $periode = CarbonPeriod::create($startDate, $endDate);
+        $holidays = TimestampService::getHoliday([$startDate->year, $endDate->year]);
 
         $dayOverviews = [];
         foreach ($periode as $rangeDate) {
             $plan = $workdaysPlan[strtolower($rangeDate->format('l'))] ?? 0;
-            if ($plan === 0) {
-                continue;
-            }
+
             $workTime = TimestampService::getWorkTime($rangeDate);
             $breakTime = TimestampService::getBreakTime($rangeDate);
             $noWorkTime = TimestampService::getNoWorkTime($rangeDate);
@@ -69,8 +68,9 @@ class AbsenceController extends Controller
             }
 
             $isAbsence = $absences->firstWhere('date', $rangeDate->format('Y-m-d 00:00:00'));
+            $isHoliday = $holidays->search($rangeDate->format('Y-m-d 00:00:00'));
 
-            if ($isAbsence) {
+            if ($isAbsence || $isHoliday) {
                 $workTime = max($workTime - $plan * 3600, 0);
                 $plan = 0;
             }
@@ -90,7 +90,7 @@ class AbsenceController extends Controller
         return Inertia::render('Absence/Show', [
             'dayOverviews' => $dayOverviews,
             'absences' => AbsenceResource::collection($absences),
-            'holidays' => TimestampService::getHoliday([$startDate->year, $endDate->year])->map(function ($holidayDate) {
+            'holidays' => $holidays->map(function ($holidayDate) {
                 return DateHelper::toResourceArray($holidayDate);
             }),
             'workdaysPlan' => $workdaysPlan,
