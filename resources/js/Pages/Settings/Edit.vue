@@ -91,7 +91,20 @@ const stopTimeResetCheck = ref(
 );
 
 const debouncedSubmit = useDebounceFn(submit, 500);
-watch(form, debouncedSubmit);
+watch(
+    () => [
+        form.workdays,
+        form.locale,
+        form.stopBreakTimeReset,
+        form.stopBreakAutomatic,
+        form.stopBreakAutomaticActivationTime,
+        form.stopWorkTimeReset,
+        form.startOnLogin,
+        form.showTimerOnUnlock,
+        form.holidayRegion,
+    ],
+    debouncedSubmit,
+);
 watch(holidayCheck, () => {
     if (holidayCheck.value === false) {
         form.holidayRegion = '';
@@ -150,7 +163,7 @@ const { store } = useColorMode();
                             {{ $t('app.start at login') }}
                         </p>
                     </div>
-                    <Switch v-model:checked="form.startOnLogin" disabled />
+                    <Switch v-model:checked="form.startOnLogin" />
                 </div>
                 <div class="flex items-start space-x-4 rounded-md border p-4">
                     <Languages />

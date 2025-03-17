@@ -9,6 +9,7 @@ use App\Http\Requests\StoreSettingsRequest;
 use App\Http\Requests\UpdateLocaleRequest;
 use App\Jobs\CalculateWeekBalance;
 use Inertia\Inertia;
+use Native\Laravel\Facades\App;
 use Native\Laravel\Facades\Settings;
 
 class SettingsController extends Controller
@@ -19,7 +20,7 @@ class SettingsController extends Controller
     public function edit()
     {
         return Inertia::render('Settings/Edit', [
-            'startOnLogin' => Settings::get('startOnLogin'),
+            'startOnLogin' => App::openAtLogin(),
             'showTimerOnUnlock' => Settings::get('showTimerOnUnlock'),
             'workdays' => Settings::get('workdays'),
             'holidayRegion' => Settings::get('holidayRegion'),
@@ -38,7 +39,6 @@ class SettingsController extends Controller
     {
         $data = $request->validated();
 
-        Settings::set('startOnLogin', $data['startOnLogin']);
         Settings::set('showTimerOnUnlock', $data['showTimerOnUnlock']);
         Settings::set('workdays', $data['workdays']);
         Settings::set('holidayRegion', $data['holidayRegion']);
@@ -50,6 +50,10 @@ class SettingsController extends Controller
         if ($data['locale'] !== Settings::get('locale')) {
             Settings::set('locale', $data['locale']);
             LocaleChanged::broadcast();
+        }
+
+        if ($data['startOnLogin'] !== App::openAtLogin()) {
+            App::openAtLogin($data['startOnLogin']);
         }
 
         CalculateWeekBalance::dispatch();
