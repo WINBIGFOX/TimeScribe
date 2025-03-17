@@ -89,9 +89,6 @@ const percentages = computed(() => {
                     </div>
                 </TooltipContent>
             </Tooltip>
-        </TooltipProvider>
-
-        <TooltipProvider :delay-duration="0">
             <Tooltip>
                 <TooltipTrigger as-child>
                     <div
@@ -120,9 +117,6 @@ const percentages = computed(() => {
                     </div>
                 </TooltipContent>
             </Tooltip>
-        </TooltipProvider>
-
-        <TooltipProvider :delay-duration="0">
             <Tooltip>
                 <TooltipTrigger as-child>
                     <div
@@ -146,9 +140,6 @@ const percentages = computed(() => {
                     </div>
                 </TooltipContent>
             </Tooltip>
-        </TooltipProvider>
-
-        <TooltipProvider :delay-duration="0">
             <Tooltip>
                 <TooltipTrigger as-child>
                     <div

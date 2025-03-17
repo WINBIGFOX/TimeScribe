@@ -21,7 +21,7 @@ createInertiaApp({
         return page;
     },
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
+        const app = createApp({ render: () => h(App, props) })
             .use(modal, {
                 resolve: (name: string) =>
                     resolvePageComponent(
@@ -30,15 +30,19 @@ createInertiaApp({
                     ),
             })
             .use(plugin)
-            .use(ZiggyVue)
-            .use(i18nVue, {
-                fallbackLang: 'en',
-                resolve: async (lang: string) => {
-                    const languages = import.meta.glob('../../lang/*.json');
-                    return await languages[`../../lang/${lang}.json`]();
-                },
-            })
-            .mount(el);
+            .use(ZiggyVue);
+        app.use(i18nVue, {
+            fallbackLang: 'en',
+            resolve: async (lang: string) => {
+                const languages = import.meta.glob('../../lang/*.json');
+                return await languages[`../../lang/${lang}.json`]();
+            },
+            onLoad: () => {
+                if (!app._container) {
+                    app.mount(el);
+                }
+            },
+        });
     },
     progress: {
         color: '#4B5563',
