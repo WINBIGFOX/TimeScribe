@@ -93,6 +93,7 @@ const stopTimeResetCheck = ref(
 const debouncedSubmit = useDebounceFn(submit, 500);
 watch(
     () => [
+        form.startOnLogin,
         form.workdays,
         form.locale,
         form.stopBreakTimeReset,
@@ -104,6 +105,7 @@ watch(
         form.holidayRegion,
     ],
     debouncedSubmit,
+    { deep: true },
 );
 watch(holidayCheck, () => {
     if (holidayCheck.value === false) {
