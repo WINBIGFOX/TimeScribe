@@ -20,7 +20,7 @@ class SettingsController extends Controller
     public function edit()
     {
         return Inertia::render('Settings/Edit', [
-            'startOnLogin' => App::openAtLogin(),
+            'openAtLogin' => App::openAtLogin(),
             'showTimerOnUnlock' => Settings::get('showTimerOnUnlock'),
             'workdays' => Settings::get('workdays'),
             'holidayRegion' => Settings::get('holidayRegion'),
@@ -52,8 +52,8 @@ class SettingsController extends Controller
             LocaleChanged::broadcast();
         }
 
-        if ($data['startOnLogin'] !== App::openAtLogin()) {
-            App::openAtLogin($data['startOnLogin']);
+        if ($data['openAtLogin'] !== App::openAtLogin()) {
+            App::openAtLogin($data['openAtLogin']);
         }
 
         CalculateWeekBalance::dispatch();

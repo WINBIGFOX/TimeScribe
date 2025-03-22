@@ -58,7 +58,7 @@ const weekWorkTime = computed(() => {
             </span>
         </div>
         <div
-            class="mb-0 flex items-center space-x-4 rounded-xl rounded-b-none border p-4 py-2"
+            class="mb-0 flex w-96 items-center space-x-4 rounded-xl rounded-b-none border p-4 py-2"
         >
             <CalendarClock />
             <div class="flex-1 space-y-1">
@@ -70,7 +70,7 @@ const weekWorkTime = computed(() => {
             {{ $t('app.hours') }}
         </div>
         <div
-            class="bg-background text-foreground flex flex-col gap-1 rounded-xl rounded-t-none px-4 py-3"
+            class="bg-background text-foreground flex w-96 flex-col gap-1 rounded-xl rounded-t-none px-4 py-3"
         >
             <WorkdayTimeInput
                 :workday="$t('app.monday')"

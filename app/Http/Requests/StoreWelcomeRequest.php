@@ -24,14 +24,15 @@ class StoreWelcomeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'workdays' => ['required', 'array'],
-            'workdays.monday' => ['required', 'decimal:0,1', 'between:0,15'],
-            'workdays.tuesday' => ['required', 'decimal:0,1', 'between:0,15'],
-            'workdays.wednesday' => ['required', 'decimal:0,1', 'between:0,15'],
-            'workdays.thursday' => ['required', 'decimal:0,1', 'between:0,15'],
-            'workdays.friday' => ['required', 'decimal:0,1', 'between:0,15'],
-            'workdays.saturday' => ['required', 'decimal:0,1', 'between:0,15'],
-            'workdays.sunday' => ['required', 'decimal:0,1', 'between:0,15'],
+            'openAtLogin' => ['required_without:workdays', 'boolean'],
+            'workdays' => ['required_without:openAtLogin', 'array'],
+            'workdays.monday' => ['required_with:workdays', 'decimal:0,1', 'between:0,15'],
+            'workdays.tuesday' => ['required_with:workdays', 'decimal:0,1', 'between:0,15'],
+            'workdays.wednesday' => ['required_with:workdays', 'decimal:0,1', 'between:0,15'],
+            'workdays.thursday' => ['required_with:workdays', 'decimal:0,1', 'between:0,15'],
+            'workdays.friday' => ['required_with:workdays', 'decimal:0,1', 'between:0,15'],
+            'workdays.saturday' => ['required_with:workdays', 'decimal:0,1', 'between:0,15'],
+            'workdays.sunday' => ['required_with:workdays', 'decimal:0,1', 'between:0,15'],
         ];
     }
 }

@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreWelcomeRequest;
 use App\Services\WindowService;
 use Inertia\Inertia;
+use Native\Laravel\Facades\App;
 use Native\Laravel\Facades\MenuBar;
 use Native\Laravel\Facades\Settings;
 
@@ -25,7 +26,12 @@ class WelcomeController extends Controller
     public function update(StoreWelcomeRequest $request)
     {
         $data = $request->validated();
-        Settings::set('workdays', $data['workdays']);
+        if ($request->has('openAtLogin')) {
+            App::openAtLogin($data['openAtLogin']);
+        }
+        if ($request->has('workdays')) {
+            Settings::set('workdays', $data['workdays']);
+        }
     }
 
     public function finish($openSettings = false)

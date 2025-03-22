@@ -11,6 +11,9 @@ class WindowService
     public static function openWelcome(): void
     {
         Window::open('welcome')
+            ->webPreferences([
+                'devTools' => false,
+            ])
             ->route('welcome.index')
             ->fullscreenable(false)
             ->showDevTools(false)
@@ -27,6 +30,9 @@ class WindowService
     public static function openSettings(bool $darkMode): void
     {
         Window::open('settings')
+            ->webPreferences([
+                'devTools' => false,
+            ])
             ->route('settings.edit')
             ->rememberState()
             ->maximizable(false)
@@ -47,6 +53,9 @@ class WindowService
     public static function openOverview(bool $darkMode): void
     {
         Window::open('overview')
+            ->webPreferences([
+                'devTools' => false,
+            ])
             ->route('overview.index')
             ->rememberState()
             ->maximizable(false)
@@ -63,6 +72,9 @@ class WindowService
     public static function openAbsence(bool $darkMode): void
     {
         Window::open('absence')
+            ->webPreferences([
+                'devTools' => false,
+            ])
             ->route('absence.index')
             ->rememberState()
             ->maximizable(false)
@@ -80,6 +92,9 @@ class WindowService
     public static function openDayEdit(string $date, bool $darkMode): void
     {
         Window::open('day-edit')
+            ->webPreferences([
+                'devTools' => false,
+            ])
             ->rememberState()
             ->maximizable(false)
             ->fullscreen(false)

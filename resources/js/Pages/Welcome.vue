@@ -45,5 +45,3 @@ const prevStep = () => {
         </Transition>
     </div>
 </template>
-
-<style></style>

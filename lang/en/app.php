@@ -6,6 +6,7 @@ return [
     'action' => 'Actions',
     'activate based on time' => 'Activate based on time',
     'add time' => 'Add time',
+    'almost finished' => 'Almost finished',
     'appearance' => 'Appearance',
     'are you really sure?' => 'Are you really sure?',
     'auto start/break' => 'Auto start/break',
@@ -87,5 +88,4 @@ return [
     'work hours' => 'Work hours',
     'work schedule' => 'Work Schedule',
     'working hours on public holidays are fully credited.' => 'Working hours on public holidays are fully credited.',
-    'you are ready!' => 'You are ready!',
 ];

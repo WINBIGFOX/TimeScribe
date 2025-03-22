@@ -6,6 +6,7 @@ return [
     'action' => 'Aktionen',
     'activate based on time' => 'Zeitbedingt aktivieren',
     'add time' => 'Zeit hinzufügen',
+    'almost finished' => 'Fast fertig',
     'appearance' => 'Darstellung',
     'are you really sure?' => 'Bist du dir wirklich sicher?',
     'auto start/break' => 'Start/Pause Automatik',
@@ -87,5 +88,4 @@ return [
     'work hours' => 'Arbeitszeit',
     'work schedule' => 'Arbeitsplan',
     'working hours on public holidays are fully credited.' => 'Die Arbeitszeit wird an Feiertagen voll angerechnet.',
-    'you are ready!' => 'Du bist bereit!',
 ];

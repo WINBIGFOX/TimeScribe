@@ -27,7 +27,7 @@ import moment from 'moment/min/moment-with-locales';
 import { computed, ref, watch } from 'vue';
 
 const props = defineProps<{
-    startOnLogin?: boolean;
+    openAtLogin?: boolean;
     showTimerOnUnlock?: boolean;
     workdays: {
         monday?: number;
@@ -47,7 +47,7 @@ const props = defineProps<{
 }>();
 
 const form = useForm({
-    startOnLogin: props.startOnLogin ?? false,
+    openAtLogin: props.openAtLogin ?? false,
     showTimerOnUnlock: props.showTimerOnUnlock ?? false,
     workdays: {
         monday: props.workdays?.monday ?? 0,
@@ -93,14 +93,13 @@ const stopTimeResetCheck = ref(
 const debouncedSubmit = useDebounceFn(submit, 500);
 watch(
     () => [
-        form.startOnLogin,
         form.workdays,
         form.locale,
         form.stopBreakTimeReset,
         form.stopBreakAutomatic,
         form.stopBreakAutomaticActivationTime,
         form.stopWorkTimeReset,
-        form.startOnLogin,
+        form.openAtLogin,
         form.showTimerOnUnlock,
         form.holidayRegion,
     ],
@@ -165,7 +164,7 @@ const { store } = useColorMode();
                             {{ $t('app.start at login') }}
                         </p>
                     </div>
-                    <Switch v-model:checked="form.startOnLogin" />
+                    <Switch v-model:checked="form.openAtLogin" />
                 </div>
                 <div class="flex items-start space-x-4 rounded-md border p-4">
                     <Languages />

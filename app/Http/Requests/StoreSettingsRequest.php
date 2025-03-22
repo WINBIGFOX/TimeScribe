@@ -24,7 +24,7 @@ class StoreSettingsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'startOnLogin' => ['required', 'boolean'],
+            'openAtLogin' => ['required', 'boolean'],
             'showTimerOnUnlock' => ['required', 'boolean'],
             'workdays' => ['required', 'array'],
             'workdays.monday' => ['required', 'decimal:0,1', 'between:0,15'],
