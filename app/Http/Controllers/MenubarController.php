@@ -4,24 +4,31 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ActivityHistoryResource;
+use App\Models\ActivityHistory;
 use App\Services\TimestampService;
 use App\Services\WindowService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Inertia\Inertia;
 use Native\Laravel\Facades\MenuBar;
 
 class MenubarController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        TimestampService::ping();
+        if (! $request->header('x-inertia-partial-data')) {
+            TimestampService::ping();
+            Artisan::call('menubar:refresh');
+        }
 
-        Artisan::call('menubar:refresh');
+        $currentAppActivity = ActivityHistory::active()->latest()->first();
 
         return Inertia::render('MenuBar', [
             'currentType' => TimestampService::getCurrentType(),
             'workTime' => TimestampService::getWorkTime(),
             'breakTime' => TimestampService::getBreakTime(),
+            'currentAppActivity' => fn () => $currentAppActivity ? ActivityHistoryResource::make($currentAppActivity) : null,
         ]);
     }
 

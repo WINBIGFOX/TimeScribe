@@ -27,6 +27,16 @@ export interface Timestamp {
     can_end_edit?: boolean;
 }
 
+export interface ActivityHistory {
+    id: number;
+    app_name: string;
+    app_identifier: string;
+    app_icon: string;
+    app_category?: string;
+    started_at: Date;
+    ended_at?: Date;
+}
+
 export interface Absence {
     id: number;
     type: 'vacation' | 'sick';

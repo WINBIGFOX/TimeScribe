@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Button } from '@/Components/ui/button';
 import { secToFormat } from '@/lib/utils';
-import { Head, Link } from '@inertiajs/vue3';
+import { ActivityHistory } from '@/types';
+import { Head, Link, usePoll } from '@inertiajs/vue3';
 import { useColorMode } from '@vueuse/core';
 import {
     CalendarDays,
@@ -17,6 +18,7 @@ const props = defineProps<{
     currentType?: 'work' | 'break';
     workTime: number;
     breakTime: number;
+    currentAppActivity?: ActivityHistory;
 }>();
 
 let timer: NodeJS.Timeout;
@@ -45,6 +47,17 @@ onMounted(() => {
     timer = setInterval(tick, 1000);
 });
 
+usePoll(
+    5000,
+    {
+        only: ['currentAppActivity'],
+    },
+    {
+        autoStart: true,
+        keepAlive: true,
+    },
+);
+
 onBeforeUnmount(() => {
     clearInterval(timer);
 });
@@ -69,7 +82,7 @@ const { state } = useColorMode();
 <template>
     <Head title="Menubar" />
     <div class="flex h-dvh flex-col select-none">
-        <div class="flex justify-end">
+        <div class="fixed inset-x-0 top-0 flex justify-end">
             <!--
             <Button size="icon" variant="ghost">
                 <Power />
@@ -90,7 +103,15 @@ const { state } = useColorMode();
                 <Cog />
             </Button>
         </div>
-        <div class="flex grow flex-col items-center justify-center">
+        <div
+            class="flex grow flex-col items-center justify-center transition-all duration-1000"
+            :class="{
+                'pt-8':
+                    props.currentType !== 'work' || !props.currentAppActivity,
+                'pt-0':
+                    props.currentType === 'work' && props.currentAppActivity,
+            }"
+        >
             <div
                 class="text-center transition-opacity duration-1000"
                 :class="{
@@ -98,7 +119,29 @@ const { state } = useColorMode();
                 }"
             >
                 <div
-                    class="font-bold tracking-tighter transition-all duration-1000"
+                    class="flex items-center justify-center gap-2 overflow-hidden transition-all duration-1000"
+                    :class="{
+                        'mb-2 h-10 scale-100 opacity-100':
+                            props.currentType === 'work' &&
+                            props.currentAppActivity,
+                        'mb-0 h-0 scale-0 opacity-0':
+                            props.currentType !== 'work' ||
+                            !props.currentAppActivity,
+                    }"
+                >
+                    <img
+                        v-if="props.currentAppActivity?.app_icon"
+                        alt="App-Icon"
+                        class="pointer-events-none size-10"
+                        :src="props.currentAppActivity.app_icon"
+                    />
+                    <span>
+                        {{ props.currentAppActivity?.app_name }}
+                    </span>
+                </div>
+
+                <div
+                    class="font-bold tracking-tighter tabular-nums transition-all duration-1000"
                     :class="{
                         'text-4xl': props.currentType !== 'break',
                         'text-2xl': props.currentType === 'break',
@@ -117,19 +160,15 @@ const { state } = useColorMode();
                 </div>
             </div>
             <transition
-                appear
                 enter-from-class="opacity-0 scale-0 h-0"
                 enter-to-class="opacity-100 scale-100 h-14"
                 leave-from-class="opacity-100 scale-100 h-14"
                 leave-to-class="opacity-0 scale-0 h-0"
-                class="h-0 opacity-0 transition-all duration-1000"
+                class="transition-all duration-1000"
             >
-                <div
-                    class="h-0 text-center"
-                    v-if="props.currentType === 'break'"
-                >
+                <div class="text-center" v-if="props.currentType === 'break'">
                     <div
-                        class="text-4xl font-bold tracking-tighter transition-all duration-1000"
+                        class="text-4xl font-bold tracking-tighter tabular-nums transition-all duration-1000"
                     >
                         {{ breakTimeFormatted }}
                     </div>

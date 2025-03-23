@@ -32,6 +32,13 @@ return [
 
     'disks' => [
 
+        'app-icon' => [
+            'driver' => 'local',
+            'root' => storage_path('app_icons'),
+            'serve' => true,
+            'throw' => false,
+        ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),

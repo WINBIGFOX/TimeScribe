@@ -51,3 +51,13 @@ Route::name('absence.')->prefix('absence')->group(function () {
 
 Route::resource('timestamp', TimestampController::class)->only(['edit', 'update', 'destroy']);
 Route::post('timestamp/fill', [TimestampController::class, 'fill'])->name('timestamp.fill');
+
+Route::get('/app-icon/{appIconName}', function ($appIconName) {
+    if (! Storage::disk('app-icon')->exists($appIconName)) {
+        abort(404);
+    }
+
+    return Storage::disk('app-icon')->response($appIconName, null, [
+        'Cache-Control' => 'public, max-age=31536000, immutable',
+    ]);
+})->where('appIconName', '.*')->name('app-icon.show');

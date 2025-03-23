@@ -29,6 +29,7 @@ class SettingsController extends Controller
             'stopWorkTimeReset' => Settings::get('stopWorkTimeReset'),
             'stopBreakTimeReset' => Settings::get('stopBreakTimeReset'),
             'locale' => Settings::get('locale'),
+            'appActivityTracking' => Settings::get('appActivityTracking'),
         ]);
     }
 
@@ -46,6 +47,7 @@ class SettingsController extends Controller
         Settings::set('stopBreakAutomaticActivationTime', $data['stopBreakAutomaticActivationTime']);
         Settings::set('stopWorkTimeReset', (int) $data['stopWorkTimeReset']);
         Settings::set('stopBreakTimeReset', (int) $data['stopBreakTimeReset']);
+        Settings::set('appActivityTracking', $data['appActivityTracking']);
 
         if ($data['locale'] !== Settings::get('locale')) {
             Settings::set('locale', $data['locale']);

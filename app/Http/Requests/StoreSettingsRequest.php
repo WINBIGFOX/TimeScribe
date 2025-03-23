@@ -40,6 +40,7 @@ class StoreSettingsRequest extends FormRequest
             'stopWorkTimeReset' => ['nullable', 'string'],
             'stopBreakTimeReset' => ['nullable', 'string'],
             'locale' => ['required', 'string', 'regex:/^[a-z]{2}-[A-Z]{2}$/'],
+            'appActivityTracking' => ['required', 'boolean'],
         ];
     }
 }
