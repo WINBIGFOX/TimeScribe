@@ -62,7 +62,12 @@ const percentageOverTime = computed(() => {
         </div>
         <div class="bg-muted relative grow overflow-hidden rounded-b-lg">
             <div
-                class="bg-primary absolute inset-x-0 bottom-0 flex flex-col transition-all duration-300"
+                :class="{
+                    'bg-primary': !props.absences.length,
+                    'bg-rose-400': props.absences[0]?.type === 'sick',
+                    'bg-emerald-500': props.absences[0]?.type === 'vacation',
+                }"
+                class="absolute inset-x-0 bottom-0 flex flex-col transition-all duration-300"
                 :style="{
                     height: `${percentageWorkTime}%`,
                 }"

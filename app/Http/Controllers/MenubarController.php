@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Inertia\Inertia;
 use Native\Laravel\Facades\MenuBar;
+use Native\Laravel\Facades\Settings;
 
 class MenubarController extends Controller
 {
@@ -20,6 +21,9 @@ class MenubarController extends Controller
         if (! $request->header('x-inertia-partial-data')) {
             TimestampService::ping();
             Artisan::call('menubar:refresh');
+            if (Settings::get('appActivityTracking', false)) {
+                Artisan::call('app:active-app');
+            }
         }
 
         $currentAppActivity = ActivityHistory::active()->latest()->first();
