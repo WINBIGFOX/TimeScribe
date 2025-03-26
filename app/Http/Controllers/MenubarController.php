@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\TimestampTypeEnum;
 use App\Http\Resources\ActivityHistoryResource;
 use App\Models\ActivityHistory;
 use App\Services\TimestampService;
@@ -18,10 +19,11 @@ class MenubarController extends Controller
 {
     public function index(Request $request)
     {
+        $currentType = TimestampService::getCurrentType();
         if (! $request->header('x-inertia-partial-data')) {
             TimestampService::ping();
             Artisan::call('menubar:refresh');
-            if (Settings::get('appActivityTracking', false)) {
+            if (Settings::get('appActivityTracking', false) && $currentType === TimestampTypeEnum::WORK) {
                 Artisan::call('app:active-app');
             }
         }
@@ -29,7 +31,7 @@ class MenubarController extends Controller
         $currentAppActivity = ActivityHistory::active()->latest()->first();
 
         return Inertia::render('MenuBar', [
-            'currentType' => TimestampService::getCurrentType(),
+            'currentType' => $currentType,
             'workTime' => TimestampService::getWorkTime(),
             'breakTime' => TimestampService::getBreakTime(),
             'currentAppActivity' => fn () => $currentAppActivity ? ActivityHistoryResource::make($currentAppActivity) : null,

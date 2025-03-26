@@ -85,6 +85,9 @@ class ActiveApp extends Command
                 'ended_at' => Carbon::now()->addSeconds(4),
             ]);
         } else {
+            $activity?->update([
+                'ended_at' => Carbon::now()->subSecond(),
+            ]);
             ActivityHistory::create([
                 'app_name' => $appName,
                 'app_identifier' => $bundleIdentifier,
