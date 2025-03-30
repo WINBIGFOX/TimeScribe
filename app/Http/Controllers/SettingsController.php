@@ -9,8 +9,10 @@ use App\Http\Requests\StoreSettingsRequest;
 use App\Http\Requests\UpdateLocaleRequest;
 use App\Jobs\CalculateWeekBalance;
 use Inertia\Inertia;
+use Native\Laravel\Enums\SystemThemesEnum;
 use Native\Laravel\Facades\App;
 use Native\Laravel\Facades\Settings;
+use Native\Laravel\Facades\System;
 
 class SettingsController extends Controller
 {
@@ -21,6 +23,7 @@ class SettingsController extends Controller
     {
         return Inertia::render('Settings/Edit', [
             'openAtLogin' => App::openAtLogin(),
+            'theme' => Settings::get('theme', SystemThemesEnum::SYSTEM->value),
             'showTimerOnUnlock' => Settings::get('showTimerOnUnlock'),
             'workdays' => Settings::get('workdays'),
             'holidayRegion' => Settings::get('holidayRegion'),
@@ -48,6 +51,12 @@ class SettingsController extends Controller
         Settings::set('stopWorkTimeReset', (int) $data['stopWorkTimeReset']);
         Settings::set('stopBreakTimeReset', (int) $data['stopBreakTimeReset']);
         Settings::set('appActivityTracking', $data['appActivityTracking']);
+
+
+        if ($data['theme'] !== Settings::get('theme', SystemThemesEnum::SYSTEM->value)) {
+            Settings::set('theme', $data['theme']);
+            System::theme(SystemThemesEnum::tryFrom($data['theme']));
+        }
 
         if ($data['locale'] !== Settings::get('locale')) {
             Settings::set('locale', $data['locale']);

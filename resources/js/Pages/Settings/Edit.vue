@@ -29,6 +29,7 @@ import { computed, ref, watch } from 'vue';
 
 const props = defineProps<{
     openAtLogin?: boolean;
+    theme?: string;
     showTimerOnUnlock?: boolean;
     workdays: {
         monday?: number;
@@ -50,6 +51,7 @@ const props = defineProps<{
 
 const form = useForm({
     openAtLogin: props.openAtLogin ?? false,
+    theme: props.theme ?? 'system',
     showTimerOnUnlock: props.showTimerOnUnlock ?? false,
     workdays: {
         monday: props.workdays?.monday ?? 0,
@@ -97,6 +99,7 @@ const debouncedSubmit = useDebounceFn(submit, 500);
 watch(
     () => [
         form.workdays,
+        form.theme,
         form.locale,
         form.stopBreakTimeReset,
         form.stopBreakAutomatic,
@@ -133,7 +136,7 @@ watch(stopTimeResetCheck, () => {
     }
 });
 
-const { store } = useColorMode();
+useColorMode();
 </script>
 
 <template>
@@ -227,14 +230,14 @@ const { store } = useColorMode();
                                 }}
                             </p>
                             <div class="mt-2">
-                                <Select size="5" v-model="store">
+                                <Select size="5" v-model="form.theme">
                                     <SelectTrigger>
                                         <SelectValue
                                             :placeholder="$t('app.appearance')"
                                         />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="auto">
+                                        <SelectItem value="system">
                                             {{ $t('app.system') }}
                                         </SelectItem>
                                         <SelectItem value="light">

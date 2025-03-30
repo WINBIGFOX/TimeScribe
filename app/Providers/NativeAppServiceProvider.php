@@ -7,9 +7,11 @@ namespace App\Providers;
 use App\Services\WindowService;
 use Illuminate\Support\Str;
 use Native\Laravel\Contracts\ProvidesPhpIni;
+use Native\Laravel\Enums\SystemThemesEnum;
 use Native\Laravel\Facades\Menu;
 use Native\Laravel\Facades\MenuBar;
 use Native\Laravel\Facades\Settings;
+use Native\Laravel\System;
 
 class NativeAppServiceProvider implements ProvidesPhpIni
 {
@@ -19,6 +21,11 @@ class NativeAppServiceProvider implements ProvidesPhpIni
      */
     public function boot(): void
     {
+        $theme = Settings::get('theme', SystemThemesEnum::SYSTEM->value);
+        if ($theme !== SystemThemesEnum::SYSTEM->value) {
+            System::theme(SystemThemesEnum::tryFrom($theme));
+        }
+
         if (! Settings::get('id')) {
             Settings::set('id', Str::uuid());
         }

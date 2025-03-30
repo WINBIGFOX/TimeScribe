@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Native\Laravel\Enums\SystemThemesEnum;
 
 class StoreSettingsRequest extends FormRequest
 {
@@ -25,6 +27,7 @@ class StoreSettingsRequest extends FormRequest
     {
         return [
             'openAtLogin' => ['required', 'boolean'],
+            'theme' => ['required', Rule::enum(SystemThemesEnum::class)],
             'showTimerOnUnlock' => ['required', 'boolean'],
             'workdays' => ['required', 'array'],
             'workdays.monday' => ['required', 'decimal:0,1', 'between:0,15'],
