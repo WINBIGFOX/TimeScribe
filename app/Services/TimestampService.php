@@ -11,9 +11,11 @@ use App\Jobs\CalculateWeekBalance;
 use App\Models\Absence;
 use App\Models\Timestamp;
 use App\Models\WeekBalance;
+use App\Models\WorkSchedule;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Native\Laravel\Facades\Settings;
 use Umulmrum\Holiday\Constant\HolidayType;
 use Umulmrum\Holiday\Filter\IncludeTypeFilter;
@@ -137,7 +139,6 @@ class TimestampService
 
         $holiday = self::getHoliday([$date->year, $endDate->year]);
         $absence = self::getAbsence($date, $endDate);
-        $workdays = Settings::get('workdays', []);
 
         $timestamps = Timestamp::whereDate('started_at', '>=', $date->startOfDay())
             ->whereDate('started_at', '<=', $endDate->endOfDay())
@@ -154,7 +155,7 @@ class TimestampService
                     $holiday->filter(fn (Carbon $holiday) => $holiday->isSameDay($rangeDate))->isNotEmpty() ||
                     $absence->filter(fn (Absence $absence) => $absence->date->isSameDay($rangeDate))->isNotEmpty()
                 ) {
-                    $absenceTime += ($workdays[strtolower($rangeDate->locale('en')->dayName)] ?? 0) * 60 * 60;
+                    $absenceTime += (self::getPlan($rangeDate)) * 60 * 60;
                 }
             }
         }
@@ -249,16 +250,74 @@ class TimestampService
         });
     }
 
-    public static function getPlan($dayName): ?float
+    public static function getWorkSchedule(?Carbon $date = null): array
     {
-        $workdays = Settings::get('workdays', []);
+        if (! $date) {
+            $date = Carbon::now();
+        }
 
-        return $workdays[$dayName] ?? 0;
+        return Cache::flexible($date->format('Y-m-d'), [10, 0], function () use ($date) {
+            $workdays = [
+                'sunday' => 0,
+                'monday' => 0,
+                'tuesday' => 0,
+                'wednesday' => 0,
+                'thursday' => 0,
+                'friday' => 0,
+                'saturday' => 0,
+            ];
+
+            $startOfWeek = $date->clone()->startOfWeek();
+            $endOfWeek = $date->clone()->endOfWeek();
+
+            $workSchedules = WorkSchedule::whereDate('valid_from', '<=', $endOfWeek)
+                ->orderByDesc('valid_from')->get();
+
+            $newWorkSchedules = collect();
+            foreach ($workSchedules as $workSchedule) {
+                $newWorkSchedules->push($workSchedule);
+                if ($workSchedule->valid_from->isBefore($startOfWeek)) {
+                    break;
+                }
+            }
+            $workSchedules = $newWorkSchedules->sortByDesc('valid_from');
+
+            if ($workSchedules->count() === 1) {
+                $workdays = $workSchedules->first()->only([
+                    'sunday',
+                    'monday',
+                    'tuesday',
+                    'wednesday',
+                    'thursday',
+                    'friday',
+                    'saturday',
+                ]);
+            } else {
+                $datePeriod = CarbonPeriod::create($startOfWeek, $endOfWeek);
+                foreach ($datePeriod as $date) {
+                    $dayName = strtolower($date->locale('en')->dayName);
+
+                    $schedule = $workSchedules->firstWhere(function (WorkSchedule $item) use ($date) {
+                        return $item->valid_from <= $date;
+                    });
+                    $workdays[$dayName] = $schedule ? $schedule->{$dayName} : 0;
+                }
+            }
+
+            return $workdays;
+        });
     }
 
-    public static function getWeekPlan(): ?float
+    public static function getPlan(Carbon $date): ?float
     {
-        $workdays = Settings::get('workdays', []);
+        $workdays = self::getWorkSchedule($date);
+
+        return $workdays[strtolower($date->englishDayOfWeek)] ?? 0;
+    }
+
+    public static function getWeekPlan(?Carbon $date = null): ?float
+    {
+        $workdays = self::getWorkSchedule($date);
 
         return array_sum($workdays);
     }
@@ -267,7 +326,7 @@ class TimestampService
     {
         $workTime = self::getWorkTime($date, $endDate) / 3600;
 
-        $workdays = collect(Settings::get('workdays', []))->values()->unique()->sort();
+        $workdays = collect(self::getWorkSchedule($date))->values()->unique()->sort();
 
         return $workdays->filter(fn ($value) => $value >= $workTime)->first() ?? $workdays->last();
     }

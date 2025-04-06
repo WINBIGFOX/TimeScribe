@@ -7,4 +7,3 @@ tsconfig.json
 storage/
 resources/js/ziggy.d.ts
 resources/js/ziggy.js
-resources/js/Components/ui/*

@@ -26,22 +26,6 @@ class OverviewController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(string $date)
@@ -60,7 +44,7 @@ class OverviewController extends Controller
             'endOfWeek' => $endOfWeek,
             'weekWorkTime' => TimestampService::getWorkTime($startOfWeek, $endOfWeek),
             'weekBreakTime' => TimestampService::getBreakTime($startOfWeek, $endOfWeek),
-            'weekPlan' => TimestampService::getWeekPlan(),
+            'weekPlan' => TimestampService::getWeekPlan($startOfWeek),
             'weekFallbackPlan' => TimestampService::getFallbackPlan($startOfWeek, $endOfWeek),
             'weekDatesWithTimestamps' => TimestampService::getDatesWithTimestamps($date->copy()->subYear()->startOfYear(), $date->copy()->addYear()->endOfYear()),
             'holidays' => TimestampService::getHoliday(range($date->year - 5, $date->year + 5))->map(function ($holidayDate) {
@@ -72,7 +56,7 @@ class OverviewController extends Controller
                 $date = Carbon::parse($date);
 
                 return [
-                    'plan' => TimestampService::getPlan(strtolower($date->format('l'))),
+                    'plan' => TimestampService::getPlan($date),
                     'fallbackPlan' => TimestampService::getFallbackPlan($date),
                     'date' => DateHelper::toResourceArray($date),
                     'workTime' => TimestampService::getWorkTime($date),
@@ -94,21 +78,5 @@ class OverviewController extends Controller
     {
         WindowService::closeDayEdit();
         WindowService::openDayEdit($date, $darkMode);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

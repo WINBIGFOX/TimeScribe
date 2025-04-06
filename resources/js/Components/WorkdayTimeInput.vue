@@ -1,32 +1,32 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {
     NumberField,
     NumberFieldContent,
     NumberFieldDecrement,
     NumberFieldIncrement,
-    NumberFieldInput,
-} from '@/Components/ui/number-field';
-import { Switch } from '@/Components/ui/switch';
-import { ref, watch } from 'vue';
+    NumberFieldInput
+} from '@/Components/ui/number-field'
+import { Switch } from '@/Components/ui/switch'
+import { ref, watch } from 'vue'
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue'])
 const props = defineProps<{
-    workday: string;
-    modelValue: number;
-}>();
+    workday: string
+    modelValue: number
+}>()
 
-const hours = ref(props.modelValue ?? 0);
-const active = ref(props.modelValue > 0);
+const hours = ref(props.modelValue ?? 0)
+const active = ref(props.modelValue > 0)
 
 watch(hours, (newVal) => {
-    emit('update:modelValue', newVal);
-});
+    emit('update:modelValue', newVal)
+})
 
 watch(active, (newVal) => {
     if (!newVal) {
-        hours.value = 0;
+        hours.value = 0
     }
-});
+})
 </script>
 
 <template>
@@ -34,17 +34,17 @@ watch(active, (newVal) => {
         <p class="text-sm leading-none font-medium">{{ props.workday }}</p>
         <div class="flex items-center gap-4">
             <NumberField
-                v-if="active"
-                class="w-32"
-                v-model.lazy="hours"
-                :min="0"
-                :max="15"
-                :step="0.5"
                 :format-options="{
                     style: 'decimal',
-                    minimumFractionDigits: 1,
+                    minimumFractionDigits: 1
                 }"
                 :locale="$page.props.locale"
+                :max="15"
+                :min="0"
+                :step="0.5"
+                class="w-32"
+                v-if="active"
+                v-model.lazy="hours"
             >
                 <NumberFieldContent>
                     <NumberFieldDecrement />
@@ -52,7 +52,7 @@ watch(active, (newVal) => {
                     <NumberFieldIncrement />
                 </NumberFieldContent>
             </NumberField>
-            <Switch v-model:checked="active" />
+            <Switch v-model="active" />
         </div>
     </div>
 </template>

@@ -31,7 +31,7 @@ class WindowService
     {
         Window::open('settings')
             ->webPreferences([
-                'devTools' => false,
+                'devTools' => true,
             ])
             ->route('settings.edit')
             ->rememberState()

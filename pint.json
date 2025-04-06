@@ -3,7 +3,5 @@
     "rules": {
         "declare_strict_types": true
     },
-    "exclude": [
-        "dist"
-    ]
+    "exclude": ["dist"]
 }

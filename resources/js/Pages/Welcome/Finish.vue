@@ -1,33 +1,40 @@
-<script setup lang="ts">
-import { Button } from '@/Components/ui/button';
-import { Switch } from '@/Components/ui/switch';
-import { Link, useForm } from '@inertiajs/vue3';
-import { ArrowRight, Cog, KeyRound } from 'lucide-vue-next';
-import { onMounted, ref } from 'vue';
+<script lang="ts" setup>
+import { Button } from '@/Components/ui/button'
+import { Switch } from '@/Components/ui/switch'
+import { Link, useForm } from '@inertiajs/vue3'
+import { ArrowRight, Cog, KeyRound } from 'lucide-vue-next'
+import { onMounted, ref, watch } from 'vue'
 
 const props = defineProps<{
-    openAtLogin: boolean;
-}>();
+    openAtLogin: boolean
+}>()
 
 const form = useForm({
-    openAtLogin: props.openAtLogin,
-});
+    openAtLogin: props.openAtLogin
+})
 
-const showSettingsHint = ref(false);
+const showSettingsHint = ref(false)
 
 onMounted(() => {
     setTimeout(() => {
-        showSettingsHint.value = true;
-    }, 1000);
-});
+        showSettingsHint.value = true
+    }, 1000)
+})
 
 const submit = (openAtLogin: boolean) => {
-    form.openAtLogin = openAtLogin;
+    form.openAtLogin = openAtLogin
     form.patch(route('welcome.update'), {
         preserveScroll: true,
-        preserveState: true,
-    });
-};
+        preserveState: true
+    })
+}
+
+watch(
+    () => form.openAtLogin,
+    (newValue) => {
+        submit(newValue)
+    }
+)
 </script>
 
 <template>
@@ -38,49 +45,34 @@ const submit = (openAtLogin: boolean) => {
             </span>
         </div>
 
-        <div
-            class="bg-background text-foreground flex w-96 items-center space-x-4 rounded-xl border p-4"
-        >
+        <div class="bg-background text-foreground flex w-96 items-center space-x-4 rounded-xl border p-4">
             <KeyRound />
             <div class="flex-1 space-y-1">
                 <p class="text-sm leading-none font-medium">
                     {{ $t('app.start at login') }}
                 </p>
             </div>
-            <Switch
-                @update:checked="submit"
-                v-model:checked="form.openAtLogin"
-            />
+            <Switch v-model="form.openAtLogin" />
         </div>
         <div
-            class="flex flex-col items-center gap-4 opacity-0 transition-opacity duration-1000"
             :class="{
-                'opacity-100': showSettingsHint,
+                'opacity-100': showSettingsHint
             }"
+            class="flex flex-col items-center gap-4 opacity-0 transition-opacity duration-1000"
         >
-            <Button
-                :href="route('welcome.finish')"
-                :as="Link"
-                variant="secondary"
-                size="lg"
-                @click="$emit('nextStep')"
-            >
+            <Button :as="Link" :href="route('welcome.finish')" @click="$emit('nextStep')" size="lg" variant="secondary">
                 {{ $t('app.start') }}
                 <ArrowRight />
             </Button>
         </div>
         <div
             :class="{
-                'opacity-100': showSettingsHint,
+                'opacity-100': showSettingsHint
             }"
             class="absolute inset-x-0 bottom-10 flex items-center justify-center gap-4 opacity-0 transition-opacity duration-1000"
         >
             {{ $t('app.more settings can be found here') }}
-            <Button
-                variant="ghost"
-                :href="route('welcome.finish', { openSettings: true })"
-                :as="Link"
-            >
+            <Button :as="Link" :href="route('welcome.finish', { openSettings: true })" variant="ghost">
                 <Cog />
                 {{ $t('app.settings') }}
             </Button>

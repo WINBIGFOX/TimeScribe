@@ -1,11 +1,11 @@
-<script setup lang="ts">
-import WeekdayHeader from '@/Components/WeekdayHeader.vue';
-import WorktimeProgressBar from '@/Components/WorktimeProgressBar.vue';
-import { WeekdayObject } from '@/types';
+<script lang="ts" setup>
+import WeekdayHeader from '@/Components/WeekdayHeader.vue'
+import WorktimeProgressBar from '@/Components/WorktimeProgressBar.vue'
+import { WeekdayObject } from '@/types'
 
 const props = defineProps<{
-    weekday: WeekdayObject;
-}>();
+    weekday: WeekdayObject
+}>()
 </script>
 
 <template>
@@ -16,12 +16,12 @@ const props = defineProps<{
             <WeekdayHeader :date="props.weekday.date.date" />
         </div>
         <WorktimeProgressBar
-            :plan="props.weekday.plan"
-            :fallback-plan="props.weekday.fallbackPlan"
-            :work-time="props.weekday.workTime"
-            :break-time="props.weekday.breakTime"
-            :active-work="props.weekday.activeWork"
             :absences="props.weekday.absences"
+            :active-work="props.weekday.activeWork"
+            :break-time="props.weekday.breakTime"
+            :fallback-plan="props.weekday.fallbackPlan"
+            :plan="props.weekday.plan"
+            :work-time="props.weekday.workTime"
         />
     </div>
 </template>

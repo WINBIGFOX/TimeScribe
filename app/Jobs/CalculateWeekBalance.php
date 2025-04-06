@@ -34,14 +34,14 @@ class CalculateWeekBalance implements ShouldQueue
 
         $startWeek = $firstTimestamp->created_at->clone()->startOfWeek();
         $endWeek = $firstTimestamp->created_at->clone()->endOfWeek();
-        $lastCalculatedWeek = now()->addWeek()->startOfWeek();
+        $lastCalculatedWeek = now()->addWeeks(1)->startOfWeek();
 
         WeekBalance::truncate();
 
         while ($startWeek->isBefore($lastCalculatedWeek)) {
 
             $workTime = TimestampService::getWorkTime($startWeek, $endWeek);
-            $weekPlan = TimestampService::getWeekPlan();
+            $weekPlan = TimestampService::getWeekPlan($startWeek);
             $balance = $workTime - ($weekPlan * 3600);
 
             WeekBalance::updateOrCreate(

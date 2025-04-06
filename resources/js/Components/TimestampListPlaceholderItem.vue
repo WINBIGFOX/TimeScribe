@@ -1,35 +1,30 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from '@/Components/ui/dropdown-menu';
-import { Timestamp } from '@/types';
-import { Link } from '@inertiajs/vue3';
-import {
-    BetweenHorizontalEnd,
-    BriefcaseBusiness,
-    Coffee,
-    Plus,
-} from 'lucide-vue-next';
+    DropdownMenuTrigger
+} from '@/Components/ui/dropdown-menu'
+import { Timestamp } from '@/types'
+import { Link } from '@inertiajs/vue3'
+import { BetweenHorizontalEnd, BriefcaseBusiness, Coffee, Plus } from 'lucide-vue-next'
 
 const props = defineProps<{
-    duration?: number;
-    firstTimestamp?: Timestamp;
-    secondTimestamp?: Timestamp;
-}>();
+    duration?: number
+    firstTimestamp?: Timestamp
+    secondTimestamp?: Timestamp
+}>()
 </script>
 
 <template>
     <div
-        class="border-muted-foreground text-muted-foreground mx-10 flex items-center gap-2 border-l-3 border-dotted text-sm"
         :class="{
             'py-1 pl-4': props.duration,
-            'py-1 pl-2': !props.duration,
+            'py-1 pl-2': !props.duration
         }"
+        class="border-muted-foreground text-muted-foreground mx-10 flex items-center gap-2 border-l-3 border-dotted text-sm"
     >
         <div v-if="props.duration">
             {{ props.duration }}
@@ -42,11 +37,7 @@ const props = defineProps<{
             {{ $t('app.add time') }}
         </div>
 
-        <DropdownMenu
-            v-if="
-                props.duration && props.firstTimestamp && props.secondTimestamp
-            "
-        >
+        <DropdownMenu v-if="props.duration && props.firstTimestamp && props.secondTimestamp">
             <DropdownMenuTrigger
                 class="hover:bg-muted-foreground/10 active:bg-muted-foreground/20 flex items-center gap-1 rounded px-2 py-1 transition-colors"
             >
@@ -57,33 +48,33 @@ const props = defineProps<{
                 <DropdownMenuLabel>{{ $t('app.fill with') }}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                    class="w-full"
                     :as="Link"
-                    :href="route('timestamp.fill')"
                     :data="{
                         first_timestamp: props.firstTimestamp.id,
                         second_timestamp: props.secondTimestamp.id,
-                        fill_with: 'work',
+                        fill_with: 'work'
                     }"
+                    :href="route('timestamp.fill')"
                     :preserve-state="false"
-                    preserve-scroll
+                    class="w-full"
                     method="post"
+                    preserve-scroll
                 >
                     <BriefcaseBusiness class="text-primary" />
                     {{ $t('app.work hours') }}
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                    class="w-full"
                     :as="Link"
-                    :href="route('timestamp.fill')"
                     :data="{
                         first_timestamp: props.firstTimestamp.id,
                         second_timestamp: props.secondTimestamp.id,
-                        fill_with: 'break',
+                        fill_with: 'break'
                     }"
+                    :href="route('timestamp.fill')"
                     :preserve-state="false"
-                    preserve-scroll
+                    class="w-full"
                     method="post"
+                    preserve-scroll
                 >
                     <Coffee class="text-pink-400" />
                     {{ $t('app.break time') }}

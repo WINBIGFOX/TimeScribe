@@ -9,6 +9,7 @@ use App\Http\Controllers\OverviewController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TimestampController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\WorkScheduleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('welcome', [WelcomeController::class, 'index'])->name('welcome.index');
@@ -30,6 +31,8 @@ Route::name('settings.')->prefix('settings')->group(function () {
     Route::patch('', [SettingsController::class, 'update'])->name('update');
     Route::patch('locale', [SettingsController::class, 'updateLocale'])->name('updateLocale');
 });
+
+Route::resource('work-schedule', WorkScheduleController::class)->only('create', 'store', 'edit', 'update', 'destroy');
 
 Route::name('overview.')->prefix('overview')->group(function () {
     Route::get('', [OverviewController::class, 'index'])->name('index');
