@@ -1,55 +1,55 @@
-<script setup lang="ts">
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectSeparator,
-    SelectTrigger,
-    SelectValue,
-} from '@/Components/ui/select';
-import { Switch } from '@/Components/ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/ui/tabs';
-import WorkdayTimeInput from '@/Components/WorkdayTimeInput.vue';
-import { Head, useForm } from '@inertiajs/vue3';
-import { useColorMode, useDebounceFn } from '@vueuse/core';
+<script lang="ts" setup>
+import { Button } from '@/Components/ui/button'
+import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from '@/Components/ui/select'
+import { Switch } from '@/Components/ui/switch'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/ui/tabs'
+import { weekdayTranslate } from '@/lib/utils'
+import { WorkSchedule } from '@/types'
+import { Head, Link, useForm } from '@inertiajs/vue3'
+import { useColorMode, useDebounceFn } from '@vueuse/core'
+import { Modal } from 'inertia-modal'
 import {
     AlarmClockCheck,
     AppWindowMac,
-    CalendarClock,
     CalendarMinus,
+    CalendarPlus,
     Eye,
     KeyRound,
     Languages,
     LockKeyhole,
+    Pen,
     SunMoon,
-    TimerReset,
-} from 'lucide-vue-next';
-import moment from 'moment/min/moment-with-locales';
-import { computed, ref, watch } from 'vue';
+    TimerReset
+} from 'lucide-vue-next'
+import moment from 'moment/min/moment-with-locales'
+import { ref, watch } from 'vue'
 
 const props = defineProps<{
-    openAtLogin?: boolean;
-    showTimerOnUnlock?: boolean;
+    openAtLogin?: boolean
+    theme?: string
+    showTimerOnUnlock?: boolean
     workdays: {
-        monday?: number;
-        tuesday?: number;
-        wednesday?: number;
-        thursday?: number;
-        friday?: number;
-        saturday?: number;
-        sunday?: number;
-    };
-    holidayRegion?: string;
-    stopBreakAutomatic?: string;
-    stopBreakAutomaticActivationTime?: string;
-    stopWorkTimeReset?: number;
-    stopBreakTimeReset?: number;
-    locale: string;
-    appActivityTracking?: boolean;
-}>();
+        monday?: number
+        tuesday?: number
+        wednesday?: number
+        thursday?: number
+        friday?: number
+        saturday?: number
+        sunday?: number
+    }
+    holidayRegion?: string
+    stopBreakAutomatic?: string
+    stopBreakAutomaticActivationTime?: string
+    stopWorkTimeReset?: number
+    stopBreakTimeReset?: number
+    locale: string
+    appActivityTracking?: boolean
+    workSchedules: WorkSchedule[]
+}>()
 
 const form = useForm({
     openAtLogin: props.openAtLogin ?? false,
+    theme: props.theme ?? 'system',
     showTimerOnUnlock: props.showTimerOnUnlock ?? false,
     workdays: {
         monday: props.workdays?.monday ?? 0,
@@ -58,45 +58,34 @@ const form = useForm({
         thursday: props.workdays?.thursday ?? 0,
         friday: props.workdays?.friday ?? 0,
         saturday: props.workdays?.saturday ?? 0,
-        sunday: props.workdays?.sunday ?? 0,
+        sunday: props.workdays?.sunday ?? 0
     },
     holidayRegion: props.holidayRegion ?? '',
     stopBreakAutomatic: props.stopBreakAutomatic ?? '',
-    stopBreakAutomaticActivationTime:
-        props.stopBreakAutomaticActivationTime ?? '',
+    stopBreakAutomaticActivationTime: props.stopBreakAutomaticActivationTime ?? '',
     stopWorkTimeReset: props.stopWorkTimeReset?.toString() ?? '0',
     stopBreakTimeReset: props.stopBreakTimeReset?.toString() ?? '0',
     locale: props.locale,
-    appActivityTracking: props.appActivityTracking ?? false,
-});
-
-const weekWorkTime = computed(() => {
-    return Object.values(form.workdays).reduce(
-        (acc, curr) => (isNaN(curr) ? 0 : curr) + acc,
-        0,
-    );
-});
+    appActivityTracking: props.appActivityTracking ?? false
+})
 
 const submit = () => {
     form.patch(route('settings.update'), {
         preserveScroll: true,
-        preserveState: true,
-    });
-};
+        preserveState: true
+    })
+}
 
-const holidayCheck = ref(props.holidayRegion !== null);
-const stopBreakAutomatikCheck = ref(props.stopBreakAutomatic !== null);
-const stopBreakAutomatikActivationCheck = ref(
-    props.stopBreakAutomaticActivationTime !== null,
-);
-const stopTimeResetCheck = ref(
-    !!(props.stopWorkTimeReset || props.stopBreakTimeReset),
-);
+const holidayCheck = ref(props.holidayRegion !== null)
+const stopBreakAutomatikCheck = ref(props.stopBreakAutomatic !== null)
+const stopBreakAutomatikActivationCheck = ref(props.stopBreakAutomaticActivationTime !== null)
+const stopTimeResetCheck = ref(!!(props.stopWorkTimeReset || props.stopBreakTimeReset))
 
-const debouncedSubmit = useDebounceFn(submit, 500);
+const debouncedSubmit = useDebounceFn(submit, 500)
 watch(
     () => [
         form.workdays,
+        form.theme,
         form.locale,
         form.stopBreakTimeReset,
         form.stopBreakAutomatic,
@@ -105,35 +94,35 @@ watch(
         form.openAtLogin,
         form.showTimerOnUnlock,
         form.holidayRegion,
-        form.appActivityTracking,
+        form.appActivityTracking
     ],
     debouncedSubmit,
-    { deep: true },
-);
+    { deep: true }
+)
 watch(holidayCheck, () => {
     if (holidayCheck.value === false) {
-        form.holidayRegion = '';
+        form.holidayRegion = ''
     }
-});
+})
 watch(stopBreakAutomatikCheck, () => {
     if (stopBreakAutomatikCheck.value === false) {
-        form.stopBreakAutomatic = '';
-        stopBreakAutomatikActivationCheck.value = false;
+        form.stopBreakAutomatic = ''
+        stopBreakAutomatikActivationCheck.value = false
     }
-});
+})
 watch(stopBreakAutomatikActivationCheck, () => {
     if (stopBreakAutomatikActivationCheck.value === false) {
-        form.stopBreakAutomaticActivationTime = '';
+        form.stopBreakAutomaticActivationTime = ''
     }
-});
+})
 watch(stopTimeResetCheck, () => {
     if (stopTimeResetCheck.value === false) {
-        form.stopWorkTimeReset = '0';
-        form.stopBreakTimeReset = '0';
+        form.stopWorkTimeReset = '0'
+        form.stopBreakTimeReset = '0'
     }
-});
+})
 
-const { store } = useColorMode();
+useColorMode()
 </script>
 
 <template>
@@ -145,43 +134,35 @@ const { store } = useColorMode();
         {{ $t('app.settings') }}
     </div>
     <div class="flex h-dvh grow flex-col select-none">
-        <Tabs
-            default-value="general"
-            orientation="vertical"
-            class="flex grow gap-4 overflow-hidden"
-        >
+        <Tabs class="flex grow flex-row gap-4 overflow-hidden" default-value="workingplan" orientation="vertical">
             <div class="min-w-64 shrink-0 pt-14 pl-4">
-                <TabsList class="grid w-full grid-cols-1">
-                    <TabsTrigger value="general" class="justify-start">
+                <TabsList class="grid h-auto w-full grid-cols-1">
+                    <TabsTrigger class="justify-start" value="general">
                         {{ $t('app.general') }}
                     </TabsTrigger>
-                    <TabsTrigger value="workingplan" class="justify-start">
+                    <TabsTrigger class="justify-start" value="workingplan">
                         {{ $t('app.work schedule') }}
                     </TabsTrigger>
-                    <TabsTrigger value="startStop" class="justify-start">
+                    <TabsTrigger class="justify-start" value="startStop">
                         {{ $t('app.auto start/break') }}
                     </TabsTrigger>
-                    <TabsTrigger value="appActivity" class="justify-start">
+                    <TabsTrigger class="justify-start" value="appActivity">
                         {{ $t('app.app activities') }}
                     </TabsTrigger>
                 </TabsList>
             </div>
             <div class="flex-1 overflow-auto pt-14 pr-4 pb-4">
-                <TabsContent value="general" class="mt-0 space-y-4">
-                    <div
-                        class="flex items-center space-x-4 rounded-md border p-4"
-                    >
+                <TabsContent class="mt-0 space-y-4" value="general">
+                    <div class="flex items-center space-x-4 rounded-md border p-4">
                         <KeyRound />
                         <div class="flex-1 space-y-1">
                             <p class="text-sm leading-none font-medium">
                                 {{ $t('app.start at login') }}
                             </p>
                         </div>
-                        <Switch v-model:checked="form.openAtLogin" />
+                        <Switch v-model="form.openAtLogin" />
                     </div>
-                    <div
-                        class="flex items-start space-x-4 rounded-md border p-4"
-                    >
+                    <div class="flex items-start space-x-4 rounded-md border p-4">
                         <Languages />
                         <div class="flex-1 space-y-1">
                             <p class="text-sm leading-none font-medium">
@@ -189,10 +170,8 @@ const { store } = useColorMode();
                             </p>
                             <div class="mt-2">
                                 <Select size="5" v-model="form.locale">
-                                    <SelectTrigger>
-                                        <SelectValue
-                                            :placeholder="$t('app.language')"
-                                        />
+                                    <SelectTrigger class="w-full">
+                                        <SelectValue :placeholder="$t('app.language')" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="de-DE">
@@ -209,32 +188,22 @@ const { store } = useColorMode();
                             </div>
                         </div>
                     </div>
-                    <div
-                        class="flex items-start space-x-4 rounded-md border p-4"
-                    >
+                    <div class="flex items-start space-x-4 rounded-md border p-4">
                         <SunMoon />
                         <div class="flex-1 space-y-1">
                             <p class="text-sm leading-none font-medium">
                                 {{ $t('app.appearance') }}
                             </p>
-                            <p
-                                class="text-muted-foreground text-sm text-balance"
-                            >
-                                {{
-                                    $t(
-                                        'app.choose the appearance of the application.',
-                                    )
-                                }}
+                            <p class="text-muted-foreground text-sm text-balance">
+                                {{ $t('app.choose the appearance of the application.') }}
                             </p>
                             <div class="mt-2">
-                                <Select size="5" v-model="store">
-                                    <SelectTrigger>
-                                        <SelectValue
-                                            :placeholder="$t('app.appearance')"
-                                        />
+                                <Select size="5" v-model="form.theme">
+                                    <SelectTrigger class="w-full">
+                                        <SelectValue :placeholder="$t('app.appearance')" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="auto">
+                                        <SelectItem value="system">
                                             {{ $t('app.system') }}
                                         </SelectItem>
                                         <SelectItem value="light">
@@ -248,152 +217,123 @@ const { store } = useColorMode();
                             </div>
                         </div>
                     </div>
-                    <div
-                        class="flex items-start space-x-4 rounded-md border p-4"
-                    >
+                    <div class="flex items-start space-x-4 rounded-md border p-4">
                         <Eye />
                         <div class="flex-1 space-y-1">
                             <p class="text-sm leading-none font-medium">
                                 {{ $t('app.show timer automatically') }}
                             </p>
-                            <p
-                                class="text-muted-foreground text-sm text-balance"
-                            >
-                                {{
-                                    $t(
-                                        'app.when the computer is unlocked, the timer can be displayed.',
-                                    )
-                                }}
+                            <p class="text-muted-foreground text-sm text-balance">
+                                {{ $t('app.when the computer is unlocked, the timer can be displayed.') }}
                             </p>
                         </div>
-                        <Switch v-model:checked="form.showTimerOnUnlock" />
+                        <Switch v-model="form.showTimerOnUnlock" />
                     </div>
 
-                    <div
-                        class="flex items-start space-x-4 rounded-md border p-4"
-                    >
+                    <div class="flex items-start space-x-4 rounded-md border p-4">
                         <CalendarMinus />
                         <div class="flex-1 space-y-1">
                             <p class="text-sm leading-none font-medium">
                                 {{ $t('app.consider public holidays') }}
                             </p>
                             <p class="text-muted-foreground text-sm">
-                                {{
-                                    $t(
-                                        'app.working hours on public holidays are fully credited.',
-                                    )
-                                }}
+                                {{ $t('app.working hours on public holidays are fully credited.') }}
                             </p>
                             <div class="mt-2" v-if="holidayCheck">
                                 <Select size="5" v-model="form.holidayRegion">
-                                    <SelectTrigger>
+                                    <SelectTrigger class="w-full">
                                         <SelectValue placeholder="Region" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="DE">
-                                            Deutschland
-                                        </SelectItem>
+                                        <SelectItem value="DE"> Deutschland</SelectItem>
                                         <SelectSeparator />
-                                        <SelectItem value="DE-BB">
-                                            Brandenburg
-                                        </SelectItem>
-                                        <SelectItem value="DE-BE">
-                                            Berlin
-                                        </SelectItem>
-                                        <SelectItem value="DE-BW">
-                                            Baden-Württemberg
-                                        </SelectItem>
-                                        <SelectItem value="DE-BY">
-                                            Bayern
-                                        </SelectItem>
-                                        <SelectItem value="DE-HB">
-                                            Bremen
-                                        </SelectItem>
-                                        <SelectItem value="DE-HE">
-                                            Hessen
-                                        </SelectItem>
-                                        <SelectItem value="DE-HH">
-                                            Hamburg
-                                        </SelectItem>
-                                        <SelectItem value="DE-MV">
-                                            Mecklenburg-Vorpommern
-                                        </SelectItem>
-                                        <SelectItem value="DE-NI">
-                                            {{ $t('app.never') }}dersachsen
-                                        </SelectItem>
-                                        <SelectItem value="DE-NW">
-                                            Nordrhein-Westfalen
-                                        </SelectItem>
-                                        <SelectItem value="DE-RP">
-                                            Rheinland-Pfalz
-                                        </SelectItem>
-                                        <SelectItem value="DE-SH">
-                                            Schleswig-Holstein
-                                        </SelectItem>
-                                        <SelectItem value="DE-SL">
-                                            Saarland
-                                        </SelectItem>
-                                        <SelectItem value="DE-SN">
-                                            Sachsen
-                                        </SelectItem>
-                                        <SelectItem value="DE-ST">
-                                            Sachsen-Anhalt
-                                        </SelectItem>
-                                        <SelectItem value="DE-TH">
-                                            Thüringen
-                                        </SelectItem>
+                                        <SelectItem value="DE-BB"> Brandenburg</SelectItem>
+                                        <SelectItem value="DE-BE"> Berlin</SelectItem>
+                                        <SelectItem value="DE-BW"> Baden-Württemberg</SelectItem>
+                                        <SelectItem value="DE-BY"> Bayern</SelectItem>
+                                        <SelectItem value="DE-HB"> Bremen</SelectItem>
+                                        <SelectItem value="DE-HE"> Hessen</SelectItem>
+                                        <SelectItem value="DE-HH"> Hamburg</SelectItem>
+                                        <SelectItem value="DE-MV"> Mecklenburg-Vorpommern</SelectItem>
+                                        <SelectItem value="DE-NI"> {{ $t('app.never') }}dersachsen</SelectItem>
+                                        <SelectItem value="DE-NW"> Nordrhein-Westfalen</SelectItem>
+                                        <SelectItem value="DE-RP"> Rheinland-Pfalz</SelectItem>
+                                        <SelectItem value="DE-SH"> Schleswig-Holstein</SelectItem>
+                                        <SelectItem value="DE-SL"> Saarland</SelectItem>
+                                        <SelectItem value="DE-SN"> Sachsen</SelectItem>
+                                        <SelectItem value="DE-ST"> Sachsen-Anhalt</SelectItem>
+                                        <SelectItem value="DE-TH"> Thüringen</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
                         </div>
-                        <Switch v-model:checked="holidayCheck" />
+                        <Switch v-model="holidayCheck" />
                     </div>
                 </TabsContent>
-                <TabsContent value="workingplan" class="mt-0 space-y-4">
-                    <div
-                        class="flex items-center space-x-4 rounded-md border p-4"
-                    >
-                        <CalendarClock />
-                        <div class="flex-1 space-y-1">
-                            <p class="text-sm leading-none font-medium">
-                                {{ $t('app.weekly work hours') }}
-                            </p>
+                <TabsContent class="mt-0 space-y-4" value="workingplan">
+                    <div>
+                        <Button
+                            :as="Link"
+                            :href="route('work-schedule.create')"
+                            class="w-full"
+                            size="sm"
+                            variant="outline"
+                        >
+                            <CalendarPlus />
+                            {{ $t('app.create new work schedule') }}
+                        </Button>
+                    </div>
+                    <div class="text-center">
+                        <div class="border-border text-muted-foreground grid grid-cols-8 gap-2 border-b">
+                            <div :key="index" v-for="(weekday, index) in moment.weekdaysMin(true)">{{ weekday }}</div>
+                            <div></div>
                         </div>
-                        {{ weekWorkTime.toLocaleString($page.props.locale) }}
-                        {{ $t('app.hours') }}
-                    </div>
-                    <div class="flex flex-col gap-2 rounded-md border p-4">
-                        <WorkdayTimeInput
-                            :workday="$t('app.monday')"
-                            v-model="form.workdays.monday"
-                        />
-                        <WorkdayTimeInput
-                            :workday="$t('app.tuesday')"
-                            v-model="form.workdays.tuesday"
-                        />
-                        <WorkdayTimeInput
-                            :workday="$t('app.wednesday')"
-                            v-model="form.workdays.wednesday"
-                        />
-                        <WorkdayTimeInput
-                            :workday="$t('app.thursday')"
-                            v-model="form.workdays.thursday"
-                        />
-                        <WorkdayTimeInput
-                            :workday="$t('app.friday')"
-                            v-model="form.workdays.friday"
-                        />
-                        <WorkdayTimeInput
-                            :workday="$t('app.saturday')"
-                            v-model="form.workdays.saturday"
-                        />
-                        <WorkdayTimeInput
-                            :workday="$t('app.sunday')"
-                            v-model="form.workdays.sunday"
-                        />
+                        <div>
+                            <div
+                                :class="{
+                                    'text-muted-foreground': !workSchedule.is_current
+                                }"
+                                :key="workSchedule.id"
+                                class="hover:bg-muted border-muted grid grid-cols-8 gap-2 hover:rounded-lg border-b py-2"
+                                v-for="workSchedule in props.workSchedules"
+                            >
+                                <div
+                                    class="border-primary text-primary col-span-8 mt-1 -mb-2 border-l-2 p-0 pl-1 text-left text-xs leading-none italic"
+                                    v-if="workSchedule.is_current"
+                                >
+                                    {{ $t('app.current work schedule') }}
+                                </div>
+                                <div
+                                    :key="index"
+                                    class="flex items-center justify-center gap-1"
+                                    v-for="(weekday, index) in moment.weekdays(true)"
+                                >
+                                    <template v-if="workSchedule[weekdayTranslate(weekday).toLowerCase()] > 0">
+                                        {{
+                                            workSchedule[weekdayTranslate(weekday).toLowerCase()].toLocaleString(
+                                                $page.props.locale
+                                            )
+                                        }}
+                                        <span class="text-muted-foreground text-xs">{{ $t('app.h') }}</span>
+                                    </template>
+                                    <span v-else>-</span>
+                                </div>
+                                <div>
+                                    <Button
+                                        :as="Link"
+                                        :href="route('work-schedule.edit', { work_schedule: workSchedule.id })"
+                                        class="size-8"
+                                        size="icon"
+                                        variant="outline"
+                                    >
+                                        <Pen />
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </TabsContent>
-                <TabsContent value="startStop" class="mt-0 space-y-4">
+                <TabsContent class="mt-0 space-y-4" value="startStop">
                     <div class="rounded-md border">
                         <div class="flex items-start space-x-4 p-4">
                             <LockKeyhole />
@@ -404,23 +344,18 @@ const { store } = useColorMode();
                                 <p class="text-muted-foreground text-sm">
                                     {{
                                         $t(
-                                            'app.when the computer is locked, the working time can be automatically stopped, or the break can be started.',
+                                            'app.when the computer is locked, the working time can be automatically stopped, or the break can be started.'
                                         )
                                     }}
                                 </p>
-                                <div
-                                    class="mt-4"
-                                    v-if="stopBreakAutomatikCheck"
-                                >
+                                <div class="mt-4" v-if="stopBreakAutomatikCheck">
                                     <Select v-model="form.stopBreakAutomatic">
-                                        <SelectTrigger>
+                                        <SelectTrigger class="w-full">
                                             <SelectValue placeholder="Aktion" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="stop">
-                                                {{
-                                                    $t('app.stop working time')
-                                                }}
+                                                {{ $t('app.stop working time') }}
                                             </SelectItem>
                                             <SelectItem value="break">
                                                 {{ $t('app.start break') }}
@@ -429,12 +364,9 @@ const { store } = useColorMode();
                                     </Select>
                                 </div>
                             </div>
-                            <Switch v-model:checked="stopBreakAutomatikCheck" />
+                            <Switch v-model="stopBreakAutomatikCheck" />
                         </div>
-                        <div
-                            class="flex items-start space-x-4 border-t p-4"
-                            v-if="stopBreakAutomatikCheck"
-                        >
+                        <div class="flex items-start space-x-4 border-t p-4" v-if="stopBreakAutomatikCheck">
                             <AlarmClockCheck />
                             <div class="flex-1 space-y-1">
                                 <p class="text-sm leading-none font-medium">
@@ -443,36 +375,20 @@ const { store } = useColorMode();
                                 <p class="text-muted-foreground text-sm">
                                     {{
                                         $t(
-                                            'app.the auto start/break feature will only be activated at a specified time.',
+                                            'app.the auto start/break feature will only be activated at a specified time.'
                                         )
                                     }}
                                 </p>
-                                <div
-                                    class="mt-4"
-                                    v-if="stopBreakAutomatikActivationCheck"
-                                >
-                                    <Select
-                                        v-model="
-                                            form.stopBreakAutomaticActivationTime
-                                        "
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue
-                                                :placeholder="$t('app.time')"
-                                            />
+                                <div class="mt-4" v-if="stopBreakAutomatikActivationCheck">
+                                    <Select v-model="form.stopBreakAutomaticActivationTime">
+                                        <SelectTrigger class="w-full">
+                                            <SelectValue :placeholder="$t('app.time')" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem
-                                                :key="hour"
-                                                :value="`${hour + 12}`"
-                                                v-for="hour in 11"
-                                            >
+                                            <SelectItem :key="hour" :value="`${hour + 12}`" v-for="hour in 11">
                                                 {{
                                                     $t('app.from :time', {
-                                                        time: moment(
-                                                            hour + 12,
-                                                            'HH',
-                                                        ).format('LT'),
+                                                        time: moment(hour + 12, 'HH').format('LT')
                                                     })
                                                 }}
                                             </SelectItem>
@@ -481,28 +397,16 @@ const { store } = useColorMode();
                                 </div>
                                 <p
                                     class="text-muted-foreground text-xs italic"
-                                    v-if="
-                                        stopBreakAutomatikActivationCheck &&
-                                        form.stopBreakAutomaticActivationTime
-                                    "
+                                    v-if="stopBreakAutomatikActivationCheck && form.stopBreakAutomaticActivationTime"
                                 >
                                     {{
-                                        $t(
-                                            'app.the automatic system is active until :time on the following day.',
-                                            {
-                                                time: moment(5, 'H').format(
-                                                    'LT',
-                                                ),
-                                            },
-                                        )
+                                        $t('app.the automatic system is active until :time on the following day.', {
+                                            time: moment(5, 'H').format('LT')
+                                        })
                                     }}
                                 </p>
                             </div>
-                            <Switch
-                                v-model:checked="
-                                    stopBreakAutomatikActivationCheck
-                                "
-                            />
+                            <Switch v-model="stopBreakAutomatikActivationCheck" />
                         </div>
                     </div>
                     <div class="rounded-md border">
@@ -515,16 +419,14 @@ const { store } = useColorMode();
                                 <p class="text-muted-foreground text-sm">
                                     {{
                                         $t(
-                                            'app.if you forget to stop the working or break time, it will be automatically stopped retroactively.',
+                                            'app.if you forget to stop the working or break time, it will be automatically stopped retroactively.'
                                         )
                                     }}
                                 </p>
-                                <p
-                                    class="text-muted-foreground my-2 text-xs italic"
-                                >
+                                <p class="text-muted-foreground my-2 text-xs italic">
                                     {{
                                         $t(
-                                            'app.if an absence exceeds the configured time, the working or break time will be stopped retroactively.',
+                                            'app.if an absence exceeds the configured time, the working or break time will be stopped retroactively.'
                                         )
                                     }}
                                 </p>
@@ -533,7 +435,7 @@ const { store } = useColorMode();
                                         {{ $t('app.stop working time after:') }}
                                     </p>
                                     <Select v-model="form.stopWorkTimeReset">
-                                        <SelectTrigger>
+                                        <SelectTrigger class="w-full">
                                             <SelectValue placeholder="Zeit" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -588,7 +490,7 @@ const { store } = useColorMode();
                                         {{ $t('app.stop break time after:') }}
                                     </p>
                                     <Select v-model="form.stopBreakTimeReset">
-                                        <SelectTrigger>
+                                        <SelectTrigger class="w-full">
                                             <SelectValue placeholder="Zeit" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -639,14 +541,12 @@ const { store } = useColorMode();
                                     </Select>
                                 </div>
                             </div>
-                            <Switch v-model:checked="stopTimeResetCheck" />
+                            <Switch v-model="stopTimeResetCheck" />
                         </div>
                     </div>
                 </TabsContent>
-                <TabsContent value="appActivity" class="mt-0 space-y-4">
-                    <div
-                        class="flex items-start space-x-4 rounded-md border p-4"
-                    >
+                <TabsContent class="mt-0 space-y-4" value="appActivity">
+                    <div class="flex items-start space-x-4 rounded-md border p-4">
                         <AppWindowMac />
                         <div class="flex-1 space-y-1">
                             <p class="text-sm leading-none font-medium">
@@ -655,15 +555,16 @@ const { store } = useColorMode();
                             <p class="text-muted-foreground text-sm">
                                 {{
                                     $t(
-                                        'app.records your app activity and saves which app you were active in and for how long.',
+                                        'app.records your app activity and saves which app you were active in and for how long.'
                                     )
                                 }}
                             </p>
                         </div>
-                        <Switch v-model:checked="form.appActivityTracking" />
+                        <Switch v-model="form.appActivityTracking" />
                     </div>
                 </TabsContent>
             </div>
         </Tabs>
     </div>
+    <Modal />
 </template>

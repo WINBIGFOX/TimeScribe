@@ -1,29 +1,28 @@
-<script setup lang="ts">
-import type { LabelProps } from 'radix-vue'
-import type { HTMLAttributes } from 'vue'
+<script lang="ts" setup>
 import { cn } from '@/lib/utils'
-import { Label } from 'radix-vue'
-import { computed } from 'vue'
+import { Label, type LabelProps } from 'reka-ui'
+import { computed, type HTMLAttributes } from 'vue'
 
 const props = defineProps<LabelProps & { class?: HTMLAttributes['class'] }>()
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
+    const { class: _, ...delegated } = props
 
-  return delegated
+    return delegated
 })
 </script>
 
 <template>
-  <Label
-    v-bind="delegatedProps"
-    :class="
-      cn(
-        'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
-        props.class,
-      )
-    "
-  >
-    <slot />
-  </Label>
+    <Label
+        :class="
+            cn(
+                'flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50',
+                props.class
+            )
+        "
+        v-bind="delegatedProps"
+        data-slot="label"
+    >
+        <slot />
+    </Label>
 </template>

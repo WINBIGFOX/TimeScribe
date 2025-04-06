@@ -1,12 +1,12 @@
-<script setup lang="ts">
-import { usePage } from '@inertiajs/vue3';
-import moment from 'moment/min/moment-with-locales';
+<script lang="ts" setup>
+import { usePage } from '@inertiajs/vue3'
+import moment from 'moment/min/moment-with-locales'
 
-moment.locale(usePage().props.locale);
+moment.locale(usePage().props.locale)
 if (window.Native) {
     window.Native.on('App\\Events\\LocaleChanged', () => {
-        window.location.reload();
-    });
+        window.location.reload()
+    })
 }
 </script>
 

@@ -9,11 +9,11 @@ use App\Helpers\DateHelper;
 use App\Http\Requests\StoreAbsenceRequest;
 use App\Http\Resources\AbsenceResource;
 use App\Models\Absence;
+use App\Models\Timestamp;
 use App\Services\TimestampService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Inertia\Inertia;
-use Native\Laravel\Facades\Settings;
 
 class AbsenceController extends Controller
 {
@@ -46,26 +46,29 @@ class AbsenceController extends Controller
      */
     public function show(string $date)
     {
-        $workdaysPlan = Settings::get('workdays', []);
         $date = Carbon::parse($date);
-        $startDate = $date->clone()->subMonth();
-        $endDate = $date->clone()->addMonth();
+        $startDate = $date->clone()->subMonth()->subWeek();
+        $endDate = $date->clone()->addMonth()->addWeek();
         $absences = Absence::whereBetween('date', [$startDate, $endDate])->get();
 
         $periode = CarbonPeriod::create($startDate, $endDate);
         $holidays = TimestampService::getHoliday([$startDate->year, $endDate->year]);
 
+        $firstTimestamp = Timestamp::orderBy('started_at')->first();
         $dayOverviews = [];
         foreach ($periode as $rangeDate) {
-            $plan = $workdaysPlan[strtolower($rangeDate->format('l'))] ?? 0;
+            $plan = TimestampService::getPlan($rangeDate);
+
+            if (
+                ! $firstTimestamp ||
+                $rangeDate->isBefore($firstTimestamp->started_at->startOfDay())
+            ) {
+                continue;
+            }
 
             $workTime = TimestampService::getWorkTime($rangeDate);
             $breakTime = TimestampService::getBreakTime($rangeDate);
             $noWorkTime = TimestampService::getNoWorkTime($rangeDate);
-
-            if (! $workTime && ! $breakTime && ! $noWorkTime) {
-                continue;
-            }
 
             $isAbsence = $absences->firstWhere('date', $rangeDate->format('Y-m-d 00:00:00'));
             $isHoliday = $holidays->search($rangeDate->format('Y-m-d 00:00:00'));
@@ -73,10 +76,6 @@ class AbsenceController extends Controller
             if ($isAbsence || $isHoliday) {
                 $workTime = max($workTime - $plan * 3600, 0);
                 $plan = 0;
-            }
-
-            if (! $workTime) {
-                continue;
             }
 
             $dayOverviews[$rangeDate->format('Y-m-d')] = [
@@ -93,7 +92,6 @@ class AbsenceController extends Controller
             'holidays' => $holidays->map(function ($holidayDate) {
                 return DateHelper::toResourceArray($holidayDate);
             }),
-            'workdaysPlan' => $workdaysPlan,
             'date' => $date->format('Y-m-d'),
         ]);
     }

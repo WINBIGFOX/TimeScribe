@@ -1,7 +1,14 @@
 {
-    "singleQuote": true,
     "plugins": [
         "prettier-plugin-organize-imports",
+        "prettier-plugin-organize-attributes",
         "prettier-plugin-tailwindcss"
-    ]
+    ],
+    "attributeGroups": ["$DEFAULT", "^data-"],
+    "attributeSort": "ASC",
+    "trailingComma": "none",
+    "tabWidth": 4,
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 120
 }

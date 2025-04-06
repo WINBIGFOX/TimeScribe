@@ -1,50 +1,57 @@
-<script setup lang="ts">
-import { Button } from '@/Components/ui/button';
-import WorkdayTimeInput from '@/Components/WorkdayTimeInput.vue';
-import { useForm } from '@inertiajs/vue3';
-import { useDebounceFn } from '@vueuse/core';
-import { ArrowRight, CalendarClock } from 'lucide-vue-next';
-import { computed, watch } from 'vue';
+<script lang="ts" setup>
+import { Button } from '@/Components/ui/button'
+import WorkdayTimeInput from '@/Components/WorkdayTimeInput.vue'
+import { weekdayTranslate } from '@/lib/utils'
+import { useForm } from '@inertiajs/vue3'
+import { useDebounceFn } from '@vueuse/core'
+import { ArrowRight, CalendarClock } from 'lucide-vue-next'
+import moment from 'moment/min/moment-with-locales'
+import { computed, watch } from 'vue'
 
 const props = defineProps<{
-    workdays: {
-        monday?: number;
-        tuesday?: number;
-        wednesday?: number;
-        thursday?: number;
-        friday?: number;
-        saturday?: number;
-        sunday?: number;
-    };
-}>();
+    workSchedule?: {
+        sunday?: number
+        monday?: number
+        tuesday?: number
+        wednesday?: number
+        thursday?: number
+        friday?: number
+        saturday?: number
+    }
+}>()
 
 const form = useForm({
-    workdays: {
-        monday: props.workdays?.monday ?? 0,
-        tuesday: props.workdays?.tuesday ?? 0,
-        wednesday: props.workdays?.wednesday ?? 0,
-        thursday: props.workdays?.thursday ?? 0,
-        friday: props.workdays?.friday ?? 0,
-        saturday: props.workdays?.saturday ?? 0,
-        sunday: props.workdays?.sunday ?? 0,
-    },
-});
+    workSchedule: {
+        sunday: props.workSchedule?.sunday ?? 0,
+        monday: props.workSchedule?.monday ?? 0,
+        tuesday: props.workSchedule?.tuesday ?? 0,
+        wednesday: props.workSchedule?.wednesday ?? 0,
+        thursday: props.workSchedule?.thursday ?? 0,
+        friday: props.workSchedule?.friday ?? 0,
+        saturday: props.workSchedule?.saturday ?? 0
+    }
+})
 
 const submit = () => {
     form.patch(route('welcome.update'), {
         preserveScroll: true,
-        preserveState: true,
-    });
-};
-const debouncedSubmit = useDebounceFn(submit, 500);
-watch(form, debouncedSubmit);
+        preserveState: true
+    })
+}
+const debouncedSubmit = useDebounceFn(submit, 500)
+watch(form, debouncedSubmit)
 
 const weekWorkTime = computed(() => {
-    return Object.values(form.workdays).reduce(
-        (acc, curr) => (isNaN(curr) ? 0 : curr) + acc,
-        0,
-    );
-});
+    return (
+        form.workSchedule.sunday +
+        form.workSchedule.monday +
+        form.workSchedule.tuesday +
+        form.workSchedule.wednesday +
+        form.workSchedule.thursday +
+        form.workSchedule.friday +
+        form.workSchedule.saturday
+    )
+})
 </script>
 
 <template>
@@ -57,9 +64,7 @@ const weekWorkTime = computed(() => {
                 {{ $t('app.enter your target working hours for each weekday') }}
             </span>
         </div>
-        <div
-            class="mb-0 flex w-96 items-center space-x-4 rounded-xl rounded-b-none border p-4 py-2"
-        >
+        <div class="mx-auto mb-0 flex w-96 items-center space-x-4 rounded-xl rounded-b-none border p-4 py-2">
             <CalendarClock />
             <div class="flex-1 space-y-1">
                 <p class="text-sm leading-none font-medium">
@@ -69,48 +74,19 @@ const weekWorkTime = computed(() => {
             {{ weekWorkTime.toLocaleString($page.props.locale) }}
             {{ $t('app.hours') }}
         </div>
-        <div
-            class="bg-background text-foreground flex w-96 flex-col gap-1 rounded-xl rounded-t-none px-4 py-3"
-        >
+        <div class="bg-background text-foreground mx-auto flex w-96 flex-col gap-1 rounded-xl rounded-t-none px-4 py-3">
             <WorkdayTimeInput
-                :workday="$t('app.monday')"
-                v-model="form.workdays.monday"
-            />
-            <WorkdayTimeInput
-                :workday="$t('app.tuesday')"
-                v-model="form.workdays.tuesday"
-            />
-            <WorkdayTimeInput
-                :workday="$t('app.wednesday')"
-                v-model="form.workdays.wednesday"
-            />
-            <WorkdayTimeInput
-                :workday="$t('app.thursday')"
-                v-model="form.workdays.thursday"
-            />
-            <WorkdayTimeInput
-                :workday="$t('app.friday')"
-                v-model="form.workdays.friday"
-            />
-            <WorkdayTimeInput
-                :workday="$t('app.saturday')"
-                v-model="form.workdays.saturday"
-            />
-            <WorkdayTimeInput
-                :workday="$t('app.sunday')"
-                v-model="form.workdays.sunday"
+                :key="index"
+                :workday="weekday"
+                v-for="(weekday, index) in moment.weekdays(true)"
+                v-model="form.workSchedule[weekdayTranslate(weekday).toLowerCase()]"
             />
         </div>
         <div class="flex justify-between">
-            <Button variant="ghost" size="lg" @click="$emit('prevStep')">
+            <Button @click="$emit('prevStep')" size="lg" variant="ghost">
                 {{ $t('app.back') }}
             </Button>
-            <Button
-                v-if="weekWorkTime > 0"
-                variant="secondary"
-                size="lg"
-                @click="$emit('nextStep')"
-            >
+            <Button @click="$emit('nextStep')" size="lg" v-if="weekWorkTime > 0" variant="secondary">
                 {{ $t('app.next') }}
                 <ArrowRight />
             </Button>

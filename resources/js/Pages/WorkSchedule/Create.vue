@@ -1,0 +1,97 @@
+<script lang="ts" setup>
+import MainDialog from '@/Components/dialogs/MainDialog.vue'
+import WorkdayTimeInput from '@/Components/WorkdayTimeInput.vue'
+import { Head, useForm, usePage } from '@inertiajs/vue3'
+import { CalendarClock } from 'lucide-vue-next'
+import { computed } from 'vue'
+
+import { Button } from '@/Components/ui/button'
+import { cn, weekdayTranslate } from '@/lib/utils'
+
+import { Calendar } from '@/Components/ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover'
+import { DateFormatter, getLocalTimeZone, parseDate, today, type DateValue } from '@internationalized/date'
+import { CalendarIcon } from 'lucide-vue-next'
+import moment from 'moment/min/moment-with-locales'
+import { ref } from 'vue'
+
+const value = ref<DateValue | undefined>()
+const page = usePage()
+const props = defineProps<{
+    submit_route: string
+}>()
+
+const df = new DateFormatter(page.props.locale, {
+    dateStyle: 'long'
+})
+
+const submit = () => {
+    form.transform((data) => {
+        if (value.value) {
+            data.valid_from = value.value.toString() + ' 00:00:00'
+        }
+        return data
+    }).post(props.submit_route, {
+        preserveScroll: 'errors',
+        preserveState: 'errors'
+    })
+}
+
+const form = useForm({
+    monday: 0,
+    tuesday: 0,
+    wednesday: 0,
+    thursday: 0,
+    friday: 0,
+    saturday: 0,
+    sunday: 0,
+    valid_from: today(getLocalTimeZone()).toString()
+})
+value.value = parseDate(form.valid_from)
+
+const weekWorkTime = computed(() => {
+    return form.monday + form.tuesday + form.wednesday + form.thursday + form.friday + form.saturday + form.sunday
+})
+</script>
+
+<template>
+    <Head title="Timestamp" />
+    <MainDialog :close="$t('app.cancel')" :submit="$t('app.save')" @submit="submit" :title="$t('app.create work schedule')">
+        <div class="flex items-center space-x-4 rounded-t-md border border-b-0 p-4">
+            <CalendarClock />
+            <div class="flex-1 space-y-1">
+                <p class="text-sm leading-none font-medium">
+                    {{ $t('app.weekly work hours') }}
+                </p>
+            </div>
+            {{ weekWorkTime.toLocaleString($page.props.locale) }}
+            {{ $t('app.hours') }}
+        </div>
+        <div class="flex flex-col gap-0 rounded-b-md border p-4">
+            <WorkdayTimeInput
+                :key="index"
+                :workday="weekday"
+                v-for="(weekday, index) in moment.weekdays(true)"
+                v-model="form[weekdayTranslate(weekday).toLowerCase()]"
+            />
+        </div>
+        <div class="mt-4 flex items-center justify-between">
+            {{ $t('app.valid from') }}
+            <Popover>
+                <PopoverTrigger as-child>
+                    <Button
+                        :class="cn('w-[280px] justify-start text-left font-normal', !value && 'text-muted-foreground')"
+                        variant="outline"
+                    >
+                        <CalendarIcon class="mr-2 h-4 w-4" />
+                        {{ value ? df.format(value.toDate(getLocalTimeZone())) : $t('app.pick a date') }}
+                    </Button>
+                </PopoverTrigger>
+                <PopoverContent class="w-auto p-0">
+                    <Calendar :locale="$page.props.locale" fixed-weeks v-model="value" />
+                </PopoverContent>
+            </Popover>
+        </div>
+        <label class="text-destructive text-xs">{{ form.errors.valid_from }}</label>
+    </MainDialog>
+</template>

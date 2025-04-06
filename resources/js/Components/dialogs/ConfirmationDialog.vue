@@ -5,79 +5,71 @@ import {
     AlertDialogDescription,
     AlertDialogFooter,
     AlertDialogHeader,
-    AlertDialogTitle,
-} from '@/Components/ui/alert-dialog';
-import { Button } from '@/Components/ui/button';
-import { Method, RequestPayload } from '@inertiajs/core';
-import { router, usePage } from '@inertiajs/vue3';
-import { useMediaQuery } from '@vueuse/core';
-import { Loader2 } from 'lucide-vue-next';
-import { ref, watch } from 'vue';
+    AlertDialogTitle
+} from '@/Components/ui/alert-dialog'
+import { Button } from '@/Components/ui/button'
+import { Method, RequestPayload } from '@inertiajs/core'
+import { router, usePage } from '@inertiajs/vue3'
+import { useMediaQuery } from '@vueuse/core'
+import { Loader2 } from 'lucide-vue-next'
+import { ref, watch } from 'vue'
 
-const page = usePage();
+const page = usePage()
 
-const isDesktop = useMediaQuery('(min-width: 768px)');
+const isDesktop = useMediaQuery('(min-width: 768px)')
 
 interface ConfirmationModalData {
-    title: string;
-    description: string;
-    confirmButtonText: string;
-    cancelButtonText: string;
-    confirmRoute: string;
-    confirmParameters: Record<string, string>;
-    confirmMethod: Method;
-    confirmData: RequestPayload;
+    title: string
+    description: string
+    confirmButtonText: string
+    cancelButtonText: string
+    confirmRoute: string
+    confirmParameters: Record<string, string>
+    confirmMethod: Method
+    confirmData: RequestPayload
 }
 
-const confirmationModalData = ref<ConfirmationModalData | undefined>(undefined);
+const confirmationModalData = ref<ConfirmationModalData | undefined>(undefined)
 
 watch(
     () => page.props.errors.confirmationModal,
     (value) => {
         if (value) {
-            openAlert.value = true;
-            confirmationModalData.value = JSON.parse(
-                value,
-            ) as ConfirmationModalData;
+            openAlert.value = true
+            confirmationModalData.value = JSON.parse(value) as ConfirmationModalData
         } else {
             setTimeout(() => {
-                confirmationModalData.value = undefined;
-            }, 200);
+                confirmationModalData.value = undefined
+            }, 200)
         }
-        openAlert.value = !!value;
-    },
-);
+        openAlert.value = !!value
+    }
+)
 
-const openAlert = ref<boolean>(false);
-const loading = ref<boolean>(false);
+const openAlert = ref<boolean>(false)
+const loading = ref<boolean>(false)
 
 const destroy = () => {
     if (!confirmationModalData.value) {
-        return;
+        return
     }
-    router.visit(
-        route(
-            confirmationModalData.value.confirmRoute,
-            confirmationModalData.value.confirmParameters,
-        ),
-        {
-            method: confirmationModalData.value.confirmMethod,
-            data: confirmationModalData.value.confirmData,
-            preserveScroll: true,
-            preserveState: 'errors',
-            onFinish: () => {
-                loading.value = false;
-                router.flushAll();
-            },
-            onStart: () => {
-                loading.value = true;
-            },
-            onSuccess: () => {
-                page.props.errors.confirmationModal = undefined;
-            },
+    router.visit(route(confirmationModalData.value.confirmRoute, confirmationModalData.value.confirmParameters), {
+        method: confirmationModalData.value.confirmMethod,
+        data: confirmationModalData.value.confirmData,
+        preserveScroll: true,
+        preserveState: 'errors',
+        onFinish: () => {
+            loading.value = false
+            router.flushAll()
         },
-    );
-};
+        onStart: () => {
+            loading.value = true
+        },
+        onSuccess: () => {
+            page.props.errors.confirmationModal = undefined
+        }
+    })
+}
 </script>
 
 <template>

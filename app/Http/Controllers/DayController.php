@@ -25,7 +25,7 @@ class DayController extends Controller
             'timestamps' => TimestampResource::collection(TimestampService::getTimestamps($startDay, $endDay, true)),
             'dayWorkTime' => TimestampService::getWorkTime($startDay, $endDay),
             'dayBreakTime' => TimestampService::getBreakTime($startDay, $endDay),
-            'dayPlan' => TimestampService::getPlan(strtolower($date->englishDayOfWeek)),
+            'dayPlan' => TimestampService::getPlan($date),
             'dayFallbackPlan' => TimestampService::getFallbackPlan($startDay, $endDay),
             'dayNoWorkTime' => TimestampService::getNoWorkTime($startDay),
             'absences' => TimestampService::getAbsence($startDay),

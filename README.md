@@ -72,20 +72,20 @@ Ideal for anyone looking to track their work hours efficiently and effortlessly!
 ## Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/WINBIGFOX/timescribe.git
+    ```bash
+    git clone https://github.com/WINBIGFOX/timescribe.git
     ```
 2. Navigate to the project directory:
-   ```bash
-   cd timescribe
+    ```bash
+    cd timescribe
     ```
 3. Install dependencies:
-   ```bash
-   composer install
-   npm install
+    ```bash
+    composer install
+    npm install
     ```
 4. Build the macOS application:
-   ```bash
-   npm run build
-   php artisan native:build mac
+    ```bash
+    npm run build
+    php artisan native:build mac
     ```

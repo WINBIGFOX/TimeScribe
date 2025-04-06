@@ -1,12 +1,11 @@
-<script setup lang="ts">
-import type { DialogTriggerProps } from 'radix-vue'
-import { DialogTrigger } from 'radix-vue'
+<script lang="ts" setup>
+import { DialogTrigger, type DialogTriggerProps } from 'reka-ui'
 
 const props = defineProps<DialogTriggerProps>()
 </script>
 
 <template>
-  <DialogTrigger v-bind="props">
-    <slot />
-  </DialogTrigger>
+    <DialogTrigger v-bind="props" data-slot="dialog-trigger">
+        <slot />
+    </DialogTrigger>
 </template>

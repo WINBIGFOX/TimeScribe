@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Native\Laravel\Enums\SystemThemesEnum;
 
 class StoreSettingsRequest extends FormRequest
 {
@@ -25,15 +27,8 @@ class StoreSettingsRequest extends FormRequest
     {
         return [
             'openAtLogin' => ['required', 'boolean'],
+            'theme' => ['required', Rule::enum(SystemThemesEnum::class)],
             'showTimerOnUnlock' => ['required', 'boolean'],
-            'workdays' => ['required', 'array'],
-            'workdays.monday' => ['required', 'decimal:0,1', 'between:0,15'],
-            'workdays.tuesday' => ['required', 'decimal:0,1', 'between:0,15'],
-            'workdays.wednesday' => ['required', 'decimal:0,1', 'between:0,15'],
-            'workdays.thursday' => ['required', 'decimal:0,1', 'between:0,15'],
-            'workdays.friday' => ['required', 'decimal:0,1', 'between:0,15'],
-            'workdays.saturday' => ['required', 'decimal:0,1', 'between:0,15'],
-            'workdays.sunday' => ['required', 'decimal:0,1', 'between:0,15'],
             'holidayRegion' => ['nullable', 'string', 'max:5', 'min:2'],
             'stopBreakAutomatic' => ['nullable', 'string'],
             'stopBreakAutomaticActivationTime' => ['nullable', 'integer', 'min:13', 'max:23'],
