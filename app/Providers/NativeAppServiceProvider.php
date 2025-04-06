@@ -13,7 +13,7 @@ use Native\Laravel\Enums\SystemThemesEnum;
 use Native\Laravel\Facades\Menu;
 use Native\Laravel\Facades\MenuBar;
 use Native\Laravel\Facades\Settings;
-use Native\Laravel\System;
+use Native\Laravel\Facades\System;
 
 class NativeAppServiceProvider implements ProvidesPhpIni
 {

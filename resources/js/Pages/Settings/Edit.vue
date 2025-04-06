@@ -134,7 +134,7 @@ useColorMode()
         {{ $t('app.settings') }}
     </div>
     <div class="flex h-dvh grow flex-col select-none">
-        <Tabs class="flex grow flex-row gap-4 overflow-hidden" default-value="workingplan" orientation="vertical">
+        <Tabs class="flex grow flex-row gap-4 overflow-hidden" default-value="general" orientation="vertical">
             <div class="min-w-64 shrink-0 pt-14 pl-4">
                 <TabsList class="grid h-auto w-full grid-cols-1">
                     <TabsTrigger class="justify-start" value="general">
