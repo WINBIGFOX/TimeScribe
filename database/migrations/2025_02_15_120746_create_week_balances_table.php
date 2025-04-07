@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('week_balances', function (Blueprint $table) {
+        Schema::create('week_balances', function (Blueprint $table): void {
             $table->id();
             $table->timestamp('start_week_at');
             $table->timestamp('end_week_at');
-            $table->float('balance', 8, 2);
+            $table->float('balance', 8);
             $table->timestamps();
         });
     }

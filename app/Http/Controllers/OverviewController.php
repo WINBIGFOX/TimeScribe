@@ -47,12 +47,12 @@ class OverviewController extends Controller
             'weekPlan' => TimestampService::getWeekPlan($startOfWeek),
             'weekFallbackPlan' => TimestampService::getFallbackPlan($startOfWeek, $endOfWeek),
             'weekDatesWithTimestamps' => TimestampService::getDatesWithTimestamps($date->copy()->subYear()->startOfYear(), $date->copy()->addYear()->endOfYear()),
-            'holidays' => TimestampService::getHoliday(range($date->year - 5, $date->year + 5))->map(function ($holidayDate) {
+            'holidays' => TimestampService::getHoliday(range($date->year - 5, $date->year + 5))->map(function ($holidayDate): ?array {
                 return DateHelper::toResourceArray($holidayDate);
             }),
             'balance' => TimestampService::getBalance($startOfWeek),
             'lastCalendarWeek' => $date->copy()->subWeek()->weekOfYear,
-            'weekdays' => collect(new DatePeriod($startOfWeek, new DateInterval('P1D'), $endOfWeek))->map(function (\DateTime $date) {
+            'weekdays' => collect(new DatePeriod($startOfWeek, new DateInterval('P1D'), $endOfWeek))->map(function (\DateTime $date): array {
                 $date = Carbon::parse($date);
 
                 return [
@@ -74,7 +74,7 @@ class OverviewController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $date, bool $darkMode)
+    public function edit(string $date, bool $darkMode): void
     {
         WindowService::closeDayEdit();
         WindowService::openDayEdit($date, $darkMode);

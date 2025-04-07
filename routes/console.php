@@ -9,13 +9,13 @@ use Native\Laravel\Enums\SystemIdleStatesEnum;
 use Native\Laravel\Facades\PowerMonitor;
 use Native\Laravel\Facades\Settings;
 
-Schedule::when(fn () => Timestamp::whereNull('ended_at')->exists())->group(function () {
+Schedule::when(fn () => Timestamp::whereNull('ended_at')->exists())->group(function (): void {
     Schedule::command('menubar:refresh')->everyFifteenSeconds();
     Schedule::command('app:calculate-week-balance')->everyMinute();
 });
 
 Schedule::command('app:active-app')
-    ->when(function () {
+    ->when(function (): bool {
         $isRecording = Timestamp::whereNull('ended_at')
             ->where('type', TimestampTypeEnum::WORK)
             ->exists();
@@ -26,7 +26,7 @@ Schedule::command('app:active-app')
     ->everyFiveSeconds()
     ->withoutOverlapping();
 
-Schedule::command('app:timestamp-ping')->when(function () {
+Schedule::command('app:timestamp-ping')->when(function (): bool {
     $state = PowerMonitor::getSystemIdleState(0);
 
     return $state === SystemIdleStatesEnum::ACTIVE;

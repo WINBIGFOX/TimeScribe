@@ -72,7 +72,7 @@ class SettingsController extends Controller
         return redirect()->route('settings.edit');
     }
 
-    public function updateLocale(UpdateLocaleRequest $request)
+    public function updateLocale(UpdateLocaleRequest $request): void
     {
         $data = $request->validated();
         if ($data['locale'] !== Settings::get('locale')) {

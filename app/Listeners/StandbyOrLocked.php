@@ -34,20 +34,14 @@ class StandbyOrLocked
 
         $stopBreakAutomaticActivationTime = Settings::get('stopBreakAutomaticActivationTime');
 
-        if ($stopBreakAutomaticActivationTime) {
-            if (
-                ! Carbon::now()->between(
-                    Carbon::now()->setTime(0, 0, 0),
-                    Carbon::now()->setTime(4, 59, 59)
-                )
-                &&
-                ! Carbon::now()->between(
-                    Carbon::now()->setTime($stopBreakAutomaticActivationTime, 0, 0),
-                    Carbon::now()->setTime(23, 59, 59)
-                )
-            ) {
-                return;
-            }
+        if ($stopBreakAutomaticActivationTime && (! Carbon::now()->between(
+            Carbon::now()->setTime(0, 0, 0),
+            Carbon::now()->setTime(4, 59, 59)
+        ) && ! Carbon::now()->between(
+            Carbon::now()->setTime($stopBreakAutomaticActivationTime, 0, 0),
+            Carbon::now()->setTime(23, 59, 59)
+        ))) {
+            return;
         }
 
         if (TimestampService::getCurrentType() === TimestampTypeEnum::WORK) {

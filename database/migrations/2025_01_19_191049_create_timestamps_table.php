@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('timestamps', function (Blueprint $table) {
+        Schema::create('timestamps', function (Blueprint $table): void {
             $table->id();
             $table->enum('type', allowed: array_column(TimestampTypeEnum::cases(), 'value'));
             $table->timestamp('started_at');

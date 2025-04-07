@@ -32,8 +32,8 @@ const submit = () => {
         }
         return data
     }).post(props.submit_route, {
-        preserveScroll: 'errors',
-        preserveState: 'errors'
+        preserveScroll: true,
+        preserveState: true
     })
 }
 
@@ -56,7 +56,12 @@ const weekWorkTime = computed(() => {
 
 <template>
     <Head title="Timestamp" />
-    <MainDialog :close="$t('app.cancel')" :submit="$t('app.save')" @submit="submit" :title="$t('app.create work schedule')">
+    <MainDialog
+        :close="$t('app.cancel')"
+        :submit="$t('app.save')"
+        :title="$t('app.create work schedule')"
+        @submit="submit"
+    >
         <div class="flex items-center space-x-4 rounded-t-md border border-b-0 p-4">
             <CalendarClock />
             <div class="flex-1 space-y-1">

@@ -89,7 +89,7 @@ class AbsenceController extends Controller
         return Inertia::render('Absence/Show', [
             'dayOverviews' => $dayOverviews,
             'absences' => AbsenceResource::collection($absences),
-            'holidays' => $holidays->map(function ($holidayDate) {
+            'holidays' => $holidays->map(function ($holidayDate): ?array {
                 return DateHelper::toResourceArray($holidayDate);
             }),
             'date' => $date->format('Y-m-d'),

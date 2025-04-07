@@ -276,6 +276,8 @@ useColorMode()
                             :as="Link"
                             :href="route('work-schedule.create')"
                             class="w-full"
+                            preserve-scroll
+                            preserve-state
                             size="sm"
                             variant="outline"
                         >
@@ -294,7 +296,7 @@ useColorMode()
                                     'text-muted-foreground': !workSchedule.is_current
                                 }"
                                 :key="workSchedule.id"
-                                class="hover:bg-muted border-muted grid grid-cols-8 gap-2 hover:rounded-lg border-b py-2"
+                                class="hover:bg-muted border-muted grid grid-cols-8 gap-2 border-b py-2 hover:rounded-lg"
                                 v-for="workSchedule in props.workSchedules"
                             >
                                 <div
@@ -323,6 +325,8 @@ useColorMode()
                                         :as="Link"
                                         :href="route('work-schedule.edit', { work_schedule: workSchedule.id })"
                                         class="size-8"
+                                        preserve-scroll
+                                        preserve-state
                                         size="icon"
                                         variant="outline"
                                     >

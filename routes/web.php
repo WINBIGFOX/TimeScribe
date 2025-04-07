@@ -16,7 +16,7 @@ Route::get('welcome', [WelcomeController::class, 'index'])->name('welcome.index'
 Route::patch('welcome', [WelcomeController::class, 'update'])->name('welcome.update');
 Route::get('welcome/finish/{openSettings?}', [WelcomeController::class, 'finish'])->name('welcome.finish');
 
-Route::name('menubar.')->prefix('menubar')->group(function () {
+Route::name('menubar.')->prefix('menubar')->group(function (): void {
     Route::get('', [MenubarController::class, 'index'])->name('index');
     Route::post('break', [MenubarController::class, 'storeBreak'])->name('storeBreak');
     Route::post('work', [MenubarController::class, 'storeWork'])->name('storeWork');
@@ -26,7 +26,7 @@ Route::name('menubar.')->prefix('menubar')->group(function () {
     Route::get('open-absence/{darkMode}', [MenubarController::class, 'openAbsence'])->name('openAbsence');
 });
 
-Route::name('settings.')->prefix('settings')->group(function () {
+Route::name('settings.')->prefix('settings')->group(function (): void {
     Route::get('edit', [SettingsController::class, 'edit'])->name('edit');
     Route::patch('', [SettingsController::class, 'update'])->name('update');
     Route::patch('locale', [SettingsController::class, 'updateLocale'])->name('updateLocale');
@@ -34,18 +34,18 @@ Route::name('settings.')->prefix('settings')->group(function () {
 
 Route::resource('work-schedule', WorkScheduleController::class)->only('create', 'store', 'edit', 'update', 'destroy');
 
-Route::name('overview.')->prefix('overview')->group(function () {
+Route::name('overview.')->prefix('overview')->group(function (): void {
     Route::get('', [OverviewController::class, 'index'])->name('index');
     Route::get('{date}', [OverviewController::class, 'show'])->name('show')->where('date', '\d{4}-\d{2}-\d{2}');
     Route::get('{date}/edit/{darkMode}', [OverviewController::class, 'edit'])->name('edit')->where('date', '\d{4}-\d{2}-\d{2}');
 });
 
-Route::name('day.')->prefix('day')->group(function () {
+Route::name('day.')->prefix('day')->group(function (): void {
     Route::get('{date}/edit', [DayController::class, 'edit'])->name('edit')->where('date', '\d{4}-\d{2}-\d{2}');
     Route::patch('{date}', [DayController::class, 'update'])->name('update')->where('date', '\d{4}-\d{2}-\d{2}');
 });
 
-Route::name('absence.')->prefix('absence')->group(function () {
+Route::name('absence.')->prefix('absence')->group(function (): void {
     Route::get('', [AbsenceController::class, 'index'])->name('index');
     Route::get('{date}', [AbsenceController::class, 'show'])->name('show');
     Route::post('{date}', [AbsenceController::class, 'store'])->name('store');

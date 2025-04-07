@@ -63,7 +63,7 @@ const destroy = () => {
             confirm: false
         },
         preserveScroll: true,
-        preserveState: 'errors'
+        preserveState: true
     })
 }
 </script>
@@ -74,9 +74,9 @@ const destroy = () => {
         :close="$t('app.cancel')"
         :destroy="$t('app.remove')"
         :submit="$t('app.save')"
+        :title="$t('app.edit work schedule')"
         @destroy="destroy"
         @submit="submit"
-        :title="$t('app.edit work schedule')"
     >
         <div class="flex items-center space-x-4 rounded-t-md border border-b-0 p-4">
             <CalendarClock />

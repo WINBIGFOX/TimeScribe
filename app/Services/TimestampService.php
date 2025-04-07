@@ -105,15 +105,11 @@ class TimestampService
         $activeTimestamps = Timestamp::whereNull('ended_at')->get();
 
         foreach ($activeTimestamps as $timestamp) {
-            if ($workTimeReset && $workTimeReset > 0 && $timestamp->type === TimestampTypeEnum::WORK) {
-                if ($timestamp->last_ping_at->diffInMinutes(now()) >= $workTimeReset) {
-                    $timestamp->update(['ended_at' => $timestamp->last_ping_at]);
-                }
+            if ($workTimeReset && $workTimeReset > 0 && $timestamp->type === TimestampTypeEnum::WORK && $timestamp->last_ping_at->diffInMinutes(now()) >= $workTimeReset) {
+                $timestamp->update(['ended_at' => $timestamp->last_ping_at]);
             }
-            if ($breakTimeReset && $breakTimeReset > 0 && $timestamp->type === TimestampTypeEnum::BREAK) {
-                if ($timestamp->last_ping_at->diffInMinutes(now()) >= $breakTimeReset) {
-                    $timestamp->update(['ended_at' => $timestamp->last_ping_at]);
-                }
+            if ($breakTimeReset && $breakTimeReset > 0 && $timestamp->type === TimestampTypeEnum::BREAK && $timestamp->last_ping_at->diffInMinutes(now()) >= $breakTimeReset) {
+                $timestamp->update(['ended_at' => $timestamp->last_ping_at]);
             }
         }
     }
@@ -130,10 +126,10 @@ class TimestampService
 
     private static function getTime(TimestampTypeEnum $type, ?Carbon $date, ?Carbon $endDate = null, ?bool $fallbackNow = true): float
     {
-        if (! $date) {
+        if (! $date instanceof Carbon) {
             $date = Carbon::now();
         }
-        if (! $endDate) {
+        if (! $endDate instanceof Carbon) {
             $endDate = $date->copy();
         }
 
@@ -161,11 +157,7 @@ class TimestampService
         }
 
         return $timestamps->sum(function (Timestamp $timestamp) use ($date, $fallbackNow) {
-            if ($date->isToday() && $fallbackNow) {
-                $fallbackTime = now();
-            } else {
-                $fallbackTime = $timestamp->last_ping_at;
-            }
+            $fallbackTime = $date->isToday() && $fallbackNow ? now() : $timestamp->last_ping_at;
             $diffTime = $timestamp->ended_at ?? $fallbackTime;
 
             return $timestamp->started_at->diff($diffTime)->totalSeconds;
@@ -212,7 +204,7 @@ class TimestampService
 
     public static function getTimestamps(Carbon $date, ?Carbon $endDate = null, ?bool $withEditAttributes = false): Collection
     {
-        if (! $endDate) {
+        if (! $endDate instanceof Carbon) {
             $endDate = $date->copy();
         }
 
@@ -225,7 +217,7 @@ class TimestampService
 
     public static function getAbsence(Carbon $date, ?Carbon $endDate = null): Collection
     {
-        if (! $endDate) {
+        if (! $endDate instanceof Carbon) {
             $endDate = $date->copy();
         }
 
@@ -245,14 +237,14 @@ class TimestampService
             $holidayCalculator->calculate(Settings::get('holidayRegion'), $year)
                 ->filter(new IncludeTypeFilter(HolidayType::DAY_OFF))
                 ->format(new DateFormatter)
-        )->map(function ($holiday) {
+        )->map(function ($holiday): ?Carbon {
             return Carbon::create($holiday);
         });
     }
 
     public static function getWorkSchedule(?Carbon $date = null): array
     {
-        if (! $date) {
+        if (! $date instanceof Carbon) {
             $date = Carbon::now();
         }
 
@@ -297,7 +289,7 @@ class TimestampService
                 foreach ($datePeriod as $date) {
                     $dayName = strtolower($date->locale('en')->dayName);
 
-                    $schedule = $workSchedules->firstWhere(function (WorkSchedule $item) use ($date) {
+                    $schedule = $workSchedules->firstWhere(function (WorkSchedule $item) use ($date): bool {
                         return $item->valid_from <= $date;
                     });
                     $workdays[$dayName] = $schedule ? $schedule->{$dayName} : 0;
@@ -328,18 +320,18 @@ class TimestampService
 
         $workdays = collect(self::getWorkSchedule($date))->values()->unique()->sort();
 
-        return $workdays->filter(fn ($value) => $value >= $workTime)->first() ?? $workdays->last();
+        return $workdays->filter(fn ($value): bool => $value >= $workTime)->first() ?? $workdays->last();
     }
 
     public static function getDatesWithTimestamps(?Carbon $date, ?Carbon $endDate = null): Collection
     {
-        if (! $date) {
+        if (! $date instanceof Carbon) {
             $date = Carbon::now();
         }
-        if (! $endDate) {
+        if (! $endDate instanceof Carbon) {
             $endDate = $date->copy();
         }
-        $holiday = self::getHoliday(range($date->year, $endDate->year))->map(function (Carbon $holiday) {
+        $holiday = self::getHoliday(range($date->year, $endDate->year))->map(function (Carbon $holiday): string {
             return $holiday->format('Y-m-d');
         });
 

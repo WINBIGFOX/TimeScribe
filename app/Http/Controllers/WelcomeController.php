@@ -26,7 +26,7 @@ class WelcomeController extends Controller
         ]);
     }
 
-    public function update(StoreWelcomeRequest $request)
+    public function update(StoreWelcomeRequest $request): void
     {
         $data = $request->validated();
         if ($request->has('openAtLogin')) {
@@ -47,7 +47,7 @@ class WelcomeController extends Controller
         }
     }
 
-    public function finish($openSettings = false)
+    public function finish($openSettings = false): void
     {
         Settings::set('showTimerOnUnlock', true);
         Settings::set('wizard_completed', true);

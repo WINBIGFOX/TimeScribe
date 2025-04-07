@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "de1b75917d5f6c618a1f99dd81f47653",
+    "content-hash": "4fe5af64674bf28919385708784d3eae",
     "packages": [
         {
             "name": "archtechx/enums",
@@ -3167,16 +3167,16 @@
         },
         {
             "name": "nativephp/electron",
-            "version": "1.0.0-beta.8",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NativePHP/electron.git",
-                "reference": "7dad3150bc2cf5dd8fe4c63f5d5409c3cc3ed6f4"
+                "reference": "e0624eba8d2994669a90180125a7c0bd8631c51a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NativePHP/electron/zipball/7dad3150bc2cf5dd8fe4c63f5d5409c3cc3ed6f4",
-                "reference": "7dad3150bc2cf5dd8fe4c63f5d5409c3cc3ed6f4",
+                "url": "https://api.github.com/repos/NativePHP/electron/zipball/e0624eba8d2994669a90180125a7c0bd8631c51a",
+                "reference": "e0624eba8d2994669a90180125a7c0bd8631c51a",
                 "shasum": ""
             },
             "require": {
@@ -3184,8 +3184,8 @@
                 "illuminate/contracts": "^10.0|^11.0|^12.0",
                 "laravel/prompts": "^0.1.1|^0.2|^0.3",
                 "nativephp/laravel": "^1.0",
-                "nativephp/php-bin": "^0.6",
-                "php": "^8.1",
+                "nativephp/php-bin": "^1.0",
+                "php": "^8.3",
                 "spatie/laravel-package-tools": "^1.16.4",
                 "symfony/filesystem": "^6.4|^7.2"
             },
@@ -3242,7 +3242,7 @@
                 "nativephp"
             ],
             "support": {
-                "source": "https://github.com/NativePHP/electron/tree/1.0.0-beta.8"
+                "source": "https://github.com/NativePHP/electron/tree/1.0.0"
             },
             "funding": [
                 {
@@ -3254,25 +3254,25 @@
                     "type": "opencollective"
                 }
             ],
-            "time": "2025-03-28T09:40:52+00:00"
+            "time": "2025-04-07T14:55:46+00:00"
         },
         {
             "name": "nativephp/laravel",
-            "version": "1.0.0-beta.4",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NativePHP/laravel.git",
-                "reference": "fe865fe1fc49ca1b3db68f7861161263dd81a264"
+                "reference": "9e9166d698e55e1877ba1726ba7d25999c85065f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NativePHP/laravel/zipball/fe865fe1fc49ca1b3db68f7861161263dd81a264",
-                "reference": "fe865fe1fc49ca1b3db68f7861161263dd81a264",
+                "url": "https://api.github.com/repos/NativePHP/laravel/zipball/9e9166d698e55e1877ba1726ba7d25999c85065f",
+                "reference": "9e9166d698e55e1877ba1726ba7d25999c85065f",
                 "shasum": ""
             },
             "require": {
                 "illuminate/contracts": "^10.0|^11.0|^12.0",
-                "php": "^8.1",
+                "php": "^8.3",
                 "spatie/laravel-package-tools": "^1.16.4",
                 "symfony/finder": "^6.2|^7.0"
             },
@@ -3347,7 +3347,7 @@
             ],
             "support": {
                 "issues": "https://github.com/NativePHP/laravel/issues",
-                "source": "https://github.com/NativePHP/laravel/tree/1.0.0-beta.4"
+                "source": "https://github.com/NativePHP/laravel/tree/1.0.0"
             },
             "funding": [
                 {
@@ -3359,20 +3359,20 @@
                     "type": "opencollective"
                 }
             ],
-            "time": "2025-03-27T16:57:44+00:00"
+            "time": "2025-04-07T14:52:57+00:00"
         },
         {
             "name": "nativephp/php-bin",
-            "version": "0.6.1",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NativePHP/php-bin.git",
-                "reference": "2d035e9eb90bd9e84f8bbbb00adc3927713565c9"
+                "reference": "87e8e187f95342109f6009934a85d6f1e539efbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NativePHP/php-bin/zipball/2d035e9eb90bd9e84f8bbbb00adc3927713565c9",
-                "reference": "2d035e9eb90bd9e84f8bbbb00adc3927713565c9",
+                "url": "https://api.github.com/repos/NativePHP/php-bin/zipball/87e8e187f95342109f6009934a85d6f1e539efbd",
+                "reference": "87e8e187f95342109f6009934a85d6f1e539efbd",
                 "shasum": ""
             },
             "type": "library",
@@ -3402,7 +3402,7 @@
                 "php"
             ],
             "support": {
-                "source": "https://github.com/NativePHP/php-bin/tree/0.6.1"
+                "source": "https://github.com/NativePHP/php-bin/tree/1.0.0"
             },
             "funding": [
                 {
@@ -3414,7 +3414,7 @@
                     "type": "opencollective"
                 }
             ],
-            "time": "2025-03-19T15:52:43+00:00"
+            "time": "2025-03-31T14:51:23+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -7562,6 +7562,41 @@
             "time": "2024-12-07T21:18:45+00:00"
         },
         {
+            "name": "driftingly/rector-laravel",
+            "version": "2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/driftingly/rector-laravel.git",
+                "reference": "837066b7911cd2bec43198d93d76b228a21c464c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/driftingly/rector-laravel/zipball/837066b7911cd2bec43198d93d76b228a21c464c",
+                "reference": "837066b7911cd2bec43198d93d76b228a21c464c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2 || ^8.0",
+                "rector/rector": "^2.0"
+            },
+            "type": "rector-extension",
+            "autoload": {
+                "psr-4": {
+                    "RectorLaravel\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Rector upgrades rules for Laravel Framework",
+            "support": {
+                "issues": "https://github.com/driftingly/rector-laravel/issues",
+                "source": "https://github.com/driftingly/rector-laravel/tree/2.0.3"
+            },
+            "time": "2025-04-05T17:44:00+00:00"
+        },
+        {
             "name": "fakerphp/faker",
             "version": "v1.24.1",
             "source": {
@@ -9116,6 +9151,64 @@
             "time": "2025-02-19T13:28:12+00:00"
         },
         {
+            "name": "phpstan/phpstan",
+            "version": "2.1.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan.git",
+                "reference": "8ca5f79a8f63c49b2359065832a654e1ec70ac30"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/8ca5f79a8f63c49b2359065832a654e1ec70ac30",
+                "reference": "8ca5f79a8f63c49b2359065832a654e1ec70ac30",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0"
+            },
+            "conflict": {
+                "phpstan/phpstan-shim": "*"
+            },
+            "bin": [
+                "phpstan",
+                "phpstan.phar"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan - PHP Static Analysis Tool",
+            "keywords": [
+                "dev",
+                "static analysis"
+            ],
+            "support": {
+                "docs": "https://phpstan.org/user-guide/getting-started",
+                "forum": "https://github.com/phpstan/phpstan/discussions",
+                "issues": "https://github.com/phpstan/phpstan/issues",
+                "security": "https://github.com/phpstan/phpstan/security/policy",
+                "source": "https://github.com/phpstan/phpstan-src"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ondrejmirtes",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/phpstan",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-03-24T13:45:00+00:00"
+        },
+        {
             "name": "phpunit/php-code-coverage",
             "version": "11.0.9",
             "source": {
@@ -9538,6 +9631,65 @@
                 }
             ],
             "time": "2025-03-23T16:02:11+00:00"
+        },
+        {
+            "name": "rector/rector",
+            "version": "2.0.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rectorphp/rector.git",
+                "reference": "059b827cc648929711606e9824337e41e2f9ed92"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/059b827cc648929711606e9824337e41e2f9ed92",
+                "reference": "059b827cc648929711606e9824337e41e2f9ed92",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0",
+                "phpstan/phpstan": "^2.1.9"
+            },
+            "conflict": {
+                "rector/rector-doctrine": "*",
+                "rector/rector-downgrade-php": "*",
+                "rector/rector-phpunit": "*",
+                "rector/rector-symfony": "*"
+            },
+            "suggest": {
+                "ext-dom": "To manipulate phpunit.xml via the custom-rule command"
+            },
+            "bin": [
+                "bin/rector"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Instant Upgrade and Automated Refactoring of any PHP code",
+            "keywords": [
+                "automation",
+                "dev",
+                "migration",
+                "refactoring"
+            ],
+            "support": {
+                "issues": "https://github.com/rectorphp/rector/issues",
+                "source": "https://github.com/rectorphp/rector/tree/2.0.11"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/tomasvotruba",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-03-28T10:25:17+00:00"
         },
         {
             "name": "sebastian/cli-parser",

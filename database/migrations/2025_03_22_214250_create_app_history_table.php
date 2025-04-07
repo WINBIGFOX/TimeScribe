@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('activity_histories', function (Blueprint $table) {
+        Schema::create('activity_histories', function (Blueprint $table): void {
             $table->id();
             $table->string('app_name');
             $table->string('app_identifier');

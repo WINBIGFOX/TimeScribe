@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('timestamps', function (Blueprint $table) {
+        Schema::table('timestamps', function (Blueprint $table): void {
             $table->timestamp('last_ping_at')->nullable()->after('ended_at');
         });
     }
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('timestamps', function (Blueprint $table) {
+        Schema::table('timestamps', function (Blueprint $table): void {
             $table->dropColumn('last_ping_at');
         });
     }

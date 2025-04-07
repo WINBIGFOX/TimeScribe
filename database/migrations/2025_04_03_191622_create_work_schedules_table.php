@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('work_schedules', function (Blueprint $table) {
+        Schema::create('work_schedules', function (Blueprint $table): void {
             $table->id();
             $table->decimal('sunday')->default(0);
             $table->decimal('monday')->default(0);
