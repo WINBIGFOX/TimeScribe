@@ -1,5 +1,7 @@
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/kc7qv2k6jqr)
 
+<img style="max-width: 120px" alt="TimeScribe" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/icon.png?raw=true">
+
 # TimeScribe
 
 ## Description
@@ -25,47 +27,39 @@ Ideal for anyone looking to track their work hours efficiently and effortlessly!
 <br/>
 </p>
 
-### Weekly Overview
+### Time Tracking
 
 <p align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/overview_en_dark.webp?raw=true">
-  <img alt="Weekly Overview" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/overview_en_light.webp?raw=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/dayview_en_dark.webp?raw=true">
+  <img alt="Time Tracking" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/dayview_en_light.webp?raw=true">
 </picture>
 </p>
 
-### Detail View
+### App Activity
 
 <p align="center">
 <picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/dayview_en_dark.webp?raw=true">
-  <img alt="Detail View" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/dayview_en_light.webp?raw=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/app_activity_en_dark.webp?raw=true">
+  <img alt="App Activity" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/app_activity_en_light.webp?raw=true">
 </picture>
 </p>
 
-### Absence Calendar
+### Absence Planning
 
 <p align="center">
 <picture >
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/absences_en_dark.webp?raw=true">
-  <img alt="Absence Calendar" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/absences_en_light.webp?raw=true">
+  <img alt="Absence Planning" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/absences_en_light.webp?raw=true">
 </picture>
 </p>
 
-### Settings
+### Automatic Start/Pause
 
 <p align="center">
 <picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings1_en_dark.webp?raw=true">
-  <img width="32%" alt="Settings" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings1_en_light.webp?raw=true">
-</picture>
-<picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings2_en_dark.webp?raw=true">
-  <img width="32%" alt="Settings" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings2_en_light.webp?raw=true">
-</picture>
-<picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings3_en_dark.webp?raw=true">
-  <img width="32%" alt="Settings" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/settings3_en_light.webp?raw=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/start_break_en_dark.webp?raw=true">
+  <img alt="Automatic Start/Pause" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/start_break_en_light.webp?raw=true">
 </picture>
 </p>
 
