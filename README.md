@@ -1,7 +1,6 @@
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/kc7qv2k6jqr)
 
-<img style="max-width: 120px" alt="TimeScribe" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/icon.png?raw=true">
-
+<a href="https://timescribe.app" target="_blank"><img src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/icon.png?raw=true" width="150" alt="TimeScribe Logo"></a>
 # TimeScribe
 
 ## Description
