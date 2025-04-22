@@ -3,7 +3,7 @@ import DeFlag from '@/Components/flags/DeFlag.vue'
 import EnFlag from '@/Components/flags/EnFlag.vue'
 import UsFlag from '@/Components/flags/UsFlag.vue'
 import { Button } from '@/Components/ui/button'
-import { Head, router } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3'
 import { ArrowRight } from 'lucide-vue-next'
 
 const updateLocale = (locale) => {

@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { Button } from '@/Components/ui/button'
 import WorkdayTimeInput from '@/Components/WorkdayTimeInput.vue'
-import BasicLayout from '@/Layouts/BasicLayout.vue'
 import { weekdayTranslate } from '@/lib/utils'
-import { Head, useForm } from '@inertiajs/vue3'
+import { useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
 import { ArrowRight, CalendarClock } from 'lucide-vue-next'
 import moment from 'moment/min/moment-with-locales'

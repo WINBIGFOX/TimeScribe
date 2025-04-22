@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Button } from '@/Components/ui/button'
 import { Switch } from '@/Components/ui/switch'
-import { Head, Link, useForm } from '@inertiajs/vue3'
+import { Link, useForm } from '@inertiajs/vue3'
 import { ArrowRight, Cog, KeyRound } from 'lucide-vue-next'
 import { onMounted, ref, watch } from 'vue'
 
