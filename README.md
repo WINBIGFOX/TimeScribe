@@ -19,8 +19,8 @@ Ideal for anyone looking to track their work hours efficiently and effortlessly!
 
 <p align="center">
 <picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/menubar.png?raw=true">
-  <img style="border-radius: 10px; max-width: 380px" alt="Menu Bar" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/menubarLight.png?raw=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/menubar_dark.png?raw=true">
+  <img style="border-radius: 10px; max-width: 380px" alt="Menu Bar" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/menubar_light.png?raw=true">
 </picture>
 <br/>
 <br/>
