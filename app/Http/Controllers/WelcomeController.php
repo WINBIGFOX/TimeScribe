@@ -21,8 +21,11 @@ class WelcomeController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Welcome', [
-            'workSchedule' => WorkScheduleResource::make(WorkSchedule::orderBy('valid_from')->first()),
+        $workSchedule = WorkSchedule::orderBy('valid_from')->first();
+
+        return Inertia::render('Welcome/Index', [
+            'openAtLogin' => App::openAtLogin(),
+            'workSchedule' => $workSchedule ? WorkScheduleResource::make($workSchedule) : null,
         ]);
     }
 
@@ -53,8 +56,9 @@ class WelcomeController extends Controller
         Settings::set('wizard_completed', true);
         WindowService::closeWelcome();
         if ($openSettings) {
-            WindowService::openSettings(false);
+            WindowService::openHome(false, 'settings.index');
         } else {
+            usleep(500000);
             MenuBar::show();
         }
     }

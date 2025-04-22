@@ -21,6 +21,7 @@ class Absence extends Model
         'date' => 'date',
     ];
 
+    #[\Override]
     protected static function boot(): void
     {
         parent::boot();

@@ -17,6 +17,7 @@ class TimestampResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    #[\Override]
     public function toArray(Request $request): array
     {
         return [
@@ -24,9 +25,8 @@ class TimestampResource extends JsonResource
             'type' => $this->type,
             'started_at' => DateHelper::toResourceArray($this->started_at, true, 'Gi'),
             'ended_at' => DateHelper::toResourceArray($this->ended_at, true, 'Gi') ?? null,
+            'description' => $this->description,
             'last_ping_at' => DateHelper::toResourceArray($this->last_ping_at, true, 'Gi') ?? null,
-            'can_start_edit' => $this->whenAppended('can_start_edit'),
-            'can_end_edit' => $this->whenAppended('can_end_edit'),
         ];
     }
 }

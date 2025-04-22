@@ -14,9 +14,7 @@ export function secToFormat(
 ) {
     const positive = seconds >= 0
 
-    if (withAbs) {
-        seconds = Math.abs(seconds)
-    }
+    seconds = Math.abs(seconds)
 
     const hours = Math.floor(seconds / 3600)
     const minutes = Math.floor((seconds % 3600) / 60)
@@ -36,7 +34,7 @@ export function secToFormat(
         output = output.slice(1, output.length)
     }
 
-    if (withAbs) {
+    if (withAbs || !positive) {
         output = `${positive ? '+' : '-'}${output}`
     }
 
@@ -62,4 +60,90 @@ export function weekdayTranslate(weekday: string) {
         default:
             return weekday
     }
+}
+
+export function categoryIcon(category: string) {
+    switch (category) {
+        case 'public.app-category.business':
+            return '💼'
+        case 'public.app-category.developer-tools':
+            return '🛠️'
+        case 'public.app-category.education':
+            return '🎓'
+        case 'public.app-category.entertainment':
+            return '🎭'
+        case 'public.app-category.finance':
+            return '💰'
+        case 'public.app-category.games':
+            return '🎮'
+        case 'public.app-category.graphics-design':
+            return '🎨'
+        case 'public.app-category.healthcare-fitness':
+            return '💪'
+        case 'public.app-category.lifestyle':
+            return '🌟'
+        case 'public.app-category.medical':
+            return '🩺'
+        case 'public.app-category.music':
+            return '🎵'
+        case 'public.app-category.news':
+            return '📰'
+        case 'public.app-category.photography':
+            return '📷'
+        case 'public.app-category.productivity':
+            return '✅'
+        case 'public.app-category.reference':
+            return '📚'
+        case 'public.app-category.social-networking':
+            return '💬'
+        case 'public.app-category.sports':
+            return '🏅'
+        case 'public.app-category.travel':
+            return '✈️'
+        case 'public.app-category.utilities':
+            return '⚙️'
+        case 'public.app-category.video':
+            return '🎬'
+        case 'public.app-category.weather':
+            return '☀️'
+        case 'public.app-category.action-games':
+            return '🔫'
+        case 'public.app-category.adventure-games':
+            return '🗺️'
+        case 'public.app-category.arcade-games':
+            return '🕹️'
+        case 'public.app-category.board-games':
+            return '♟️'
+        case 'public.app-category.card-games':
+            return '🃏'
+        case 'public.app-category.casino-games':
+            return '🎰'
+        case 'public.app-category.dice-games':
+            return '🎲'
+        case 'public.app-category.educational-games':
+            return '📘'
+        case 'public.app-category.family-games':
+            return '👨‍👩‍👧‍👦'
+        case 'public.app-category.kids-games':
+            return '🧸'
+        case 'public.app-category.music-games':
+            return '🎶'
+        case 'public.app-category.puzzle-games':
+            return '🧩'
+        case 'public.app-category.racing-games':
+            return '🏎️'
+        case 'public.app-category.role-playing-games':
+            return '🧙'
+        case 'public.app-category.simulation-games':
+            return '🛸'
+        case 'public.app-category.sports-games':
+            return '🏈'
+        case 'public.app-category.strategy-games':
+            return '♟️'
+        case 'public.app-category.trivia-games':
+            return '❓'
+        case 'public.app-category.word-games':
+            return '🔤'
+    }
+    return '❓'
 }

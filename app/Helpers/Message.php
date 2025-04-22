@@ -6,18 +6,7 @@ namespace App\Helpers;
 
 class Message
 {
-    private string $type;
-
-    private string $title;
-
-    private ?string $description;
-
-    public function __construct(string $type, string $title, ?string $description = null)
-    {
-        $this->type = $type;
-        $this->title = $title;
-        $this->description = $description;
-    }
+    public function __construct(private readonly string $type, private readonly string $title, private readonly ?string $description = null) {}
 
     public static function success(string $title, ?string $description = null): self
     {

@@ -57,7 +57,7 @@ const destroy = () => {
         method: confirmationModalData.value.confirmMethod,
         data: confirmationModalData.value.confirmData,
         preserveScroll: true,
-        preserveState: true,
+        preserveState: 'errors',
         onFinish: () => {
             loading.value = false
             router.flushAll()

@@ -1,6 +1,14 @@
 <script lang="ts" setup>
 import { secToFormat } from '@/lib/utils'
-import { BriefcaseBusiness, ChevronsLeftRightEllipsis, ClockArrowUp, Coffee, Cross, TreePalm } from 'lucide-vue-next'
+import {
+    BriefcaseBusiness,
+    ChevronsLeftRightEllipsis,
+    ClockArrowUp,
+    Coffee,
+    Cross,
+    Diff,
+    TreePalm
+} from 'lucide-vue-next'
 
 const props = defineProps<{
     type: string
@@ -43,6 +51,11 @@ const badgeDetails = {
         icon: undefined,
         color: 'bg-muted text-muted-foreground'
     },
+    balance: {
+        title: 'app.time balance',
+        icon: Diff,
+        color: 'bg-lime-400 text-primary-foreground'
+    },
     default: {
         title: 'Unbekannt',
         icon: undefined,
@@ -56,12 +69,12 @@ const durationLabel = secToFormat(props.duration ?? 0, true, true, true)
 </script>
 
 <template>
-    <div :class="badgeColor" class="flex items-center gap-2 rounded-xl px-4 py-2">
+    <div :class="badgeColor" class="flex items-center gap-2 rounded-lg px-4 py-2">
         <Component :is="badgeIcon" class="size-5" />
 
         <div class="space-y-1">
             <div class="text-xs leading-none">{{ $t(badgeTitle) }}</div>
-            <div class="text-sm leading-none font-bold" v-if="props.duration !== undefined">
+            <div class="text-sm leading-none font-bold tabular-nums" v-if="props.duration !== undefined">
                 {{ durationLabel }}
                 {{ durationLabel.includes(':') ? $t('app.h') : $t('app.min') }}
             </div>

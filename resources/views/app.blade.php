@@ -11,7 +11,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.ts', "resources/js/Pages/{$page['component']}.vue"])
     @inertiaHead
 </head>
-<body class="font-sans antialiased h-dvh">
+<body class="font-sans antialiased select-none cursor-default">
 @inertia
 
 @if (config('services.google.analytics.id'))
@@ -27,7 +27,7 @@
         gtag('js', new Date());
 
         gtag('config', '{{ config('services.google.analytics.id') }}', {
-            'user_id': '{{ \Native\Laravel\Facades\Settings::get('id')  }}',
+            'user_id': '{{ \Native\Laravel\Facades\Settings::get('id', '')  }}',
             'user_properties': {
                 'app_version': '{{ config('nativephp.version') }}',
                 'locale': '{{ app()->getLocale() }}',

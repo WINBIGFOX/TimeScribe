@@ -81,12 +81,16 @@ class ActiveApp extends Command
         $activity = ActivityHistory::active()->latest()->first();
 
         if ($activity && $activity->app_identifier === $bundleIdentifier) {
+            $nextEndedAt = Carbon::now()->addSeconds(4);
             $activity->update([
-                'ended_at' => Carbon::now()->addSeconds(4),
+                'duration' => (int) $activity->started_at->diffInSeconds($nextEndedAt),
+                'ended_at' => $nextEndedAt,
             ]);
         } else {
+            $endedAt = Carbon::now()->subSecond();
             $activity?->update([
-                'ended_at' => Carbon::now()->subSecond(),
+                'duration' => (int) $activity->started_at->diffInSeconds($endedAt),
+                'ended_at' => $endedAt,
             ]);
             ActivityHistory::create([
                 'app_name' => $appName,
@@ -94,6 +98,7 @@ class ActiveApp extends Command
                 'app_icon' => $iconImageFile,
                 'app_category' => $bundleAppCategoryType,
                 'started_at' => Carbon::now(),
+                'duration' => 4,
                 'ended_at' => Carbon::now()->addSeconds(4),
             ]);
         }
@@ -104,7 +109,10 @@ class ActiveApp extends Command
         $bundleIdentifierKey = strtolower(str_replace('.', '_', $bundleIdentifier));
 
         if (File::exists(storage_path('app_icons/'.$bundleIdentifierKey.'.png'))) {
-            return $bundleIdentifierKey.'.png';
+            $timestamp = filemtime(storage_path('app_icons/'.$bundleIdentifierKey.'.png'));
+            if ($timestamp && Carbon::createFromTimestamp($timestamp)->diffInDays() < 30) {
+                return $bundleIdentifierKey.'.png';
+            }
         }
 
         if ($iconFile === '') {

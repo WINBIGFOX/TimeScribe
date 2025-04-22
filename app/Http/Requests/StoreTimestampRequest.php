@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
-use App\Enums\TimestampTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreTimestampRequest extends FormRequest
 {
@@ -26,8 +24,10 @@ class StoreTimestampRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => ['required', 'string', Rule::enum(TimestampTypeEnum::class)],
-            'description' => ['nullable', 'string'],
+            'type' => 'required|in:break,work',
+            'started_at' => 'required|date_format:H:i|before:ended_at',
+            'ended_at' => 'required|date_format:H:i|after:started_at',
+            'description' => 'nullable|string',
         ];
     }
 }

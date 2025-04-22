@@ -13,8 +13,9 @@ import { BetweenHorizontalEnd, BriefcaseBusiness, Coffee, Plus } from 'lucide-vu
 
 const props = defineProps<{
     duration?: number
-    firstTimestamp?: Timestamp
-    secondTimestamp?: Timestamp
+    startOfDay?: string
+    timestampBefore?: Timestamp
+    timestampAfter?: Timestamp
 }>()
 </script>
 
@@ -24,20 +25,24 @@ const props = defineProps<{
             'py-1 pl-4': props.duration,
             'py-1 pl-2': !props.duration
         }"
-        class="border-muted-foreground text-muted-foreground mx-10 flex items-center gap-2 border-l-3 border-dotted text-sm"
+        class="border-muted-foreground text-muted-foreground mx-6 flex items-center gap-2 border-l-3 border-dotted text-sm"
     >
         <div v-if="props.duration">
             {{ props.duration }}
             {{ $t('app.minutes') }}
         </div>
-        <div
+        <Link
+            :href="route('timestamp.create', { datetime: props.timestampBefore?.ended_at?.date ?? props.startOfDay })"
             class="hover:bg-muted-foreground/10 active:bg-muted-foreground/20 flex items-center gap-1 rounded px-2 py-1 transition-colors"
+            preserve-scroll
+            preserve-state
+            v-if="props.timestampBefore?.ended_at?.date || props.startOfDay"
         >
             <Plus class="size-4" />
             {{ $t('app.add time') }}
-        </div>
+        </Link>
 
-        <DropdownMenu v-if="props.duration && props.firstTimestamp && props.secondTimestamp">
+        <DropdownMenu v-if="props.duration && props.timestampBefore && props.timestampAfter">
             <DropdownMenuTrigger
                 class="hover:bg-muted-foreground/10 active:bg-muted-foreground/20 flex items-center gap-1 rounded px-2 py-1 transition-colors"
             >
@@ -50,8 +55,8 @@ const props = defineProps<{
                 <DropdownMenuItem
                     :as="Link"
                     :data="{
-                        first_timestamp: props.firstTimestamp.id,
-                        second_timestamp: props.secondTimestamp.id,
+                        timestamp_before: props.timestampBefore.id,
+                        timestamp_after: props.timestampAfter.id,
                         fill_with: 'work'
                     }"
                     :href="route('timestamp.fill')"
@@ -66,8 +71,8 @@ const props = defineProps<{
                 <DropdownMenuItem
                     :as="Link"
                     :data="{
-                        first_timestamp: props.firstTimestamp.id,
-                        second_timestamp: props.secondTimestamp.id,
+                        timestamp_before: props.timestampBefore.id,
+                        timestamp_after: props.timestampAfter.id,
                         fill_with: 'break'
                     }"
                     :href="route('timestamp.fill')"

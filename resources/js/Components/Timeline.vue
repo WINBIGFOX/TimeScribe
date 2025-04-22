@@ -133,7 +133,7 @@ const indexToTimeFormat = (index: number, withoutMinutesBy12H?: boolean) => {
                             }"
                             @mousedown="dragStart(index)"
                             @mouseover="dragOver(index)"
-                            class="bg-accent ring-offset-background h-14 shrink-0 rounded-full ring-offset-1 transition-transform duration-100 group-hover:scale-110 group-hover:ring-2"
+                            class="bg-muted ring-offset-background h-14 shrink-0 rounded-full ring-offset-1 transition-transform duration-100 group-hover:scale-110 group-hover:ring-2"
                         />
                         <div
                             :class="{

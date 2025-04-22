@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import MainDialog from '@/Components/dialogs/MainDialog.vue'
 import WorkdayTimeInput from '@/Components/WorkdayTimeInput.vue'
 import { Head, useForm, usePage } from '@inertiajs/vue3'
 import { CalendarClock } from 'lucide-vue-next'
@@ -8,12 +7,18 @@ import { computed } from 'vue'
 import { Button } from '@/Components/ui/button'
 import { cn, weekdayTranslate } from '@/lib/utils'
 
+import SheetDialog from '@/Components/dialogs/SheetDialog.vue'
 import { Calendar } from '@/Components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover'
+import BasicLayout from '@/Layouts/BasicLayout.vue'
 import { DateFormatter, getLocalTimeZone, parseDate, today, type DateValue } from '@internationalized/date'
 import { CalendarIcon } from 'lucide-vue-next'
 import moment from 'moment/min/moment-with-locales'
 import { ref } from 'vue'
+
+defineOptions({
+    layout: BasicLayout
+})
 
 const value = ref<DateValue | undefined>()
 const page = usePage()
@@ -55,8 +60,8 @@ const weekWorkTime = computed(() => {
 </script>
 
 <template>
-    <Head title="Timestamp" />
-    <MainDialog
+    <Head title="Work Schedule Create" />
+    <SheetDialog
         :close="$t('app.cancel')"
         :submit="$t('app.save')"
         :title="$t('app.create work schedule')"
@@ -98,5 +103,5 @@ const weekWorkTime = computed(() => {
             </Popover>
         </div>
         <label class="text-destructive text-xs">{{ form.errors.valid_from }}</label>
-    </MainDialog>
+    </SheetDialog>
 </template>

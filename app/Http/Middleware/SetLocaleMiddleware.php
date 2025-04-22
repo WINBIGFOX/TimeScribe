@@ -36,7 +36,7 @@ class SetLocaleMiddleware
         }
 
         App::setLocale($language);
-        Carbon::setLocale($locale);
+        Carbon::setLocale(str_replace('-', '_', $locale));
 
         return $next($request);
     }

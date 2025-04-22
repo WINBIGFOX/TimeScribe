@@ -1,11 +1,16 @@
 <script lang="ts" setup>
 import { Button } from '@/Components/ui/button'
+import BasicLayout from '@/Layouts/BasicLayout.vue'
 import { secToFormat } from '@/lib/utils'
 import { ActivityHistory } from '@/types'
-import { Head, Link, usePoll } from '@inertiajs/vue3'
+import { Head, Link, router, usePoll } from '@inertiajs/vue3'
 import { useColorMode } from '@vueuse/core'
-import { CalendarDays, ChartPie, Coffee, Cog, Play, Square } from 'lucide-vue-next'
+import { ChartPie, Coffee, Cog, Play, Square } from 'lucide-vue-next'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+
+defineOptions({
+    layout: BasicLayout
+})
 
 const props = defineProps<{
     currentType?: 'work' | 'break'
@@ -68,17 +73,22 @@ watch(
 )
 
 const { state } = useColorMode()
+
+const loading = ref(false)
+
+router.on('start', () => {
+    loading.value = true
+})
+router.on('finish', () => {
+    loading.value = false
+})
 </script>
 
 <template>
     <Head title="Menubar" />
-    <div class="flex h-dvh flex-col select-none">
+
+    <div class="bg-background flex h-dvh flex-col select-none">
         <div class="fixed inset-x-0 top-0 flex justify-end">
-            <!--
-            <Button size="icon" variant="ghost">
-                <Power />
-            </Button>
-            -->
             <Button
                 :as="Link"
                 :href="
@@ -162,7 +172,7 @@ const { state } = useColorMode()
             </transition>
         </div>
         <div>
-            <div class="flex gap-2 p-2">
+            <div class="flex p-2">
                 <Button
                     :as="Link"
                     :href="
@@ -179,28 +189,13 @@ const { state } = useColorMode()
                     <ChartPie />
                     {{ $t('app.overview') }}
                 </Button>
-                <Button
-                    :as="Link"
-                    :href="
-                        route('menubar.openAbsence', {
-                            darkMode: state === 'dark' ? 1 : 0
-                        })
-                    "
-                    class="flex-1 shrink-0"
-                    preserve-scroll
-                    preserve-state
-                    size="sm"
-                    variant="outline"
-                >
-                    <CalendarDays />
-                    {{ $t('app.absences') }}
-                </Button>
             </div>
-            <div class="bg-muted flex gap-2 p-2">
+            <div class="bg-muted dark:bg-muted/60 flex gap-2 p-2">
                 <Button
                     :as="Link"
+                    :disabled="loading"
                     :href="route('menubar.storeWork')"
-                    class="flex-1 shrink-0 px-0"
+                    class="flex-1 shrink-0 px-0 disabled:opacity-100"
                     method="POST"
                     preserve-scroll
                     preserve-state
@@ -212,8 +207,9 @@ const { state } = useColorMode()
                 </Button>
                 <Button
                     :as="Link"
+                    :disabled="loading"
                     :href="route('menubar.storeStop')"
-                    class="flex-1 shrink-0 px-0"
+                    class="flex-1 shrink-0 px-0 disabled:opacity-100"
                     method="POST"
                     preserve-scroll
                     preserve-state
@@ -226,8 +222,9 @@ const { state } = useColorMode()
                 </Button>
                 <Button
                     :as="Link"
+                    :disabled="loading"
                     :href="route('menubar.storeBreak')"
-                    class="flex-1 shrink-0 px-0"
+                    class="flex-1 shrink-0 px-0 disabled:opacity-100"
                     method="POST"
                     preserve-scroll
                     preserve-state
@@ -240,8 +237,9 @@ const { state } = useColorMode()
                 </Button>
                 <Button
                     :as="Link"
+                    :disabled="loading"
                     :href="route('menubar.storeWork')"
-                    class="flex-1 shrink-0 px-0"
+                    class="flex-1 shrink-0 px-0 disabled:opacity-100"
                     method="POST"
                     preserve-scroll
                     preserve-state

@@ -3,12 +3,12 @@ import DeFlag from '@/Components/flags/DeFlag.vue'
 import EnFlag from '@/Components/flags/EnFlag.vue'
 import UsFlag from '@/Components/flags/UsFlag.vue'
 import { Button } from '@/Components/ui/button'
-import { router } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
 import { ArrowRight } from 'lucide-vue-next'
 
 const updateLocale = (locale) => {
     router.patch(
-        route('settings.updateLocale'),
+        route('settings.general.updateLocale'),
         {
             locale
         },
@@ -27,7 +27,11 @@ const updateLocale = (locale) => {
             <span class="text-6xl">TimeScribe</span>
         </div>
 
-        <Button @click="$emit('nextStep')" size="lg" variant="secondary">
+        <Button @click="$emit('nextStep')" class="dark:hidden" size="lg" variant="secondary">
+            {{ $t('app.get started') }}
+            <ArrowRight />
+        </Button>
+        <Button @click="$emit('nextStep')" class="hidden dark:flex" size="lg">
             {{ $t('app.get started') }}
             <ArrowRight />
         </Button>

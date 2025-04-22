@@ -26,8 +26,8 @@ class FillTimestampRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_timestamp' => ['required', 'exists:timestamps,id'],
-            'second_timestamp' => ['required', 'exists:timestamps,id'],
+            'timestamp_before' => ['required', 'exists:timestamps,id'],
+            'timestamp_after' => ['required', 'exists:timestamps,id'],
             'fill_with' => ['required', Rule::enum(TimestampTypeEnum::class)],
         ];
     }

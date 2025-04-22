@@ -3,14 +3,31 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\AbsenceController;
-use App\Http\Controllers\DayController;
+use App\Http\Controllers\AppActivityController;
+use App\Http\Controllers\BugAndFeedbackController;
 use App\Http\Controllers\MenubarController;
-use App\Http\Controllers\OverviewController;
-use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\Overview\DayController;
+use App\Http\Controllers\Overview\MonthController;
+use App\Http\Controllers\Overview\WeekController;
+use App\Http\Controllers\Overview\YearController;
+use App\Http\Controllers\Settings\GeneralController;
+use App\Http\Controllers\Settings\StartStopController;
 use App\Http\Controllers\TimestampController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\WorkScheduleController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/', fn () => redirect()->route('overview.week.index'))->name('home');
+
+Route::name('overview.')->prefix('overview')->group(function (): void {
+    Route::resource('day', DayController::class)->only(['index', 'show'])->parameter('day', 'date');
+    Route::resource('week', WeekController::class)->only(['index', 'show'])->parameter('week', 'date');
+    Route::resource('month', MonthController::class)->only(['index', 'show'])->parameter('month', 'date');
+    Route::resource('year', YearController::class)->only(['index', 'show'])->parameter('year', 'date');
+});
+
+Route::get('quit', fn () => \Native\Laravel\Facades\App::quit())->name('quit');
 
 Route::get('welcome', [WelcomeController::class, 'index'])->name('welcome.index');
 Route::patch('welcome', [WelcomeController::class, 'update'])->name('welcome.update');
@@ -23,27 +40,24 @@ Route::name('menubar.')->prefix('menubar')->group(function (): void {
     Route::post('stop', [MenubarController::class, 'storeStop'])->name('storeStop');
     Route::get('open-setting/{darkMode}', [MenubarController::class, 'openSetting'])->name('openSetting');
     Route::get('open-overview/{darkMode}', [MenubarController::class, 'openOverview'])->name('openOverview');
-    Route::get('open-absence/{darkMode}', [MenubarController::class, 'openAbsence'])->name('openAbsence');
 });
 
 Route::name('settings.')->prefix('settings')->group(function (): void {
-    Route::get('edit', [SettingsController::class, 'edit'])->name('edit');
-    Route::patch('', [SettingsController::class, 'update'])->name('update');
-    Route::patch('locale', [SettingsController::class, 'updateLocale'])->name('updateLocale');
+    Route::get('', fn () => redirect()->route('settings.general.edit'))->name('index');
+    Route::name('general.')->prefix('general')->group(function (): void {
+        Route::get('edit', [GeneralController::class, 'edit'])->name('edit');
+        Route::patch('', [GeneralController::class, 'update'])->name('update');
+        Route::patch('locale', [GeneralController::class, 'updateLocale'])->name('updateLocale');
+    });
+    Route::name('start-stop.')->prefix('start-stop')->group(function (): void {
+        Route::get('edit', [StartStopController::class, 'edit'])->name('edit');
+        Route::patch('', [StartStopController::class, 'update'])->name('update');
+    });
 });
 
-Route::resource('work-schedule', WorkScheduleController::class)->only('create', 'store', 'edit', 'update', 'destroy');
+Route::resource('work-schedule', WorkScheduleController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');
 
-Route::name('overview.')->prefix('overview')->group(function (): void {
-    Route::get('', [OverviewController::class, 'index'])->name('index');
-    Route::get('{date}', [OverviewController::class, 'show'])->name('show')->where('date', '\d{4}-\d{2}-\d{2}');
-    Route::get('{date}/edit/{darkMode}', [OverviewController::class, 'edit'])->name('edit')->where('date', '\d{4}-\d{2}-\d{2}');
-});
-
-Route::name('day.')->prefix('day')->group(function (): void {
-    Route::get('{date}/edit', [DayController::class, 'edit'])->name('edit')->where('date', '\d{4}-\d{2}-\d{2}');
-    Route::patch('{date}', [DayController::class, 'update'])->name('update')->where('date', '\d{4}-\d{2}-\d{2}');
-});
+Route::resource('app-activity', AppActivityController::class)->only(['index', 'show']);
 
 Route::name('absence.')->prefix('absence')->group(function (): void {
     Route::get('', [AbsenceController::class, 'index'])->name('index');
@@ -52,8 +66,20 @@ Route::name('absence.')->prefix('absence')->group(function (): void {
     Route::delete('{date}/{absence}', [AbsenceController::class, 'destroy'])->name('destroy');
 });
 
+Route::get('timestamp/create/{datetime}', [TimestampController::class, 'create'])->name('timestamp.create');
+Route::post('timestamp/{datetime}', [TimestampController::class, 'store'])->name('timestamp.store');
 Route::resource('timestamp', TimestampController::class)->only(['edit', 'update', 'destroy']);
 Route::post('timestamp/fill', [TimestampController::class, 'fill'])->name('timestamp.fill');
+
+Route::name('bug-and-feedback.')->prefix('bug-and-feedback')->group(function (): void {
+    Route::get('', [BugAndFeedbackController::class, 'index'])->name('index');
+    Route::get('export', [BugAndFeedbackController::class, 'export'])->name('export');
+    Route::get('import', [BugAndFeedbackController::class, 'import'])->name('import');
+});
+
+Route::get('open', function (Request $request): void {
+    shell_exec('open "'.$request->string('url').'"');
+})->name('open');
 
 Route::get('/app-icon/{appIconName}', function ($appIconName) {
     if (! Storage::disk('app-icon')->exists($appIconName)) {

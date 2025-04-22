@@ -10,7 +10,7 @@ const props = defineProps<{
 
 <template>
     <div
-        class="hover:ring-offset-background hover:ring-primary/30 flex w-14 flex-col gap-4 rounded-lg transition-all hover:ring-2 hover:ring-offset-2"
+        class="hover:ring-offset-background hover:ring-primary/30 flex w-14 flex-col gap-4 rounded-lg pb-2 transition-all hover:ring-2 hover:ring-offset-2"
     >
         <div>
             <WeekdayHeader :date="props.weekday.date.date" />

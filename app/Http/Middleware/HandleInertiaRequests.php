@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Services\TimestampService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Native\Laravel\Facades\Settings;
@@ -20,6 +21,7 @@ class HandleInertiaRequests extends Middleware
     /**
      * Determine the current asset version.
      */
+    #[\Override]
     public function version(Request $request): ?string
     {
         return parent::version($request);
@@ -30,11 +32,15 @@ class HandleInertiaRequests extends Middleware
      *
      * @return array<string, mixed>
      */
+    #[\Override]
     public function share(Request $request): array
     {
         return [
             ...parent::share($request),
             'locale' => Settings::get('locale', config('app.fallback_locale')),
+            'app_version' => config('nativephp.version'),
+            'date' => now()->format('d.m.Y'),
+            'recording' => (bool) TimestampService::getCurrentType(),
         ];
     }
 }

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Button } from '@/Components/ui/button'
 import { Switch } from '@/Components/ui/switch'
-import { Link, useForm } from '@inertiajs/vue3'
+import { Head, Link, useForm } from '@inertiajs/vue3'
 import { ArrowRight, Cog, KeyRound } from 'lucide-vue-next'
 import { onMounted, ref, watch } from 'vue'
 
@@ -60,7 +60,24 @@ watch(
             }"
             class="flex flex-col items-center gap-4 opacity-0 transition-opacity duration-1000"
         >
-            <Button :as="Link" :href="route('welcome.finish')" @click="$emit('nextStep')" size="lg" variant="secondary">
+            <Button
+                :as="Link"
+                :href="route('welcome.finish')"
+                @click="$emit('nextStep')"
+                class="dark:hidden"
+                size="lg"
+                variant="secondary"
+            >
+                {{ $t('app.start') }}
+                <ArrowRight />
+            </Button>
+            <Button
+                :as="Link"
+                :href="route('welcome.finish')"
+                @click="$emit('nextStep')"
+                class="hidden dark:flex"
+                size="lg"
+            >
                 {{ $t('app.start') }}
                 <ArrowRight />
             </Button>
@@ -69,7 +86,7 @@ watch(
             :class="{
                 'opacity-100': showSettingsHint
             }"
-            class="absolute inset-x-0 bottom-10 flex items-center justify-center gap-4 opacity-0 transition-opacity duration-1000"
+            class="dark:text-foreground absolute inset-x-0 bottom-10 flex items-center justify-center gap-4 opacity-0 transition-opacity duration-1000"
         >
             {{ $t('app.more settings can be found here') }}
             <Button :as="Link" :href="route('welcome.finish', { openSettings: true })" variant="ghost">

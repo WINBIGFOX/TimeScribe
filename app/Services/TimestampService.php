@@ -202,7 +202,7 @@ class TimestampService
         return Timestamp::whereNull('ended_at')->first()?->type;
     }
 
-    public static function getTimestamps(Carbon $date, ?Carbon $endDate = null, ?bool $withEditAttributes = false): Collection
+    public static function getTimestamps(Carbon $date, ?Carbon $endDate = null): Collection
     {
         if (! $endDate instanceof Carbon) {
             $endDate = $date->copy();
@@ -211,8 +211,7 @@ class TimestampService
         return Timestamp::whereDate('started_at', '>=', $date->startOfDay())
             ->whereDate('started_at', '<=', $endDate->endOfDay())
             ->orderBy('started_at')
-            ->get()
-            ->append($withEditAttributes ? ['can_start_edit', 'can_end_edit'] : []);
+            ->get();
     }
 
     public static function getAbsence(Carbon $date, ?Carbon $endDate = null): Collection
@@ -237,9 +236,7 @@ class TimestampService
             $holidayCalculator->calculate(Settings::get('holidayRegion'), $year)
                 ->filter(new IncludeTypeFilter(HolidayType::DAY_OFF))
                 ->format(new DateFormatter)
-        )->map(function ($holiday): ?Carbon {
-            return Carbon::create($holiday);
-        });
+        )->map(fn ($holiday): ?Carbon => Carbon::create($holiday));
     }
 
     public static function getWorkSchedule(?Carbon $date = null): array
@@ -287,11 +284,9 @@ class TimestampService
             } else {
                 $datePeriod = CarbonPeriod::create($startOfWeek, $endOfWeek);
                 foreach ($datePeriod as $date) {
-                    $dayName = strtolower($date->locale('en')->dayName);
+                    $dayName = strtolower((string) $date->locale('en')->dayName);
 
-                    $schedule = $workSchedules->firstWhere(function (WorkSchedule $item) use ($date): bool {
-                        return $item->valid_from <= $date;
-                    });
+                    $schedule = $workSchedules->firstWhere(fn (WorkSchedule $item): bool => $item->valid_from <= $date);
                     $workdays[$dayName] = $schedule ? $schedule->{$dayName} : 0;
                 }
             }
@@ -331,17 +326,11 @@ class TimestampService
         if (! $endDate instanceof Carbon) {
             $endDate = $date->copy();
         }
-        $holiday = self::getHoliday(range($date->year, $endDate->year))->map(function (Carbon $holiday): string {
-            return $holiday->format('Y-m-d');
-        });
+        $holiday = self::getHoliday(range($date->year, $endDate->year))->map(fn (Carbon $holiday): string => $holiday->format('Y-m-d'));
 
-        $absence = self::getAbsence($date, $endDate)->map(function (Absence $absence) {
-            return $absence->date->format('Y-m-d');
-        });
+        $absence = self::getAbsence($date, $endDate)->map(fn (Absence $absence) => $absence->date->format('Y-m-d'));
 
-        $timestampDates = self::getTimestamps($date, $endDate)->map(function (Timestamp $timestamp) {
-            return $timestamp->started_at->format('Y-m-d');
-        });
+        $timestampDates = self::getTimestamps($date, $endDate)->map(fn (Timestamp $timestamp) => $timestamp->started_at->format('Y-m-d'));
 
         if ($timestampDates->isEmpty()) {
             return $holiday->unique()->sort()->values();

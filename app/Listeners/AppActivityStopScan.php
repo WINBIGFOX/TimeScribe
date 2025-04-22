@@ -22,7 +22,7 @@ class AppActivityStopScan
      */
     public function handle(TimerStopped $event): void
     {
-        ActivityHistory::active()->latest()->first()->update([
+        ActivityHistory::active()->latest()->first()?->update([
             'ended_at' => now(),
         ]);
     }

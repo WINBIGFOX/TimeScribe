@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { Button } from '@/Components/ui/button'
 import WorkdayTimeInput from '@/Components/WorkdayTimeInput.vue'
+import BasicLayout from '@/Layouts/BasicLayout.vue'
 import { weekdayTranslate } from '@/lib/utils'
-import { useForm } from '@inertiajs/vue3'
+import { Head, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
 import { ArrowRight, CalendarClock } from 'lucide-vue-next'
 import moment from 'moment/min/moment-with-locales'
@@ -64,7 +65,9 @@ const weekWorkTime = computed(() => {
                 {{ $t('app.enter your target working hours for each weekday') }}
             </span>
         </div>
-        <div class="mx-auto mb-0 flex w-96 items-center space-x-4 rounded-xl rounded-b-none border p-4 py-2">
+        <div
+            class="bg-background text-foreground mx-auto mb-0 flex w-96 items-center space-x-4 rounded-xl rounded-b-none border-b p-4 py-2"
+        >
             <CalendarClock />
             <div class="flex-1 space-y-1">
                 <p class="text-sm leading-none font-medium">
@@ -83,10 +86,20 @@ const weekWorkTime = computed(() => {
             />
         </div>
         <div class="flex justify-between">
-            <Button @click="$emit('prevStep')" size="lg" variant="ghost">
+            <Button @click="$emit('prevStep')" class="dark:text-foreground" size="lg" variant="ghost">
                 {{ $t('app.back') }}
             </Button>
-            <Button @click="$emit('nextStep')" size="lg" v-if="weekWorkTime > 0" variant="secondary">
+            <Button
+                @click="$emit('nextStep')"
+                class="dark:hidden"
+                size="lg"
+                v-if="weekWorkTime > 0"
+                variant="secondary"
+            >
+                {{ $t('app.next') }}
+                <ArrowRight />
+            </Button>
+            <Button @click="$emit('nextStep')" class="hidden dark:flex" size="lg" v-if="weekWorkTime > 0">
                 {{ $t('app.next') }}
                 <ArrowRight />
             </Button>

@@ -1,12 +1,14 @@
 import './bootstrap'
 
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
-// prettier-ignore
+
+import BasicLayout from '@/Layouts/BasicLayout.vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { modal } from 'inertia-modal'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { i18nVue } from 'laravel-vue-i18n'
 import { createApp, DefineComponent, h } from 'vue'
+import VueApexCharts from 'vue3-apexcharts'
 import { ZiggyVue } from 'ziggy-js'
 
 createInertiaApp({
@@ -16,7 +18,11 @@ createInertiaApp({
             `./Pages/${name}.vue`,
             import.meta.glob<DefineComponent>('./Pages/**/*.vue')
         )
-        page.default.layout = DefaultLayout
+        if (name === 'MenuBar' || name.startsWith('Welcome')) {
+            page.default.layout = BasicLayout
+        } else {
+            page.default.layout = DefaultLayout
+        }
         return page
     },
     setup({ el, App, props, plugin }) {
@@ -27,6 +33,7 @@ createInertiaApp({
             })
             .use(plugin)
             .use(ZiggyVue)
+            .use(VueApexCharts)
         app.use(i18nVue, {
             fallbackLang: 'en',
             resolve: async (lang: string) => {
@@ -41,6 +48,6 @@ createInertiaApp({
         })
     },
     progress: {
-        color: '#4B5563'
+        color: '#00C9DB'
     }
 }).then()

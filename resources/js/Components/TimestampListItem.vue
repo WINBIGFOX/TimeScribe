@@ -40,7 +40,7 @@ const destroy = () => {
 </script>
 
 <template>
-    <div class="bg-background mx-4 flex items-center gap-4 rounded-lg p-2.5">
+    <div class="bg-sidebar flex items-center gap-4 rounded-lg p-2.5">
         <div
             :class="{
                 'bg-primary': props.timestamp.type === 'work',
@@ -88,7 +88,15 @@ const destroy = () => {
                 {{ $t('app.now') }}
             </div>
         </div>
-        <div class="flex-1 text-right" v-if="props.timestamp.ended_at">
+        <div class="flex grow flex-col gap-1" v-if="props.timestamp.description">
+            <span class="text-muted-foreground text-xs leading-none">
+                {{ $t('app.notes') }}
+            </span>
+            <span class="line-clamp-1 leading-none font-medium">
+                {{ props.timestamp.description }}
+            </span>
+        </div>
+        <div class="flex flex-1 justify-end" v-if="props.timestamp.ended_at">
             <Button
                 :as="Link"
                 :href="
@@ -100,7 +108,6 @@ const destroy = () => {
                 preserve-scroll
                 preserve-state
                 size="icon"
-                v-if="props.timestamp.can_start_edit || props.timestamp.can_end_edit"
                 variant="ghost"
             >
                 <Pencil />

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DestroyTimestampRequest;
 use App\Http\Requests\DestroyWorkScheduleRequest;
 use App\Http\Requests\StoreWorkScheduleRequest;
 use App\Http\Resources\WorkScheduleResource;
@@ -16,13 +15,23 @@ use Inertia\Inertia;
 class WorkScheduleController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        return Inertia::render('WorkSchedule/Index', [
+            'workSchedules' => WorkScheduleResource::collection(WorkSchedule::orderByDesc('valid_from')->get()->append(['is_current'])),
+        ]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
         return Inertia::modal('WorkSchedule/Create', [
             'submit_route' => route('work-schedule.store'),
-        ])->baseRoute('settings.edit');
+        ])->baseRoute('work-schedule.index');
     }
 
     /**
@@ -37,7 +46,7 @@ class WorkScheduleController extends Controller
         Cache::flush();
         CalculateWeekBalance::dispatch();
 
-        return redirect()->route('settings.edit');
+        return redirect()->route('work-schedule.index');
     }
 
     /**
@@ -49,7 +58,7 @@ class WorkScheduleController extends Controller
             'workSchedule' => WorkScheduleResource::make($workSchedule),
             'submit_route' => route('work-schedule.update', ['work_schedule' => $workSchedule->id]),
             'destroy_route' => route('work-schedule.destroy', ['work_schedule' => $workSchedule->id]),
-        ])->baseRoute('settings.edit');
+        ])->baseRoute('work-schedule.index');
     }
 
     /**
@@ -64,7 +73,7 @@ class WorkScheduleController extends Controller
         Cache::flush();
         CalculateWeekBalance::dispatch();
 
-        return redirect()->route('settings.edit');
+        return redirect()->route('work-schedule.index');
     }
 
     /**
@@ -78,6 +87,6 @@ class WorkScheduleController extends Controller
         Cache::flush();
         CalculateWeekBalance::dispatch();
 
-        return redirect()->route('settings.edit');
+        return redirect()->route('work-schedule.index');
     }
 }

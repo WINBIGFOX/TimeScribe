@@ -6,7 +6,9 @@ namespace App\Providers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+    #[\Override]
     public function register(): void
     {
         //
@@ -29,5 +32,10 @@ class AppServiceProvider extends ServiceProvider
         DB::prohibitDestructiveCommands();
         Vite::prefetch(concurrency: 3);
         JsonResource::withoutWrapping();
+
+        Route::pattern('date', '\d{4}-\d{2}-\d{2}');
+        Route::pattern('datetime', '\d{4}-\d{2}-\d{2}\s\d{2}\:\d{2}\:\d{2}');
+        Route::bind('date', fn (string $value): \Illuminate\Support\Carbon => Carbon::parse($value));
+        Route::bind('datetime', fn (string $value): \Illuminate\Support\Carbon => Carbon::parse($value));
     }
 }

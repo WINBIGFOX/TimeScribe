@@ -26,14 +26,4 @@ class Timestamp extends Model
         'ended_at' => 'datetime',
         'last_ping_at' => 'datetime',
     ];
-
-    public function getCanStartEditAttribute(): bool
-    {
-        return ! Timestamp::where('ended_at', $this->started_at)->exists();
-    }
-
-    public function getCanEndEditAttribute(): bool
-    {
-        return ! Timestamp::where('started_at', $this->ended_at)->exists();
-    }
 }

@@ -19,7 +19,6 @@ class WindowService
             ->showDevTools(false)
             ->alwaysOnTop()
             ->titleBarHidden()
-            ->hideDevTools()
             ->width(700)
             ->height(600)
             ->maximizable(false)
@@ -27,91 +26,24 @@ class WindowService
             ->resizable(false);
     }
 
-    public static function openSettings(bool $darkMode): void
+    public static function openHome(bool $darkMode, string $route = 'home'): void
     {
-        Window::open('settings')
-            ->webPreferences([
-                'devTools' => true,
-            ])
-            ->route('settings.edit')
-            ->rememberState()
-            ->maximizable(false)
-            ->minimizable(false)
-            ->fullscreenable(false)
-            ->showDevTools(false)
-            ->width(680)
-            ->minWidth(680)
-            ->maxWidth(680)
-            ->minHeight(650)
-            ->height(650)
-            ->maxHeight(800)
-            ->titleBarHidden()
-            ->backgroundColor($darkMode ? '#020817' : '#ffffff')
-            ->resizable();
-    }
-
-    public static function openOverview(bool $darkMode): void
-    {
-        Window::open('overview')
+        Window::get('home')->route('settings.index');
+        Window::open('home')
             ->webPreferences([
                 'devTools' => false,
             ])
-            ->route('overview.index')
+            ->route($route)
             ->rememberState()
             ->maximizable(false)
             ->fullscreen(false)
-            ->width(850)
-            ->height(415)
-            ->titleBarHidden()
+            ->width(1070)
+            ->height(600)
             ->resizable(false)
-            ->fullscreenable(false)
-            ->backgroundColor($darkMode ? '#020817' : '#ffffff')
-            ->showDevTools(false);
-    }
-
-    public static function openAbsence(bool $darkMode): void
-    {
-        Window::open('absence')
-            ->webPreferences([
-                'devTools' => false,
-            ])
-            ->route('absence.index')
-            ->rememberState()
-            ->maximizable(false)
-            ->fullscreen(false)
-            ->width(1100)
-            ->minWidth(1100)
-            ->minHeight(600)
-            ->height(800)
             ->titleBarHidden()
             ->fullscreenable(false)
-            ->backgroundColor($darkMode ? '#020817' : '#ffffff')
+            ->backgroundColor($darkMode ? '#171717' : '#fafafa')
             ->showDevTools(false);
-    }
-
-    public static function openDayEdit(string $date, bool $darkMode): void
-    {
-        Window::open('day-edit')
-            ->webPreferences([
-                'devTools' => false,
-            ])
-            ->rememberState()
-            ->maximizable(false)
-            ->fullscreen(false)
-            ->route('day.edit', ['date' => $date])
-            ->width(850)
-            ->height(415)
-            ->minWidth(700)
-            ->titleBarHidden()
-            ->resizable(true)
-            ->backgroundColor($darkMode ? '#020817' : '#ffffff')
-            ->fullscreenable(false)
-            ->showDevTools(false);
-    }
-
-    public static function closeDayEdit(): void
-    {
-        Window::close('day-edit');
     }
 
     public static function closeWelcome(): void
@@ -119,18 +51,8 @@ class WindowService
         Window::close('welcome');
     }
 
-    public static function closeSettings(): void
+    public static function closeHome(): void
     {
-        Window::close('settings');
-    }
-
-    public static function closeOverview(): void
-    {
-        Window::close('overview');
-    }
-
-    public static function closeAbsence(): void
-    {
-        Window::close('absence');
+        Window::close('home');
     }
 }

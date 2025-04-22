@@ -64,16 +64,11 @@ class MenubarController extends Controller
 
     public function openSetting(bool $darkMode): void
     {
-        WindowService::openSettings($darkMode);
+        WindowService::openHome($darkMode, 'settings.index');
     }
 
     public function openOverview(bool $darkMode): void
     {
-        WindowService::openOverview($darkMode);
-    }
-
-    public function openAbsence(bool $darkMode): void
-    {
-        WindowService::openAbsence($darkMode);
+        WindowService::openHome($darkMode);
     }
 }

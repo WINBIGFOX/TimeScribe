@@ -29,11 +29,15 @@ class CalculateWeekBalance implements ShouldQueue
      */
     public function handle(): void
     {
-        Carbon::setLocale(Settings::get('locale'));
-        $firstTimestamp = Timestamp::orderBy('created_at')->first();
+        Carbon::setLocale(str_replace('-', '_', Settings::get('locale', config('app.fallback_locale'))));
+        $firstTimestamp = Timestamp::orderBy('started_at')->first();
 
-        $startWeek = $firstTimestamp->created_at->clone()->startOfWeek();
-        $endWeek = $firstTimestamp->created_at->clone()->endOfWeek();
+        if (! $firstTimestamp) {
+            return;
+        }
+
+        $startWeek = $firstTimestamp->started_at->clone()->startOfWeek();
+        $endWeek = $firstTimestamp->started_at->clone()->endOfWeek();
         $lastCalculatedWeek = now()->addWeeks(1)->startOfWeek();
 
         WeekBalance::truncate();

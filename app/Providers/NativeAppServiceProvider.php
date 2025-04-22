@@ -53,6 +53,12 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             WindowService::openWelcome();
         }
 
+        Menu::create(
+            Menu::app(),
+            Menu::edit(),
+            Menu::window(),
+        );
+
         MenuBar::create()
             ->showDockIcon(false)
             ->route('menubar.index')
@@ -61,9 +67,9 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             ->resizable(false)
             ->withContextMenu(
                 Menu::make(
-                    Menu::quit()->label('Beenden'),
+                    Menu::quit(),
                     Menu::separator(),
-                    Menu::about()->label('Über '.config('app.name')),
+                    Menu::about(),
                 )
             );
     }
