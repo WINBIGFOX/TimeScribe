@@ -38,6 +38,7 @@ const startOfDay = moment(props.date, 'DD.MM.YYYY').format('YYYY-MM-DD 00:00:00'
                 :as="Link"
                 :href="route('overview.day.show', { date: moment().format('YYYY-MM-DD') })"
                 class="z-20"
+                prefetch
                 size="sm"
                 variant="outline"
             >

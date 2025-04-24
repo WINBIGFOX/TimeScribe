@@ -221,6 +221,7 @@ const data = {
             <Button
                 :as="Link"
                 :href="route('overview.month.show', { date: moment().format('YYYY-MM-DD') })"
+                prefetch
                 size="sm"
                 variant="outline"
             >

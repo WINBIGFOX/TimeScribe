@@ -20,6 +20,7 @@ const props = defineProps<{
             <Button
                 :as="Link"
                 :href="route('work-schedule.create')"
+                prefetch
                 preserve-scroll
                 preserve-state
                 size="sm"
@@ -66,6 +67,7 @@ const props = defineProps<{
                         :as="Link"
                         :href="route('work-schedule.edit', { work_schedule: workSchedule.id })"
                         class="size-8"
+                        prefetch
                         preserve-scroll
                         preserve-state
                         size="icon"

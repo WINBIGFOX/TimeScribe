@@ -34,6 +34,7 @@ const props = defineProps<{
         <Link
             :href="route('timestamp.create', { datetime: props.timestampBefore?.ended_at?.date ?? props.startOfDay })"
             class="hover:bg-muted-foreground/10 active:bg-muted-foreground/20 flex items-center gap-1 rounded px-2 py-1 transition-colors"
+            prefetch
             preserve-scroll
             preserve-state
             v-if="props.timestampBefore?.ended_at?.date || props.startOfDay"

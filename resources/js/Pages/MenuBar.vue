@@ -155,7 +155,7 @@ router.on('finish', () => {
                 </div>
             </div>
             <transition
-                class="transition-all duration-1000"
+                class="transform-gpu transition-all duration-1000"
                 enter-from-class="opacity-0 scale-0 h-0"
                 enter-to-class="opacity-100 scale-100 h-14"
                 leave-from-class="opacity-100 scale-100 h-14"
@@ -195,6 +195,7 @@ router.on('finish', () => {
                     :as="Link"
                     :disabled="loading"
                     :href="route('menubar.storeWork')"
+                    @click="router.flushAll()"
                     class="flex-1 shrink-0 px-0 disabled:opacity-100"
                     method="POST"
                     preserve-scroll
@@ -209,6 +210,7 @@ router.on('finish', () => {
                     :as="Link"
                     :disabled="loading"
                     :href="route('menubar.storeStop')"
+                    @click="router.flushAll()"
                     class="flex-1 shrink-0 px-0 disabled:opacity-100"
                     method="POST"
                     preserve-scroll
@@ -224,6 +226,7 @@ router.on('finish', () => {
                     :as="Link"
                     :disabled="loading"
                     :href="route('menubar.storeBreak')"
+                    @click="router.flushAll()"
                     class="flex-1 shrink-0 px-0 disabled:opacity-100"
                     method="POST"
                     preserve-scroll
@@ -239,6 +242,7 @@ router.on('finish', () => {
                     :as="Link"
                     :disabled="loading"
                     :href="route('menubar.storeWork')"
+                    @click="router.flushAll()"
                     class="flex-1 shrink-0 px-0 disabled:opacity-100"
                     method="POST"
                     preserve-scroll

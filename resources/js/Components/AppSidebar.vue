@@ -54,6 +54,7 @@ const props = withDefaults(defineProps<SidebarProps>(), {
                                 }"
                                 :href="route('bug-and-feedback.index')"
                                 class="ml-auto w-auto"
+                                prefetch
                             >
                                 <Bug />
                             </SidebarMenuButton>

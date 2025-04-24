@@ -87,6 +87,7 @@ const removeAbsence = (id: number) => {
             <Button
                 :as="Link"
                 :href="route('absence.show', { date: moment().format('YYYY-MM-DD') })"
+                prefetch
                 size="sm"
                 variant="outline"
             >

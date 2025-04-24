@@ -5,7 +5,7 @@ import { Timestamp } from '@/types'
 import { Link, router, usePoll } from '@inertiajs/vue3'
 import { BriefcaseBusiness, Coffee, MoveRight, Pencil, Timer, Trash } from 'lucide-vue-next'
 import moment from 'moment/min/moment-with-locales'
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 
 const props = defineProps<{
     timestamp: Timestamp
@@ -19,8 +19,17 @@ const duration = computed(() =>
     )
 )
 
+const { start, stop } = usePoll(
+    1000,
+    {},
+    {
+        autoStart: false
+    }
+)
 if (duration.value < 60 && !props.timestamp.ended_at) {
-    usePoll(1000)
+    start()
+} else {
+    stop()
 }
 
 const destroy = () => {
@@ -37,6 +46,15 @@ const destroy = () => {
         }
     )
 }
+
+watch(
+    () => props.timestamp.ended_at,
+    (value) => {
+        if (value) {
+            stop()
+        }
+    }
+)
 </script>
 
 <template>
