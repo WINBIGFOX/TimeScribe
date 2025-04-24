@@ -12,11 +12,11 @@ use App\Models\Absence;
 use App\Models\Timestamp;
 use App\Models\WeekBalance;
 use App\Models\WorkSchedule;
+use App\Settings\GeneralSettings;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use Native\Laravel\Facades\Settings;
 use Umulmrum\Holiday\Constant\HolidayType;
 use Umulmrum\Holiday\Filter\IncludeTypeFilter;
 use Umulmrum\Holiday\Formatter\DateFormatter;
@@ -99,8 +99,9 @@ class TimestampService
 
     public static function checkStopTimeReset(): void
     {
-        $workTimeReset = Settings::get('stopWorkTimeReset');
-        $breakTimeReset = Settings::get('stopBreakTimeReset');
+        $settings = app(GeneralSettings::class);
+        $workTimeReset = $settings->stopWorkTimeReset;
+        $breakTimeReset = $settings->stopBreakTimeReset;
 
         $activeTimestamps = Timestamp::whereNull('ended_at')->get();
 
@@ -227,13 +228,14 @@ class TimestampService
 
     public static function getHoliday(int|array $year): Collection
     {
-        if (Settings::get('holidayRegion') === null) {
+        $settings = app(GeneralSettings::class);
+        if ($settings->holidayRegion === null) {
             return collect();
         }
         $holidayCalculator = new HolidayCalculator;
 
         return collect(
-            $holidayCalculator->calculate(Settings::get('holidayRegion'), $year)
+            $holidayCalculator->calculate($settings->holidayRegion, $year)
                 ->filter(new IncludeTypeFilter(HolidayType::DAY_OFF))
                 ->format(new DateFormatter)
         )->map(fn ($holiday): ?Carbon => Carbon::create($holiday));

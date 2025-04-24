@@ -7,7 +7,7 @@ namespace App\Providers;
 use App\Models\Timestamp;
 use App\Models\WorkSchedule;
 use App\Services\WindowService;
-use Illuminate\Support\Str;
+use App\Settings\GeneralSettings;
 use Native\Laravel\Contracts\ProvidesPhpIni;
 use Native\Laravel\Enums\SystemThemesEnum;
 use Native\Laravel\Facades\Menu;
@@ -23,17 +23,20 @@ class NativeAppServiceProvider implements ProvidesPhpIni
      */
     public function boot(): void
     {
-        $theme = Settings::get('theme', SystemThemesEnum::SYSTEM->value);
+        $settings = app(GeneralSettings::class);
+        $theme = $settings->theme ?? SystemThemesEnum::SYSTEM->value;
         if ($theme !== SystemThemesEnum::SYSTEM->value) {
             System::theme(SystemThemesEnum::tryFrom($theme));
         }
 
-        if (! Settings::get('id')) {
-            Settings::set('id', Str::uuid());
+        if (! $settings->id) {
+            $settings->id = uuid_create();
+            $settings->save();
         }
 
+        $hasDbWorkSchedule = WorkSchedule::exists();
         $workSchedule = Settings::get('workdays');
-        if ($workSchedule && ! WorkSchedule::exists()) {
+        if ($workSchedule && ! $hasDbWorkSchedule) {
             $firstTimestamp = Timestamp::orderBy('started_at')->first();
             WorkSchedule::create([
                 'sunday' => $workSchedule['sunday'] ?? 0,
@@ -46,10 +49,14 @@ class NativeAppServiceProvider implements ProvidesPhpIni
                 'valid_from' => $firstTimestamp ? $firstTimestamp->started_at->startOfDay() : now()->startOfDay(),
             ]);
             Settings::forget('workdays');
-            Settings::set('wizard_completed', true);
+            $settings->wizard_completed = true;
+            $settings->save();
+        } elseif ($hasDbWorkSchedule && ! $settings->wizard_completed) {
+            $settings->wizard_completed = true;
+            $settings->save();
         }
 
-        if (! Settings::get('wizard_completed')) {
+        if (! $settings->wizard_completed) {
             WindowService::openWelcome();
         }
 

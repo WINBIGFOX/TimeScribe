@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Services\LocaleService;
 use App\Services\TimestampService;
 use Illuminate\Console\Command;
 
@@ -28,6 +29,7 @@ class TimestampPing extends Command
      */
     public function handle(): void
     {
+        new LocaleService;
         TimestampService::ping();
     }
 }

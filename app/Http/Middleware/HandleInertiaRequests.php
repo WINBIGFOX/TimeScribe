@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use App\Services\TimestampService;
+use App\Settings\GeneralSettings;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
-use Native\Laravel\Facades\Settings;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -35,9 +35,12 @@ class HandleInertiaRequests extends Middleware
     #[\Override]
     public function share(Request $request): array
     {
+        $settings = app(GeneralSettings::class);
+
         return [
             ...parent::share($request),
-            'locale' => Settings::get('locale', config('app.fallback_locale')),
+            'locale' => $settings->locale ?? config('app.fallback_locale'),
+            'timezone' => $settings->timezone ?? config('app.timezone'),
             'app_version' => config('nativephp.version'),
             'date' => now()->format('d.m.Y'),
             'recording' => (bool) TimestampService::getCurrentType(),

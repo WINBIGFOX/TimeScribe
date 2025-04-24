@@ -177,4 +177,5 @@ return [
     'warning' => 'Warning',
     'yes' => 'Yes',
     'backup already exists. Do you want to overwrite it?' => 'Backup already exists. Do you want to overwrite it?',
+    'timezone' => 'Timezone',
 ];

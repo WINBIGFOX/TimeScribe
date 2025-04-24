@@ -9,10 +9,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateGeneralSettingsRequest;
 use App\Http\Requests\UpdateLocaleRequest;
 use App\Jobs\CalculateWeekBalance;
+use App\Settings\GeneralSettings;
+use DateTimeZone;
 use Inertia\Inertia;
 use Native\Laravel\Enums\SystemThemesEnum;
 use Native\Laravel\Facades\App;
-use Native\Laravel\Facades\Settings;
 use Native\Laravel\Facades\System;
 
 class GeneralController extends Controller
@@ -20,36 +21,40 @@ class GeneralController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(GeneralSettings $settings)
     {
         return Inertia::render('Settings/General/Edit', [
             'openAtLogin' => App::openAtLogin(),
-            'theme' => Settings::get('theme', SystemThemesEnum::SYSTEM->value),
-            'showTimerOnUnlock' => Settings::get('showTimerOnUnlock'),
-            'holidayRegion' => Settings::get('holidayRegion'),
-            'locale' => Settings::get('locale'),
-            'appActivityTracking' => Settings::get('appActivityTracking'),
+            'theme' => $settings->theme ?? SystemThemesEnum::SYSTEM->value,
+            'showTimerOnUnlock' => $settings->showTimerOnUnlock,
+            'holidayRegion' => $settings->holidayRegion,
+            'locale' => $settings->locale,
+            'appActivityTracking' => $settings->appActivityTracking,
+            'timezones' => DateTimeZone::listIdentifiers(),
+            'timezone' => $settings->timezone,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateGeneralSettingsRequest $request)
+    public function update(UpdateGeneralSettingsRequest $request, GeneralSettings $settings)
     {
         $data = $request->validated();
 
-        Settings::set('showTimerOnUnlock', $data['showTimerOnUnlock']);
-        Settings::set('holidayRegion', $data['holidayRegion']);
-        Settings::set('appActivityTracking', $data['appActivityTracking']);
+        $settings->showTimerOnUnlock = $data['showTimerOnUnlock'];
+        $settings->holidayRegion = $data['holidayRegion'];
+        $settings->appActivityTracking = $data['appActivityTracking'];
+        $settings->stopBreakAutomatic = $data['stopBreakAutomatic'] ?? null;
+        $settings->timezone = $data['timezone'];
 
-        if ($data['theme'] !== Settings::get('theme', SystemThemesEnum::SYSTEM->value)) {
-            Settings::set('theme', $data['theme']);
+        if ($data['theme'] !== $settings->theme ?? SystemThemesEnum::SYSTEM->value) {
+            $settings->theme = $data['theme'];
             System::theme(SystemThemesEnum::tryFrom($data['theme']));
         }
 
-        if ($data['locale'] !== Settings::get('locale')) {
-            Settings::set('locale', $data['locale']);
+        if ($data['locale'] !== $settings->locale) {
+            $settings->locale = $data['locale'];
             LocaleChanged::broadcast();
         }
 
@@ -57,16 +62,20 @@ class GeneralController extends Controller
             App::openAtLogin($data['openAtLogin']);
         }
 
+        $settings->save();
+
         CalculateWeekBalance::dispatch();
 
         return redirect()->route('settings.general.edit');
     }
 
-    public function updateLocale(UpdateLocaleRequest $request): void
+    public function updateLocale(UpdateLocaleRequest $request, GeneralSettings $settings): void
     {
         $data = $request->validated();
-        if ($data['locale'] !== Settings::get('locale')) {
-            Settings::set('locale', $data['locale']);
+        if ($data['locale'] !== $settings->locale) {
+
+            $settings->locale = $data['locale'];
+            $settings->save();
             LocaleChanged::broadcast();
         }
     }

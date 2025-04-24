@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Events\TimerStarted;
+use App\Settings\GeneralSettings;
 use Illuminate\Support\Facades\Artisan;
-use Native\Laravel\Facades\Settings;
 
 class AppActivityStartScan
 {
@@ -23,7 +23,8 @@ class AppActivityStartScan
      */
     public function handle(TimerStarted $event): void
     {
-        if (Settings::get('appActivityTracking', false)) {
+        $settings = app(GeneralSettings::class);
+        if ($settings->appActivityTracking) {
             Artisan::call('app:active-app');
         }
     }

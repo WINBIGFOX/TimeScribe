@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Enums\TimestampTypeEnum;
+use App\Services\LocaleService;
 use App\Services\TimestampService;
 use Illuminate\Console\Command;
 use Native\Laravel\Facades\MenuBar;
@@ -30,6 +31,7 @@ class MenubarRefresh extends Command
      */
     public function handle(): void
     {
+        new LocaleService;
         $currentType = TimestampService::getCurrentType();
 
         if ($currentType === TimestampTypeEnum::WORK) {

@@ -6,11 +6,12 @@ namespace App\Jobs;
 
 use App\Models\Timestamp;
 use App\Models\WeekBalance;
+use App\Services\LocaleService;
 use App\Services\TimestampService;
+use App\Settings\GeneralSettings;
 use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Native\Laravel\Facades\Settings;
 
 class CalculateWeekBalance implements ShouldQueue
 {
@@ -29,7 +30,9 @@ class CalculateWeekBalance implements ShouldQueue
      */
     public function handle(): void
     {
-        Carbon::setLocale(str_replace('-', '_', Settings::get('locale', config('app.fallback_locale'))));
+        new LocaleService;
+        $settings = app(GeneralSettings::class);
+        Carbon::setLocale(str_replace('-', '_', $settings->locale ?? config('app.fallback_locale')));
         $firstTimestamp = Timestamp::orderBy('started_at')->first();
 
         if (! $firstTimestamp) {

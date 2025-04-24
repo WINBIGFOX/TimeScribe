@@ -9,21 +9,22 @@ use App\Http\Resources\WorkScheduleResource;
 use App\Models\Timestamp;
 use App\Models\WorkSchedule;
 use App\Services\WindowService;
+use App\Settings\GeneralSettings;
 use Inertia\Inertia;
 use Native\Laravel\Facades\App;
 use Native\Laravel\Facades\MenuBar;
-use Native\Laravel\Facades\Settings;
 
 class WelcomeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(GeneralSettings $settings)
     {
         $workSchedule = WorkSchedule::orderBy('valid_from')->first();
 
         return Inertia::render('Welcome/Index', [
+            'locale' => $settings->locale,
             'openAtLogin' => App::openAtLogin(),
             'workSchedule' => $workSchedule ? WorkScheduleResource::make($workSchedule) : null,
         ]);
@@ -50,10 +51,11 @@ class WelcomeController extends Controller
         }
     }
 
-    public function finish($openSettings = false): void
+    public function finish(GeneralSettings $settings, $openSettings = false): void
     {
-        Settings::set('showTimerOnUnlock', true);
-        Settings::set('wizard_completed', true);
+        $settings->showTimerOnUnlock = true;
+        $settings->wizard_completed = true;
+        $settings->save();
         WindowService::closeWelcome();
         if ($openSettings) {
             WindowService::openHome(false, 'settings.index');

@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Events\LocaleChanged;
 use App\Jobs\CalculateWeekBalance;
 use App\Services\TimestampService;
+use App\Settings\GeneralSettings;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
@@ -15,7 +16,6 @@ use Inertia\Inertia;
 use Native\Laravel\Dialog;
 use Native\Laravel\Enums\SystemThemesEnum;
 use Native\Laravel\Facades\Alert;
-use Native\Laravel\Facades\Settings;
 use Native\Laravel\Facades\System;
 use ZipArchive;
 
@@ -136,8 +136,10 @@ class BugAndFeedbackController extends Controller
             return back()->withErrors(['message' => __('app.restore failed.')]);
         }
 
-        if (System::theme()->value !== Settings::get('theme', SystemThemesEnum::SYSTEM->value)) {
-            System::theme(SystemThemesEnum::tryFrom(Settings::get('theme', SystemThemesEnum::SYSTEM)));
+        $settings = app(GeneralSettings::class);
+
+        if (System::theme()->value !== $settings->theme ?? SystemThemesEnum::SYSTEM->value) {
+            System::theme(SystemThemesEnum::tryFrom($settings->theme ?? SystemThemesEnum::SYSTEM));
         }
 
         TimestampService::checkStopTimeReset();

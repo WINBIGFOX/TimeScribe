@@ -32,6 +32,7 @@ class UpdateGeneralSettingsRequest extends FormRequest
             'holidayRegion' => ['nullable', 'string', 'max:5', 'min:2'],
             'locale' => ['required', 'string', 'regex:/^[a-z]{2}-[A-Z]{2}$/'],
             'appActivityTracking' => ['required', 'boolean'],
+            'timezone' => ['required', 'string', 'timezone'],
         ];
     }
 }

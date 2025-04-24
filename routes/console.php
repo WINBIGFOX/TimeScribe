@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 use App\Enums\TimestampTypeEnum;
 use App\Models\Timestamp;
+use App\Settings\GeneralSettings;
 use Illuminate\Support\Facades\Schedule;
 use Native\Laravel\Enums\SystemIdleStatesEnum;
 use Native\Laravel\Facades\PowerMonitor;
-use Native\Laravel\Facades\Settings;
 
 Schedule::when(fn () => Timestamp::whereNull('ended_at')->exists())->group(function (): void {
     Schedule::command('menubar:refresh')->everyFifteenSeconds();
@@ -16,12 +16,13 @@ Schedule::when(fn () => Timestamp::whereNull('ended_at')->exists())->group(funct
 
 Schedule::command('app:active-app')
     ->when(function (): bool {
+        $settings = app(GeneralSettings::class);
         $isRecording = Timestamp::whereNull('ended_at')
             ->where('type', TimestampTypeEnum::WORK)
             ->exists();
         $state = PowerMonitor::getSystemIdleState(0);
 
-        return $isRecording && $state === SystemIdleStatesEnum::ACTIVE && Settings::get('appActivityTracking', false);
+        return $isRecording && $state === SystemIdleStatesEnum::ACTIVE && $settings->appActivityTracking;
     })
     ->everyFiveSeconds()
     ->withoutOverlapping();

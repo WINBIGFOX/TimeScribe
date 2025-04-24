@@ -69,6 +69,7 @@ export interface Absence {
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     locale: string
+    timezone: string
     app_version: string
     recording: boolean
 }

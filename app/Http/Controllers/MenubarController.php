@@ -9,21 +9,21 @@ use App\Http\Resources\ActivityHistoryResource;
 use App\Models\ActivityHistory;
 use App\Services\TimestampService;
 use App\Services\WindowService;
+use App\Settings\GeneralSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Inertia\Inertia;
 use Native\Laravel\Facades\MenuBar;
-use Native\Laravel\Facades\Settings;
 
 class MenubarController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, GeneralSettings $settings)
     {
         $currentType = TimestampService::getCurrentType();
         if (! $request->header('x-inertia-partial-data')) {
             TimestampService::ping();
             Artisan::call('menubar:refresh');
-            if (Settings::get('appActivityTracking', false) && $currentType === TimestampTypeEnum::WORK) {
+            if ($settings->appActivityTracking && $currentType === TimestampTypeEnum::WORK) {
                 Artisan::call('app:active-app');
             }
         }

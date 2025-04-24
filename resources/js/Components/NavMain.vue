@@ -27,7 +27,7 @@ router.on('navigate', () => {
         <SidebarMenu>
             <SidebarMenuItem>
                 <SidebarMenuButton as-child>
-                    <Link :href="route('home')">
+                    <Link :href="route('home')" prefetch>
                         <ChartColumnBig />
                         {{ $t('app.overview') }}
                     </Link>
@@ -43,6 +43,7 @@ router.on('navigate', () => {
                                 }"
                                 :href="route('overview.day.show', { date })"
                                 class="transition-all duration-200"
+                                prefetch
                             >
                                 {{ $t('app.day') }}
                             </Link>
@@ -56,6 +57,7 @@ router.on('navigate', () => {
                                 }"
                                 :href="route('overview.week.show', { date })"
                                 class="transition-all duration-200"
+                                prefetch
                             >
                                 {{ $t('app.week') }}
                             </Link>
@@ -69,6 +71,7 @@ router.on('navigate', () => {
                                 }"
                                 :href="route('overview.month.show', { date })"
                                 class="transition-all duration-200"
+                                prefetch
                             >
                                 {{ $t('app.month') }}
                             </Link>
@@ -82,6 +85,7 @@ router.on('navigate', () => {
                                 }"
                                 :href="route('overview.year.show', { date })"
                                 class="transition-all duration-200"
+                                prefetch
                             >
                                 {{ $t('app.year') }}
                             </Link>
@@ -97,6 +101,7 @@ router.on('navigate', () => {
                         }"
                         :href="route('app-activity.index')"
                         class="transition-all duration-200"
+                        prefetch
                     >
                         <AppWindowMac />
                         {{ $t('app.app activities') }}
@@ -111,6 +116,7 @@ router.on('navigate', () => {
                         }"
                         :href="route('absence.show', { date })"
                         class="transition-all duration-200"
+                        prefetch
                     >
                         <TentTree />
                         {{ $t('app.absences and leave') }}
@@ -127,6 +133,7 @@ router.on('navigate', () => {
                         }"
                         :href="route('work-schedule.index')"
                         class="transition-all duration-200"
+                        prefetch
                     >
                         <FileClock />
                         {{ $t('app.work schedule') }}
@@ -141,6 +148,7 @@ router.on('navigate', () => {
                         }"
                         :href="route('settings.index')"
                         class="transition-all duration-200"
+                        prefetch
                     >
                         <Cog />
                         {{ $t('app.settings') }}
@@ -155,6 +163,7 @@ router.on('navigate', () => {
                                 }"
                                 :href="route('settings.general.edit')"
                                 class="transition-all duration-200"
+                                prefetch
                             >
                                 {{ $t('app.general') }}
                             </Link>
@@ -168,6 +177,7 @@ router.on('navigate', () => {
                                 }"
                                 :href="route('settings.start-stop.edit')"
                                 class="transition-all duration-200"
+                                prefetch
                             >
                                 {{ $t('app.auto start/break') }}
                             </Link>

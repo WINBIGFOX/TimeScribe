@@ -6,9 +6,9 @@ namespace App\Listeners;
 
 use App\Jobs\CalculateWeekBalance;
 use App\Services\TimestampService;
+use App\Settings\GeneralSettings;
 use Native\Laravel\Events\PowerMonitor\ScreenUnlocked;
 use Native\Laravel\Facades\MenuBar;
-use Native\Laravel\Facades\Settings;
 
 class Unlocked
 {
@@ -25,9 +25,10 @@ class Unlocked
      */
     public function handle(ScreenUnlocked $event): void
     {
+        $settings = app(GeneralSettings::class);
         TimestampService::checkStopTimeReset();
 
-        if (Settings::get('showTimerOnUnlock')) {
+        if ($settings->showTimerOnUnlock) {
             MenuBar::clearResolvedInstances();
             MenuBar::show();
         }

@@ -177,4 +177,5 @@ return [
     'warning' => 'Achtung',
     'yes' => 'Ja',
     'backup already exists. Do you want to overwrite it?' => 'Die Sicherung existiert bereits. Möchtest du sie überschreiben?',
+    'timezone' => 'Zeitzone',
 ];

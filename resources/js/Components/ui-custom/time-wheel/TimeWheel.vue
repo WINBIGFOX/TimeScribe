@@ -78,25 +78,40 @@ const items = computed(() => {
             cn('*:hover:text-foreground flex items-center tabular-nums *:text-center *:transition-colors', props.class)
         "
     >
-        <Link :href="items.thirdPrevious.link" class="text-foreground/15" preserve-scroll>
+        <Link :href="items.thirdPrevious.link" class="text-foreground/15" prefetch preserve-scroll>
             <ChevronsLeft class="size-4" />
         </Link>
-        <Link :href="items.secondPrevious.link" class="text-foreground/25 pl-3" preserve-scroll>
+        <Link :href="items.secondPrevious.link" class="text-foreground/25 pl-3" prefetch preserve-scroll>
             {{ items.secondPrevious.label }}
         </Link>
-        <Link :href="items.previous.link" class="text-foreground/50 border-border ml-3 border-l pl-3" preserve-scroll>
+        <Link
+            :href="items.previous.link"
+            class="text-foreground/50 border-border ml-3 border-l pl-3"
+            prefetch
+            preserve-scroll
+        >
             {{ items.previous.label }}
         </Link>
-        <Link :href="items.current.link" class="border-border mx-3 border-x px-3 font-semibold" preserve-scroll>
+        <Link
+            :href="items.current.link"
+            class="border-border mx-3 border-x px-3 font-semibold"
+            prefetch
+            preserve-scroll
+        >
             {{ items.current.label }}
         </Link>
-        <Link :href="items.next.link" class="text-foreground/50 border-border mr-3 border-r pr-3" preserve-scroll>
+        <Link
+            :href="items.next.link"
+            class="text-foreground/50 border-border mr-3 border-r pr-3"
+            prefetch
+            preserve-scroll
+        >
             {{ items.next.label }}
         </Link>
-        <Link :href="items.secondNext.link" class="text-foreground/25 pr-3" preserve-scroll>
+        <Link :href="items.secondNext.link" class="text-foreground/25 pr-3" prefetch preserve-scroll>
             {{ items.secondNext.label }}
         </Link>
-        <Link :href="items.thirdNext.link" class="text-foreground/15" preserve-scroll>
+        <Link :href="items.thirdNext.link" class="text-foreground/15" prefetch preserve-scroll>
             <ChevronsRight class="size-4" />
         </Link>
     </div>

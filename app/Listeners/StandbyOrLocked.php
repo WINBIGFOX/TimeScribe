@@ -6,11 +6,11 @@ namespace App\Listeners;
 
 use App\Enums\TimestampTypeEnum;
 use App\Services\TimestampService;
+use App\Settings\GeneralSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Native\Laravel\Events\PowerMonitor\ScreenLocked;
 use Native\Laravel\Events\PowerMonitor\Shutdown;
-use Native\Laravel\Facades\Settings;
 
 class StandbyOrLocked
 {
@@ -27,12 +27,13 @@ class StandbyOrLocked
      */
     public function handle(ScreenLocked|Shutdown $event): void
     {
-        $stopBreakAutomatic = Settings::get('stopBreakAutomatic');
+        $settings = app(GeneralSettings::class);
+        $stopBreakAutomatic = $settings->stopBreakAutomatic;
         if (! $stopBreakAutomatic) {
             return;
         }
 
-        $stopBreakAutomaticActivationTime = Settings::get('stopBreakAutomaticActivationTime');
+        $stopBreakAutomaticActivationTime = $settings->stopBreakAutomaticActivationTime;
 
         if ($stopBreakAutomaticActivationTime && (! Carbon::now()->between(
             Carbon::now()->setTime(0, 0, 0),

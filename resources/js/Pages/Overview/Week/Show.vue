@@ -8,7 +8,9 @@ import { Date, WeekdayObject } from '@/types'
 import { Head, Link, router } from '@inertiajs/vue3'
 import { CalendarDate, type DateValue } from '@internationalized/date'
 import moment from 'moment/min/moment-with-locales'
+import momentTimezone from 'moment-timezone';
 import { Ref, ref, watch } from 'vue'
+
 
 const props = defineProps<{
     date: string

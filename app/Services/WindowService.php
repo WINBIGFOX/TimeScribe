@@ -12,7 +12,7 @@ class WindowService
     {
         Window::open('welcome')
             ->webPreferences([
-                'devTools' => false,
+                'devTools' => config('app.debug'),
             ])
             ->route('welcome.index')
             ->fullscreenable(false)
@@ -28,10 +28,10 @@ class WindowService
 
     public static function openHome(bool $darkMode, string $route = 'home'): void
     {
-        Window::get('home')->route('settings.index');
+        Window::get('home')->route($route);
         Window::open('home')
             ->webPreferences([
-                'devTools' => false,
+                'devTools' => config('app.debug'),
             ])
             ->route($route)
             ->rememberState()
@@ -43,7 +43,7 @@ class WindowService
             ->titleBarHidden()
             ->fullscreenable(false)
             ->backgroundColor($darkMode ? '#171717' : '#fafafa')
-            ->showDevTools(false);
+            ->showDevTools(config('app.debug'));
     }
 
     public static function closeWelcome(): void

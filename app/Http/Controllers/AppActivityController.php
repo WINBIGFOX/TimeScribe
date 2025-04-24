@@ -6,17 +6,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\AppActivityResource;
 use App\Models\ActivityHistory;
+use App\Settings\GeneralSettings;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Native\Laravel\Facades\Settings;
 
 class AppActivityController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, GeneralSettings $settings)
     {
         $firstActivity = ActivityHistory::oldest()->first();
         $lastActivity = ActivityHistory::latest()->first();
@@ -70,7 +70,7 @@ class AppActivityController extends Controller
             'minDate' => $firstActivity?->created_at->format('Y-m-d') ?? $startDate->format('Y-m-d'),
             'historyApp' => $historyApp,
             'historyCategory' => $historyCategory,
-            'active' => Settings::get('appActivityTracking', false),
+            'active' => $settings->appActivityTracking ?? false,
         ]);
     }
 }

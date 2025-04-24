@@ -10,15 +10,16 @@
     "license": "GPL-3.0-or-later",
     "require": {
         "php": "^8.4",
+        "ext-zip": "*",
         "emargareten/inertia-modal": "^1.5",
         "inertiajs/inertia-laravel": "^2.0",
+        "laravel-lang/lang": "^15.19",
         "laravel/framework": "^12.9",
         "laravel/tinker": "^2.10",
         "nativephp/electron": "1.0.0",
+        "spatie/laravel-settings": "^3.4",
         "tightenco/ziggy": "^2.5",
-        "umulmrum/holiday": "^0.11",
-        "laravel-lang/lang": "^15.19",
-        "ext-zip": "*"
+        "umulmrum/holiday": "^0.11"
     },
     "require-dev": {
         "driftingly/rector-laravel": "^2.0",

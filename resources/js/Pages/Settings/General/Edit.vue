@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, Sele
 import { Switch } from '@/Components/ui/switch'
 import { Head, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
-import { AppWindowMac, CalendarMinus, Eye, KeyRound, Languages, SunMoon } from 'lucide-vue-next'
+import { AppWindowMac, CalendarMinus, Eye, Globe, KeyRound, Languages, SunMoon } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
 
 const props = defineProps<{
@@ -13,6 +13,8 @@ const props = defineProps<{
     holidayRegion?: string
     locale: string
     appActivityTracking?: boolean
+    timezones?: string[]
+    timezone: string
 }>()
 
 const form = useForm({
@@ -21,7 +23,8 @@ const form = useForm({
     showTimerOnUnlock: props.showTimerOnUnlock ?? false,
     holidayRegion: props.holidayRegion ?? '',
     locale: props.locale,
-    appActivityTracking: props.appActivityTracking ?? false
+    appActivityTracking: props.appActivityTracking ?? false,
+    timezone: props.timezone
 })
 
 const submit = () => {
@@ -40,7 +43,8 @@ watch(
         form.openAtLogin,
         form.showTimerOnUnlock,
         form.holidayRegion,
-        form.appActivityTracking
+        form.appActivityTracking,
+        form.timezone
     ],
     debouncedSubmit,
     { deep: true }
@@ -86,6 +90,24 @@ watch(holidayCheck, () => {
                         </SelectItem>
                         <SelectItem value="en-US">
                             {{ $t('app.english (US)') }}
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
+        </div>
+        <div class="flex items-start space-x-4 py-4">
+            <Globe />
+            <div class="flex flex-1 items-center gap-4 space-y-1">
+                <p class="flex-1 text-sm leading-none font-medium">
+                    {{ $t('app.timezone') }}
+                </p>
+                <Select size="5" v-model="form.timezone">
+                    <SelectTrigger class="w-1/2">
+                        <SelectValue :placeholder="$t('app.timezone')" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem :key="timezone" :value="timezone" v-for="timezone in props.timezones">
+                            {{ timezone }}
                         </SelectItem>
                     </SelectContent>
                 </Select>

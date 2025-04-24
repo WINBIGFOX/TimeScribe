@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\ActivityHistory;
+use App\Services\LocaleService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
@@ -30,6 +31,7 @@ class ActiveApp extends Command
      */
     public function handle(): void
     {
+        new LocaleService;
         $this->detectingActiveApp();
     }
 

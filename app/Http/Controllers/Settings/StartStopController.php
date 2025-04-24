@@ -6,35 +6,36 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateStartStopSettingsRequest;
+use App\Settings\GeneralSettings;
 use Inertia\Inertia;
-use Native\Laravel\Facades\Settings;
 
 class StartStopController extends Controller
 {
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(GeneralSettings $settings)
     {
         return Inertia::render('Settings/StartStop/Edit', [
-            'stopBreakAutomatic' => Settings::get('stopBreakAutomatic'),
-            'stopBreakAutomaticActivationTime' => Settings::get('stopBreakAutomaticActivationTime'),
-            'stopWorkTimeReset' => Settings::get('stopWorkTimeReset'),
-            'stopBreakTimeReset' => Settings::get('stopBreakTimeReset'),
+            'stopBreakAutomatic' => $settings->stopBreakAutomatic,
+            'stopBreakAutomaticActivationTime' => $settings->stopBreakAutomaticActivationTime,
+            'stopWorkTimeReset' => $settings->stopWorkTimeReset,
+            'stopBreakTimeReset' => $settings->stopBreakTimeReset,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateStartStopSettingsRequest $request)
+    public function update(UpdateStartStopSettingsRequest $request, GeneralSettings $settings)
     {
         $data = $request->validated();
 
-        Settings::set('stopBreakAutomatic', $data['stopBreakAutomatic']);
-        Settings::set('stopBreakAutomaticActivationTime', $data['stopBreakAutomaticActivationTime']);
-        Settings::set('stopWorkTimeReset', (int) $data['stopWorkTimeReset']);
-        Settings::set('stopBreakTimeReset', (int) $data['stopBreakTimeReset']);
+        $settings->stopBreakAutomatic = $data['stopBreakAutomatic'] ?? null;
+        $settings->stopBreakAutomaticActivationTime = $data['stopBreakAutomaticActivationTime'] ?? null;
+        $settings->stopWorkTimeReset = ((int) $data['stopWorkTimeReset']) ?? null;
+        $settings->stopBreakTimeReset = ((int) $data['stopBreakTimeReset']) ?? null;
+        $settings->save();
 
         return redirect()->route('settings.start-stop.edit');
     }

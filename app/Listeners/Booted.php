@@ -6,9 +6,9 @@ namespace App\Listeners;
 
 use App\Jobs\CalculateWeekBalance;
 use App\Services\TimestampService;
+use App\Settings\GeneralSettings;
 use Native\Laravel\Events\App\ApplicationBooted;
 use Native\Laravel\Facades\MenuBar;
-use Native\Laravel\Facades\Settings;
 
 class Booted
 {
@@ -25,9 +25,10 @@ class Booted
      */
     public function handle(ApplicationBooted $event): void
     {
+        $settings = app(GeneralSettings::class);
         TimestampService::checkStopTimeReset();
         CalculateWeekBalance::dispatch();
-        if (Settings::get('showTimerOnUnlock')) {
+        if ($settings->showTimerOnUnlock) {
             sleep(1);
             MenuBar::clearResolvedInstances();
             MenuBar::show();
