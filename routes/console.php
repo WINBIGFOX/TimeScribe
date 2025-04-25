@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Schedule;
 use Native\Laravel\Enums\SystemIdleStatesEnum;
 use Native\Laravel\Facades\PowerMonitor;
 
+Artisan::command('optimize', function () {
+    exit();
+});
+
 Schedule::when(fn () => Timestamp::whereNull('ended_at')->exists())->group(function (): void {
     Schedule::command('menubar:refresh')->everyFifteenSeconds();
     Schedule::command('app:calculate-week-balance')->everyMinute();
