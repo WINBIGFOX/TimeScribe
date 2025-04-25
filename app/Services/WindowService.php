@@ -12,7 +12,7 @@ class WindowService
     {
         Window::open('welcome')
             ->webPreferences([
-                'devTools' => config('app.debug'),
+                'devTools' => false,
             ])
             ->route('welcome.index')
             ->fullscreenable(false)
@@ -31,7 +31,7 @@ class WindowService
         Window::get('home')->route($route);
         Window::open('home')
             ->webPreferences([
-                'devTools' => config('app.debug'),
+                'devTools' => false,
             ])
             ->route($route)
             ->rememberState()
@@ -43,7 +43,7 @@ class WindowService
             ->titleBarHidden()
             ->fullscreenable(false)
             ->backgroundColor($darkMode ? '#171717' : '#fafafa')
-            ->showDevTools(config('app.debug'));
+            ->showDevTools(false);
     }
 
     public static function closeWelcome(): void

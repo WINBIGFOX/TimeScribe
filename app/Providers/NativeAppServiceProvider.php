@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Models\Timestamp;
 use App\Models\WorkSchedule;
+use App\Services\LocaleService;
 use App\Services\WindowService;
 use App\Settings\GeneralSettings;
 use Native\Laravel\Contracts\ProvidesPhpIni;
@@ -23,6 +24,7 @@ class NativeAppServiceProvider implements ProvidesPhpIni
      */
     public function boot(): void
     {
+        new LocaleService;
         $settings = app(GeneralSettings::class);
         $theme = $settings->theme ?? SystemThemesEnum::SYSTEM->value;
         if ($theme !== SystemThemesEnum::SYSTEM->value) {

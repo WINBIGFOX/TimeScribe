@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Jobs\CalculateWeekBalance;
+use App\Services\LocaleService;
 use App\Services\TimestampService;
 use App\Settings\GeneralSettings;
 use Native\Laravel\Events\PowerMonitor\ScreenUnlocked;
@@ -25,6 +26,7 @@ class Unlocked
      */
     public function handle(ScreenUnlocked $event): void
     {
+        new LocaleService;
         $settings = app(GeneralSettings::class);
         TimestampService::checkStopTimeReset();
 

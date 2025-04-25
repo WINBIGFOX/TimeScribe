@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Enums\TimestampTypeEnum;
+use App\Services\LocaleService;
 use App\Services\TimestampService;
 use App\Settings\GeneralSettings;
 use Carbon\Carbon;
@@ -27,6 +28,7 @@ class StandbyOrLocked
      */
     public function handle(ScreenLocked|Shutdown $event): void
     {
+        new LocaleService;
         $settings = app(GeneralSettings::class);
         $stopBreakAutomatic = $settings->stopBreakAutomatic;
         if (! $stopBreakAutomatic) {
