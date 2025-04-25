@@ -3,7 +3,7 @@ import SheetDialog from '@/Components/dialogs/SheetDialog.vue'
 import { TimeSelect } from '@/Components/ui-custom/time-select'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { Textarea } from '@/Components/ui/textarea'
-import { Head, useForm } from '@inertiajs/vue3'
+import { Head, router, useForm } from '@inertiajs/vue3'
 import { BriefcaseBusiness, Coffee, MoveRight } from 'lucide-vue-next'
 
 const props = defineProps<{
@@ -20,6 +20,7 @@ const form = useForm({
 })
 
 const submit = () => {
+    router.flushAll()
     form.post(props.submit_route, {
         preserveScroll: true,
         preserveState: 'errors'

@@ -35,6 +35,7 @@ const props = defineProps<{
 }>()
 
 const submit = () => {
+    router.flushAll()
     form.transform((data) => {
         if (value.value) {
             data.valid_from = value.value.toString() + ' 00:00:00'

@@ -7,7 +7,7 @@ import TimestampTypeBadge from '@/Components/TimestampTypeBadge.vue'
 import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
 import { Absence, Timestamp } from '@/types'
-import { Head, Link } from '@inertiajs/vue3'
+import { Head, Link, router } from '@inertiajs/vue3'
 import moment from 'moment/min/moment-with-locales'
 
 const props = defineProps<{
@@ -24,6 +24,16 @@ const calcDuration = (startTimestamp: string, endTimestamp?: string) =>
     Math.floor(moment(startTimestamp).diff(endTimestamp).valueOf() / 1000 / 60)
 
 const startOfDay = moment(props.date, 'DD.MM.YYYY').format('YYYY-MM-DD 00:00:00')
+
+if (window.Native) {
+    window.Native.on('App\\Events\\TimerStarted', () => {
+        router.flushAll()
+        router.reload({
+            only: ['timestamps'],
+            showProgress: false
+        })
+    })
+}
 </script>
 
 <template>

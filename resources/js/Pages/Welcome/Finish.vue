@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Button } from '@/Components/ui/button'
 import { Switch } from '@/Components/ui/switch'
-import { Link, useForm } from '@inertiajs/vue3'
+import { Link, router, useForm } from '@inertiajs/vue3'
 import { ArrowRight, Cog, KeyRound } from 'lucide-vue-next'
 import { onMounted, ref, watch } from 'vue'
 
@@ -22,6 +22,7 @@ onMounted(() => {
 })
 
 const submit = (openAtLogin: boolean) => {
+    router.flushAll()
     form.openAtLogin = openAtLogin
     form.patch(route('welcome.update'), {
         preserveScroll: true,

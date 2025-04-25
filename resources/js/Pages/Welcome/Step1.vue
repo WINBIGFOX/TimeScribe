@@ -2,7 +2,7 @@
 import { Button } from '@/Components/ui/button'
 import WorkdayTimeInput from '@/Components/WorkdayTimeInput.vue'
 import { weekdayTranslate } from '@/lib/utils'
-import { useForm } from '@inertiajs/vue3'
+import { router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
 import { ArrowRight, CalendarClock } from 'lucide-vue-next'
 import moment from 'moment/min/moment-with-locales'
@@ -33,6 +33,7 @@ const form = useForm({
 })
 
 const submit = () => {
+    router.flushAll()
     form.patch(route('welcome.update'), {
         preserveScroll: true,
         preserveState: true

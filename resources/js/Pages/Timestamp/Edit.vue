@@ -23,6 +23,7 @@ const form = useForm({
 })
 
 const submit = () => {
+    router.flushAll()
     form.patch(props.submit_route, {
         preserveScroll: true,
         preserveState: 'errors'

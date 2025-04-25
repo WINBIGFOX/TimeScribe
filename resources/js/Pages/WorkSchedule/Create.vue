@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import WorkdayTimeInput from '@/Components/WorkdayTimeInput.vue'
-import { Head, useForm, usePage } from '@inertiajs/vue3'
+import { Head, router, useForm, usePage } from '@inertiajs/vue3'
 import { CalendarClock } from 'lucide-vue-next'
 import { computed } from 'vue'
 
@@ -31,6 +31,7 @@ const df = new DateFormatter(page.props.locale, {
 })
 
 const submit = () => {
+    router.flushAll()
     form.transform((data) => {
         if (value.value) {
             data.valid_from = value.value.toString() + ' 00:00:00'

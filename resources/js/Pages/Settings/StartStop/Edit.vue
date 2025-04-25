@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { Switch } from '@/Components/ui/switch'
-import { Head, useForm } from '@inertiajs/vue3'
+import { Head, router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
 import { AlarmClockCheck, LockKeyhole, TimerReset } from 'lucide-vue-next'
 import moment from 'moment/min/moment-with-locales'
@@ -22,6 +22,7 @@ const form = useForm({
 })
 
 const submit = () => {
+    router.flushAll()
     form.patch(route('settings.start-stop.update'), {
         preserveScroll: true,
         preserveState: true

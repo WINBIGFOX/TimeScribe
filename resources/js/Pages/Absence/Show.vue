@@ -46,6 +46,7 @@ const holidays = computed(() =>
 )
 
 const createAbsence = (type: 'vacation' | 'sick', date: string, duration?: number) => {
+    router.flushAll()
     router.post(
         route('absence.store', {
             date: moment(props.date, 'DD.MM.YYYY').format('YYYY-MM-DD')
@@ -63,6 +64,7 @@ const createAbsence = (type: 'vacation' | 'sick', date: string, duration?: numbe
 }
 
 const removeAbsence = (id: number) => {
+    router.flushAll()
     router.delete(
         route('absence.destroy', {
             date: moment(props.date, 'DD.MM.YYYY').format('YYYY-MM-DD'),

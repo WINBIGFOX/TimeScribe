@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { Switch } from '@/Components/ui/switch'
-import { Head, useForm } from '@inertiajs/vue3'
+import { Head, router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
 import { AppWindowMac, CalendarMinus, Eye, Globe, KeyRound, Languages, SunMoon } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
@@ -28,6 +28,7 @@ const form = useForm({
 })
 
 const submit = () => {
+    router.flushAll()
     form.patch(route('settings.general.update'), {
         preserveScroll: true,
         preserveState: true

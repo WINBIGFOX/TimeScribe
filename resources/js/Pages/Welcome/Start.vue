@@ -7,6 +7,7 @@ import { router } from '@inertiajs/vue3'
 import { ArrowRight } from 'lucide-vue-next'
 
 const updateLocale = (locale) => {
+    router.flushAll()
     router.patch(
         route('settings.general.updateLocale'),
         {
