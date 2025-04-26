@@ -29,6 +29,8 @@ export default defineConfig({
         })
     ],
     build: {
+        target: 'esnext',
+        minify: 'esbuild',
         chunkSizeWarningLimit: 1000,
         rollupOptions: {
             output: {
@@ -37,11 +39,23 @@ export default defineConfig({
                 assetFileNames: `[hash].[ext]`,
                 manualChunks: {
                     'vue-core': ['vue', '@vueuse/core'],
-                    'charts': ['apexcharts', 'vue3-apexcharts'],
+                    charts: ['apexcharts', 'vue3-apexcharts'],
                     'ui-libs': ['reka-ui', 'vaul-vue', 'lucide-vue-next'],
-                    'utils': ['moment', 'clsx', 'tailwind-merge']
+                    utils: ['moment', 'clsx', 'tailwind-merge']
                 }
             }
+        },
+        cssCodeSplit: true,
+        sourcemap: false,
+        assetsInlineLimit: 4096,
+    },
+    server: {
+        hmr: {
+            overlay: false
+        },
+        watch: {
+            usePolling: false
         }
-    }
+    },
+    assetsInclude: ['**/*.svg', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.webp'],
 })

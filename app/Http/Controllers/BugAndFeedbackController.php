@@ -120,6 +120,7 @@ class BugAndFeedbackController extends Controller
                     $zip->extractTo(storage_path('../database/'), ['database.sqlite']);
                     Artisan::call('migrate', ['--force' => true]);
                     Artisan::call('native:migrate', ['--force' => true]);
+                    Artisan::call('db:optimize');
                     \DB::reconnect();
                 } elseif (str_contains($zip->getNameIndex($i), 'app_icons/') || str_contains($zip->getNameIndex($i), 'logs/')) {
                     $zip->extractTo(storage_path(), [$zip->getNameIndex($i)]);

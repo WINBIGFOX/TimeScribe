@@ -36,3 +36,8 @@ Schedule::command('app:timestamp-ping')->when(function (): bool {
 
     return $state === SystemIdleStatesEnum::ACTIVE;
 })->everyFifteenSeconds();
+
+Schedule::command('db:optimize')
+    ->everySixHours()
+    ->withoutOverlapping()
+    ->runInBackground();

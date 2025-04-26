@@ -110,6 +110,13 @@ return [
             'charset' => env('DB_CHARSET', 'utf8'),
             'prefix' => '',
             'prefix_indexes' => true,
+            'pragma' => [
+                'journal_mode' => 'WAL',       // Write-Ahead Logging für bessere Concurrent-Zugriffe
+                'cache_size' => -4 * 1024,     // Cache-Größe auf 2MB setzen (-2048 Kilobytes)
+                'temp_store' => 'MEMORY',      // Temporäre Tabellen im Speicher halten
+                'synchronous' => 'NORMAL',     // Balance zwischen Sicherheit und Geschwindigkeit
+                'mmap_size' => 67108864,      // Memory-Mapped IO aktivieren (256MB)
+            ],
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
