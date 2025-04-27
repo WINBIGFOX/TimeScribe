@@ -78,7 +78,11 @@ Route::name('bug-and-feedback.')->prefix('bug-and-feedback')->group(function ():
 });
 
 Route::get('open', function (Request $request): void {
-    shell_exec('open "'.$request->string('url').'"');
+    if (\Native\Laravel\Support\Environment::isWindows()) {
+        shell_exec('explorer "'.$request->string('url').'"');
+    } else {
+        shell_exec('open "'.$request->string('url').'"');
+    }
 })->name('open');
 
 Route::get('/app-icon/{appIconName}', function ($appIconName) {
