@@ -16,7 +16,9 @@ use Inertia\Inertia;
 use Native\Laravel\Dialog;
 use Native\Laravel\Enums\SystemThemesEnum;
 use Native\Laravel\Facades\Alert;
+use Native\Laravel\Facades\AutoUpdater;
 use Native\Laravel\Facades\System;
+use Native\Laravel\Support\Environment;
 use ZipArchive;
 
 class BugAndFeedbackController extends Controller
@@ -28,6 +30,7 @@ class BugAndFeedbackController extends Controller
 
     public function export()
     {
+        AutoUpdater::quitAndInstall();
         $savePath = Dialog::new()->asSheet()
             ->folders()
             ->button(__('app.create backup'))
@@ -90,7 +93,11 @@ class BugAndFeedbackController extends Controller
             return back()->withErrors(['message' => __('app.backup could not be created.')]);
         }
 
-        shell_exec('open "'.$savePath.'"');
+        if (Environment::isWindows()) {
+            shell_exec('explorer "'.$savePath.'"');
+        } else {
+            shell_exec('open "'.$savePath.'"');
+        }
 
         return back()->withErrors(['message' => __('app.backup successfully created.')]);
     }

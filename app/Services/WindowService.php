@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Services;
 
 use Native\Laravel\Facades\Window;
+use Native\Laravel\Support\Environment;
 
 class WindowService
 {
     public static function openWelcome(): void
     {
-        Window::open('welcome')
+        $window = Window::open('welcome')
             ->webPreferences([
                 'devTools' => false,
             ])
@@ -18,18 +19,22 @@ class WindowService
             ->fullscreenable(false)
             ->showDevTools(false)
             ->alwaysOnTop()
-            ->titleBarHidden()
             ->width(700)
-            ->height(600)
             ->maximizable(false)
             ->minimizable(false)
             ->resizable(false);
+
+        if (Environment::isWindows()) {
+            $window->height(640)->hideMenu();
+        } else {
+            $window->height(600)->titleBarHidden();
+        }
     }
 
     public static function openHome(bool $darkMode, string $route = 'home'): void
     {
         Window::get('home')->route($route);
-        Window::open('home')
+        $window = Window::open('home')
             ->webPreferences([
                 'devTools' => false,
             ])
@@ -38,12 +43,16 @@ class WindowService
             ->maximizable(false)
             ->fullscreen(false)
             ->width(1070)
-            ->height(600)
             ->resizable(false)
-            ->titleBarHidden()
             ->fullscreenable(false)
             ->backgroundColor($darkMode ? '#171717' : '#fafafa')
             ->showDevTools(false);
+
+        if (Environment::isWindows()) {
+            $window->height(640)->hideMenu();
+        } else {
+            $window->height(600)->titleBarHidden();
+        }
     }
 
     public static function closeWelcome(): void

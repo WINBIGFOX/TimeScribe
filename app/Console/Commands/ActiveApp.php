@@ -9,6 +9,7 @@ use App\Services\LocaleService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Native\Laravel\Support\Environment;
 
 class ActiveApp extends Command
 {
@@ -31,6 +32,9 @@ class ActiveApp extends Command
      */
     public function handle(): void
     {
+        if (! Environment::isMac()) {
+            return;
+        }
         new LocaleService;
         $this->detectingActiveApp();
     }

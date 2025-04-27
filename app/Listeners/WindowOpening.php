@@ -6,6 +6,7 @@ namespace App\Listeners;
 
 use Native\Laravel\Events\Windows\WindowShown;
 use Native\Laravel\Facades\Dock;
+use Native\Laravel\Support\Environment;
 
 class WindowOpening
 {
@@ -22,6 +23,8 @@ class WindowOpening
      */
     public function handle(WindowShown $event): void
     {
-        Dock::show();
+        if (Environment::isMac()) {
+            Dock::show();
+        }
     }
 }
