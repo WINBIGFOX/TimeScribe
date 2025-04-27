@@ -7,6 +7,7 @@ namespace App\Listeners;
 use Native\Laravel\Events\Windows\WindowClosed;
 use Native\Laravel\Facades\Dock;
 use Native\Laravel\Facades\Window;
+use Native\Laravel\Support\Environment;
 
 class WindowClosing
 {
@@ -23,9 +24,11 @@ class WindowClosing
      */
     public function handle(WindowClosed $event): void
     {
-        $windows = Window::all();
-        if (count($windows) === 0) {
-            Dock::hide();
+        if (Environment::isMac()) {
+            $windows = Window::all();
+            if (count($windows) === 0) {
+                Dock::hide();
+            }
         }
     }
 }

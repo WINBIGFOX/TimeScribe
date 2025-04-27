@@ -41,12 +41,14 @@ class MenubarRefresh extends Command
             $time = TimestampService::getBreakTime();
             MenuBar::icon(public_path('BreakIconTemplate@2x.png'));
         } else {
+            MenuBar::tooltip('');
             MenuBar::label('');
             MenuBar::icon(public_path('IconTemplate@2x.png'));
 
             return;
         }
 
+        MenuBar::tooltip(gmdate('G:i', (int) $time));
         MenuBar::label(gmdate('G:i', (int) $time));
     }
 }

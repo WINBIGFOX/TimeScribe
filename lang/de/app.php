@@ -178,4 +178,5 @@ return [
     'yes' => 'Ja',
     'backup already exists. Do you want to overwrite it?' => 'Die Sicherung existiert bereits. Möchtest du sie überschreiben?',
     'timezone' => 'Zeitzone',
+    'not available on windows' => 'Nicht auf Windows verfügbar',
 ];

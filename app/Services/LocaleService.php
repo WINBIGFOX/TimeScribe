@@ -8,6 +8,7 @@ use App\Settings\GeneralSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use LaravelLang\Locales\Facades\Locales;
+use Native\Laravel\Facades\System;
 
 class LocaleService
 {
@@ -24,9 +25,9 @@ class LocaleService
     {
         if (! $this->settings->timezone) {
             $this->settings->timezone = config('app.timezone');
-            $systemTimezone = shell_exec("readlink /etc/localtime | sed 's#/var/db/timezone/zoneinfo/##g'");
-            if (in_array(trim($systemTimezone), \DateTimeZone::listIdentifiers())) {
-                $this->settings->timezone = trim($systemTimezone);
+            $systemTimezone = System::timezone();
+            if (in_array($systemTimezone, \DateTimeZone::listIdentifiers())) {
+                $this->settings->timezone = $systemTimezone;
             }
             $this->settings->save();
         }

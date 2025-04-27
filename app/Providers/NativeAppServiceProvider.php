@@ -72,7 +72,9 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             ->showDockIcon(false)
             ->route('menubar.index')
             ->width(300)
+            ->minWidth(300)
             ->height(250)
+            ->minHeight(250)
             ->resizable(false)
             ->withContextMenu(
                 Menu::make(

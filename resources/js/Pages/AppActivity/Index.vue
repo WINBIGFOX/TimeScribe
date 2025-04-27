@@ -106,6 +106,12 @@ const { stop } = usePoll(
     <Head title="App-Activity" />
     <div class="mb-4 flex h-8 items-center justify-between gap-4">
         <div class="text-foreground/80 text-base font-medium">{{ $t('app.app activities') }}</div>
+        <span
+            class="text-destructive bg-destructive/20 ml-2 rounded px-1.5 py-0.5 text-sm"
+            v-if="$page.props.environment === 'Windows'"
+        >
+            {{ $t('app.not available on windows') }}
+        </span>
         <DateRangePicker :max="props.maxDate" :min="props.minDate" v-model="dateRange" />
     </div>
     <div
