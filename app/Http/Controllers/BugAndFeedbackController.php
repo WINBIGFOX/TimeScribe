@@ -57,7 +57,6 @@ class BugAndFeedbackController extends Controller
         if ($zip->open($savePath.'/TimeScribe-Backup.bac', ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
             $filesToZip = [
                 storage_path('../database/database.sqlite'),
-                storage_path('../config.json'),
             ];
 
             foreach ($filesToZip as $file) {
@@ -124,8 +123,6 @@ class BugAndFeedbackController extends Controller
                     \DB::reconnect();
                 } elseif (str_contains($zip->getNameIndex($i), 'app_icons/') || str_contains($zip->getNameIndex($i), 'logs/')) {
                     $zip->extractTo(storage_path(), [$zip->getNameIndex($i)]);
-                } elseif ($zip->getNameIndex($i) === 'config.json') {
-                    $zip->extractTo(storage_path('../'), ['config.json']);
                 }
             }
             Cache::flush();
