@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import CnFlag from '@/Components/flags/CnFlag.vue'
 import DeFlag from '@/Components/flags/DeFlag.vue'
 import EnFlag from '@/Components/flags/EnFlag.vue'
 import UsFlag from '@/Components/flags/UsFlag.vue'
@@ -40,30 +41,39 @@ const updateLocale = (locale) => {
         <div class="flex items-center justify-center gap-6">
             <div
                 :class="{
-                    '!border-white': $page.props.locale === 'de-DE'
+                    '!border-white': $page.props.locale === 'de_DE'
                 }"
-                @click="updateLocale('de-DE')"
+                @click="updateLocale('de_DE')"
                 class="rounded-lg border border-transparent p-1 transition-colors hover:bg-white"
             >
                 <DeFlag class="!h-auto !w-10 rounded" />
             </div>
             <div
                 :class="{
-                    '!border-white': $page.props.locale === 'en-GB'
+                    '!border-white': $page.props.locale === 'en_GB'
                 }"
-                @click="updateLocale('en-GB')"
+                @click="updateLocale('en_GB')"
                 class="rounded-lg border border-transparent p-1 transition-colors hover:bg-white"
             >
                 <EnFlag class="!h-auto !w-10 rounded" />
             </div>
             <div
                 :class="{
-                    '!border-white': $page.props.locale === 'en-US'
+                    '!border-white': $page.props.locale === 'en_US'
                 }"
-                @click="updateLocale('en-US')"
+                @click="updateLocale('en_US')"
                 class="rounded-lg border border-transparent p-1 transition-colors hover:bg-white"
             >
                 <UsFlag class="!h-auto !w-10 rounded" />
+            </div>
+            <div
+                :class="{
+                    '!border-white': $page.props.locale === 'zh_CN'
+                }"
+                @click="updateLocale('zh_CN')"
+                class="rounded-lg border border-transparent p-1 transition-colors hover:bg-white"
+            >
+                <CnFlag class="!h-auto !w-10 rounded" />
             </div>
         </div>
     </div>

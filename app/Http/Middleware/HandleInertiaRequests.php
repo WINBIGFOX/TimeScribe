@@ -39,6 +39,7 @@ class HandleInertiaRequests extends Middleware
 
         return [
             ...parent::share($request),
+            'js_locale' => str_replace('_', '-', $settings->locale ?? config('app.fallback_locale')),
             'locale' => $settings->locale ?? config('app.fallback_locale'),
             'timezone' => $settings->timezone ?? config('app.timezone'),
             'app_version' => config('nativephp.version'),

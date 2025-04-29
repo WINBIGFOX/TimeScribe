@@ -24,7 +24,7 @@ class UpdateLocaleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'locale' => ['required', 'string', 'regex:/^[a-z]{2}-[A-Z]{2}$/'],
+            'locale' => ['required', 'string', 'regex:/^[a-z]{2}_[A-Z]{2}$/'],
         ];
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Schedule;
 use Native\Laravel\Enums\SystemIdleStatesEnum;
 use Native\Laravel\Facades\PowerMonitor;
 
-Artisan::command('optimize', function () {
+Artisan::command('optimize', function (): void {
     exit();
 });
 

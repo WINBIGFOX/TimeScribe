@@ -38,7 +38,7 @@ watch(active, (newVal) => {
                     style: 'decimal',
                     minimumFractionDigits: 1
                 }"
-                :locale="$page.props.locale"
+                :locale="$page.props.js_locale"
                 :max="15"
                 :min="0"
                 :step="0.5"
