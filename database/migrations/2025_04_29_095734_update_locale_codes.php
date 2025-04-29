@@ -13,7 +13,7 @@ return new class extends SettingsMigration
     {
         $this->migrator->update(
             'general.locale',
-            fn (string $locale) => str_replace('-', '_', $locale)
+            fn (string $locale): string => str_replace('-', '_', $locale)
         );
     }
 };
