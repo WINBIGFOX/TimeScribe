@@ -9,7 +9,7 @@ return new class extends SettingsMigration
     public function up(): void
     {
         $this->migrator->add('general.id', uuid_create());
-        $this->migrator->add('general.locale', 'en-GB');
+        $this->migrator->add('general.locale', 'en_GB');
         $this->migrator->add('general.timezone', null);
         $this->migrator->add('general.showTimerOnUnlock', true);
         $this->migrator->add('general.holidayRegion', null);

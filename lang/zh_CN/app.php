@@ -3,11 +3,13 @@
 declare(strict_types=1);
 
 return [
+    'version' => '版本',
     ':time' => ':time',
     'a work plan already begins on the date' => '该日期已有工作计划开始。',
     'absences' => '缺勤',
     'absences and leave' => '缺勤和休假',
     'action' => '操作',
+    'actions' => '操作',
     'activate based on time' => '按时间激活',
     'add time' => '添加时间',
     'almost finished' => '即将完成',

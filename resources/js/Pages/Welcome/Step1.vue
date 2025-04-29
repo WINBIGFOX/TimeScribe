@@ -74,7 +74,7 @@ const weekWorkTime = computed(() => {
                     {{ $t('app.weekly work hours') }}
                 </p>
             </div>
-            {{ weekWorkTime.toLocaleString($page.props.locale) }}
+            {{ weekWorkTime.toLocaleString($page.props.js_locale) }}
             {{ $t('app.hours') }}
         </div>
         <div class="bg-background text-foreground mx-auto flex w-96 flex-col gap-1 rounded-xl rounded-t-none px-4 py-3">

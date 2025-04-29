@@ -57,6 +57,20 @@ export function weekdayTranslate(weekday: string) {
             return 'Saturday'
         case 'Sonntag':
             return 'Sunday'
+        case '星期一':
+            return 'Monday'
+        case '星期二':
+            return 'Tuesday'
+        case '星期三':
+            return 'Wednesday'
+        case '星期四':
+            return 'Thursday'
+        case '星期五':
+            return 'Friday'
+        case '星期六':
+            return 'Saturday'
+        case '星期日':
+            return 'Sunday'
         default:
             return weekday
     }

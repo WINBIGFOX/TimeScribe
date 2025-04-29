@@ -90,7 +90,7 @@ watch(stopTimeResetCheck, () => {
 
                 <Select v-if="stopBreakAutomatikCheck" v-model="form.stopBreakAutomatic">
                     <SelectTrigger class="mt-4 ml-auto w-1/2">
-                        <SelectValue placeholder="Aktion" />
+                        <SelectValue :placeholder="$t('app.action')" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="stop">

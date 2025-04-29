@@ -56,7 +56,7 @@ watch(value, () => {
 })
 
 const page = usePage()
-const locale = ref(page.props.locale)
+const locale = ref(page.props.js_locale)
 const formatter = useDateFormatter(locale.value)
 
 const placeholder = ref(value.value.start) as Ref<DateValue>
@@ -125,7 +125,7 @@ watch(secondMonthPlaceholder, (_secondMonthPlaceholder) => {
     <Popover :open="open" @update:open="open = $event">
         <PopoverTrigger as-child>
             <Button
-                :class="cn('w-[250px] justify-start text-left font-normal', !value && 'text-muted-foreground')"
+                :class="cn('min-w-[250px] justify-start text-left font-normal', !value && 'text-muted-foreground')"
                 @click="open = !open"
                 variant="outline"
             >
@@ -158,7 +158,7 @@ watch(secondMonthPlaceholder, (_secondMonthPlaceholder) => {
         </PopoverTrigger>
         <PopoverContent @pointerDownOutside="open = false" class="w-auto p-0">
             <RangeCalendarRoot
-                :locale="$page.props.locale"
+                :locale="$page.props.js_locale"
                 :max-value="maxDate"
                 :min-value="minDate"
                 class="p-3"

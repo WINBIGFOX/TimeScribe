@@ -94,7 +94,7 @@ const destroy = () => {
                     :label="$t('app.start at:')"
                     :max="form.ended_at"
                     :min="min_time"
-                    :twelve-hour-format="$page.props.locale === 'en-US'"
+                    :twelve-hour-format="$page.props.locale === 'en_US'"
                     v-model="form.started_at"
                 />
                 <MoveRight class="text-muted-foreground size-4" />
@@ -102,7 +102,7 @@ const destroy = () => {
                     :label="$t('app.end at:')"
                     :max="max_time"
                     :min="form.started_at"
-                    :twelve-hour-format="$page.props.locale === 'en-US'"
+                    :twelve-hour-format="$page.props.locale === 'en_US'"
                     v-model="form.ended_at"
                 />
             </div>

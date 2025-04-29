@@ -42,7 +42,7 @@ const percentageOverTime = computed(() => {
 <template>
     <div class="flex grow flex-col" v-if="props.plan || props.workTime">
         <div class="text-foreground/80 mb-2 text-center text-sm">
-            {{ props.plan.toLocaleString($page.props.locale) }}
+            {{ props.plan.toLocaleString($page.props.js_locale) }}
             {{ $t('app.h') }}
         </div>
         <div class="bg-muted relative grow overflow-hidden rounded-t-lg">

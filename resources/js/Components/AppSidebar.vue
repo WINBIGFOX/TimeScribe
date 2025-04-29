@@ -45,7 +45,7 @@ const props = withDefaults(defineProps<SidebarProps>(), {
                 <SidebarMenuItem>
                     <SidebarMenuItem size="lg">
                         <div class="flex h-6 items-center space-x-1 p-2 text-left text-sm leading-tight">
-                            <span class="font-medium">Version</span>
+                            <span class="font-medium">{{ $t('app.version') }}</span>
                             <span class="text-xs">{{ $page.props.app_version }}</span>
                             <SidebarMenuButton
                                 :as="Link"
