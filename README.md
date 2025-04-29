@@ -23,6 +23,12 @@ high-performance functionality tailored for macOS.
 
 Ideal for anyone looking to track their work hours efficiently and effortlessly!
 
+## Supported languages
+
+- German
+- English (GB, UK)
+- Chinese (中文)
+
 ## Screenshots
 
 ### Menu Bar
