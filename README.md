@@ -26,7 +26,7 @@ Ideal for anyone looking to track their work hours efficiently and effortlessly!
 ## Supported languages
 
 - German
-- English (GB, UK)
+- English (UK, US)
 - Chinese (中文)
 
 ## Screenshots
