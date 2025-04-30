@@ -4,6 +4,7 @@ import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 
 import BasicLayout from '@/Layouts/BasicLayout.vue'
 import { createInertiaApp } from '@inertiajs/vue3'
+import * as Sentry from '@sentry/vue'
 import { modal } from 'inertia-modal'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { i18nVue } from 'laravel-vue-i18n'
@@ -45,6 +46,11 @@ createInertiaApp({
                     app.mount(el)
                 }
             }
+        })
+        Sentry.init({
+            app,
+            release: import.meta.env.VITE_APP_VERSION,
+            dsn: import.meta.env.VITE_APP_SENTRY_VUE_DSN
         })
     },
     progress: {

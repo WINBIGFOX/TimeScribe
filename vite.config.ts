@@ -1,3 +1,4 @@
+import { sentryVitePlugin } from '@sentry/vite-plugin'
 import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 import laravel from 'laravel-vite-plugin'
@@ -26,6 +27,10 @@ export default defineConfig({
                     includeAbsolute: false
                 }
             }
+        }),
+        sentryVitePlugin({
+            org: 'timescribe',
+            project: 'javascript'
         })
     ],
     build: {
