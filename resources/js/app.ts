@@ -39,7 +39,9 @@ createInertiaApp({
             fallbackLang: 'en',
             resolve: async (lang: string) => {
                 const languages = import.meta.glob('../../lang/*.json')
-                return await languages[`../../lang/${lang}.json`]()
+                if (typeof languages[`../../lang/${lang}.json`] === 'function') {
+                    return await languages[`../../lang/${lang}.json`]()
+                }
             },
             onLoad: () => {
                 if (!app._container) {

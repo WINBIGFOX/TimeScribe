@@ -51,8 +51,8 @@ export default defineConfig({
             }
         },
         cssCodeSplit: true,
-        sourcemap: false,
-        assetsInlineLimit: 4096,
+        sourcemap: true,
+        assetsInlineLimit: 4096
     },
     server: {
         hmr: {
@@ -62,5 +62,5 @@ export default defineConfig({
             usePolling: false
         }
     },
-    assetsInclude: ['**/*.svg', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.webp'],
+    assetsInclude: ['**/*.svg', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.webp']
 })
