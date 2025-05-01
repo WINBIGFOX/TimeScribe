@@ -21,12 +21,20 @@ Schedule::when(fn () => Timestamp::whereNull('ended_at')->exists())->group(funct
 Schedule::command('app:active-app')
     ->when(function (): bool {
         $settings = app(GeneralSettings::class);
+        if (! $settings->appActivityTracking) {
+            return false;
+        }
         $isRecording = Timestamp::whereNull('ended_at')
             ->where('type', TimestampTypeEnum::WORK)
             ->exists();
-        $state = PowerMonitor::getSystemIdleState(0);
 
-        return $isRecording && $state === SystemIdleStatesEnum::ACTIVE && $settings->appActivityTracking;
+        try {
+            $state = PowerMonitor::getSystemIdleState(0);
+        } catch (\Throwable) {
+            $state = SystemIdleStatesEnum::IDLE;
+        }
+
+        return $isRecording && $state === SystemIdleStatesEnum::ACTIVE;
     })
     ->everyFiveSeconds()
     ->withoutOverlapping();
