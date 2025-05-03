@@ -19,6 +19,7 @@ class MenubarController extends Controller
 {
     public function index(Request $request, GeneralSettings $settings)
     {
+        $currentAppActivity = null;
         $currentType = TimestampService::getCurrentType();
         if (! $request->header('x-inertia-partial-data')) {
             TimestampService::ping();
@@ -28,13 +29,16 @@ class MenubarController extends Controller
             }
         }
 
-        $currentAppActivity = ActivityHistory::active()->latest()->first();
+        if ($settings->appActivityTracking && $currentType === TimestampTypeEnum::WORK) {
+            $currentAppActivity = ActivityHistory::active()->latest()->first();
+        }
 
         return Inertia::render('MenuBar', [
             'currentType' => $currentType,
             'workTime' => TimestampService::getWorkTime(),
             'breakTime' => TimestampService::getBreakTime(),
             'currentAppActivity' => fn () => $currentAppActivity ? ActivityHistoryResource::make($currentAppActivity) : null,
+            'activeAppActivity' => $settings->appActivityTracking,
         ]);
     }
 
