@@ -2,34 +2,32 @@
 import { Button } from '@/Components/ui/button'
 import { secToFormat } from '@/lib/utils'
 import { Timestamp } from '@/types'
-import { Link, router, usePoll } from '@inertiajs/vue3'
+import { Link, router } from '@inertiajs/vue3'
+import { useIntervalFn } from '@vueuse/core'
 import { BriefcaseBusiness, Coffee, MoveRight, Pencil, Timer, Trash } from 'lucide-vue-next'
 import moment from 'moment/min/moment-with-locales'
-import { computed, watch } from 'vue'
+import { ref } from 'vue'
 
 const props = defineProps<{
     timestamp: Timestamp
 }>()
 
-const duration = computed(() =>
+const calcDuration = () =>
     Math.ceil(
         moment(props.timestamp.ended_at?.date ?? moment())
             .diff(props.timestamp.started_at.date)
             .valueOf() / 1000
     )
-)
 
-const { start, stop } = usePoll(
-    1000,
-    {},
-    {
-        autoStart: false
-    }
-)
-if (duration.value < 60 && !props.timestamp.ended_at) {
-    start()
-} else {
-    stop()
+const duration = ref(calcDuration())
+
+if (!props.timestamp.ended_at) {
+    const { pause } = useIntervalFn(() => {
+        if (props.timestamp.ended_at) {
+            pause()
+        }
+        duration.value = calcDuration()
+    }, 1000)
 }
 
 const destroy = () => {
@@ -46,15 +44,6 @@ const destroy = () => {
         }
     )
 }
-
-watch(
-    () => props.timestamp.ended_at,
-    (value) => {
-        if (value) {
-            stop()
-        }
-    }
-)
 </script>
 
 <template>

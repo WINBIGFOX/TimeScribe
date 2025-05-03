@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Sentry Laravel SDK configuration file.
  *
@@ -36,7 +38,9 @@ return [
     'send_default_pii' => env('SENTRY_SEND_DEFAULT_PII', false),
 
     // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#ignore-exceptions
-    // 'ignore_exceptions' => [],
+    'ignore_exceptions' => [
+        \Illuminate\Validation\ValidationException::class,
+    ],
 
     // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#ignore-transactions
     'ignore_transactions' => [
