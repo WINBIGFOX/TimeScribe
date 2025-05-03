@@ -60,7 +60,7 @@ class WelcomeController extends Controller
         if ($openSettings) {
             WindowService::openHome(false, 'settings.index');
         } else {
-            usleep(500000);
+            sleep(1);
             MenuBar::show();
         }
     }

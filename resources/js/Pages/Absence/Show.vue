@@ -81,7 +81,7 @@ const removeAbsence = (id: number) => {
 <template>
     <Head title="Absence" />
     <div class="mb-4 flex items-center gap-4">
-        <div class="text-foreground/80 text-base font-medium">Abwesenheiten</div>
+        <div class="text-foreground/80 text-base font-medium">{{ $t('app.absences') }}</div>
         <div class="flex flex-1 items-center justify-center text-sm">
             <TimeWheel :date="props.date" route="absence.show" type="month" />
         </div>

@@ -12,6 +12,12 @@ use Native\Laravel\Facades\System;
 
 class LocaleService
 {
+    const array LOCALE_MAPPING = [
+        'de_DE' => 'de',
+        'en_US' => 'en',
+        'en_GB' => 'en',
+    ];
+
     private readonly GeneralSettings $settings;
 
     public function __construct()
@@ -42,21 +48,20 @@ class LocaleService
         $locale = $this->settings->locale ?? $systemLocale;
 
         $locale = $this->parseLocale($locale);
-        $language = $this->getLanguageFromLocale($locale);
 
         if ($this->settings->locale !== $locale) {
             $this->settings->locale = $locale;
             $this->settings->save();
         }
 
+        $language = $this->getLanguageLocale($locale);
         if (! Locales::isInstalled($language)) {
-            $language = $this->getLanguageFromLocale(config('app.fallback_locale'));
             $this->settings->locale = $this->parseLocale(config('app.fallback_locale'));
             $this->settings->save();
         }
 
         App::setLocale($language);
-        Carbon::setLocale(str_replace('-', '_', $locale));
+        Carbon::setLocale($locale);
     }
 
     private function detectSystemLocale(): string
@@ -65,7 +70,7 @@ class LocaleService
             // Für Console Commands, versuche die System-Locale zu ermitteln
             $sysLocale = setlocale(LC_ALL, 0);
             if (preg_match('/^([a-zA-Z]{2}_[A-Z]{2})/', $sysLocale, $matches)) {
-                return str_replace('_', '-', $matches[1]);
+                return $matches[1];
             }
 
             return config('app.fallback_locale');
@@ -80,17 +85,21 @@ class LocaleService
         return config('app.fallback_locale');
     }
 
-    private function getLanguageFromLocale(string $region): string
+    private function getLanguageLocale(string $locale): string
     {
-        return substr($region, 0, 2);
+        if (array_key_exists($locale, self::LOCALE_MAPPING)) {
+            return self::LOCALE_MAPPING[$locale];
+        }
+
+        return $locale;
     }
 
     private function parseLocale(string $locale): string
     {
         if (strlen($locale) === 2) {
-            $locale = Locales::get($locale, true)->regional;
+            return Locales::get($locale, true)->regional;
         }
 
-        return str_replace('_', '-', $locale);
+        return str_replace('-', '_', $locale);
     }
 }

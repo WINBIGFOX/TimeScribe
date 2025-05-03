@@ -51,8 +51,8 @@ class TimestampController extends Controller
     {
         $data = $request->validated();
 
-        $startTime = $datetime->copy()->setTimeFromTimeString($data['started_at']);
-        $endTime = $datetime->copy()->setTimeFromTimeString($data['ended_at']);
+        $startTime = $datetime->setTimezone(config('app.timezone'))->copy()->setTimeFromTimeString($data['started_at']);
+        $endTime = $datetime->setTimezone(config('app.timezone'))->copy()->setTimeFromTimeString($data['ended_at']);
 
         if ($startTime > $endTime) {
             return redirect()->back()->withErrors([

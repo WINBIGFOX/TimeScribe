@@ -24,7 +24,7 @@ defineOptions({
 const page = usePage()
 const value = ref<DateValue>()
 
-const df = new DateFormatter(page.props.locale, {
+const df = new DateFormatter(page.props.js_locale, {
     dateStyle: 'long'
 })
 
@@ -92,7 +92,7 @@ const destroy = () => {
                     {{ $t('app.weekly work hours') }}
                 </p>
             </div>
-            {{ weekWorkTime.toLocaleString($page.props.locale) }}
+            {{ weekWorkTime.toLocaleString($page.props.js_locale) }}
             {{ $t('app.hours') }}
         </div>
         <div class="flex flex-col gap-0 rounded-b-md border p-4">
@@ -116,7 +116,7 @@ const destroy = () => {
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent class="w-auto p-0">
-                    <Calendar :locale="$page.props.locale" fixed-weeks v-model="value" />
+                    <Calendar :locale="$page.props.js_locale" fixed-weeks v-model="value" />
                 </PopoverContent>
             </Popover>
         </div>

@@ -3,11 +3,13 @@
 declare(strict_types=1);
 
 return [
+    'version' => 'Version',
     ':time' => ':time Uhr',
     'a work plan already begins on the date' => 'Ein Arbeitsplan beginnt bereits an dem Datum.',
     'absences' => 'Abwesenheiten',
     'absences and leave' => 'Abwesenheiten & Urlaub',
-    'action' => 'Aktionen',
+    'action' => 'Aktion',
+    'actions' => 'Aktionen',
     'activate based on time' => 'Zeitbedingt aktivieren',
     'add time' => 'Zeit hinzufügen',
     'almost finished' => 'Fast fertig',
@@ -37,6 +39,7 @@ return [
     'end at:' => 'Ende um:',
     'english (UK)' => 'Englisch (UK)',
     'english (US)' => 'Englisch (US)',
+    'chinese' => 'Chinesisch',
     'enter your target working hours for each weekday' => 'Trage deine Soll-Arbeiststunden pro Wochentag ein',
     'fill the gap' => 'Lücke füllen',
     'fill with' => 'Füllen mit',

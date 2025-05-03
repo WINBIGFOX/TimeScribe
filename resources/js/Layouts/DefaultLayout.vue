@@ -7,7 +7,7 @@ import { useColorMode } from '@vueuse/core'
 import { Modal } from 'inertia-modal'
 import moment from 'moment/min/moment-with-locales'
 
-moment.locale(usePage().props.locale)
+moment.locale(usePage().props.js_locale)
 if (window.Native) {
     window.Native.on('App\\Events\\LocaleChanged', () => {
         window.location.reload()

@@ -25,14 +25,17 @@ const calcDuration = (startTimestamp: string, endTimestamp?: string) =>
 
 const startOfDay = moment(props.date, 'DD.MM.YYYY').format('YYYY-MM-DD 00:00:00')
 
-if (window.Native) {
-    window.Native.on('App\\Events\\TimerStarted', () => {
-        router.flushAll()
-        router.reload({
-            only: ['timestamps'],
-            showProgress: false
-        })
+const reload = () => {
+    router.flushAll()
+    router.reload({
+        only: ['timestamps'],
+        showProgress: false
     })
+}
+
+if (window.Native) {
+    window.Native.on('App\\Events\\TimerStarted', reload)
+    window.Native.on('App\\Events\\TimerStopped', reload)
 }
 </script>
 

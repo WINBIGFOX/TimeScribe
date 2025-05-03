@@ -24,10 +24,10 @@ class StoreTimestampRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => 'required|in:break,work',
-            'started_at' => 'required|date_format:H:i|before:ended_at',
-            'ended_at' => 'required|date_format:H:i|after:started_at',
-            'description' => 'nullable|string',
+            'type' => ['required', 'in:break,work'],
+            'started_at' => ['required', 'date_format:H:i', 'before:ended_at'],
+            'ended_at' => ['required', 'date_format:H:i', 'after:started_at'],
+            'description' => ['nullable', 'string'],
         ];
     }
 }

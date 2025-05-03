@@ -7,6 +7,7 @@ import { useCssVar } from '@vueuse/core'
 import { ApexOptions } from 'apexcharts'
 import de from 'apexcharts/dist/locales/de.json'
 import en from 'apexcharts/dist/locales/en.json'
+import zhCn from 'apexcharts/dist/locales/zh-cn.json'
 import { trans } from 'laravel-vue-i18n'
 import moment from 'moment/min/moment-with-locales'
 
@@ -25,7 +26,13 @@ const props = defineProps<{
     links: string[]
 }>()
 
-const currentLocale = usePage().props.locale.substring(0, 2)
+const localeMapping = {
+    'de-DE': 'de',
+    'en-GB': 'en',
+    'en-US': 'en',
+    'zh-CN': 'zh-cn'
+}
+const currentLocale = localeMapping[usePage().props.js_locale]
 
 const showWeek = (opts) => {
     router.get(props.links[opts.dataPointIndex], {
@@ -56,7 +63,7 @@ const data = {
             },
             background: 'transparent',
             fontFamily: 'var(--font-sans)',
-            locales: [de, en],
+            locales: [de, en, zhCn],
             defaultLocale: currentLocale,
             type: 'bar',
             stacked: true,

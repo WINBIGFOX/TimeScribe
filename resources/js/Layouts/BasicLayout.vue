@@ -2,7 +2,7 @@
 import { usePage } from '@inertiajs/vue3'
 import moment from 'moment/min/moment-with-locales'
 
-moment.locale(usePage().props.locale)
+moment.locale(usePage().props.js_locale)
 if (window.Native) {
     window.Native.on('App\\Events\\LocaleChanged', () => {
         window.location.reload()

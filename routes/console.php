@@ -10,7 +10,7 @@ use Native\Laravel\Enums\SystemIdleStatesEnum;
 use Native\Laravel\Facades\PowerMonitor;
 use Native\Laravel\Support\Environment;
 
-Artisan::command('optimize', function () {
+Artisan::command('optimize', function (): void {
     exit();
 });
 
@@ -23,12 +23,20 @@ if (Environment::isMac()) {
     Schedule::command('app:active-app')
         ->when(function (): bool {
             $settings = app(GeneralSettings::class);
+            if (! $settings->appActivityTracking) {
+                return false;
+            }
             $isRecording = Timestamp::whereNull('ended_at')
                 ->where('type', TimestampTypeEnum::WORK)
                 ->exists();
-            $state = PowerMonitor::getSystemIdleState(0);
 
-            return $isRecording && $state === SystemIdleStatesEnum::ACTIVE && $settings->appActivityTracking;
+            try {
+                $state = PowerMonitor::getSystemIdleState(0);
+            } catch (\Throwable) {
+                $state = SystemIdleStatesEnum::IDLE;
+            }
+
+            return $isRecording && $state === SystemIdleStatesEnum::ACTIVE;
         })
         ->everyFiveSeconds()
         ->withoutOverlapping();
