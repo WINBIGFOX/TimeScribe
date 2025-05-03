@@ -17,6 +17,7 @@ const props = defineProps<{
     workTime: number
     breakTime: number
     currentAppActivity?: ActivityHistory
+    activeAppActivity: boolean
 }>()
 
 let timer: NodeJS.Timeout
@@ -49,7 +50,7 @@ usePoll(
         only: ['currentAppActivity']
     },
     {
-        autoStart: true,
+        autoStart: props.activeAppActivity,
         keepAlive: true
     }
 )
