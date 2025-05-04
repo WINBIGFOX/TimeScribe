@@ -20,7 +20,7 @@ useColorMode()
     <BasicLayout>
         <SidebarProvider>
             <AppSidebar />
-            <SidebarInset class="overflow-clip px-8 pt-4">
+            <SidebarInset class="overflow-clip px-8 pt-4 md:peer-data-[variant=inset]:rounded-r-lg">
                 <slot />
             </SidebarInset>
             <div class="absolute inset-x-0 top-0 -z-10 h-8" style="-webkit-app-region: drag" />

@@ -45,7 +45,6 @@ class GeneralController extends Controller
         $settings->showTimerOnUnlock = $data['showTimerOnUnlock'];
         $settings->holidayRegion = $data['holidayRegion'];
         $settings->appActivityTracking = $data['appActivityTracking'];
-        $settings->stopBreakAutomatic = $data['stopBreakAutomatic'] ?? null;
         $settings->timezone = $data['timezone'];
 
         if ($data['theme'] !== $settings->theme ?? SystemThemesEnum::SYSTEM->value) {

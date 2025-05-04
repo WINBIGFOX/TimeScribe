@@ -57,7 +57,9 @@ const props = defineProps<{
                     v-for="(weekday, index) in moment.weekdays(true)"
                 >
                     <template v-if="workSchedule[weekdayTranslate(weekday).toLowerCase()] > 0">
-                        {{ workSchedule[weekdayTranslate(weekday).toLowerCase()].toLocaleString($page.props.js_locale) }}
+                        {{
+                            workSchedule[weekdayTranslate(weekday).toLowerCase()].toLocaleString($page.props.js_locale)
+                        }}
                         <span class="text-muted-foreground text-xs">{{ $t('app.h') }}</span>
                     </template>
                     <span v-else>-</span>
