@@ -8,6 +8,7 @@ use App\Enums\TimestampTypeEnum;
 use App\Http\Resources\ActivityHistoryResource;
 use App\Models\ActivityHistory;
 use App\Services\TimestampService;
+use App\Services\TrayIconService;
 use App\Services\WindowService;
 use App\Settings\GeneralSettings;
 use Illuminate\Http\Request;
@@ -61,7 +62,7 @@ class MenubarController extends Controller
         TimestampService::stop();
 
         MenuBar::label('');
-        MenuBar::icon(public_path('IconTemplate@2x.png'));
+        MenuBar::icon(TrayIconService::getIcon());
 
         return redirect()->route('menubar.index');
     }
