@@ -19,15 +19,14 @@ class WindowService
             ->fullscreenable(false)
             ->showDevTools(false)
             ->alwaysOnTop()
-            ->width(700)
             ->maximizable(false)
             ->minimizable(false)
             ->resizable(false);
 
         if (Environment::isWindows()) {
-            $window->height(640)->hideMenu();
+            $window->height(634)->width(713)->hideMenu();
         } else {
-            $window->height(600)->titleBarHidden();
+            $window->height(600)->width(700)->titleBarHidden();
         }
     }
 
@@ -42,16 +41,15 @@ class WindowService
             ->rememberState()
             ->maximizable(false)
             ->fullscreen(false)
-            ->width(1070)
             ->resizable(false)
             ->fullscreenable(false)
             ->backgroundColor($darkMode ? '#171717' : '#fafafa')
             ->showDevTools(false);
 
         if (Environment::isWindows()) {
-            $window->height(640)->hideMenu();
+            $window->height(634)->width(1083)->hideMenu();
         } else {
-            $window->height(600)->titleBarHidden();
+            $window->height(600)->width(1070)->titleBarHidden();
         }
     }
 
