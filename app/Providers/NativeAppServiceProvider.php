@@ -7,6 +7,7 @@ namespace App\Providers;
 use App\Models\Timestamp;
 use App\Models\WorkSchedule;
 use App\Services\LocaleService;
+use App\Services\TrayIconService;
 use App\Services\WindowService;
 use App\Settings\GeneralSettings;
 use Native\Laravel\Contracts\ProvidesPhpIni;
@@ -76,6 +77,7 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             ->height(250)
             ->minHeight(250)
             ->resizable(false)
+            ->icon(TrayIconService::getIcon())
             ->withContextMenu(
                 Menu::make(
                     Menu::quit(),

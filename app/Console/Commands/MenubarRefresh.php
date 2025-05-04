@@ -7,11 +7,9 @@ namespace App\Console\Commands;
 use App\Enums\TimestampTypeEnum;
 use App\Services\LocaleService;
 use App\Services\TimestampService;
+use App\Services\TrayIconService;
 use Illuminate\Console\Command;
-use Native\Laravel\Enums\SystemThemesEnum;
 use Native\Laravel\Facades\MenuBar;
-use Native\Laravel\Facades\System;
-use Native\Laravel\Support\Environment;
 
 class MenubarRefresh extends Command
 {
@@ -39,36 +37,19 @@ class MenubarRefresh extends Command
 
         if ($currentType === TimestampTypeEnum::WORK) {
             $time = TimestampService::getWorkTime();
-            MenuBar::icon($this->getIcon('work'));
+            MenuBar::icon(TrayIconService::getIcon('work'));
         } elseif ($currentType === TimestampTypeEnum::BREAK) {
             $time = TimestampService::getBreakTime();
-            MenuBar::icon($this->getIcon('break'));
+            MenuBar::icon(TrayIconService::getIcon('break'));
         } else {
             MenuBar::tooltip('');
             MenuBar::label('');
-            MenuBar::icon($this->getIcon('default'));
+            MenuBar::icon(TrayIconService::getIcon());
 
             return;
         }
 
         MenuBar::tooltip(gmdate('G:i', (int) $time));
         MenuBar::label(gmdate('G:i', (int) $time));
-    }
-
-    private function getIcon(string $iconName): string
-    {
-        $isMacOs = Environment::isMac();
-        $appIconPrefix = $isMacOs ? '' : 'Windows';
-        $prefix = '';
-
-        if (! $isMacOs && System::theme() === SystemThemesEnum::DARK) {
-            $prefix = 'white/';
-        }
-
-        return match ($iconName) {
-            'work' => public_path($prefix.'WorkIconTemplate@2x.png'),
-            'break' => public_path($prefix.'BreakIconTemplate@2x.png'),
-            default => public_path($prefix.$appIconPrefix.'IconTemplate@2x.png')
-        };
     }
 }
