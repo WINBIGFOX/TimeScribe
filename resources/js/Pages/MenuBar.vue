@@ -37,7 +37,7 @@ const tick = () => {
 }
 
 window.Native.on('Native\\Laravel\\Events\\MenuBar\\MenuBarShown', () => {
-    window.location.reload()
+    router.reload()
 })
 
 onMounted(() => {
