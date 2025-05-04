@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     ':time' => ':time',
     'a work plan already begins on the date' => '该日期已有工作计划开始。',

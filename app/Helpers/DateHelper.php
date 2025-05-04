@@ -11,7 +11,7 @@ class DateHelper
 {
     public static function toResourceArray(?Carbon $date, bool $withTime = false, string $format = 'd.m.Y'): ?array
     {
-        if (! $date instanceof \Carbon\Carbon) {
+        if (! $date instanceof Carbon) {
             return null;
         }
 

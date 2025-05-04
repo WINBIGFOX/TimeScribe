@@ -1,9 +1,5 @@
 <template>
-    <svg
-        id="flag-icons-cn"
-        viewBox="0 0 640 480"
-        xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg id="flag-icons-cn" viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">
         <defs>
             <path d="M-.6.8 0-1 .6.8-1-.3h2z" fill="#ff0" id="cn-a" />
         </defs>

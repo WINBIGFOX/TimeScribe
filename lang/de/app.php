@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     ':time' => ':time Uhr',
     'a work plan already begins on the date' => 'Ein Arbeitsplan beginnt bereits an dem Datum.',
