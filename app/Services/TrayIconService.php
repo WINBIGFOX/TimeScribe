@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use Native\Laravel\Enums\SystemThemesEnum;
-use Native\Laravel\Facades\System;
 use Native\Laravel\Support\Environment;
 
 class TrayIconService
@@ -16,8 +14,15 @@ class TrayIconService
         $appIconPrefix = $isMacOs ? '' : 'Windows';
         $prefix = '';
 
-        if (! $isMacOs && System::theme() === SystemThemesEnum::DARK) {
-            $prefix = 'white/';
+        if (! $isMacOs) {
+            $isLight = true;
+            try {
+                $isLight = str_contains(shell_exec('reg query HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize /v SystemUsesLightTheme'), '0x1');
+            } catch (\Throwable) {
+            }
+            if (! $isLight) {
+                $prefix = 'white/';
+            }
         }
 
         return match ($iconName) {
