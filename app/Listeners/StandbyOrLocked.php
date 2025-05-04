@@ -37,11 +37,11 @@ class StandbyOrLocked
 
         $stopBreakAutomaticActivationTime = $settings->stopBreakAutomaticActivationTime;
 
-        if ($stopBreakAutomaticActivationTime && (! Carbon::now()->between(
+        if ($stopBreakAutomaticActivationTime !== null && (! Carbon::now()->between(
             Carbon::now()->setTime(0, 0, 0),
             Carbon::now()->setTime(4, 59, 59)
         ) && ! Carbon::now()->between(
-            Carbon::now()->setTime($stopBreakAutomaticActivationTime, 0, 0),
+            Carbon::now()->setTime(intval($stopBreakAutomaticActivationTime), 0, 0),
             Carbon::now()->setTime(23, 59, 59)
         ))) {
             return;
