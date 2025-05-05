@@ -17,10 +17,10 @@ class ExportService
     public function __construct(?Carbon $startDate = null, ?Carbon $endDate = null)
     {
         $timestamps = Timestamp::query();
-        if ($startDate instanceof \Carbon\Carbon) {
+        if ($startDate instanceof Carbon) {
             $timestamps->where('started_at', '>=', $startDate);
         }
-        if ($endDate instanceof \Carbon\Carbon) {
+        if ($endDate instanceof Carbon) {
             $timestamps->where('ended_at', '<=', $endDate);
         }
         $this->exportData = $timestamps->orderByDesc('started_at')->get();

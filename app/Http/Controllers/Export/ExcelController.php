@@ -36,6 +36,8 @@ class ExcelController extends Controller
             ->title(__('app.export successful'))
             ->show(__('app.the data was successfully exported from timescribe.'));
 
+        shell_exec('open "'.pathinfo($savePath, PATHINFO_DIRNAME).'"');
+
         return back();
     }
 }
