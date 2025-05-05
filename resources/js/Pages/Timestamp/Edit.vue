@@ -117,5 +117,12 @@ const destroy = () => {
             <span class="text-sm leading-none font-medium">{{ $t('app.notes') }}</span>
             <Textarea class="h-40" v-model="form.description" />
         </div>
+        <div class="flex flex-col gap-2 py-4" v-if="props.timestamp.source">
+            <span class="text-sm leading-none font-medium">
+                {{
+                    $t('app.imported from :name', { name: props.timestamp.source })
+                }}
+            </span>
+        </div>
     </SheetDialog>
 </template>

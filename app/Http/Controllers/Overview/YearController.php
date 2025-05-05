@@ -62,7 +62,7 @@ class YearController extends Controller
             $links[] = route('overview.week.show', ['date' => $rangeDate->format('Y-m-d')]);
         }
 
-        if (array_sum($breakTimes) + array_sum($workTimes) <= 0) {
+        if (array_sum($breakTimes) + array_sum($workTimes) + array_sum($overtimes) <= 0) {
             $breakTimes = [];
             $workTimes = [];
             $overtimes = [];

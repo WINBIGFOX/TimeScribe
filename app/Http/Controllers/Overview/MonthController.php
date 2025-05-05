@@ -48,11 +48,11 @@ class MonthController extends Controller
             $fullWorkTimes[] = $workTime;
             $workTimes[] = min($workTime, $plan * 3600);
             $overtimes[] = $workTime > $plan * 3600 ? $workTime - ($plan * 3600) : 0;
-            $xaxis[] = $rangeDate->format('m/d/Y');
+            $xaxis[] = $rangeDate->format('Y-m-d');
             $links[] = route('overview.day.show', ['date' => $rangeDate->format('Y-m-d')]);
         }
 
-        if (array_sum($breakTimes) + array_sum($workTimes) <= 0) {
+        if (array_sum($breakTimes) + array_sum($workTimes) + array_sum($overtimes) <= 0) {
             $breakTimes = [];
             $workTimes = [];
             $overtimes = [];
