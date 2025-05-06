@@ -62,6 +62,7 @@ return [
      * You may use glob / wildcard patterns here.
      */
     'cleanup_exclude_files' => [
+        '.env.sentry-build-plugin',
         'content',
         'storage/app/framework/{sessions,testing,cache}',
         'storage/logs/laravel.log',
