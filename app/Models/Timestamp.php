@@ -18,6 +18,9 @@ class Timestamp extends Model
         'ended_at',
         'last_ping_at',
         'description',
+        'source',
+        'created_at',
+        'updated_at',
     ];
 
     protected $casts = [

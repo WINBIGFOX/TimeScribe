@@ -47,7 +47,6 @@ class WeekController extends Controller
             'weekPlan' => TimestampService::getWeekPlan($startOfWeek),
             'weekFallbackPlan' => TimestampService::getFallbackPlan($startOfWeek, $endOfWeek),
             'weekDatesWithTimestamps' => TimestampService::getDatesWithTimestamps($date->copy()->subYear()->startOfYear(), $date->copy()->addYear()->endOfYear()),
-            'holidays' => TimestampService::getHoliday(range($date->year - 5, $date->year + 5))->map(fn ($holidayDate): ?array => DateHelper::toResourceArray($holidayDate)),
             'balance' => TimestampService::getBalance($startOfWeek),
             'lastCalendarWeek' => $date->copy()->subWeek()->weekOfYear,
             'weekdays' => collect(new DatePeriod($startOfWeek, new DateInterval('P1D'), $endOfWeek))->map(function (\DateTime $date): array {

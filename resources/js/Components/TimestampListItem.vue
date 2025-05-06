@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { Button } from '@/Components/ui/button'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/Components/ui/tooltip'
 import { secToFormat } from '@/lib/utils'
 import { Timestamp } from '@/types'
 import { Link, router } from '@inertiajs/vue3'
 import { useIntervalFn } from '@vueuse/core'
-import { BriefcaseBusiness, Coffee, MoveRight, Pencil, Timer, Trash } from 'lucide-vue-next'
+import { BriefcaseBusiness, Coffee, FolderInput, MoveRight, Pencil, Timer, Trash } from 'lucide-vue-next'
 import moment from 'moment/min/moment-with-locales'
 import { ref } from 'vue'
 
@@ -103,7 +104,18 @@ const destroy = () => {
                 {{ props.timestamp.description }}
             </span>
         </div>
-        <div class="flex flex-1 justify-end" v-if="props.timestamp.ended_at">
+        <div class="flex flex-1 items-center justify-end" v-if="props.timestamp.ended_at">
+            <TooltipProvider v-if="props.timestamp.source">
+                <Tooltip>
+                    <TooltipTrigger as-child>
+                        <FolderInput class="text-muted-foreground mr-2 size-4" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>{{ $t('app.imported from :name', { name: props.timestamp.source }) }}</p>
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
+
             <Button
                 :as="Link"
                 :href="

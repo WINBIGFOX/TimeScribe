@@ -19,6 +19,7 @@
         "nativephp/electron": "1.0.0",
         "sentry/sentry-laravel": "^4.13",
         "spatie/laravel-settings": "^3.4",
+        "spatie/simple-excel": "^3.7",
         "tightenco/ziggy": "^2.5",
         "umulmrum/holiday": "^0.11"
     },

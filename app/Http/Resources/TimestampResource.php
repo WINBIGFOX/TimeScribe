@@ -27,6 +27,7 @@ class TimestampResource extends JsonResource
             'ended_at' => DateHelper::toResourceArray($this->ended_at, true, 'Gi') ?? null,
             'description' => $this->description,
             'last_ping_at' => DateHelper::toResourceArray($this->last_ping_at, true, 'Gi') ?? null,
+            'source' => $this->source,
         ];
     }
 }

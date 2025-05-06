@@ -5,6 +5,10 @@ declare(strict_types=1);
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\AppActivityController;
 use App\Http\Controllers\BugAndFeedbackController;
+use App\Http\Controllers\Export\CsvController;
+use App\Http\Controllers\Export\ExcelController;
+use App\Http\Controllers\Import\ClockifyController;
+use App\Http\Controllers\ImportExportController;
 use App\Http\Controllers\MenubarController;
 use App\Http\Controllers\Overview\DayController;
 use App\Http\Controllers\Overview\MonthController;
@@ -53,6 +57,15 @@ Route::name('settings.')->prefix('settings')->group(function (): void {
         Route::get('edit', [StartStopController::class, 'edit'])->name('edit');
         Route::patch('', [StartStopController::class, 'update'])->name('update');
     });
+});
+
+Route::resource('import-export', ImportExportController::class);
+Route::prefix('import')->name('import.')->group(function (): void {
+    Route::resource('clockify', ClockifyController::class)->only(['create', 'store']);
+});
+Route::prefix('export')->name('export.')->group(function (): void {
+    Route::post('csv', CsvController::class)->name('csv');
+    Route::post('excel', ExcelController::class)->name('excel');
 });
 
 Route::resource('work-schedule', WorkScheduleController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');
