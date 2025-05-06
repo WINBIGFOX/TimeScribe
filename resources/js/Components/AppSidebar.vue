@@ -44,26 +44,28 @@ const props = withDefaults(defineProps<SidebarProps>(), {
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuItem size="lg">
-                        <div class="flex h-6 items-center space-x-1 p-2 text-left text-sm leading-tight">
-                            <span class="font-medium">{{ $t('app.version') }}</span>
-                            <span class="text-xs">{{ $page.props.app_version }}</span>
+                        <div class="flex h-6 items-center">
+                            <SidebarMenuButton :as="Link" :href="route('quit')" class="w-auto">
+                                <Power />
+                            </SidebarMenuButton>
+
                             <SidebarMenuButton
                                 :as="Link"
                                 :class="{
                                     'text-primary!': route().current() === 'bug-and-feedback.index'
                                 }"
                                 :href="route('bug-and-feedback.index')"
-                                class="ml-auto w-auto"
+                                class="w-auto"
                                 prefetch
                             >
                                 <Bug />
                             </SidebarMenuButton>
+                            <div class="ml-auto space-x-1 text-left text-sm leading-tight">
+                                <span class="font-medium">{{ $t('app.version') }}</span>
+                                <span class="text-xs">{{ $page.props.app_version }}</span>
+                            </div>
                         </div>
                     </SidebarMenuItem>
-                    <SidebarMenuButton :as="Link" :href="route('quit')">
-                        <Power />
-                        {{ $t('app.quit timescribe') }}
-                    </SidebarMenuButton>
                 </SidebarMenuItem>
             </SidebarMenu>
         </SidebarFooter>
