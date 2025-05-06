@@ -146,7 +146,6 @@ return [
     'public.app-category.video' => 'Video',
     'public.app-category.weather' => 'Weather',
     'public.app-category.word-games' => 'Word Games',
-    'quit timescribe' => 'Quit TimeScribe',
     'record app activities' => 'Record app activities',
     'records your app activity and saves which app you were active in and for how long.' => 'Records your app activity and saves which app you were active in and for how long',
     'remove' => 'Remove',

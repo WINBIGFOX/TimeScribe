@@ -14,7 +14,7 @@
         "emargareten/inertia-modal": "^1.5",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel-lang/lang": "^15.20",
-        "laravel/framework": "^12.11",
+        "laravel/framework": "^12.12",
         "laravel/tinker": "^2.10",
         "nativephp/electron": "1.0.0",
         "sentry/sentry-laravel": "^4.13",

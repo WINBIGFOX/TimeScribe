@@ -146,7 +146,6 @@ return [
     'public.app-category.video' => '视频',
     'public.app-category.weather' => '天气',
     'public.app-category.word-games' => '文字游戏',
-    'quit timescribe' => '退出 TimeScribe',
     'record app activities' => '记录应用活动',
     'records your app activity and saves which app you were active in and for how long.' => '记录您的应用活动，并保存您在哪个应用中活跃以及持续了多长时间。',
     'remove' => '移除',
