@@ -9,7 +9,7 @@ import {
     SidebarMenuSubItem
 } from '@/Components/ui/sidebar'
 import { Link, router, usePage } from '@inertiajs/vue3'
-import { AppWindowMac, ChartColumnBig, Cog, FileClock, TentTree } from 'lucide-vue-next'
+import { AppWindowMac, ChartColumnBig, Cog, FileChartColumn, FileClock, TentTree } from 'lucide-vue-next'
 import moment from 'moment/moment'
 import { ref } from 'vue'
 
@@ -137,6 +137,23 @@ router.on('navigate', () => {
                     >
                         <FileClock />
                         {{ $t('app.work schedule') }}
+                    </Link>
+                </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+                <SidebarMenuButton as-child>
+                    <Link
+                        :class="{
+                            'text-primary! font-bold': ['import-export.index', 'import.clockify.create'].includes(
+                                current ?? ''
+                            )
+                        }"
+                        :href="route('import-export.index')"
+                        class="transition-all duration-200"
+                        prefetch
+                    >
+                        <FileChartColumn />
+                        {{ $t('app.import / export') }}
                     </Link>
                 </SidebarMenuButton>
             </SidebarMenuItem>

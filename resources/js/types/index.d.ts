@@ -37,6 +37,7 @@ export interface Timestamp {
     ended_at?: Date
     description?: string
     last_ping_at?: Date
+    source?: string
 }
 
 export interface ActivityHistory {

@@ -4,7 +4,7 @@ import WeekdayColumn from '@/Components/WeekdayColumn.vue'
 import WorktimeProgressBar from '@/Components/WorktimeProgressBar.vue'
 import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
-import { Date, WeekdayObject } from '@/types'
+import { WeekdayObject } from '@/types'
 import { Head, Link, router } from '@inertiajs/vue3'
 import { CalendarDate, type DateValue } from '@internationalized/date'
 import moment from 'moment/min/moment-with-locales'
@@ -20,7 +20,6 @@ const props = defineProps<{
     weekPlan?: number
     weekFallbackPlan?: number
     weekDatesWithTimestamps: string[]
-    holidays: Date[]
     balance: number
     lastCalendarWeek: number
     weekdays: Record<string, WeekdayObject>
@@ -105,9 +104,9 @@ const openDayView = (date: string) => {
                 :break-time="props.weekBreakTime"
                 :fallback-plan="props.weekFallbackPlan"
                 :plan="props.weekPlan"
-                :progress="(props.weekWorkTime / (props.weekPlan * 60 * 60)) * 100"
+                :progress="(props.weekWorkTime / ((props.weekPlan ?? 0) * 60 * 60)) * 100"
                 :work-time="props.weekWorkTime"
-                v-if="props.weekPlan"
+                v-if="props.weekPlan || props.weekWorkTime"
             />
         </div>
         <div class="border-border absolute inset-x-0 bottom-18 border-t" />
