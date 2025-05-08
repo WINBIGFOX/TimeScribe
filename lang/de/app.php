@@ -97,7 +97,7 @@ return [
     'no app activity has been recorded yet. start the working time timer to record the app activity.' => 'Es wurde noch keine App-Aktivität aufgezeichnet. Starte den Arbeitszeit-Timer, um die App-Aktivität aufzuzeichnen.',
     'no app activity recorded' => 'Keine App-Aktivität aufgezeichnet',
     'no times available' => 'Keine Zeiten vorhanden',
-    'not available on windows' => 'Nicht auf Windows verfügbar',
+    'currently not available on windows' => 'Derzeit nicht auf Windows verfügbar', // english: 'Currently not available on Windows'
     'notes' => 'Notizen',
     'now' => 'Jetzt',
     'once you’ve completed all steps, you’ll have a csv file with your time data. click “import csv file” to import the data into timescribe.' => 'Sobald Sie alle Schritte abgeschlossen haben, liegt Ihnen eine CSV-Datei mit Ihren Zeitdaten vor. Klicken Sie nun auf „CSV-Datei importieren“, um die Daten in TimeScribe zu importieren.',
