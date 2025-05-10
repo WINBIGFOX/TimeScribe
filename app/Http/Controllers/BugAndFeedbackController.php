@@ -30,7 +30,6 @@ class BugAndFeedbackController extends Controller
 
     public function export()
     {
-        AutoUpdater::quitAndInstall();
         $savePath = Dialog::new()->asSheet()
             ->folders()
             ->button(__('app.create backup'))
