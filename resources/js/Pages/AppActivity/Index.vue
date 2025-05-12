@@ -110,7 +110,7 @@ const { stop } = usePoll(
             class="text-destructive bg-destructive/20 ml-2 rounded px-1.5 py-0.5 text-sm"
             v-if="$page.props.environment === 'Windows'"
         >
-            {{ $t('app.currently not available on windows') }}
+            {{ $t('app.not available on windows') }}
         </span>
         <DateRangePicker :max="props.maxDate" :min="props.minDate" v-model="dateRange" />
     </div>

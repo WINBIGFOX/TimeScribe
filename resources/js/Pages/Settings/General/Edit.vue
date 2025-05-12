@@ -169,7 +169,7 @@ watch(holidayCheck, () => {
                         class="text-destructive bg-destructive/20 ml-2 rounded px-1 py-0.5 text-xs"
                         v-if="$page.props.environment === 'Windows'"
                     >
-                        {{ $t('app.currently not available on windows') }}
+                        {{ $t('app.not available on windows') }}
                     </span>
                 </p>
                 <p class="text-muted-foreground text-sm">

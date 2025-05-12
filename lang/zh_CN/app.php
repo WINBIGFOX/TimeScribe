@@ -97,7 +97,7 @@ return [
     'no app activity has been recorded yet. start the working time timer to record the app activity.' => '尚未记录任何应用活动。启动工作时间计时器以记录应用活动。',
     'no app activity recorded' => '未记录任何应用活动',
     'no times available' => '没有可用的时间记录',
-    'currently not available on windows' => '目前不适用于 Windows',
+    'not available on windows' => '不适用于 Windows',
     'notes' => '备注',
     'now' => '现在',
     'once you’ve completed all steps, you’ll have a csv file with your time data. click “import csv file” to import the data into timescribe.' => '完成以上所有步骤后，您将获得一个包含时间数据的 CSV 文件。点击“导入 CSV 文件”以将数据导入 TimeScribe。',
