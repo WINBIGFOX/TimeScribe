@@ -50,7 +50,7 @@ class ActiveApp extends Command
             return;
         }
 
-        if (in_array(basename((string) $data['Path']), self::EXCLUDED_APPS)) {
+        if (in_array(strtolower(basename((string) $data['Path'])), self::EXCLUDED_APPS)) {
             return;
         }
 
@@ -95,7 +95,7 @@ class ActiveApp extends Command
             return;
         }
 
-        if (in_array(basename($appPath), self::EXCLUDED_APPS)) {
+        if (in_array(strtolower(basename($appPath)), self::EXCLUDED_APPS)) {
             return;
         }
 
