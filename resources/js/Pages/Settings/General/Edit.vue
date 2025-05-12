@@ -170,10 +170,7 @@ watch(holidayCheck, () => {
                     {{ $t('app.records your app activity and saves which app you were active in and for how long.') }}
                 </p>
             </div>
-            <Switch
-                class="self-center"
-                v-model="form.appActivityTracking"
-            />
+            <Switch class="self-center" v-model="form.appActivityTracking" />
         </div>
 
         <div class="flex items-start space-x-4 py-4">
