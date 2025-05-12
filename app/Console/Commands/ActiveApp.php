@@ -19,6 +19,11 @@ class ActiveApp extends Command
 
     private const int ICON_CACHE_DAYS = 30;
 
+    private const array EXCLUDED_APPS = [
+        'GetActiveWindowTitle.exe',
+        'explorer.exe',
+    ];
+
     protected $signature = 'app:active-app';
 
     protected $description = 'Track active application window';
@@ -45,10 +50,20 @@ class ActiveApp extends Command
             return;
         }
 
+        if (in_array(basename((string) $data['Path']), self::EXCLUDED_APPS)) {
+            return;
+        }
+
         $identifier = Str::slug($data['Path']);
+        $name = $data['Name'];
+
+        if (str_ends_with((string) $name, '.exe')) {
+            $name = $this->camelCaseToString(substr((string) $name, 0, -4));
+        }
+
         $appData = [
             'identifier' => $identifier,
-            'name' => $data['Name'],
+            'name' => $name,
             'category' => null,
             'icon' => $this->saveWindowsIcon($identifier, $data['Icon']),
         ];
@@ -77,6 +92,10 @@ class ActiveApp extends Command
         $appPath = $this->filterString($appPath);
 
         if (! $appName || ! $appPath) {
+            return;
+        }
+
+        if (in_array(basename($appPath), self::EXCLUDED_APPS)) {
             return;
         }
 
@@ -248,5 +267,13 @@ class ActiveApp extends Command
         if (! File::isDirectory($path)) {
             File::makeDirectory($path);
         }
+    }
+
+    private function camelCaseToString(string $string): string
+    {
+        $pieces = preg_split('/(?=[A-Z])/', $string);
+        $word = implode(' ', $pieces);
+
+        return ucwords($word);
     }
 }
