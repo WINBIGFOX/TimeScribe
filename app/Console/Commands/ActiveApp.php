@@ -8,7 +8,9 @@ use App\Models\ActivityHistory;
 use App\Services\LocaleService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Native\Laravel\Support\Environment;
 
 class ActiveApp extends Command
@@ -32,14 +34,65 @@ class ActiveApp extends Command
      */
     public function handle(): void
     {
-        if (! Environment::isMac()) {
-            return;
-        }
+
         new LocaleService;
-        $this->detectingActiveApp();
+        if (Environment::isWindows()) {
+            $this->detectingWindowsActiveApp();
+        }
+        if (Environment::isMac()) {
+            $this->detectingMacActiveApp();
+        }
     }
 
-    private function detectingActiveApp(): void
+    private function detectingWindowsActiveApp(): void
+    {
+        $output = shell_exec(public_path('GetActiveWindowTitle.exe'));
+
+        $data = json_decode($output, true);
+
+        if (! Arr::has($data, ['Path', 'Icon', 'Name'] )) {
+            return;
+        }
+
+        $bundleIdentifierKey = Str::slug($data['Path']);
+
+        $iconImageFile = $this->saveWindowsIcon($bundleIdentifierKey, $data['Icon']);
+
+        if (! $iconImageFile) {
+            return;
+        }
+
+        $appName = $data['Name'];
+
+        $bundleAppCategoryType = null;
+
+        $activity = ActivityHistory::active()->latest()->first();
+
+        if ($activity && $activity->app_identifier === $bundleIdentifierKey) {
+            $nextEndedAt = Carbon::now()->addSeconds(4);
+            $activity->update([
+                'duration' => (int) $activity->started_at->diffInSeconds($nextEndedAt),
+                'ended_at' => $nextEndedAt,
+            ]);
+        } else {
+            $endedAt = Carbon::now()->subSecond();
+            $activity?->update([
+                'duration' => (int) $activity->started_at->diffInSeconds($endedAt),
+                'ended_at' => $endedAt,
+            ]);
+            ActivityHistory::create([
+                'app_name' => $appName,
+                'app_identifier' => $bundleIdentifierKey,
+                'app_icon' => $iconImageFile,
+                'app_category' => $bundleAppCategoryType,
+                'started_at' => Carbon::now(),
+                'duration' => 4,
+                'ended_at' => Carbon::now()->addSeconds(4),
+            ]);
+        }
+    }
+
+    private function detectingMacActiveApp(): void
     {
         $pid = shell_exec("osascript -e 'tell application \"System Events\" to get unix id of first process whose frontmost is true'");
         $pid = filter_var($pid, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_EMPTY_STRING_NULL | FILTER_NULL_ON_FAILURE);
@@ -108,6 +161,28 @@ class ActiveApp extends Command
                 'ended_at' => Carbon::now()->addSeconds(4),
             ]);
         }
+    }
+
+    private function saveWindowsIcon(string $bundleIdentifierKey, ?string $base64 = null): ?string
+    {
+        if (File::exists(storage_path('app_icons/'.$bundleIdentifierKey.'.png'))) {
+            $timestamp = filemtime(storage_path('app_icons/'.$bundleIdentifierKey.'.png'));
+            if ($timestamp && Carbon::createFromTimestamp($timestamp)->diffInDays() < 30) {
+                return $bundleIdentifierKey.'.png';
+            }
+        }
+
+        if (! $base64) {
+            return null;
+        }
+
+        if (! File::isDirectory(storage_path('app_icons'))) {
+            File::makeDirectory(storage_path('app_icons'));
+        }
+
+        File::put(storage_path('app_icons/'.$bundleIdentifierKey.'.png'), base64_decode($base64));
+
+        return $bundleIdentifierKey.'.png';
     }
 
     private function saveIcon(string $appPath, string $bundleIdentifier, ?string $iconFile = null, ?string $iconName = null): ?string

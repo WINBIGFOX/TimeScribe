@@ -177,7 +177,6 @@ watch(holidayCheck, () => {
                 </p>
             </div>
             <Switch
-                :disabled="$page.props.environment !== 'Darwin'"
                 class="self-center"
                 v-model="form.appActivityTracking"
             />

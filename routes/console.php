@@ -8,7 +8,6 @@ use App\Settings\GeneralSettings;
 use Illuminate\Support\Facades\Schedule;
 use Native\Laravel\Enums\SystemIdleStatesEnum;
 use Native\Laravel\Facades\PowerMonitor;
-use Native\Laravel\Support\Environment;
 
 Artisan::command('optimize', function (): void {
     exit();
@@ -19,28 +18,26 @@ Schedule::when(fn () => Timestamp::whereNull('ended_at')->exists())->group(funct
     Schedule::command('app:calculate-week-balance')->everyMinute();
 });
 
-if (Environment::isMac()) {
-    Schedule::command('app:active-app')
-        ->when(function (): bool {
-            $settings = app(GeneralSettings::class);
-            if (! $settings->appActivityTracking) {
-                return false;
-            }
-            $isRecording = Timestamp::whereNull('ended_at')
-                ->where('type', TimestampTypeEnum::WORK)
-                ->exists();
+Schedule::command('app:active-app')
+    ->when(function (): bool {
+        $settings = app(GeneralSettings::class);
+        if (! $settings->appActivityTracking) {
+            return false;
+        }
+        $isRecording = Timestamp::whereNull('ended_at')
+            ->where('type', TimestampTypeEnum::WORK)
+            ->exists();
 
-            try {
-                $state = PowerMonitor::getSystemIdleState(0);
-            } catch (\Throwable) {
-                $state = SystemIdleStatesEnum::IDLE;
-            }
+        try {
+            $state = PowerMonitor::getSystemIdleState(0);
+        } catch (\Throwable) {
+            $state = SystemIdleStatesEnum::IDLE;
+        }
 
-            return $isRecording && $state === SystemIdleStatesEnum::ACTIVE;
-        })
-        ->everyFiveSeconds()
-        ->withoutOverlapping();
-}
+        return $isRecording && $state === SystemIdleStatesEnum::ACTIVE;
+    })
+    ->everyFiveSeconds()
+    ->withoutOverlapping();
 
 Schedule::command('app:timestamp-ping')->when(function (): bool {
     $state = PowerMonitor::getSystemIdleState(0);
