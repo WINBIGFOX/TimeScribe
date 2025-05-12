@@ -16,7 +16,6 @@ use Inertia\Inertia;
 use Native\Laravel\Dialog;
 use Native\Laravel\Enums\SystemThemesEnum;
 use Native\Laravel\Facades\Alert;
-use Native\Laravel\Facades\AutoUpdater;
 use Native\Laravel\Facades\System;
 use Native\Laravel\Support\Environment;
 use ZipArchive;
