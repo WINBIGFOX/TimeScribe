@@ -108,14 +108,12 @@ class ActiveApp extends Command
 
     private function getMacBundleInfo(string $appPath): array
     {
-        $info = [
+        return [
             'iconFile' => $this->filterString(shell_exec('defaults read "'.$appPath.'/Contents/Info.plist" CFBundleIconFile')),
             'iconName' => $this->filterString(shell_exec('defaults read "'.$appPath.'/Contents/Info.plist" CFBundleIconName')),
             'identifier' => $this->filterString(shell_exec('defaults read "'.$appPath.'/Contents/Info.plist" CFBundleIdentifier')),
             'category' => $this->filterString(shell_exec('defaults read "'.$appPath.'/Contents/Info.plist" LSApplicationCategoryType')),
         ];
-
-        return $info;
     }
 
     private function filterString(?string $value): ?string
@@ -141,7 +139,7 @@ class ActiveApp extends Command
 
     private function createNewActivity(?ActivityHistory $previousActivity, array $appData): void
     {
-        if ($previousActivity) {
+        if ($previousActivity instanceof \App\Models\ActivityHistory) {
             $endedAt = Carbon::now()->subSecond();
             $previousActivity->update([
                 'duration' => (int) $previousActivity->started_at->diffInSeconds($endedAt),

@@ -16,6 +16,9 @@ use Native\Laravel\Facades\Menu;
 use Native\Laravel\Facades\MenuBar;
 use Native\Laravel\Facades\Settings;
 use Native\Laravel\Facades\System;
+use Sentry\State\Scope;
+
+use function Sentry\configureScope;
 
 class NativeAppServiceProvider implements ProvidesPhpIni
 {
@@ -36,6 +39,10 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             $settings->id = uuid_create();
             $settings->save();
         }
+
+        configureScope(function (Scope $scope) use ($settings): void {
+            $scope->setUser(['id' => $settings->id]);
+        });
 
         $hasDbWorkSchedule = WorkSchedule::exists();
         $workSchedule = Settings::get('workdays');

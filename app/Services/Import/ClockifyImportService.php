@@ -45,6 +45,7 @@ class ClockifyImportService
         if (! preg_match($dateRegex, (string) $firstRow[9]) || ! preg_match($dateRegex, (string) $firstRow[11])) {
             return false;
         }
+
         return preg_match($timeRegex, (string) $firstRow[10]) && preg_match($timeRegex, (string) $firstRow[12]);
     }
 
@@ -101,7 +102,7 @@ class ClockifyImportService
         $previousEndDate = null;
         $this->timestamps->transform(function (array $timestamp) use (&$previousEndDate): array {
 
-            if (!$previousEndDate instanceof \Carbon\Carbon) {
+            if (! $previousEndDate instanceof \Carbon\Carbon) {
                 $previousEndDate = Carbon::parse($timestamp['ended_at']);
 
                 return $timestamp;
@@ -157,7 +158,7 @@ class ClockifyImportService
             $existingDates[] = $timestamp->started_at->format('Y-m-d H:i:s').' - '.$timestamp->ended_at->format('Y-m-d H:i:s');
         }
 
-        $this->timestamps = $this->timestamps->reject(fn($timestamp): bool => in_array($timestamp['started_at'].' - '.$timestamp['ended_at'], $existingDates))->values();
+        $this->timestamps = $this->timestamps->reject(fn ($timestamp): bool => in_array($timestamp['started_at'].' - '.$timestamp['ended_at'], $existingDates))->values();
 
         $this->resolveCollisionWithDatabaseTimestamps($databaseTimestamps);
     }
