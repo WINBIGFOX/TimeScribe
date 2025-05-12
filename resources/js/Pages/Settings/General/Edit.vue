@@ -165,12 +165,6 @@ watch(holidayCheck, () => {
             <div class="flex-1 space-y-1">
                 <p class="text-sm leading-none font-medium">
                     {{ $t('app.record app activities') }}
-                    <span
-                        class="text-destructive bg-destructive/20 ml-2 rounded px-1 py-0.5 text-xs"
-                        v-if="$page.props.environment === 'Windows'"
-                    >
-                        {{ $t('app.not available on windows') }}
-                    </span>
                 </p>
                 <p class="text-muted-foreground text-sm">
                     {{ $t('app.records your app activity and saves which app you were active in and for how long.') }}
