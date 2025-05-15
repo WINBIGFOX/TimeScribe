@@ -17,6 +17,7 @@ use App\Http\Controllers\Overview\YearController;
 use App\Http\Controllers\Settings\GeneralController;
 use App\Http\Controllers\Settings\StartStopController;
 use App\Http\Controllers\TimestampController;
+use App\Http\Controllers\UpdaterController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\WindowController;
 use App\Http\Controllers\WorkScheduleController;
@@ -46,6 +47,7 @@ Route::name('menubar.')->prefix('menubar')->group(function (): void {
 });
 
 Route::name('window.')->prefix('window')->group(function (): void {
+    Route::get('updater/{darkMode}', [WindowController::class, 'openUpdater'])->name('updater.open');
     Route::get('overview/{darkMode}', [WindowController::class, 'openOverview'])->name('overview.open');
     Route::get('settings/{darkMode}', [WindowController::class, 'openSettings'])->name('settings.open');
 });
@@ -62,6 +64,8 @@ Route::name('settings.')->prefix('settings')->group(function (): void {
         Route::patch('', [StartStopController::class, 'update'])->name('update');
     });
 });
+
+Route::resource('updater', UpdaterController::class);
 
 Route::resource('import-export', ImportExportController::class);
 Route::name('import.')->prefix('import')->group(function (): void {

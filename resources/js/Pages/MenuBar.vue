@@ -5,7 +5,7 @@ import { secToFormat } from '@/lib/utils'
 import { ActivityHistory } from '@/types'
 import { Head, Link, router, usePoll } from '@inertiajs/vue3'
 import { useColorMode } from '@vueuse/core'
-import { ChartPie, Coffee, Cog, Play, Square } from 'lucide-vue-next'
+import { ChartPie, Coffee, Cog, Play, Sparkles, Square } from 'lucide-vue-next'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 defineOptions({
@@ -93,7 +93,22 @@ router.on('finish', () => {
             <Button
                 :as="Link"
                 :href="
-                    route('menubar.openSetting', {
+                    route('window.updater.open', {
+                        darkMode: state === 'dark' ? 1 : 0
+                    })
+                "
+                class="text-primary flex flex-1 items-center justify-start gap-2 py-2 text-sm"
+                preserve-scroll
+                preserve-state
+                variant="ghost"
+            >
+                <Sparkles class="size-4" />
+                Neue Version verfügbar
+            </Button>
+            <Button
+                :as="Link"
+                :href="
+                    route('window.settings.open', {
                         darkMode: state === 'dark' ? 1 : 0
                     })
                 "
@@ -177,7 +192,7 @@ router.on('finish', () => {
                 <Button
                     :as="Link"
                     :href="
-                        route('menubar.openOverview', {
+                        route('window.overview.open', {
                             darkMode: state === 'dark' ? 1 : 0
                         })
                     "
