@@ -43,8 +43,6 @@ Route::name('menubar.')->prefix('menubar')->group(function (): void {
     Route::post('break', [MenubarController::class, 'storeBreak'])->name('storeBreak');
     Route::post('work', [MenubarController::class, 'storeWork'])->name('storeWork');
     Route::post('stop', [MenubarController::class, 'storeStop'])->name('storeStop');
-    Route::get('open-setting/{darkMode}', [MenubarController::class, 'openSetting'])->name('openSetting');
-    Route::get('open-overview/{darkMode}', [MenubarController::class, 'openOverview'])->name('openOverview');
 });
 
 Route::name('window.')->prefix('window')->group(function (): void {

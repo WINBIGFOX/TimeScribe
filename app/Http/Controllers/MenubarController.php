@@ -9,7 +9,6 @@ use App\Http\Resources\ActivityHistoryResource;
 use App\Models\ActivityHistory;
 use App\Services\TimestampService;
 use App\Services\TrayIconService;
-use App\Services\WindowService;
 use App\Settings\GeneralSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -65,15 +64,5 @@ class MenubarController extends Controller
         MenuBar::icon(TrayIconService::getIcon());
 
         return redirect()->route('menubar.index');
-    }
-
-    public function openSetting(bool $darkMode): void
-    {
-        WindowService::openHome($darkMode, 'settings.index');
-    }
-
-    public function openOverview(bool $darkMode): void
-    {
-        WindowService::openHome($darkMode);
     }
 }
