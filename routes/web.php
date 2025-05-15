@@ -18,6 +18,7 @@ use App\Http\Controllers\Settings\GeneralController;
 use App\Http\Controllers\Settings\StartStopController;
 use App\Http\Controllers\TimestampController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\WindowController;
 use App\Http\Controllers\WorkScheduleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,11 @@ Route::name('menubar.')->prefix('menubar')->group(function (): void {
     Route::get('open-overview/{darkMode}', [MenubarController::class, 'openOverview'])->name('openOverview');
 });
 
+Route::name('window.')->prefix('window')->group(function (): void {
+    Route::get('overview/{darkMode}', [WindowController::class, 'openOverview'])->name('overview.open');
+    Route::get('settings/{darkMode}', [WindowController::class, 'openSettings'])->name('settings.open');
+});
+
 Route::name('settings.')->prefix('settings')->group(function (): void {
     Route::get('', fn () => redirect()->route('settings.general.edit'))->name('index');
     Route::name('general.')->prefix('general')->group(function (): void {
@@ -60,10 +66,10 @@ Route::name('settings.')->prefix('settings')->group(function (): void {
 });
 
 Route::resource('import-export', ImportExportController::class);
-Route::prefix('import')->name('import.')->group(function (): void {
+Route::name('import.')->prefix('import')->group(function (): void {
     Route::resource('clockify', ClockifyController::class)->only(['create', 'store']);
 });
-Route::prefix('export')->name('export.')->group(function (): void {
+Route::name('export.')->prefix('export')->group(function (): void {
     Route::post('csv', CsvController::class)->name('csv');
     Route::post('excel', ExcelController::class)->name('excel');
 });
