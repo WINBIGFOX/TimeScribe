@@ -239,7 +239,7 @@ const indexToTimeFormat = (index: string, withoutMinutesBy12H?: boolean) => {
                     class="text-muted-foreground flex h-4 flex-1 items-end border-l border-gray-300 text-xs leading-none dark:border-gray-600"
                     v-for="index in 13"
                 >
-                    {{ index < 13 ? indexToTimeFormat((index - 1) * 2 * 100, true) : '' }}
+                    {{ index < 13 ? indexToTimeFormat(((index - 1) * 2 * 100).toString(), true) : '' }}
                 </div>
             </div>
         </div>
