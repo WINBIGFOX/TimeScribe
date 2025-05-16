@@ -23,5 +23,9 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        $exceptions->dontReport([
+            \Illuminate\Validation\ValidationException::class,
+            \Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class,
+        ]);
         Integration::handles($exceptions);
     })->create();
