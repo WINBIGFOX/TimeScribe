@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Enums\AppCategoryEnum;
 use App\Models\ActivityHistory;
 use App\Services\LocaleService;
 use Carbon\Carbon;
@@ -158,12 +159,16 @@ class ActiveApp extends Command
 
     private function createNewActivity(?ActivityHistory $previousActivity, array $appData): void
     {
-        if ($previousActivity instanceof \App\Models\ActivityHistory) {
+        if ($previousActivity instanceof ActivityHistory) {
             $endedAt = Carbon::now()->subSecond();
             $previousActivity->update([
                 'duration' => (int) $previousActivity->started_at->diffInSeconds($endedAt),
                 'ended_at' => $endedAt,
             ]);
+        }
+
+        if (! AppCategoryEnum::tryFrom($appData['category'])) {
+            $appData['category'] = null;
         }
 
         ActivityHistory::create([
