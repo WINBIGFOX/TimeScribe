@@ -27,7 +27,7 @@ class TimestampController extends Controller
 
         $timestampBefore = Timestamp::where('ended_at', '<=', $datetime)
             ->where('ended_at', '>=', $datetime->copy()->startOfDay())
-            ->latest()
+            ->orderByDesc('started_at')
             ->first();
 
         $timestampAfter = Timestamp::where('started_at', '>=', $datetime)
@@ -37,7 +37,7 @@ class TimestampController extends Controller
                         $query->whereNull('ended_at')->where('started_at', '<=', $datetime->copy()->endOfDay());
                     });
             })
-            ->oldest()
+            ->orderBy('started_at')
             ->first();
 
         $minTime = $timestampBefore ? $timestampBefore->ended_at : $datetime->copy()->startOfDay();
@@ -111,9 +111,9 @@ class TimestampController extends Controller
             ]);
         }
 
-        $lastTimestamp = Timestamp::where('ended_at', '<=', $startTime)
+        $lastTimestamp = Timestamp::where('ended_at', '<=', $startTime->copy()->endOfMinute())
             ->where('ended_at', '>=', $startTime->copy()->startOfDay())
-            ->latest()
+            ->orderByDesc('started_at')
             ->first();
         $nextTimestamp = Timestamp::where('started_at', '>=', $endTime)
             ->where(function ($query) use ($endTime, $datetime): void {
@@ -122,8 +122,12 @@ class TimestampController extends Controller
                         $query->whereNull('ended_at')->where('started_at', '<=', $datetime->copy()->endOfDay());
                     });
             })
-            ->oldest()
+            ->orderBy('started_at')
             ->first();
+
+        if ($lastTimestamp && $lastTimestamp->ended_at->format('Y-m-d H:i') === $startTime->format('Y-m-d H:i')) {
+            $startTime = $lastTimestamp->ended_at;
+        }
 
         if (($lastTimestamp && $lastTimestamp->ended_at > $startTime) || ($nextTimestamp && $nextTimestamp->started_at < $endTime)) {
             return redirect()->back()->withErrors([
@@ -131,9 +135,6 @@ class TimestampController extends Controller
             ]);
         }
 
-        if ($lastTimestamp && $lastTimestamp->ended_at->format('Y-m-d H:i') === $startTime->format('Y-m-d H:i')) {
-            $startTime = $lastTimestamp->ended_at;
-        }
         if ($nextTimestamp && $nextTimestamp->started_at->format('Y-m-d H:i') === $endTime->format('Y-m-d H:i')) {
             $endTime = $nextTimestamp->started_at;
         }
@@ -163,7 +164,7 @@ class TimestampController extends Controller
     {
         $timestampBefore = Timestamp::where('ended_at', '<=', $timestamp->started_at)
             ->where('ended_at', '>=', $timestamp->started_at->copy()->startOfDay())
-            ->latest()
+            ->orderByDesc('started_at')
             ->first();
         $minTime = $timestampBefore ? $timestampBefore->ended_at : $timestamp->started_at->copy()->startOfDay();
 
@@ -176,7 +177,7 @@ class TimestampController extends Controller
                             $query->whereNull('ended_at')->where('started_at', '<=', $timestamp->started_at->copy()->endOfDay());
                         });
                 })
-                ->oldest()
+                ->orderBy('started_at')
                 ->first();
             $maxTime = $timestampAfter ? $timestampAfter->started_at : $timestamp->ended_at->copy()->endOfDay();
         }
@@ -231,12 +232,12 @@ class TimestampController extends Controller
 
         $lastTimestamp = Timestamp::where('ended_at', '<=', $startTime)
             ->where('ended_at', '>=', $startTime->copy()->startOfDay())
-            ->latest()
+            ->orderByDesc('started_at')
             ->first();
 
         $nextTimestamp = Timestamp::where('started_at', '>=', $workingEndTime)
             ->where('ended_at', '<=', $workingEndTime->copy()->endOfDay())
-            ->oldest()
+            ->orderBy('started_at')
             ->first();
 
         if (($lastTimestamp && $lastTimestamp->ended_at > $startTime) || ($nextTimestamp && $nextTimestamp->started_at < $workingEndTime)) {

@@ -99,8 +99,8 @@ if (window.Native) {
             <TimestampListPlaceholderItem
                 :timestamp-before="props.timestamps[props.timestamps.length - 1]"
                 v-if="
-                    props.date !== moment().format('DD.MM.YYYY') &&
                     props.timestamps.length > 0 &&
+                    props.timestamps[props.timestamps.length - 1].ended_at &&
                     moment(props.timestamps[props.timestamps.length - 1].ended_at?.date).format('HH:mm') !== '23:59'
                 "
             />
