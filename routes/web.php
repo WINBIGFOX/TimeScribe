@@ -83,7 +83,8 @@ Route::name('absence.')->prefix('absence')->group(function (): void {
     Route::delete('{date}/{absence}', [AbsenceController::class, 'destroy'])->name('destroy');
 });
 
-Route::get('timestamp/create/{datetime}', [TimestampController::class, 'create'])->name('timestamp.create');
+Route::get('timestamp/create/{datetime}/{endDatetime?}', [TimestampController::class, 'create'])->name('timestamp.create')
+    ->where('endDatetime', '\d{4}-\d{2}-\d{2}\s\d{2}\:\d{2}\:\d{2}');
 Route::post('timestamp/{datetime}', [TimestampController::class, 'store'])->name('timestamp.store');
 Route::resource('timestamp', TimestampController::class)->only(['edit', 'update', 'destroy']);
 Route::post('timestamp/fill', [TimestampController::class, 'fill'])->name('timestamp.fill');

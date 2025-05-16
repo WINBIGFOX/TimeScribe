@@ -61,6 +61,7 @@ if (window.Native) {
     </div>
     <div class="flex grow flex-col overflow-hidden">
         <Timeline
+            :date="props.date"
             :overtime="Math.max(props.dayWorkTime - (props.dayPlan ?? 0) * 60 * 60, 0)"
             :timestamps="props.timestamps"
             :work-time="props.dayWorkTime"

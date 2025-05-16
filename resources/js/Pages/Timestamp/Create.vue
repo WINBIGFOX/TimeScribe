@@ -9,12 +9,14 @@ import { BriefcaseBusiness, Coffee, MoveRight } from 'lucide-vue-next'
 const props = defineProps<{
     min_time: string
     max_time: string
+    start_time?: string
+    end_time?: string
     submit_route: string
 }>()
 
 const form = useForm({
-    started_at: props.min_time,
-    ended_at: props.max_time,
+    started_at: props.start_time ?? props.min_time,
+    ended_at: props.end_time ?? props.max_time,
     type: 'work',
     description: ''
 })
