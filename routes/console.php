@@ -40,7 +40,11 @@ Schedule::command('app:active-app')
     ->withoutOverlapping();
 
 Schedule::command('app:timestamp-ping')->when(function (): bool {
-    $state = PowerMonitor::getSystemIdleState(0);
+    try {
+        $state = PowerMonitor::getSystemIdleState(0);
+    } catch (\Throwable) {
+        $state = SystemIdleStatesEnum::IDLE;
+    }
 
     return $state === SystemIdleStatesEnum::ACTIVE;
 })->everyFifteenSeconds();

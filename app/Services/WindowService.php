@@ -20,7 +20,6 @@ class WindowService
             ->showDevTools(false)
             ->alwaysOnTop()
             ->maximizable(false)
-            ->minimizable(false)
             ->resizable(false);
 
         if (Environment::isWindows()) {
