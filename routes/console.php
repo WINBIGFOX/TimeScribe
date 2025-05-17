@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Enums\TimestampTypeEnum;
+use App\Jobs\CalculateWeekBalance;
+use App\Jobs\MenubarRefresh;
 use App\Models\Timestamp;
 use App\Settings\GeneralSettings;
 use Illuminate\Support\Facades\Schedule;
@@ -14,8 +16,8 @@ Artisan::command('optimize', function (): void {
 });
 
 Schedule::when(fn () => Timestamp::whereNull('ended_at')->exists())->group(function (): void {
-    Schedule::command('menubar:refresh')->everyFifteenSeconds();
-    Schedule::command('app:calculate-week-balance')->everyMinute();
+    Schedule::job(new MenubarRefresh)->everyFifteenSeconds();
+    Schedule::job(new CalculateWeekBalance)->everyMinute();
 });
 
 Schedule::command('app:active-app')

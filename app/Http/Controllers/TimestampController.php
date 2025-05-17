@@ -9,9 +9,9 @@ use App\Http\Requests\FillTimestampRequest;
 use App\Http\Requests\StoreTimestampRequest;
 use App\Http\Resources\TimestampResource;
 use App\Jobs\CalculateWeekBalance;
+use App\Jobs\MenubarRefresh;
 use App\Models\Timestamp;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Artisan;
 use Inertia\Inertia;
 
 class TimestampController extends Controller
@@ -269,7 +269,7 @@ class TimestampController extends Controller
 
         CalculateWeekBalance::dispatch();
         if (! $hasEndedAt || $startTime->isToday()) {
-            Artisan::call('menubar:refresh');
+            MenubarRefresh::dispatchSync();
         }
 
         return redirect()->route('overview.day.show', ['date' => $startTime->format('Y-m-d')]);
@@ -289,7 +289,7 @@ class TimestampController extends Controller
         CalculateWeekBalance::dispatch();
 
         if ($isToday) {
-            Artisan::call('menubar:refresh');
+            MenubarRefresh::dispatchSync();
         }
 
         return redirect()->route('overview.day.show', ['date' => $date]);
@@ -312,7 +312,7 @@ class TimestampController extends Controller
         CalculateWeekBalance::dispatch();
 
         if ($timestampBefore->ended_at->isToday()) {
-            Artisan::call('menubar:refresh');
+            MenubarRefresh::dispatchSync();
         }
 
         return redirect()->route('overview.day.show', ['date' => $timestampBefore->created_at->format('Y-m-d')]);

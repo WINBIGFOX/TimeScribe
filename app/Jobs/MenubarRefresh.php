@@ -1,34 +1,29 @@
 <?php
 
-declare(strict_types=1);
-
-namespace App\Console\Commands;
+namespace App\Jobs;
 
 use App\Enums\TimestampTypeEnum;
 use App\Services\LocaleService;
 use App\Services\TimestampService;
 use App\Services\TrayIconService;
-use Illuminate\Console\Command;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
 use Native\Laravel\Facades\MenuBar;
 
-class MenubarRefresh extends Command
+class MenubarRefresh implements ShouldQueue
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'menubar:refresh';
+    use Queueable;
 
     /**
-     * The console command description.
-     *
-     * @var string
+     * Create a new job instance.
      */
-    protected $description = 'Command description';
+    public function __construct()
+    {
+        //
+    }
 
     /**
-     * Execute the console command.
+     * Execute the job.
      */
     public function handle(): void
     {

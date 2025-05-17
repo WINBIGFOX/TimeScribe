@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\TimestampTypeEnum;
 use App\Http\Resources\ActivityHistoryResource;
+use App\Jobs\MenubarRefresh;
 use App\Models\ActivityHistory;
 use App\Services\TimestampService;
 use App\Services\TrayIconService;
@@ -23,7 +24,7 @@ class MenubarController extends Controller
         $currentType = TimestampService::getCurrentType();
         if (! $request->header('x-inertia-partial-data')) {
             TimestampService::ping();
-            Artisan::call('menubar:refresh');
+            MenubarRefresh::dispatchSync();
             if ($settings->appActivityTracking && $currentType === TimestampTypeEnum::WORK) {
                 Artisan::call('app:active-app');
             }
