@@ -167,7 +167,7 @@ class ActiveApp extends Command
             ]);
         }
 
-        if (! AppCategoryEnum::tryFrom($appData['category'])) {
+        if ($appData['category'] && ! AppCategoryEnum::tryFrom($appData['category'])) {
             $appData['category'] = null;
         }
 
