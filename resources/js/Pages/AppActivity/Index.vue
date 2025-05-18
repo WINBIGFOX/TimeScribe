@@ -86,7 +86,7 @@ watch(dateRange, () => {
     })
 })
 const page = usePage()
-const { stop } = usePoll(
+const { stop, start } = usePoll(
     15 * 1000,
     {
         onSuccess: () => {
@@ -100,6 +100,18 @@ const { stop } = usePoll(
         autoStart: page.props.recording
     }
 )
+
+if (window.Native) {
+    window.Native.on('App\\Events\\TimerStarted', () => {
+        router.flushAll()
+        router.reload({
+            showProgress: false,
+            onSuccess: () => {
+                start()
+            }
+        })
+    })
+}
 </script>
 
 <template>
@@ -186,6 +198,14 @@ const { stop } = usePoll(
                     {{ secToFormat(category.sum) }}
                 </div>
                 <div class="text-muted-foreground ml-auto tabular-nums" v-else>> 1 {{ $t('app.min') }}</div>
+            </div>
+            <div class="flex justify-center pt-10">
+                <span
+                    class="text-destructive bg-destructive/20 ml-2 rounded px-1.5 py-0.5 text-sm"
+                    v-if="$page.props.environment === 'Windows'"
+                >
+                    {{ $t('app.not available on windows') }}
+                </span>
             </div>
         </div>
     </div>

@@ -18,6 +18,7 @@ use App\Http\Controllers\Settings\GeneralController;
 use App\Http\Controllers\Settings\StartStopController;
 use App\Http\Controllers\TimestampController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\WindowController;
 use App\Http\Controllers\WorkScheduleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -42,8 +43,11 @@ Route::name('menubar.')->prefix('menubar')->group(function (): void {
     Route::post('break', [MenubarController::class, 'storeBreak'])->name('storeBreak');
     Route::post('work', [MenubarController::class, 'storeWork'])->name('storeWork');
     Route::post('stop', [MenubarController::class, 'storeStop'])->name('storeStop');
-    Route::get('open-setting/{darkMode}', [MenubarController::class, 'openSetting'])->name('openSetting');
-    Route::get('open-overview/{darkMode}', [MenubarController::class, 'openOverview'])->name('openOverview');
+});
+
+Route::name('window.')->prefix('window')->group(function (): void {
+    Route::get('overview/{darkMode}', [WindowController::class, 'openOverview'])->name('overview.open');
+    Route::get('settings/{darkMode}', [WindowController::class, 'openSettings'])->name('settings.open');
 });
 
 Route::name('settings.')->prefix('settings')->group(function (): void {
@@ -60,10 +64,10 @@ Route::name('settings.')->prefix('settings')->group(function (): void {
 });
 
 Route::resource('import-export', ImportExportController::class);
-Route::prefix('import')->name('import.')->group(function (): void {
+Route::name('import.')->prefix('import')->group(function (): void {
     Route::resource('clockify', ClockifyController::class)->only(['create', 'store']);
 });
-Route::prefix('export')->name('export.')->group(function (): void {
+Route::name('export.')->prefix('export')->group(function (): void {
     Route::post('csv', CsvController::class)->name('csv');
     Route::post('excel', ExcelController::class)->name('excel');
 });
@@ -79,7 +83,8 @@ Route::name('absence.')->prefix('absence')->group(function (): void {
     Route::delete('{date}/{absence}', [AbsenceController::class, 'destroy'])->name('destroy');
 });
 
-Route::get('timestamp/create/{datetime}', [TimestampController::class, 'create'])->name('timestamp.create');
+Route::get('timestamp/create/{datetime}/{endDatetime?}', [TimestampController::class, 'create'])->name('timestamp.create')
+    ->where('endDatetime', '\d{4}-\d{2}-\d{2}\s\d{2}\:\d{2}\:\d{2}');
 Route::post('timestamp/{datetime}', [TimestampController::class, 'store'])->name('timestamp.store');
 Route::resource('timestamp', TimestampController::class)->only(['edit', 'update', 'destroy']);
 Route::post('timestamp/fill', [TimestampController::class, 'fill'])->name('timestamp.fill');
@@ -91,7 +96,11 @@ Route::name('bug-and-feedback.')->prefix('bug-and-feedback')->group(function ():
 });
 
 Route::get('open', function (Request $request): void {
-    shell_exec('open "'.$request->string('url').'"');
+    if (\Native\Laravel\Support\Environment::isWindows()) {
+        shell_exec('explorer "'.$request->string('url').'"');
+    } else {
+        shell_exec('open "'.$request->string('url').'"');
+    }
 })->name('open');
 
 Route::get('/app-icon/{appIconName}', function ($appIconName) {

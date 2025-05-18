@@ -9,6 +9,7 @@ use App\Services\Export\ExportService;
 use Illuminate\Http\Request;
 use Native\Laravel\Dialog;
 use Native\Laravel\Facades\Alert;
+use Native\Laravel\Support\Environment;
 
 class CsvController extends Controller
 {
@@ -33,7 +34,11 @@ class CsvController extends Controller
             ->title(__('app.export successful'))
             ->show(__('app.the data was successfully exported from timescribe.'));
 
-        shell_exec('open "'.pathinfo($savePath, PATHINFO_DIRNAME).'"');
+        if (Environment::isWindows()) {
+            shell_exec('explorer "'.pathinfo($savePath, PATHINFO_DIRNAME).'"');
+        } else {
+            shell_exec('open "'.pathinfo($savePath, PATHINFO_DIRNAME).'"');
+        }
 
         return back();
     }

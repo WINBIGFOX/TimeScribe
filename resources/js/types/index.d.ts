@@ -74,4 +74,5 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     timezone: string
     app_version: string
     recording: boolean
+    environment: 'Windows' | 'Darwin' | 'Linux' | 'Unknown'
 }

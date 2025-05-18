@@ -6,9 +6,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\TimestampTypeEnum;
 use App\Http\Resources\ActivityHistoryResource;
+use App\Jobs\MenubarRefresh;
 use App\Models\ActivityHistory;
 use App\Services\TimestampService;
-use App\Services\WindowService;
+use App\Services\TrayIconService;
 use App\Settings\GeneralSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -23,7 +24,7 @@ class MenubarController extends Controller
         $currentType = TimestampService::getCurrentType();
         if (! $request->header('x-inertia-partial-data')) {
             TimestampService::ping();
-            Artisan::call('menubar:refresh');
+            MenubarRefresh::dispatchSync();
             if ($settings->appActivityTracking && $currentType === TimestampTypeEnum::WORK) {
                 Artisan::call('app:active-app');
             }
@@ -61,18 +62,8 @@ class MenubarController extends Controller
         TimestampService::stop();
 
         MenuBar::label('');
-        MenuBar::icon(public_path('IconTemplate@2x.png'));
+        MenuBar::icon(TrayIconService::getIcon());
 
         return redirect()->route('menubar.index');
-    }
-
-    public function openSetting(bool $darkMode): void
-    {
-        WindowService::openHome($darkMode, 'settings.index');
-    }
-
-    public function openOverview(bool $darkMode): void
-    {
-        WindowService::openHome($darkMode);
     }
 }

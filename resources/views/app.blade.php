@@ -11,7 +11,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.ts', "resources/js/Pages/{$page['component']}.vue"])
     @inertiaHead
 </head>
-<body class="font-sans antialiased select-none cursor-default">
+<body class="font-sans antialiased select-none cursor-default {{ PHP_OS_FAMILY === 'Windows' ? 'windows' : '' }}">
 @inertia
 
 @if (config('services.google.analytics.id'))

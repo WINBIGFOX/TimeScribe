@@ -7,6 +7,7 @@ namespace App\Providers;
 use App\Models\Timestamp;
 use App\Models\WorkSchedule;
 use App\Services\LocaleService;
+use App\Services\TrayIconService;
 use App\Services\WindowService;
 use App\Settings\GeneralSettings;
 use Native\Laravel\Contracts\ProvidesPhpIni;
@@ -15,6 +16,9 @@ use Native\Laravel\Facades\Menu;
 use Native\Laravel\Facades\MenuBar;
 use Native\Laravel\Facades\Settings;
 use Native\Laravel\Facades\System;
+use Sentry\State\Scope;
+
+use function Sentry\configureScope;
 
 class NativeAppServiceProvider implements ProvidesPhpIni
 {
@@ -35,6 +39,10 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             $settings->id = uuid_create();
             $settings->save();
         }
+
+        configureScope(function (Scope $scope) use ($settings): void {
+            $scope->setUser(['id' => $settings->id]);
+        });
 
         $hasDbWorkSchedule = WorkSchedule::exists();
         $workSchedule = Settings::get('workdays');
@@ -72,8 +80,12 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             ->showDockIcon(false)
             ->route('menubar.index')
             ->width(300)
+            ->minWidth(300)
             ->height(250)
+            ->minHeight(250)
             ->resizable(false)
+            // ->showOnAllWorkspaces() TODO: Enable this when nativePHP supports it
+            ->icon(TrayIconService::getIcon())
             ->withContextMenu(
                 Menu::make(
                     Menu::quit(),

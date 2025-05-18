@@ -93,7 +93,7 @@ router.on('finish', () => {
             <Button
                 :as="Link"
                 :href="
-                    route('menubar.openSetting', {
+                    route('window.settings.open', {
                         darkMode: state === 'dark' ? 1 : 0
                     })
                 "
@@ -177,7 +177,7 @@ router.on('finish', () => {
                 <Button
                     :as="Link"
                     :href="
-                        route('menubar.openOverview', {
+                        route('window.overview.open', {
                             darkMode: state === 'dark' ? 1 : 0
                         })
                     "

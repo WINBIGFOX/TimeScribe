@@ -45,6 +45,7 @@ class HandleInertiaRequests extends Middleware
             'app_version' => config('nativephp.version'),
             'date' => now()->format('d.m.Y'),
             'recording' => (bool) TimestampService::getCurrentType(),
+            'environment' => PHP_OS_FAMILY,
         ];
     }
 }

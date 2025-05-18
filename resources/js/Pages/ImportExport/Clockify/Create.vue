@@ -74,7 +74,9 @@ const submit = () => {
 
         <div class="border-border mt-6 border-t pt-6 text-sm">
             {{
-                $t('app.once you’ve completed all steps, you’ll have a csv file with your time data. click “import csv file” to import the data into timescribe.')
+                $t(
+                    'app.once you’ve completed all steps, you’ll have a csv file with your time data. click “import csv file” to import the data into timescribe.'
+                )
             }}
         </div>
     </SheetDialog>

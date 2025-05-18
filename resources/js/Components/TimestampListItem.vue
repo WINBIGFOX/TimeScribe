@@ -104,7 +104,7 @@ const destroy = () => {
                 {{ props.timestamp.description }}
             </span>
         </div>
-        <div class="flex flex-1 items-center justify-end" v-if="props.timestamp.ended_at">
+        <div class="flex flex-1 items-center justify-end">
             <TooltipProvider v-if="props.timestamp.source">
                 <Tooltip>
                     <TooltipTrigger as-child>
@@ -135,6 +135,7 @@ const destroy = () => {
                 @click="destroy"
                 class="text-destructive hover:bg-destructive hover:text-destructive-foreground size-8"
                 size="icon"
+                v-if="props.timestamp.ended_at"
                 variant="ghost"
             >
                 <Trash />

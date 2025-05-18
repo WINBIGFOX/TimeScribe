@@ -85,7 +85,11 @@ class TimestampService
             $timestamp->update(['last_ping_at' => now()]);
 
             if ($timestamp->started_at->isYesterday()) {
-                $timestamp->update(['ended_at' => $timestamp->started_at->endOfDay()]);
+                $endedAt = $timestamp->started_at->copy()->endOfDay();
+                $timestamp->update([
+                    'ended_at' => $endedAt,
+                    'last_ping_at' => $endedAt,
+                ]);
                 Timestamp::create([
                     'type' => $timestamp->type,
                     'started_at' => now()->startOfDay(),
