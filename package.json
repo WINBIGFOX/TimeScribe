@@ -14,7 +14,7 @@
         "update-all-patch": "npx npm-check-updates --target patch -u && npm install"
     },
     "devDependencies": {
-        "@inertiajs/vue3": "^2.0.10",
+        "@inertiajs/vue3": "^2.0.11",
         "@rushstack/eslint-patch": "^1.11.0",
         "@tailwindcss/vite": "^4.1.7",
         "@types/node": "^22.15.18",
@@ -23,7 +23,7 @@
         "@vue/eslint-config-typescript": "^14.5.0",
         "axios": "^1.9.0",
         "concurrently": "^9.1.2",
-        "eslint": "^9.26.0",
+        "eslint": "^9.27.0",
         "eslint-plugin-vue": "^10.1.0",
         "laravel-vite-plugin": "^1.2",
         "postcss": "^8.5.3",
@@ -45,13 +45,13 @@
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "laravel-vue-i18n": "^2.8.0",
-        "lucide-vue-next": "^0.510.0",
+        "lucide-vue-next": "^0.511.0",
         "moment": "^2.30.1",
         "moment-timezone": "^0.5.48",
         "reka-ui": "^2.2.1",
         "tailwind-merge": "^3.3.0",
         "tailwindcss-animate": "^1.0.7",
-        "tw-animate-css": "^1.2.9",
+        "tw-animate-css": "^1.3.0",
         "vaul-vue": "^0.4.1",
         "vue3-apexcharts": "^1.8.0"
     }

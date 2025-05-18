@@ -8056,16 +8056,16 @@
         },
         {
             "name": "tightenco/ziggy",
-            "version": "v2.5.2",
+            "version": "v2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tighten/ziggy.git",
-                "reference": "d59dbb61dc0a1d9abb2130451b9e5e0f264bfe1c"
+                "reference": "0b3b521d2c55fbdb04b6721532f7f5f49d32f52b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tighten/ziggy/zipball/d59dbb61dc0a1d9abb2130451b9e5e0f264bfe1c",
-                "reference": "d59dbb61dc0a1d9abb2130451b9e5e0f264bfe1c",
+                "url": "https://api.github.com/repos/tighten/ziggy/zipball/0b3b521d2c55fbdb04b6721532f7f5f49d32f52b",
+                "reference": "0b3b521d2c55fbdb04b6721532f7f5f49d32f52b",
                 "shasum": ""
             },
             "require": {
@@ -8120,9 +8120,9 @@
             ],
             "support": {
                 "issues": "https://github.com/tighten/ziggy/issues",
-                "source": "https://github.com/tighten/ziggy/tree/v2.5.2"
+                "source": "https://github.com/tighten/ziggy/tree/v2.5.3"
             },
-            "time": "2025-02-27T15:43:52+00:00"
+            "time": "2025-05-17T18:15:19+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -9920,16 +9920,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.15",
+            "version": "2.1.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "402d11c1aa40ae2e1c3a512e6a4edb957527b20b"
+                "reference": "b8c1cf533cba0c305d91c6ccd23f3dd0566ba5f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/402d11c1aa40ae2e1c3a512e6a4edb957527b20b",
-                "reference": "402d11c1aa40ae2e1c3a512e6a4edb957527b20b",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/b8c1cf533cba0c305d91c6ccd23f3dd0566ba5f9",
+                "reference": "b8c1cf533cba0c305d91c6ccd23f3dd0566ba5f9",
                 "shasum": ""
             },
             "require": {
@@ -9974,7 +9974,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-05-14T11:16:08+00:00"
+            "time": "2025-05-16T09:40:10+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
