@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Native\Laravel\Support\Environment;
 use Spatie\DbDumper\Databases\Sqlite;
 
 class BackupService
@@ -60,9 +61,13 @@ class BackupService
     {
         $dbPath = DB::connection()->getConfig('database');
 
-        Sqlite::create()
-            ->setDbName($dbPath)
-            ->dumpToFile(storage_path(self::TEMP_BACKUP_PATH.'/'.self::SQL_FILENAME));
+        $sqlDumper = Sqlite::create()->setDbName($dbPath);
+
+        if (Environment::isWindows()) {
+            $sqlDumper->setDumpBinaryPath(public_path());
+        }
+
+        $sqlDumper->dumpToFile(storage_path(self::TEMP_BACKUP_PATH.'/'.self::SQL_FILENAME));
     }
 
     private function addDropTableStatements(): void
