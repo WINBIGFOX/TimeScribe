@@ -48,8 +48,10 @@ remote, hybrid, or office-based, TimeScribe helps you stay focused and organized
 - ⏱ See app usage and categorize work vs distractions
 - 🗓️ Plan absences like vacation, sick leave, and holidays
 - ⚙️ Auto start/pause based on screen time and idle status
-- 🪟 **Supports macOS & Windows**
-- 🔒 **100% Local**: No cloud, no registration, no paywall
+- 💾 Export as CSV and Excel: Easily export your time tracking data for further analysis or reporting.
+- 🪟 Supports macOS & Windows
+- 🔒 100% Local: No cloud, no registration, no paywall
+- 🔄 Auto Updates: Always up-to-date
 
 ---
 
@@ -153,6 +155,13 @@ php artisan native:build win
 
 ---
 
+## 👥 Community & Contributing
+- 👉 [GitHub Discussions](https://github.com/WINBIGFOX/TimeScribe/discussions)
+- 🐞 [GitHub Issues](https://github.com/WINBIGFOX/TimeScribe/issues)
+- 🛠️ [Contributing Guide](CONTRIBUTING.md)
+- ⛳️ [TimeScribe Feature-Roadmap](https://github.com/users/WINBIGFOX/projects/5)
+
+---
 ## 💖 Sponsor & License
 
 <b>Love TimeScribe?</b><br/>
