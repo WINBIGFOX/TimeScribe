@@ -1,9 +1,8 @@
 <p align="center">
   <a href="https://timescribe.app" target="_blank">
-    <img src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/icon.png?raw=true" width="120" alt="TimeScribe Logo">
+    <img src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/icon.png?raw=true" width="130" alt="TimeScribe Logo">
   </a>
 </p>
-
 <h1 align="center">TimeScribe</h1>
 <p align="center">
   <b>Smart & private time tracking for macOS & Windows</b><br/>
