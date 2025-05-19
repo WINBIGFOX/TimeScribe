@@ -48,10 +48,10 @@ class TimestampController extends Controller
         }
 
         if ($endDatetime) {
-            if ($minTime->copy()->addMinutes(10) > $datetime && $datetime < now()) {
+            if ($minTime->copy()->addMinutes(10)->addSecond() > $datetime && $datetime < now()) {
                 $datetime = $minTime;
             }
-            if ($maxTime->copy()->subMinutes(10) < $endDatetime && $endDatetime < now()) {
+            if ($maxTime->copy()->subMinutes(10)->subSecond() < $endDatetime && $endDatetime < now()) {
                 $endDatetime = $maxTime;
             }
         }

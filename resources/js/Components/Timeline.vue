@@ -21,6 +21,7 @@ const props = withDefaults(
 
 const timeline = ref<Record<string, Timestamp | undefined>>({})
 const isToday = moment().isSame(moment(props.date, 'DD.MM.YYYY'), 'day')
+const isFuture = moment().isBefore(moment(props.date, 'DD.MM.YYYY'), 'day')
 
 const parseTimestamps = () => {
     props.timestamps.forEach((timestamp) => {
@@ -35,6 +36,9 @@ const parseTimestamps = () => {
         }
 
         for (let j = start; j <= end; j += 10) {
+            if (j === end && ended_at && ended_at.date.endsWith(':00')) {
+                continue
+            }
             timeline.value[j.toString()] = { ...timestamp }
 
             if (j.toString().endsWith('50')) {
@@ -176,8 +180,8 @@ const indexToTimeFormat = (index: string, withoutMinutesBy12H?: boolean) => {
                                     'bg-gray-400! ring-gray-400! hover:bg-gray-500! hover:ring-gray-500! dark:ring-gray-500! dark:hover:bg-gray-500!':
                                         ifSelected(index)
                                 }"
-                                @mousedown="!time ? dragStart(index) : undefined"
-                                @mouseover="!time ? dragOver(index) : dragStop()"
+                                @mousedown="!time && !isFuture ? dragStart(index) : undefined"
+                                @mouseover="!time && !isFuture ? dragOver(index) : dragStop()"
                                 class="bg-muted ring-offset-background h-14 shrink-0 rounded-full ring-offset-1 transition-transform duration-100 group-hover:scale-110 group-hover:ring-2"
                             />
                             <div
