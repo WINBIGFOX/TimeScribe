@@ -27,7 +27,7 @@ class StoreTimestampRequest extends FormRequest
         return [
             'type' => ['required', 'in:break,work'],
             'started_at' => ['required', 'date_format:H:i', 'before:ended_at'],
-            'ended_at' => [Rule::requiredIf($this->route('timestamp')?->ended_at ?? true), 'date_format:H:i', 'after:started_at'],
+            'ended_at' => [Rule::requiredIf($this->route('timestamp')?->ended_at ?? false), 'date_format:H:i', 'after:started_at'],
             'description' => ['nullable', 'string'],
         ];
     }
