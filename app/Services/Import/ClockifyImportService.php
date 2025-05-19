@@ -76,7 +76,7 @@ class ClockifyImportService
             $startAt = $this->dateFormat($row[9], $row[10]);
             $endAt = $this->dateFormat($row[11], $row[12]);
 
-            if ($startAt < now() || $endAt < now()) {
+            if ($startAt >= now() || $endAt >= now()) {
                 return;
             }
 
