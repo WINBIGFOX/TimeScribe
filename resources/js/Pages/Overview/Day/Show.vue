@@ -24,6 +24,7 @@ const calcDuration = (startTimestamp: string, endTimestamp?: string) =>
     Math.floor(moment(startTimestamp).diff(endTimestamp).valueOf() / 1000 / 60)
 
 const startOfDay = moment(props.date, 'DD.MM.YYYY').format('YYYY-MM-DD 00:00:00')
+const isFuture = moment().isBefore(moment(props.date, 'DD.MM.YYYY'), 'day')
 
 const reload = () => {
     router.flushAll()
@@ -79,7 +80,7 @@ if (window.Native) {
             />
             <TimestampTypeBadge :duration="(props.dayPlan ?? 0) * 60 * 60" type="plan" />
         </div>
-        <div class="grow space-y-1 overflow-y-auto pb-4" scroll-region>
+        <div class="grow space-y-1 overflow-y-auto pb-4" scroll-region v-if="!isFuture">
             <TimestampListPlaceholderItem
                 :start-of-day="startOfDay"
                 v-if="props.timestamps.length === 0 || props.timestamps[0].started_at.date !== startOfDay"

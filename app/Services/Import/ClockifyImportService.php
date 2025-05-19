@@ -73,11 +73,18 @@ class ClockifyImportService
     private function readTimestamps(array $row): void
     {
         try {
+            $startAt = $this->dateFormat($row[9], $row[10]);
+            $endAt = $this->dateFormat($row[11], $row[12]);
+
+            if ($startAt < now() || $endAt < now()) {
+                return;
+            }
+
             $timestamp = [
                 'description' => $row[0],
                 'type' => 'work',
-                'started_at' => $this->dateFormat($row[9], $row[10]),
-                'ended_at' => $this->dateFormat($row[11], $row[12]),
+                'started_at' => $startAt->format('Y-m-d H:i:s'),
+                'ended_at' => $endAt->format('Y-m-d H:i:s'),
                 'source' => 'Clockify',
             ];
         } catch (\Throwable) {
@@ -87,14 +94,14 @@ class ClockifyImportService
         $this->timestamps->push($timestamp);
     }
 
-    private function dateFormat(string $date, string $time): string
+    private function dateFormat(string $date, string $time): Carbon
     {
-        $dateTime = \DateTime::createFromFormat('d/m/Y H:i:s', $date.' '.$time);
+        $dateTime = Carbon::createFromFormat('d/m/Y H:i:s', $date.' '.$time);
         if ($dateTime === false) {
             throw new \Exception('Invalid date format');
         }
 
-        return $dateTime->format('Y-m-d H:i:s');
+        return $dateTime;
     }
 
     private function fixOverlap(): void
