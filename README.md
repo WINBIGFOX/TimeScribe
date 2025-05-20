@@ -80,7 +80,19 @@ Then:
 
 ---
 
-### Option 2: Build from Source (Developers)
+### Option 2: Install via Homebrew (macOS)
+
+If you're on macOS and have [Homebrew](https://brew.sh/) installed, you can install TimeScribe with:
+
+```bash
+brew install timescribe
+```
+
+After installation, you can launch TimeScribe via Spotlight or from your Applications folder.
+
+---
+
+### Option 3: Build from Source (Developers)
 
 ```bash
 # Clone the repo
