@@ -13,6 +13,9 @@ Track, analyze and own your work hours—no cloud, no registration, no paywall.
   <a href="https://github.com/WINBIGFOX/timescribe/releases/latest">
     <img src="https://img.shields.io/github/v/release/WINBIGFOX/timescribe?label=Download&logo=github" />
   </a>
+  <a href="https://formulae.brew.sh/cask/timescribe">
+    <img src="https://img.shields.io/homebrew/cask/v/timescribe?logo=homebrew&logoColor=white&label=Homebrew" />
+  </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/github/license/WINBIGFOX/timescribe?color=blue" />
   </a>
