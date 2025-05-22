@@ -45,6 +45,11 @@ class ActiveApp extends Command
     private function detectWindowsApp(): void
     {
         $output = shell_exec(public_path('GetActiveWindowTitle.exe'));
+
+        if (! $output) {
+            return;
+        }
+
         $data = json_decode($output, true);
 
         if (! Arr::has($data, ['Path', 'Icon', 'Name'])) {
