@@ -29,24 +29,28 @@ class MenubarRefresh implements ShouldQueue
      */
     public function handle(): void
     {
-        new LocaleService;
-        $currentType = TimestampService::getCurrentType();
+        try {
+            new LocaleService;
+            $currentType = TimestampService::getCurrentType();
 
-        if ($currentType === TimestampTypeEnum::WORK) {
-            $time = TimestampService::getWorkTime();
-            MenuBar::icon(TrayIconService::getIcon('work'));
-        } elseif ($currentType === TimestampTypeEnum::BREAK) {
-            $time = TimestampService::getBreakTime();
-            MenuBar::icon(TrayIconService::getIcon('break'));
-        } else {
-            MenuBar::tooltip('');
-            MenuBar::label('');
-            MenuBar::icon(TrayIconService::getIcon());
+            if ($currentType === TimestampTypeEnum::WORK) {
+                $time = TimestampService::getWorkTime();
+                MenuBar::icon(TrayIconService::getIcon('work'));
+            } elseif ($currentType === TimestampTypeEnum::BREAK) {
+                $time = TimestampService::getBreakTime();
+                MenuBar::icon(TrayIconService::getIcon('break'));
+            } else {
+                MenuBar::tooltip('');
+                MenuBar::label('');
+                MenuBar::icon(TrayIconService::getIcon());
 
+                return;
+            }
+
+            MenuBar::tooltip(gmdate('G:i', (int) $time));
+            MenuBar::label(gmdate('G:i', (int) $time));
+        } catch (\Throwable) {
             return;
         }
-
-        MenuBar::tooltip(gmdate('G:i', (int) $time));
-        MenuBar::label(gmdate('G:i', (int) $time));
     }
 }
