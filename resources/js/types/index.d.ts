@@ -5,6 +5,8 @@ export interface Date {
     day: string
 }
 
+export type Enum = Record<string, string>
+
 export interface WeekdayObject {
     plan?: number
     fallbackPlan?: number
