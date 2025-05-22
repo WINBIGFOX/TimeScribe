@@ -62,6 +62,7 @@ class CalculateWeekBalance implements ShouldQueue
             }
         } catch (\Throwable $e) {
             \Log::error('Failed to calculate week balance: '.$e->getMessage());
+
             return;
         }
     }
