@@ -9,7 +9,7 @@ import {
     SidebarMenuSubItem
 } from '@/Components/ui/sidebar'
 import { Link, router, usePage } from '@inertiajs/vue3'
-import { AppWindowMac, ChartColumnBig, Cog, FileChartColumn, FileClock, TentTree } from 'lucide-vue-next'
+import { AppWindowMac, ChartColumnBig, Cog, FileChartColumn, FileClock, Tag, TentTree } from 'lucide-vue-next'
 import moment from 'moment/moment'
 import { ref } from 'vue'
 
@@ -94,6 +94,21 @@ router.on('navigate', () => {
                         </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                 </SidebarMenuSub>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+                <SidebarMenuButton as-child>
+                    <Link
+                        :class="{
+                            'text-primary! font-bold': ['tag.index', 'tag.edit', 'tag.create'].includes(current ?? '')
+                        }"
+                        :href="route('tag.index')"
+                        class="transition-all duration-200"
+                        prefetch
+                    >
+                        <Tag />
+                        {{ $t('app.projects and tags') }}
+                    </Link>
+                </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
                 <SidebarMenuButton as-child>

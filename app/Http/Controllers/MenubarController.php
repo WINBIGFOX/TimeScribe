@@ -66,4 +66,9 @@ class MenubarController extends Controller
 
         return redirect()->route('menubar.index');
     }
+
+    public function resize(Request $request): void
+    {
+        MenuBar::resize(300, $request->integer('height', 298));
+    }
 }

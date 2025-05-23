@@ -16,6 +16,7 @@ use App\Http\Controllers\Overview\WeekController;
 use App\Http\Controllers\Overview\YearController;
 use App\Http\Controllers\Settings\GeneralController;
 use App\Http\Controllers\Settings\StartStopController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\TimestampController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\WindowController;
@@ -43,6 +44,7 @@ Route::name('menubar.')->prefix('menubar')->group(function (): void {
     Route::post('break', [MenubarController::class, 'storeBreak'])->name('storeBreak');
     Route::post('work', [MenubarController::class, 'storeWork'])->name('storeWork');
     Route::post('stop', [MenubarController::class, 'storeStop'])->name('storeStop');
+    Route::post('resize', [MenubarController::class, 'resize'])->name('resize');
 });
 
 Route::name('window.')->prefix('window')->group(function (): void {
@@ -75,6 +77,8 @@ Route::name('export.')->prefix('export')->group(function (): void {
 Route::resource('work-schedule', WorkScheduleController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');
 
 Route::resource('app-activity', AppActivityController::class)->only(['index', 'show']);
+
+Route::resource('tag', TagController::class);
 
 Route::name('absence.')->prefix('absence')->group(function (): void {
     Route::get('', [AbsenceController::class, 'index'])->name('index');
@@ -109,6 +113,6 @@ Route::get('/app-icon/{appIconName}', function ($appIconName) {
     }
 
     return Storage::disk('app-icon')->response($appIconName, null, [
-        'Cache-Control' => 'public, max-age=31536000, immutable',
+        'Cache-Control' => 'public, max-age=864000, must-revalidate',
     ]);
 })->where('appIconName', '.*')->name('app-icon.show');

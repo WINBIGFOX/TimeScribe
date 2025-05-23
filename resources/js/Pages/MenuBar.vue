@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { Button } from '@/Components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import BasicLayout from '@/Layouts/BasicLayout.vue'
 import { secToFormat } from '@/lib/utils'
 import { ActivityHistory } from '@/types'
@@ -83,6 +84,24 @@ router.on('start', () => {
 router.on('finish', () => {
     loading.value = false
 })
+
+const handleResize = (height?: number) => {
+    router.post(
+        route('menubar.resize'),
+        {
+            height: height
+        },
+        { preserveScroll: true, preserveState: true }
+    )
+}
+
+const handleSelectOpenState = (open: boolean) => {
+    if (open) {
+        handleResize(500)
+    } else {
+        handleResize()
+    }
+}
 </script>
 
 <template>
@@ -110,7 +129,7 @@ router.on('finish', () => {
                 'pt-8': props.currentType !== 'work' || !props.currentAppActivity,
                 'pt-0': props.currentType === 'work' && props.currentAppActivity
             }"
-            class="flex grow flex-col items-center justify-center transition-all duration-1000"
+            class="flex h-36.5 flex-col items-center justify-center transition-all duration-1000"
         >
             <div
                 :class="{
@@ -171,6 +190,18 @@ router.on('finish', () => {
                     </div>
                 </div>
             </transition>
+        </div>
+        <div class="flex grow flex-col px-2">
+            <Select @update:open="handleSelectOpenState">
+                <SelectTrigger class="w-full">
+                    <SelectValue placeholder="00" />
+                </SelectTrigger>
+                <SelectContent class="h-36">
+                    <SelectItem value="1">Test</SelectItem>
+                    <SelectItem value="2">Test</SelectItem>
+                    <SelectItem value="3">Test</SelectItem>
+                </SelectContent>
+            </Select>
         </div>
         <div>
             <div class="flex p-2">

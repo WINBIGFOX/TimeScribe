@@ -80,9 +80,7 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             ->showDockIcon(false)
             ->route('menubar.index')
             ->width(300)
-            ->minWidth(300)
-            ->height(250)
-            ->minHeight(250)
+            ->height(298)
             ->resizable(false)
             // ->showOnAllWorkspaces() TODO: Enable this when nativePHP supports it
             ->icon(TrayIconService::getIcon())

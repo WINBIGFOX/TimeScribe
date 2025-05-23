@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\TimestampTypeEnum;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Timestamp extends Model
@@ -29,4 +30,9 @@ class Timestamp extends Model
         'ended_at' => 'datetime',
         'last_ping_at' => 'datetime',
     ];
+
+    public function tag(): BelongsTo
+    {
+        return $this->belongsTo(Tag::class);
+    }
 }
