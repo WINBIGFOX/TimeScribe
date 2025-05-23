@@ -10,14 +10,16 @@ import moment from 'moment/min/moment-with-locales'
 
 const props = defineProps<{
     min_time: string
-    max_time: string
+    max_time?: string
     submit_route: string
     timestamp: Timestamp
 }>()
 
 const form = useForm({
     started_at: moment(props.timestamp.started_at.date, 'YYYY-MM-DD HH:mm:ss').format('HH:mm'),
-    ended_at: moment(props.timestamp.ended_at?.date, 'YYYY-MM-DD HH:mm:ss').format('HH:mm'),
+    ended_at: props.timestamp.ended_at
+        ? moment(props.timestamp.ended_at.date, 'YYYY-MM-DD HH:mm:ss').format('HH:mm')
+        : undefined,
     type: props.timestamp.type,
     description: props.timestamp.description
 })
@@ -67,7 +69,7 @@ const destroy = () => {
                     <BriefcaseBusiness class="size-5" v-if="form.type === 'work'" />
                     <Coffee class="size-5" v-if="form.type === 'break'" />
                 </div>
-                <Select v-model="form.type">
+                <Select :disabled="!props.timestamp.ended_at" v-model="form.type">
                     <SelectTrigger>
                         <SelectValue class="text-base" placeholder="Type">
                             {{ $t(form.type === 'work' ? 'app.work hours' : 'app.break time') }}
@@ -92,7 +94,7 @@ const destroy = () => {
             <div class="flex items-center gap-4">
                 <TimeSelect
                     :label="$t('app.start at:')"
-                    :max="form.ended_at"
+                    :max="form.ended_at ?? max_time"
                     :min="min_time"
                     :twelve-hour-format="$page.props.locale === 'en_US'"
                     v-model="form.started_at"
@@ -103,8 +105,13 @@ const destroy = () => {
                     :max="max_time"
                     :min="form.started_at"
                     :twelve-hour-format="$page.props.locale === 'en_US'"
+                    v-if="max_time && props.timestamp.ended_at"
                     v-model="form.ended_at"
                 />
+                <div class="bg-muted text-muted-foreground mx-1 flex items-center gap-2 rounded-lg px-3 py-1" v-else>
+                    <div class="size-3 shrink-0 animate-pulse rounded-full bg-red-500" />
+                    {{ $t('app.now') }}
+                </div>
             </div>
             <div class="text-destructive text-sm" v-if="form.errors.started_at">
                 {{ form.errors.started_at }}

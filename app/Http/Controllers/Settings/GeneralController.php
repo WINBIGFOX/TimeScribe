@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Settings;
 
+use App\Enums\HolidayRegionEnum;
 use App\Events\LocaleChanged;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateGeneralSettingsRequest;
@@ -28,6 +29,7 @@ class GeneralController extends Controller
             'theme' => $settings->theme ?? SystemThemesEnum::SYSTEM->value,
             'showTimerOnUnlock' => $settings->showTimerOnUnlock,
             'holidayRegion' => $settings->holidayRegion,
+            'holidayRegions' => HolidayRegionEnum::toArray(),
             'locale' => $settings->locale,
             'appActivityTracking' => $settings->appActivityTracking,
             'timezones' => DateTimeZone::listIdentifiers(),

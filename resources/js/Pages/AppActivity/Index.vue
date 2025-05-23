@@ -86,7 +86,7 @@ watch(dateRange, () => {
     })
 })
 const page = usePage()
-const { stop } = usePoll(
+const { stop, start } = usePoll(
     15 * 1000,
     {
         onSuccess: () => {
@@ -100,6 +100,18 @@ const { stop } = usePoll(
         autoStart: page.props.recording
     }
 )
+
+if (window.Native) {
+    window.Native.on('App\\Events\\TimerStarted', () => {
+        router.flushAll()
+        router.reload({
+            showProgress: false,
+            onSuccess: () => {
+                start()
+            }
+        })
+    })
+}
 </script>
 
 <template>

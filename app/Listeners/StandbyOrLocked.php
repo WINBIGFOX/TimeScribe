@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Enums\TimestampTypeEnum;
+use App\Jobs\MenubarRefresh;
 use App\Services\LocaleService;
 use App\Services\TimestampService;
 use App\Settings\GeneralSettings;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Artisan;
 use Native\Laravel\Events\PowerMonitor\ScreenLocked;
 use Native\Laravel\Events\PowerMonitor\Shutdown;
 
@@ -54,7 +54,7 @@ class StandbyOrLocked
             if ($stopBreakAutomatic === 'stop') {
                 TimestampService::stop();
             }
-            Artisan::call('menubar:refresh');
+            MenubarRefresh::dispatchSync();
         }
     }
 }

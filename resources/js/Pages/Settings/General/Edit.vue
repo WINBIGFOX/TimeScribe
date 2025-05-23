@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { Switch } from '@/Components/ui/switch'
+import { Enum } from '@/types'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
 import { AppWindowMac, CalendarMinus, Eye, Globe, KeyRound, Languages, SunMoon } from 'lucide-vue-next'
@@ -11,6 +12,7 @@ const props = defineProps<{
     theme?: string
     showTimerOnUnlock?: boolean
     holidayRegion?: string
+    holidayRegions?: Enum
     locale: string
     appActivityTracking?: boolean
     timezones?: string[]
@@ -187,30 +189,15 @@ watch(holidayCheck, () => {
                     </div>
                     <Switch v-model="holidayCheck" />
                 </div>
-
-                <Select size="5" v-if="holidayCheck" v-model="form.holidayRegion">
+                <Select size="5" v-if="holidayCheck && props.holidayRegions" v-model="form.holidayRegion">
                     <SelectTrigger class="mt-2 ml-auto w-1/2">
                         <SelectValue placeholder="Region" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="DE">Deutschland</SelectItem>
-                        <SelectSeparator />
-                        <SelectItem value="DE-BB"> Brandenburg</SelectItem>
-                        <SelectItem value="DE-BE"> Berlin</SelectItem>
-                        <SelectItem value="DE-BW"> Baden-Württemberg</SelectItem>
-                        <SelectItem value="DE-BY"> Bayern</SelectItem>
-                        <SelectItem value="DE-HB"> Bremen</SelectItem>
-                        <SelectItem value="DE-HE"> Hessen</SelectItem>
-                        <SelectItem value="DE-HH"> Hamburg</SelectItem>
-                        <SelectItem value="DE-MV"> Mecklenburg-Vorpommern</SelectItem>
-                        <SelectItem value="DE-NI"> {{ $t('app.never') }}dersachsen</SelectItem>
-                        <SelectItem value="DE-NW"> Nordrhein-Westfalen</SelectItem>
-                        <SelectItem value="DE-RP"> Rheinland-Pfalz</SelectItem>
-                        <SelectItem value="DE-SH"> Schleswig-Holstein</SelectItem>
-                        <SelectItem value="DE-SL"> Saarland</SelectItem>
-                        <SelectItem value="DE-SN"> Sachsen</SelectItem>
-                        <SelectItem value="DE-ST"> Sachsen-Anhalt</SelectItem>
-                        <SelectItem value="DE-TH"> Thüringen</SelectItem>
+                        <template :key="key" v-for="(name, key) in props.holidayRegions" >
+                            <SelectSeparator v-if="key.toString().length === 2 && (key.toString()) !== Object.keys(props.holidayRegions)[0]" />
+                            <SelectItem :value="key">{{ name }}</SelectItem>
+                        </template>
                     </SelectContent>
                 </Select>
             </div>

@@ -1,0 +1,43 @@
+name: "TimeScribe Feature Roadmap"
+public: true
+body: |
+  Welcome to the TimeScribe Feature Roadmap! Here you can see which features are coming up and exactly where they stand in development:
+  - "Planned"
+  - "In Progress"
+  - "Released"
+
+# Custom fields
+fields:
+  - name: "Release Version"
+    type: single_select
+    options: ["TBD", "v1.2", "v1.3", "v1.4", "v1.5"]
+
+# Column definitions
+templates:
+  - name: Planned
+    type: to-do
+  - name: "In Progress"
+    type: in-progress
+  - name: Released
+    type: done
+
+# Automations based on labels
+automations:
+  - when: labeled
+    label: "status:planned"
+    then:
+      move_to: Planned
+  - when: labeled
+    label: "status:in-progress"
+    then:
+      move_to: "In Progress"
+  - when: labeled
+    label: "status:released"
+    then:
+      move_to: Released
+
+# Example view by Release Version
+views:
+  - name: "By Release Version"
+    type: board
+    group_by: "Release Version"

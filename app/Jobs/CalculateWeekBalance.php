@@ -30,34 +30,40 @@ class CalculateWeekBalance implements ShouldQueue
      */
     public function handle(): void
     {
-        new LocaleService;
-        $settings = app(GeneralSettings::class);
-        Carbon::setLocale(str_replace('-', '_', $settings->locale ?? config('app.fallback_locale')));
-        $firstTimestamp = Timestamp::orderBy('started_at')->first();
+        try {
+            new LocaleService;
+            $settings = app(GeneralSettings::class);
+            Carbon::setLocale(str_replace('-', '_', $settings->locale ?? config('app.fallback_locale')));
+            $firstTimestamp = Timestamp::orderBy('started_at')->first();
 
-        if (! $firstTimestamp) {
+            if (! $firstTimestamp) {
+                return;
+            }
+
+            $startWeek = $firstTimestamp->started_at->clone()->startOfWeek();
+            $endWeek = $firstTimestamp->started_at->clone()->endOfWeek();
+            $lastCalculatedWeek = now()->addWeeks(1)->startOfWeek();
+
+            WeekBalance::truncate();
+
+            while ($startWeek->isBefore($lastCalculatedWeek)) {
+
+                $workTime = TimestampService::getWorkTime($startWeek, $endWeek);
+                $weekPlan = TimestampService::getWeekPlan($startWeek);
+                $balance = $workTime - ($weekPlan * 3600);
+
+                WeekBalance::updateOrCreate(
+                    ['start_week_at' => $startWeek, 'end_week_at' => $endWeek],
+                    ['balance' => $balance]
+                );
+
+                $startWeek->addWeek();
+                $endWeek->addWeek();
+            }
+        } catch (\Throwable $e) {
+            \Log::error('Failed to calculate week balance: '.$e->getMessage());
+
             return;
-        }
-
-        $startWeek = $firstTimestamp->started_at->clone()->startOfWeek();
-        $endWeek = $firstTimestamp->started_at->clone()->endOfWeek();
-        $lastCalculatedWeek = now()->addWeeks(1)->startOfWeek();
-
-        WeekBalance::truncate();
-
-        while ($startWeek->isBefore($lastCalculatedWeek)) {
-
-            $workTime = TimestampService::getWorkTime($startWeek, $endWeek);
-            $weekPlan = TimestampService::getWeekPlan($startWeek);
-            $balance = $workTime - ($weekPlan * 3600);
-
-            WeekBalance::updateOrCreate(
-                ['start_week_at' => $startWeek, 'end_week_at' => $endWeek],
-                ['balance' => $balance]
-            );
-
-            $startWeek->addWeek();
-            $endWeek->addWeek();
         }
     }
 }

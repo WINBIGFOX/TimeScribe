@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreTimestampRequest extends FormRequest
 {
@@ -26,7 +27,7 @@ class StoreTimestampRequest extends FormRequest
         return [
             'type' => ['required', 'in:break,work'],
             'started_at' => ['required', 'date_format:H:i', 'before:ended_at'],
-            'ended_at' => ['required', 'date_format:H:i', 'after:started_at'],
+            'ended_at' => [Rule::requiredIf($this->route('timestamp')?->ended_at ?? false), 'date_format:H:i', 'after:started_at'],
             'description' => ['nullable', 'string'],
         ];
     }

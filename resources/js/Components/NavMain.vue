@@ -37,9 +37,11 @@ router.on('navigate', () => {
                         <SidebarMenuSubButton as-child>
                             <Link
                                 :class="{
-                                    'text-primary! font-bold': ['overview.day.show', 'timestamp.edit'].includes(
-                                        current ?? ''
-                                    )
+                                    'text-primary! font-bold': [
+                                        'overview.day.show',
+                                        'timestamp.create',
+                                        'timestamp.edit'
+                                    ].includes(current ?? '')
                                 }"
                                 :href="route('overview.day.show', { date })"
                                 class="transition-all duration-200"

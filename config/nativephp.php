@@ -78,6 +78,10 @@ return [
         'storage/logs/laravel.log',
     ],
 
+    'prebuild' => [
+        'npm run build',
+    ],
+
     /**
      * The NativePHP updater configuration.
      */

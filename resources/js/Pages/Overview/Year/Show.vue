@@ -219,6 +219,18 @@ const data = {
         }
     } as ApexOptions
 }
+
+const reload = () => {
+    router.flushAll()
+    router.reload({
+        showProgress: false
+    })
+}
+
+if (window.Native) {
+    window.Native.on('App\\Events\\TimerStarted', reload)
+    window.Native.on('App\\Events\\TimerStopped', reload)
+}
 </script>
 
 <template>
