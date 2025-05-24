@@ -1,15 +1,42 @@
 <script lang="ts" setup>
 import { Button } from '@/Components/ui/button'
-import { Progress } from '@/Components/ui/progress'
 import { Switch } from '@/Components/ui/switch'
-import { Head } from '@inertiajs/vue3'
+import { Date } from '@/types'
+import { Head, Link, useForm, usePoll } from '@inertiajs/vue3'
 import { useColorMode } from '@vueuse/core'
 import { ArrowRight, RefreshCcw } from 'lucide-vue-next'
-import { ref } from 'vue'
+import { watch } from 'vue'
 
-const isDownloading = ref(false)
-const downloadProgress = ref(40)
+const props = defineProps<{
+    auto_update: boolean
+    last_check: Date
+    last_version: string
+    is_downloaded: boolean
+}>()
+
 useColorMode()
+
+if (!props.is_downloaded) {
+    usePoll(
+        1000,
+        {
+            only: ['last_check', 'last_version', 'is_downloaded'],
+            showProgress: false
+        },
+        {
+            autoStart: true
+        }
+    )
+}
+
+const form = useForm({
+    auto_update: props.auto_update
+})
+
+watch(
+    () => form.auto_update,
+    () => form.patch(route('updater.updateAutoUpdate'))
+)
 </script>
 
 <template>
@@ -26,30 +53,25 @@ useColorMode()
             </g>
         </svg>
 
-        <h1 class="text-2xl font-bold">Update Available</h1>
+        <h1 class="text-2xl font-bold">{{ $t('app.update available') }}</h1>
         <p class="text-muted-foreground text-center text-sm text-balance">
-            A new version of the app is available. Please download the latest version to enjoy new features and
-            improvements.
+            {{ $t('app.a new version of the app is available. please install the latest version to enjoy new features and improvements.') }}
         </p>
         <div class="flex items-center gap-4 text-sm font-medium">
-            <div>Current: {{ $page.props.app_version }}</div>
+            <div>{{ $t('app.current') }}: {{ $page.props.app_version }}</div>
             <ArrowRight class="size-4" />
-            <div>New: v1.2.0</div>
+            <div>{{ $t('app.new') }}: {{ props.last_version }}</div>
         </div>
-        <div class="flex h-9 w-2/3 flex-col justify-center" v-if="isDownloading">
-            <Progress :model-value="downloadProgress" />
-            <span class="text-muted-foreground text-sm">Progress: {{ downloadProgress }}%</span>
-        </div>
-        <div @click="isDownloading = true" class="flex gap-4" v-if="!isDownloading">
-            <Button>
+        <div class="flex gap-4" v-if="props.is_downloaded">
+            <Button :as="Link" :href="route('updater.install')" method="post">
                 <RefreshCcw />
-                Download and Install
+                {{ $t('app.update now') }}
             </Button>
         </div>
         <div class="flex grow flex-col justify-end">
             <div class="flex items-center gap-2 text-sm">
-                <Switch id="auto-download" />
-                <label for="auto-download">Automatic updates</label>
+                <Switch id="auto-download" v-model="form.auto_update" />
+                <label for="auto-download">{{ $t('app.automatic updates') }}</label>
             </div>
         </div>
     </div>

@@ -18,6 +18,7 @@ const props = defineProps<{
     breakTime: number
     currentAppActivity?: ActivityHistory
     activeAppActivity: boolean
+    updateAvailable: boolean
 }>()
 
 let timer: NodeJS.Timeout
@@ -47,7 +48,7 @@ onMounted(() => {
 usePoll(
     5000,
     {
-        only: ['currentAppActivity']
+        only: ['currentAppActivity', 'updateAvailable']
     },
     {
         autoStart: props.activeAppActivity,
@@ -100,10 +101,11 @@ router.on('finish', () => {
                 class="text-primary flex flex-1 items-center justify-start gap-2 py-2 text-sm"
                 preserve-scroll
                 preserve-state
+                v-if="props.updateAvailable"
                 variant="ghost"
             >
                 <Sparkles class="size-4" />
-                Neue Version verfügbar
+                {{ $t('app.update available') }}
             </Button>
             <Button
                 :as="Link"

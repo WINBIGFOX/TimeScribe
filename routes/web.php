@@ -65,7 +65,12 @@ Route::name('settings.')->prefix('settings')->group(function (): void {
     });
 });
 
-Route::resource('updater', UpdaterController::class);
+Route::name('updater.')->prefix('updater')->group(function (): void {
+    Route::get('', [UpdaterController::class, 'index'])->name('index');
+    Route::patch('auto-update', [UpdaterController::class, 'updateAutoUpdate'])->name('updateAutoUpdate');
+    Route::post('install', [UpdaterController::class, 'install'])->name('install');
+    Route::post('check', [UpdaterController::class, 'check'])->name('check');
+});
 
 Route::resource('import-export', ImportExportController::class);
 Route::name('import.')->prefix('import')->group(function (): void {

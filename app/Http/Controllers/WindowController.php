@@ -20,6 +20,6 @@ class WindowController extends Controller
 
     public function openUpdater(bool $darkMode): void
     {
-        // WindowService::openUpdater($darkMode);
+        WindowService::openUpdater($darkMode);
     }
 }

@@ -84,4 +84,9 @@ class WindowService
     {
         Window::close('home');
     }
+
+    public static function closeUpdater(): void
+    {
+        Window::close('updater');
+    }
 }

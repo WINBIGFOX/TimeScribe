@@ -84,7 +84,7 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             ->height(250)
             ->minHeight(250)
             ->resizable(false)
-            // ->showOnAllWorkspaces() TODO: Enable this when nativePHP supports it
+            ->showOnAllWorkspaces()
             ->icon(TrayIconService::getIcon())
             ->withContextMenu(
                 Menu::make(
