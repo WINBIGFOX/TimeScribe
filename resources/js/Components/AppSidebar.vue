@@ -60,10 +60,16 @@ const props = withDefaults(defineProps<SidebarProps>(), {
                             >
                                 <Bug />
                             </SidebarMenuButton>
-                            <div class="ml-auto space-x-1 text-left text-sm leading-tight">
+                            <Link
+                                :href="route('updater.check')"
+                                class="ml-auto space-x-1 text-left text-sm leading-tight"
+                                preserve-scroll
+                                preserve-state
+                                method="post"
+                            >
                                 <span class="font-medium">{{ $t('app.version') }}</span>
                                 <span class="text-xs">{{ $page.props.app_version }}</span>
-                            </div>
+                            </Link>
                         </div>
                     </SidebarMenuItem>
                 </SidebarMenuItem>

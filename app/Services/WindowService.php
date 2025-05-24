@@ -52,6 +52,29 @@ class WindowService
         }
     }
 
+    public static function openUpdater(bool $darkMode): void
+    {
+        $window = Window::open('updater')
+            ->webPreferences([
+                'devTools' => false,
+            ])
+            ->route('updater.index')
+            ->rememberState()
+            ->maximizable(false)
+            ->minimizable(false)
+            ->fullscreen(false)
+            ->resizable(false)
+            ->fullscreenable(false)
+            ->backgroundColor($darkMode ? '#171717' : '#fafafa')
+            ->showDevTools(false);
+
+        if (Environment::isWindows()) {
+            $window->height(424)->width(483)->hideMenu();
+        } else {
+            $window->height(390)->width(470)->titleBarHidden();
+        }
+    }
+
     public static function closeWelcome(): void
     {
         Window::close('welcome');
@@ -60,5 +83,10 @@ class WindowService
     public static function closeHome(): void
     {
         Window::close('home');
+    }
+
+    public static function closeUpdater(): void
+    {
+        Window::close('updater');
     }
 }

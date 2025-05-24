@@ -56,3 +56,6 @@ Schedule::command('db:optimize')
     ->everySixHours()
     ->withoutOverlapping()
     ->runInBackground();
+
+Schedule::command('app:check-update')->everyTwoHours();
+Schedule::command('app:check-can-install')->everyFiveMinutes();
