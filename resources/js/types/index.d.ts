@@ -1,3 +1,5 @@
+declare module 'vue3-emoji-picker'
+
 export interface Date {
     diff: string
     formatted: string
@@ -40,6 +42,7 @@ export interface Timestamp {
     description?: string
     last_ping_at?: Date
     source?: string
+    project?: Project
 }
 
 export interface ActivityHistory {
@@ -50,6 +53,18 @@ export interface ActivityHistory {
     app_category?: string
     started_at: Date
     ended_at?: Date
+}
+
+export interface Project {
+    id: number
+    name: string
+    description?: string
+    color: string
+    icon?: string
+    hourly_rate?: number
+    timestamps?: Timestamp[]
+    parent?: Project
+    children?: Project[]
 }
 
 export interface AppActivityHistory {

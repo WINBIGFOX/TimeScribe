@@ -22,6 +22,7 @@ class Timestamp extends Model
         'source',
         'created_at',
         'updated_at',
+        'project_id',
     ];
 
     protected $casts = [
@@ -31,8 +32,8 @@ class Timestamp extends Model
         'last_ping_at' => 'datetime',
     ];
 
-    public function tag(): BelongsTo
+    public function project(): BelongsTo
     {
-        return $this->belongsTo(Tag::class);
+        return $this->belongsTo(Project::class);
     }
 }

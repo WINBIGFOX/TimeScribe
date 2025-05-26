@@ -53,6 +53,7 @@
         "tailwindcss-animate": "^1.0.7",
         "tw-animate-css": "^1.3.0",
         "vaul-vue": "^0.4.1",
-        "vue3-apexcharts": "^1.8.0"
+        "vue3-apexcharts": "^1.8.0",
+        "vue3-emoji-picker": "^1.1.8"
     }
 }

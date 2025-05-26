@@ -34,7 +34,7 @@ class WindowService
         Window::get('home')->route($route);
         $window = Window::open('home')
             ->webPreferences([
-                'devTools' => false,
+                'devTools' => true,
             ])
             ->route($route)
             ->rememberState()
@@ -43,7 +43,7 @@ class WindowService
             ->resizable(false)
             ->fullscreenable(false)
             ->backgroundColor($darkMode ? '#171717' : '#fafafa')
-            ->showDevTools(false);
+            ->showDevTools(true);
 
         if (Environment::isWindows()) {
             $window->height(634)->width(1083)->hideMenu();

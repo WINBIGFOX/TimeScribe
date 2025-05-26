@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
-use App\Models\Tag;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin Tag
+ * @mixin Project
  */
-class TagResource extends JsonResource
+class ProjectResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -27,7 +27,10 @@ class TagResource extends JsonResource
             'description' => $this->description,
             'color' => $this->color,
             'icon' => $this->icon,
+            'hourly_rate' => $this->hourly_rate,
             'timestamps' => TimestampResource::collection($this->whenLoaded('timestamps')),
+            'parent' => ProjectResource::make($this->whenLoaded('parent')),
+            'children' => ProjectResource::collection($this->whenLoaded('children')),
         ];
     }
 }

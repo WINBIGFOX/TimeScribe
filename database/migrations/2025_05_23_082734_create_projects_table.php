@@ -13,17 +13,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tags', function (Blueprint $table): void {
+        Schema::create('projects', function (Blueprint $table): void {
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
             $table->string('color')->default('#000000');
             $table->string('icon')->nullable();
+            $table->decimal('hourly_rate', 10, 2)->nullable();
+            $table->foreignId('parent_id')->nullable()->constrained('projects')->nullOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('timestamps', function (Blueprint $table): void {
-            $table->foreignId('tag_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('project_id')->nullable()->constrained()->nullOnDelete();
         });
     }
 
@@ -33,9 +36,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('timestamps', function (Blueprint $table): void {
-            $table->dropForeign(['tag_id']);
-            $table->dropColumn('tag_id');
+            $table->dropForeign(['project_id']);
+            $table->dropColumn('project_id');
         });
-        Schema::dropIfExists('tag');
+        Schema::dropIfExists('projects');
     }
 };

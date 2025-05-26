@@ -14,16 +14,14 @@ use App\Http\Controllers\Overview\DayController;
 use App\Http\Controllers\Overview\MonthController;
 use App\Http\Controllers\Overview\WeekController;
 use App\Http\Controllers\Overview\YearController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\Settings\GeneralController;
 use App\Http\Controllers\Settings\StartStopController;
-use App\Http\Controllers\TagController;
 use App\Http\Controllers\TimestampController;
 use App\Http\Controllers\UpdaterController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\WindowController;
 use App\Http\Controllers\WorkScheduleController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect()->route('overview.week.index'))->name('home');
 
@@ -46,6 +44,8 @@ Route::name('menubar.')->prefix('menubar')->group(function (): void {
     Route::post('work', [MenubarController::class, 'storeWork'])->name('storeWork');
     Route::post('stop', [MenubarController::class, 'storeStop'])->name('storeStop');
     Route::post('resize', [MenubarController::class, 'resize'])->name('resize');
+    Route::post('set-project/{project}', [MenubarController::class, 'setProject'])->name('set-project');
+    Route::post('remove-project', [MenubarController::class, 'removeProject'])->name('remove-project');
 });
 
 Route::name('window.')->prefix('window')->group(function (): void {
@@ -87,7 +87,7 @@ Route::resource('work-schedule', WorkScheduleController::class)->only('index', '
 
 Route::resource('app-activity', AppActivityController::class)->only(['index', 'show']);
 
-Route::resource('tag', TagController::class);
+Route::resource('project', ProjectController::class);
 
 Route::name('absence.')->prefix('absence')->group(function (): void {
     Route::get('', [AbsenceController::class, 'index'])->name('index');

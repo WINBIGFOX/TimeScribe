@@ -99,14 +99,14 @@ router.on('navigate', () => {
                 <SidebarMenuButton as-child>
                     <Link
                         :class="{
-                            'text-primary! font-bold': ['tag.index', 'tag.edit', 'tag.create'].includes(current ?? '')
+                            'text-primary! font-bold': ['project.index', 'project.edit', 'project.create'].includes(current ?? '')
                         }"
-                        :href="route('tag.index')"
+                        :href="route('project.index')"
                         class="transition-all duration-200"
                         prefetch
                     >
                         <Tag />
-                        {{ $t('app.projects and tags') }}
+                        {{ $t('app.projects') }}
                     </Link>
                 </SidebarMenuButton>
             </SidebarMenuItem>

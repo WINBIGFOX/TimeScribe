@@ -13,6 +13,7 @@ use App\Models\Timestamp;
 use App\Models\WeekBalance;
 use App\Models\WorkSchedule;
 use App\Settings\GeneralSettings;
+use App\Settings\ProjectSettings;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Collection;
@@ -26,8 +27,10 @@ class TimestampService
 {
     private static function create(TimestampTypeEnum $type): void
     {
+        $project = app(ProjectSettings::class)->currentProject;
         Timestamp::create([
             'type' => $type,
+            'project_id' => $project,
             'started_at' => now(),
             'last_ping_at' => now(),
         ]);
