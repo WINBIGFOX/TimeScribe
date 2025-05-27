@@ -94,6 +94,12 @@ watch(holidayCheck, () => {
                         <SelectItem value="en_US">
                             {{ $t('app.english (US)') }}
                         </SelectItem>
+                        <SelectItem value="fr_CA">
+                            {{ $t('app.french (CA)') }}
+                        </SelectItem>
+                        <SelectItem value="fr_FR">
+                            {{ $t('app.french (FR)') }}
+                        </SelectItem>
                         <SelectItem value="zh_CN">
                             {{ $t('app.chinese') }}
                         </SelectItem>
@@ -194,8 +200,13 @@ watch(holidayCheck, () => {
                         <SelectValue placeholder="Region" />
                     </SelectTrigger>
                     <SelectContent>
-                        <template :key="key" v-for="(name, key) in props.holidayRegions" >
-                            <SelectSeparator v-if="key.toString().length === 2 && (key.toString()) !== Object.keys(props.holidayRegions)[0]" />
+                        <template :key="key" v-for="(name, key) in props.holidayRegions">
+                            <SelectSeparator
+                                v-if="
+                                    key.toString().length === 2 &&
+                                    key.toString() !== Object.keys(props.holidayRegions)[0]
+                                "
+                            />
                             <SelectItem :value="key">{{ name }}</SelectItem>
                         </template>
                     </SelectContent>

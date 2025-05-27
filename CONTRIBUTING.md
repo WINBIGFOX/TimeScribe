@@ -5,15 +5,15 @@ Thank you for considering contributing to TimeScribe! This document provides gui
 ## Table of Contents
 
 - [Getting Started](#getting-started)
-  - [Development Environment Setup](#development-environment-setup)
-  - [Running the Application](#running-the-application)
+    - [Development Environment Setup](#development-environment-setup)
+    - [Running the Application](#running-the-application)
 - [Development Workflow](#development-workflow)
-  - [Branching Strategy](#branching-strategy)
-  - [Commit Messages](#commit-messages)
+    - [Branching Strategy](#branching-strategy)
+    - [Commit Messages](#commit-messages)
 - [Pull Request Process](#pull-request-process)
 - [Coding Standards](#coding-standards)
-  - [PHP Code Style](#php-code-style)
-  - [TypeScript/Vue Code Style](#typescriptvue-code-style)
+    - [PHP Code Style](#php-code-style)
+    - [TypeScript/Vue Code Style](#typescriptvue-code-style)
 - [Testing](#testing)
 - [Translations](#translations)
 - [Reporting Bugs](#reporting-bugs)
@@ -25,45 +25,50 @@ Thank you for considering contributing to TimeScribe! This document provides gui
 ### Development Environment Setup
 
 1. **Prerequisites**:
-   - PHP 8.4 or higher
-   - Composer
-   - Node.js (LTS version recommended)
-   - npm
-   - Git
+
+    - PHP 8.4 or higher
+    - Composer
+    - Node.js (LTS version recommended)
+    - npm
+    - Git
 
 2. **Clone the repository**:
-   ```bash
-   git clone https://github.com/WINBIGFOX/timescribe.git
-   cd timescribe
-   ```
+
+    ```bash
+    git clone https://github.com/WINBIGFOX/timescribe.git
+    cd timescribe
+    ```
 
 3. **Install dependencies**:
-   ```bash
-   composer install
-   npm install
-   ```
+
+    ```bash
+    composer install
+    npm install
+    ```
 
 4. **Environment setup**:
-   ```bash
-   cp .env.example .env
-   php artisan key:generate
-   ```
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
 
 ### Running the Application
 
 For local development, you can use the following commands:
 
 - **Web development mode**:
-  ```bash
-  composer dev
-  ```
-  This runs the Laravel server, queue worker, log viewer, and Vite development server concurrently.
+
+    ```bash
+    composer dev
+    ```
+
+    This runs the Laravel server, queue worker, log viewer, and Vite development server concurrently.
 
 - **Native app development mode**:
-  ```bash
-  composer native:dev
-  ```
-  This runs the NativePHP/Electron app with hot reloading.
+    ```bash
+    composer native:dev
+    ```
+    This runs the NativePHP/Electron app with hot reloading.
 
 ## Development Workflow
 
@@ -85,6 +90,7 @@ More detailed explanation if necessary
 ```
 
 Types:
+
 - `feat`: A new feature
 - `fix`: A bug fix
 - `docs`: Documentation changes

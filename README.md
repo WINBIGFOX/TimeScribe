@@ -60,6 +60,7 @@ remote, hybrid, or office-based, TimeScribe helps you stay focused and organized
 ## 💬 Supported Languages
 
 - 🇬🇧 English (UK/US)
+- 🇫🇷 French (FR/CA)
 - 🇩🇪 German
 - 🇨🇳 Chinese (中文)
 
@@ -170,12 +171,14 @@ php artisan native:build win
 ---
 
 ## 👥 Community & Contributing
+
 - 👉 [GitHub Discussions](https://github.com/WINBIGFOX/TimeScribe/discussions)
 - 🐞 [GitHub Issues](https://github.com/WINBIGFOX/TimeScribe/issues)
 - 🛠️ [Contributing Guide](CONTRIBUTING.md)
 - ⛳️ [TimeScribe Feature-Roadmap](https://github.com/users/WINBIGFOX/projects/5)
 
 ---
+
 ## 💖 Sponsor & License
 
 <b>Love TimeScribe?</b><br/>
@@ -187,7 +190,3 @@ php artisan native:build win
 </a>
 
 This project is licensed under the [GPL-3.0 License](LICENSE).
-
-
-
-

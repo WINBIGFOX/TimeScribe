@@ -72,7 +72,7 @@ const submit = () => {
                     :label="$t('app.start at:')"
                     :max="form.ended_at"
                     :min="min_time"
-                    :twelve-hour-format="$page.props.locale === 'en_US'"
+                    :twelve-hour-format="['en_US'].includes($page.props.locale)"
                     v-model="form.started_at"
                 />
                 <MoveRight class="text-muted-foreground size-4" />
@@ -80,7 +80,7 @@ const submit = () => {
                     :label="$t('app.end at:')"
                     :max="max_time"
                     :min="form.started_at"
-                    :twelve-hour-format="$page.props.locale === 'en_US'"
+                    :twelve-hour-format="['en_US'].includes($page.props.locale)"
                     v-model="form.ended_at"
                 />
             </div>

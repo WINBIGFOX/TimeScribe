@@ -55,7 +55,11 @@ watch(
 
         <h1 class="text-2xl font-bold">{{ $t('app.update available') }}</h1>
         <p class="text-muted-foreground text-center text-sm text-balance">
-            {{ $t('app.a new version of the app is available. please install the latest version to enjoy new features and improvements.') }}
+            {{
+                $t(
+                    'app.a new version of the app is available. please install the latest version to enjoy new features and improvements.'
+                )
+            }}
         </p>
         <div class="flex items-center gap-4 text-sm font-medium">
             <div>{{ $t('app.current') }}: {{ $page.props.app_version }}</div>

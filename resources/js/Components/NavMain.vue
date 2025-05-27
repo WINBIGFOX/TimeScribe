@@ -10,7 +10,7 @@ import {
 } from '@/Components/ui/sidebar'
 import { Link, router, usePage } from '@inertiajs/vue3'
 import { AppWindowMac, ChartColumnBig, Cog, FileChartColumn, FileClock, Tag, TentTree } from 'lucide-vue-next'
-import moment from 'moment/moment'
+import moment from 'moment/min/moment-with-locales'
 import { ref } from 'vue'
 
 const date = ref(moment(usePage().props.date ?? undefined, 'DD.MM.YYYY').format('YYYY-MM-DD'))
