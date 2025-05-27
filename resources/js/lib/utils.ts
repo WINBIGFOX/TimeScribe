@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from 'clsx'
+import moment from 'moment/min/moment-with-locales'
 import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
@@ -42,38 +43,32 @@ export function secToFormat(
 }
 
 export function weekdayTranslate(weekday: string) {
-    switch (weekday) {
-        case 'Montag':
-            return 'Monday'
-        case 'Dienstag':
-            return 'Tuesday'
-        case 'Mittwoch':
-            return 'Wednesday'
-        case 'Donnerstag':
-            return 'Thursday'
-        case 'Freitag':
-            return 'Friday'
-        case 'Samstag':
-            return 'Saturday'
-        case 'Sonntag':
-            return 'Sunday'
-        case '星期一':
-            return 'Monday'
-        case '星期二':
-            return 'Tuesday'
-        case '星期三':
-            return 'Wednesday'
-        case '星期四':
-            return 'Thursday'
-        case '星期五':
-            return 'Friday'
-        case '星期六':
-            return 'Saturday'
-        case '星期日':
-            return 'Sunday'
-        default:
-            return weekday
+    const englishWeekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    if (englishWeekdays.includes(weekday)) {
+        return weekday
     }
+
+    const locales = ['en', 'de', 'fr', 'zh-cn']
+
+    const currentLocale = moment.locale()
+
+    for (const locale of locales) {
+        moment.locale(locale)
+        const localizedWeekdays = moment.weekdays()
+
+        const index = localizedWeekdays.findIndex((day) => day.toLowerCase() === weekday.toLowerCase())
+
+        if (index !== -1) {
+            moment.locale('en')
+            const englishWeekday = moment.weekdays()[index]
+            moment.locale(currentLocale)
+            return englishWeekday
+        }
+    }
+
+    moment.locale(currentLocale)
+
+    return weekday
 }
 
 export function categoryIcon(category: string) {

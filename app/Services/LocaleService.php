@@ -16,6 +16,8 @@ class LocaleService
         'de_DE' => 'de',
         'en_US' => 'en',
         'en_GB' => 'en',
+        'fr_CA' => 'fr',
+        'fr_FR' => 'fr',
     ];
 
     private readonly GeneralSettings $settings;
