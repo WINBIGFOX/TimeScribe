@@ -7,6 +7,7 @@ import { useCssVar } from '@vueuse/core'
 import { ApexOptions } from 'apexcharts'
 import de from 'apexcharts/dist/locales/de.json'
 import en from 'apexcharts/dist/locales/en.json'
+import fr from 'apexcharts/dist/locales/fr.json'
 import zhCn from 'apexcharts/dist/locales/zh-cn.json'
 import { trans } from 'laravel-vue-i18n'
 import moment from 'moment/min/moment-with-locales'
@@ -30,6 +31,8 @@ const localeMapping = {
     'de-DE': 'de',
     'en-GB': 'en',
     'en-US': 'en',
+    'fr-FR': 'fr',
+    'fr-CA': 'fr',
     'zh-CN': 'zh-cn'
 }
 const currentLocale = localeMapping[usePage().props.js_locale]
@@ -63,7 +66,7 @@ const data = {
             },
             background: 'transparent',
             fontFamily: 'var(--font-sans)',
-            locales: [de, en, zhCn],
+            locales: [de, en, fr, zhCn],
             defaultLocale: currentLocale,
             type: 'bar',
             stacked: true,
