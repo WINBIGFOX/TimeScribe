@@ -124,8 +124,8 @@ router.on('finish', () => {
         </div>
         <div
             :class="{
-                'pt-8': props.currentType !== 'work' || !props.currentAppActivity,
-                'pt-0': props.currentType === 'work' && props.currentAppActivity
+                'pt-8': props.currentType !== 'work' || !props.currentAppActivity || props.updateAvailable,
+                'pt-0': props.currentType === 'work' && props.currentAppActivity && !props.updateAvailable
             }"
             class="flex grow flex-col items-center justify-center transition-all duration-1000"
         >

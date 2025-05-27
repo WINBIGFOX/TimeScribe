@@ -200,8 +200,13 @@ watch(holidayCheck, () => {
                         <SelectValue placeholder="Region" />
                     </SelectTrigger>
                     <SelectContent>
-                        <template :key="key" v-for="(name, key) in props.holidayRegions" >
-                            <SelectSeparator v-if="key.toString().length === 2 && (key.toString()) !== Object.keys(props.holidayRegions)[0]" />
+                        <template :key="key" v-for="(name, key) in props.holidayRegions">
+                            <SelectSeparator
+                                v-if="
+                                    key.toString().length === 2 &&
+                                    key.toString() !== Object.keys(props.holidayRegions)[0]
+                                "
+                            />
                             <SelectItem :value="key">{{ name }}</SelectItem>
                         </template>
                     </SelectContent>
