@@ -10,6 +10,16 @@ import BasicLayout from '@/Layouts/BasicLayout.vue'
 import { Project } from '@/types'
 import EmojiPicker from 'vue3-emoji-picker'
 import 'vue3-emoji-picker/css'
+import {
+    NumberField,
+    NumberFieldContent,
+    NumberFieldDecrement,
+    NumberFieldIncrement,
+    NumberFieldInput
+} from '@/Components/ui/number-field'
+import { EmojiSelect } from '@/Components/ui-custom/emoji-select'
+import { ColorSelect } from '@/Components/ui-custom/color-select'
+import { Textarea } from '@/Components/ui/textarea'
 
 defineOptions({
     layout: BasicLayout
@@ -18,7 +28,6 @@ defineOptions({
 const props = defineProps<{
     submit_route: string
     project: Project
-    projects?: Project[]
 }>()
 
 const form = useForm({
@@ -27,7 +36,7 @@ const form = useForm({
     color: props.project.color,
     icon: props.project.icon || '',
     hourly_rate: props.project.hourly_rate || 0,
-    parent_id: props.project.parent?.id
+    currency: 'USD'
 })
 
 const submit = () => {
@@ -52,74 +61,57 @@ const setEmoji = (emoji: { i: string }) => {
         :title="$t('app.edit project')"
         @submit="submit"
     >
-        <div class="grid gap-6 py-4">
-            <div class="flex flex-col gap-2">
-                <span class="text-sm leading-none font-medium">{{ $t('app.basic information') }}</span>
-                <div class="grid grid-cols-4 items-center gap-4">
-                    <label class="text-right text-sm">Name</label>
-                    <Input class="col-span-3" v-model="form.name" />
-                </div>
-                <div class="grid grid-cols-4 items-center gap-4">
-                    <label class="text-right text-sm">Description</label>
-                    <Input class="col-span-3" v-model="form.description" />
-                </div>
+        <div class="flex flex-col gap-2 py-4">
+            <span class="text-sm leading-none font-medium">{{ $t('app.project name') }}</span>
+            <Input v-model="form.name" />
+        </div>
+        <div class="flex flex-col gap-2 py-4">
+            <span class="text-sm leading-none font-medium">{{ $t('app.description') }}</span>
+            <Textarea class="h-10" v-model="form.description" />
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col gap-2 py-4">
+                <span class="text-sm leading-none font-medium">{{ $t('app.color') }}</span>
+                <ColorSelect required v-model="form.color" />
             </div>
-
-            <div class="flex flex-col gap-2">
-                <span class="text-sm leading-none font-medium">{{ $t('app.appearance') }}</span>
-                <div class="grid grid-cols-4 items-center gap-4">
-                    <label class="text-right text-sm">Color</label>
-                    <div class="col-span-3 flex items-center gap-2">
-                        <input class="h-8 w-8 cursor-pointer rounded border-0" type="color" v-model="form.color" />
-                        <Input v-model="form.color" />
-                    </div>
-                </div>
-                <div class="grid grid-cols-4 items-center gap-4">
-                    <label class="text-right text-sm">Icon</label>
-                    <div class="col-span-3 flex items-center gap-2">
-                        <div
-                            :style="{ backgroundColor: form.color }"
-                            class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-white"
-                        >
-                            <span v-if="form.icon">{{ form.icon }}</span>
-                        </div>
-                        <Input v-model="form.icon" />
-                        <Popover>
-                            <PopoverTrigger>
-                                <Button class="h-8 w-8" size="icon" type="button" variant="outline">
-                                    <span v-if="form.icon">{{ form.icon }}</span>
-                                    <span v-else>😀</span>
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent class="w-auto p-0">
-                                <EmojiPicker @select="setEmoji" hide-group-names hide-search native theme="auto" />
-                            </PopoverContent>
-                        </Popover>
-                    </div>
-                </div>
+            <div class="flex flex-col gap-2 py-4">
+                <span class="text-sm leading-none font-medium">{{ $t('app.color') }}</span>
+                <EmojiSelect v-model="form.icon" />
             </div>
-
-            <div class="flex flex-col gap-2">
-                <span class="text-sm leading-none font-medium">{{ $t('app.billing') }}</span>
-                <div class="grid grid-cols-4 items-center gap-4">
-                    <label class="text-right text-sm">Hourly Rate (€)</label>
-                    <Input class="col-span-3" step="0.01" type="number" v-model="form.hourly_rate" />
-                </div>
-            </div>
-
-            <div class="grid grid-cols-4 items-center gap-4" v-if="props.projects">
-                <label class="text-right text-sm">Projekt</label>
-                <Select class="col-span-3" v-model="form.parent_id">
-                    <SelectTrigger>
-                        <SelectValue placeholder="Projekt auswählen" />
+        </div>
+        <div class="flex flex-col gap-2 py-4">
+            <span class="text-sm leading-none font-medium">{{ $t('app.hourly rate') }}</span>
+            <div class="flex gap-2">
+                <Select v-model="form.currency">
+                    <SelectTrigger class="w-24">
+                        <SelectValue :placeholder="$t('app.select currency')" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem :value="null">Kein (als Projekt anlegen)</SelectItem>
-                        <SelectItem :key="project.id" :value="project.id" v-for="project in props.projects">
-                            {{ project.name }}
-                        </SelectItem>
+                        <SelectItem value="KRW">₩ KRW</SelectItem>
+                        <SelectItem value="USD">$ USD</SelectItem>
+                        <SelectItem value="EUR">€ EUR</SelectItem>
                     </SelectContent>
                 </Select>
+                <NumberField
+                    :format-options="{
+                        style: 'currency',
+                        currency: form.currency,
+                        currencyDisplay: 'symbol',
+                        currencySign: 'accounting',
+                        minimumFractionDigits: 0
+                    }"
+                    :locale="$page.props.js_locale"
+                    :min="0"
+                    :step="1"
+                    class="w-32"
+                    v-model.lazy="form.hourly_rate"
+                >
+                    <NumberFieldContent>
+                        <NumberFieldDecrement />
+                        <NumberFieldInput />
+                        <NumberFieldIncrement />
+                    </NumberFieldContent>
+                </NumberField>
             </div>
         </div>
     </SheetDialog>

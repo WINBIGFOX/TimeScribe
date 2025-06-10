@@ -5,7 +5,7 @@ import { secToFormat } from '@/lib/utils'
 import { ActivityHistory, Project } from '@/types'
 import { Head, Link, router, usePoll } from '@inertiajs/vue3'
 import { useColorMode } from '@vueuse/core'
-import { ChartPie, Coffee, Cog, Play, Sparkles, Square, Tag, X } from 'lucide-vue-next'
+import { ChartPie, Coffee, Cog, Play, Plus, Sparkles, Square, Tag, X } from 'lucide-vue-next'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 defineOptions({
@@ -130,11 +130,6 @@ const removeProject = () => {
             preserveState: true
         }
     )
-}
-
-const getVisibleChildren = (project: Project) => {
-    if (!project.children) return []
-    return project.children.filter(childProject => childProject.id !== props.currentProject?.id)
 }
 </script>
 
@@ -277,53 +272,8 @@ const getVisibleChildren = (project: Project) => {
             <div class="flex grow flex-col overflow-hidden" v-if="props.projects && openProjectList">
                 <div class="text-muted-foreground p-2 px-2 text-sm">Projekte</div>
                 <div class="scroll-shadow-y flex grow flex-col gap-1 overflow-y-auto">
-                    <!-- Projekte (ohne Parent) -->
-                    <template :key="project.id" v-for="project in props.projects.filter(t => !t.parent_id)">
-                        <div
-                            :style="'--project-color: ' + (project.color ?? '#000000')"
-                            class="mx-2 flex h-9 items-center gap-2 rounded-md border-l-6 border-l-[var(--project-color)] bg-[var(--project-color)]/10 pl-2 text-sm font-medium dark:bg-[var(--project-color)]/20"
-                            v-if="project.id !== props.currentProject?.id"
-                        >
-                            <div class="flex h-9 items-center text-xl" v-if="project.icon">
-                                {{ project.icon }}
-                            </div>
-                            {{ project.name }}
-                            <Button
-                                @click="setProject(project)"
-                                class="mr-0.5 ml-auto !px-2 shadow-none"
-                                size="sm"
-                                variant="outline"
-                            >
-                                <Play class="size-4" />
-                            </Button>
-                        </div>
-
-                        <!-- Unterprojekte zu diesem Projekt -->
-                        <template v-if="project.children && project.children.length > 0">
-                            <div
-                                :style="'--project-color: ' + (childProject.color ?? '#000000')"
-                                class="mx-2 ml-6 flex h-8 items-center gap-2 rounded-md border-l-4 border-l-[var(--project-color)] bg-[var(--project-color)]/5 pl-2 text-xs font-medium dark:bg-[var(--project-color)]/10"
-                                v-for="childProject in getVisibleChildren(project)"
-                                :key="childProject.id"
-                            >
-                                <div class="flex h-8 items-center text-sm" v-if="childProject.icon">
-                                    {{ childProject.icon }}
-                                </div>
-                                {{ childProject.name }}
-                                <Button
-                                    @click="setProject(childProject)"
-                                    class="mr-0.5 ml-auto !px-1.5 shadow-none"
-                                    size="xs"
-                                    variant="outline"
-                                >
-                                    <Play class="size-3" />
-                                </Button>
-                            </div>
-                        </template>
-                    </template>
-
                     <!-- Einzelne Projekte (mit parent_id aber Parent nicht geladen) -->
-                    <template :key="project.id" v-for="project in props.projects.filter(t => t.parent_id && !props.projects.find(p => p.id === t.parent_id))">
+                    <template :key="project.id" v-for="project in props.projects">
                         <div
                             :style="'--project-color: ' + (project.color ?? '#000000')"
                             class="mx-2 flex h-9 items-center gap-2 rounded-md border-l-6 border-l-[var(--project-color)] bg-[var(--project-color)]/10 pl-2 text-sm font-medium dark:bg-[var(--project-color)]/20"
@@ -343,6 +293,54 @@ const getVisibleChildren = (project: Project) => {
                             </Button>
                         </div>
                     </template>
+
+                    <Button
+                        :as="Link"
+                        :href="
+                            route('window.new-project.open', {
+                                darkMode: state === 'dark' ? 1 : 0
+                            })
+                        "
+                        class="mx-2 mb-2"
+                        preserve-scroll
+                        preserve-state
+                        size="sm"
+                        variant="secondary"
+                        v-if="props.projects.length"
+                    >
+                        <Plus class="size-4" />
+                        Neues Projekt anlegen
+                    </Button>
+
+                    <div class="px-2 text-sm" v-if="props.projects.length === 0">
+                        <div
+                            class="bg-muted dark:bg-muted/60 border-border flex flex-col items-center gap-2 rounded-lg border px-2 py-4 text-center"
+                        >
+                            <div>
+                                <Tag class="size-6" />
+                            </div>
+                            <p class="font-medium">Keine Projekte angelegt</p>
+                            <p class="text-muted-foreground">
+                                Lege ein neues Projekt an, um Projektzeiten zu erfassen.
+                            </p>
+                            <Button
+                                :as="Link"
+                                :href="
+                                    route('window.new-project.open', {
+                                        darkMode: state === 'dark' ? 1 : 0
+                                    })
+                                "
+                                class="mt-2"
+                                preserve-scroll
+                                preserve-state
+                                size="sm"
+                                variant="outline"
+                            >
+                                <Plus />
+                                Neues Projekt anlegen
+                            </Button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

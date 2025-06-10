@@ -8,6 +8,7 @@ use App\Jobs\CalculateWeekBalance;
 use App\Services\LocaleService;
 use App\Services\TimestampService;
 use App\Settings\GeneralSettings;
+use App\Settings\ProjectSettings;
 use Native\Laravel\Events\App\ApplicationBooted;
 use Native\Laravel\Facades\MenuBar;
 
@@ -33,6 +34,11 @@ class Booted
         if ($settings->showTimerOnUnlock) {
             sleep(1);
             MenuBar::clearResolvedInstances();
+            $height = 250;
+            if (app(ProjectSettings::class)->currentProject) {
+                $height = 298;
+            }
+            MenuBar::resize(300, $height);
             MenuBar::show();
         }
     }

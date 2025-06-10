@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('color')->default('#000000');
             $table->string('icon')->nullable();
             $table->decimal('hourly_rate', 10, 2)->nullable();
-            $table->foreignId('parent_id')->nullable()->constrained('projects')->nullOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });

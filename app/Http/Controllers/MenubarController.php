@@ -49,7 +49,7 @@ class MenubarController extends Controller
             'currentAppActivity' => fn () => $currentAppActivity ? ActivityHistoryResource::make($currentAppActivity) : null,
             'activeAppActivity' => $settings->appActivityTracking,
             'updateAvailable' => $autoUpdaterSettings->isDownloaded,
-            'projects' => Inertia::optional(fn () => ProjectResource::collection(Project::with('children')->get())),
+            'projects' => Inertia::optional(fn () => ProjectResource::collection(Project::all())),
         ]);
     }
 

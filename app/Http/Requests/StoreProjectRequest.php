@@ -29,7 +29,6 @@ class StoreProjectRequest extends FormRequest
             'color' => ['required', 'string', 'max:255'],
             'icon' => ['nullable', 'string'],
             'hourly_rate' => ['nullable', 'numeric', 'min:0'],
-            'parent_id' => ['nullable', 'exists:projects,id'],
         ];
     }
 }

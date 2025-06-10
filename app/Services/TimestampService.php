@@ -9,6 +9,7 @@ use App\Events\TimerStarted;
 use App\Events\TimerStopped;
 use App\Jobs\CalculateWeekBalance;
 use App\Models\Absence;
+use App\Models\Project;
 use App\Models\Timestamp;
 use App\Models\WeekBalance;
 use App\Models\WorkSchedule;
@@ -132,7 +133,22 @@ class TimestampService
         }
     }
 
-    private static function getTime(TimestampTypeEnum $type, ?Carbon $date, ?Carbon $endDate = null, ?bool $fallbackNow = true): float
+    /**
+     * Calculates the total time for a given type of timestamp between two dates.
+     *
+     * This method retrieves timestamp records based on the provided type, start date,
+     * and end date. It also considers holidays and absences, adjusting the calculated
+     * time accordingly. If no end date is provided, it defaults to the start date.
+     * Additionally, the method includes an option to use the current time as a fallback
+     * for ongoing timestamps.
+     *
+     * @param  TimestampTypeEnum  $type  The type of timestamp to calculate.
+     * @param  Carbon|null  $date  The start date for the calculation. Defaults to the current date if null.
+     * @param  Carbon|null  $endDate  The end date for the calculation. Defaults to the start date if null.
+     * @param  bool|null  $fallbackNow  Whether to use the current time as a fallback for ongoing timestamps. Defaults to true.
+     * @return float The total calculated time in seconds.
+     */
+    private static function getTime(TimestampTypeEnum $type, ?Carbon $date, ?Carbon $endDate = null, ?bool $fallbackNow = true, ?Project $project = null): float
     {
         if (! $date instanceof Carbon) {
             $date = Carbon::now();
@@ -141,25 +157,31 @@ class TimestampService
             $endDate = $date->copy();
         }
 
-        $holiday = self::getHoliday([$date->year, $endDate->year]);
-        $absence = self::getAbsence($date, $endDate);
-
         $timestamps = Timestamp::whereDate('started_at', '>=', $date->startOfDay())
             ->whereDate('started_at', '<=', $endDate->endOfDay())
+            ->when($project, function ($query) use ($project) {
+                return $query->where('project_id', $project->id);
+            })
             ->where('type', $type)
             ->get();
 
         $absenceTime = 0;
 
-        $periode = CarbonPeriod::create($date, $endDate);
+        if (! $project) {
 
-        if ($type === TimestampTypeEnum::WORK) {
-            foreach ($periode as $rangeDate) {
-                if (
-                    $holiday->filter(fn (Carbon $holiday) => $holiday->isSameDay($rangeDate))->isNotEmpty() ||
-                    $absence->filter(fn (Absence $absence) => $absence->date->isSameDay($rangeDate))->isNotEmpty()
-                ) {
-                    $absenceTime += (self::getPlan($rangeDate)) * 60 * 60;
+            $holiday = self::getHoliday([$date->year, $endDate->year]);
+            $absence = self::getAbsence($date, $endDate);
+
+            $periode = CarbonPeriod::create($date, $endDate);
+
+            if ($type === TimestampTypeEnum::WORK) {
+                foreach ($periode as $rangeDate) {
+                    if (
+                        $holiday->filter(fn (Carbon $holiday) => $holiday->isSameDay($rangeDate))->isNotEmpty() ||
+                        $absence->filter(fn (Absence $absence) => $absence->date->isSameDay($rangeDate))->isNotEmpty()
+                    ) {
+                        $absenceTime += (self::getPlan($rangeDate)) * 60 * 60;
+                    }
                 }
             }
         }
@@ -172,14 +194,23 @@ class TimestampService
         }) + $absenceTime;
     }
 
-    public static function getWorkTime(?Carbon $date = null, ?Carbon $endDate = null): float
+    public static function getWorkTime(?Carbon $date = null, ?Carbon $endDate = null, ?Project $project = null): float
     {
-        return self::getTime(TimestampTypeEnum::WORK, $date, $endDate);
+        return self::getTime(
+            type: TimestampTypeEnum::WORK,
+            date: $date,
+            endDate: $endDate,
+            project: $project
+        );
     }
 
     public static function getBreakTime(?Carbon $date = null, ?Carbon $endDate = null): float
     {
-        return self::getTime(TimestampTypeEnum::BREAK, $date, $endDate);
+        return self::getTime(
+            type: TimestampTypeEnum::BREAK,
+            date: $date,
+            endDate: $endDate
+        );
     }
 
     public static function getNoWorkTime(?Carbon $date = null): float
@@ -210,7 +241,7 @@ class TimestampService
         return Timestamp::whereNull('ended_at')->first()?->type;
     }
 
-    public static function getTimestamps(Carbon $date, ?Carbon $endDate = null): Collection
+    public static function getTimestamps(Carbon $date, ?Carbon $endDate = null, ?Project $project = null): Collection
     {
         if (! $endDate instanceof Carbon) {
             $endDate = $date->copy();
@@ -218,6 +249,9 @@ class TimestampService
 
         return Timestamp::whereDate('started_at', '>=', $date->startOfDay())
             ->whereDate('started_at', '<=', $endDate->endOfDay())
+            ->when($project, function ($query) use ($project) {
+                return $query->where('project_id', $project->id);
+            })
             ->orderBy('started_at')
             ->get();
     }
@@ -327,7 +361,7 @@ class TimestampService
         return $workdays->filter(fn ($value): bool => $value >= $workTime)->first() ?? $workdays->last();
     }
 
-    public static function getDatesWithTimestamps(?Carbon $date, ?Carbon $endDate = null): Collection
+    public static function getDatesWithTimestamps(?Carbon $date, ?Carbon $endDate = null, ?Project $project = null): Collection
     {
         if (! $date instanceof Carbon) {
             $date = Carbon::now();
@@ -335,17 +369,22 @@ class TimestampService
         if (! $endDate instanceof Carbon) {
             $endDate = $date->copy();
         }
-        $holiday = self::getHoliday(range($date->year, $endDate->year))->map(fn (Carbon $holiday): string => $holiday->format('Y-m-d'));
 
-        $absence = self::getAbsence($date, $endDate)->map(fn (Absence $absence) => $absence->date->format('Y-m-d'));
+        $timestampDates = self::getTimestamps($date, $endDate, $project)->map(fn (Timestamp $timestamp) => $timestamp->started_at->format('Y-m-d'));
 
-        $timestampDates = self::getTimestamps($date, $endDate)->map(fn (Timestamp $timestamp) => $timestamp->started_at->format('Y-m-d'));
+        if (! $project) {
+            $holiday = self::getHoliday(range($date->year, $endDate->year))->map(fn (Carbon $holiday): string => $holiday->format('Y-m-d'));
 
-        if ($timestampDates->isEmpty()) {
-            return $holiday->unique()->sort()->values();
+            $absence = self::getAbsence($date, $endDate)->map(fn (Absence $absence) => $absence->date->format('Y-m-d'));
+
+            if ($timestampDates->isEmpty()) {
+                return $holiday->unique()->sort()->values();
+            }
+
+            $timestampDates = $timestampDates->merge($holiday)->merge($absence);
         }
 
-        return $timestampDates->merge($holiday)->merge($absence)->unique()->sort()->values();
+        return $timestampDates->unique()->sort()->values();
     }
 
     public static function getActiveWork(Carbon $date): bool

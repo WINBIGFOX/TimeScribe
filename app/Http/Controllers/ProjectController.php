@@ -18,7 +18,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::with(['children'])->get();
+        $projects = Project::with('timestamps')->get()->append('work_time');
 
         return Inertia::render('Project/Index', [
             'projects' => ProjectResource::collection($projects),
@@ -30,13 +30,8 @@ class ProjectController extends Controller
      */
     public function create(Request $request)
     {
-        $projects = Project::whereNull('parent_id')->get();
-        $parentId = $request->input('parent_id');
-
         return Inertia::modal('Project/Create', [
             'submit_route' => route('project.store'),
-            'parent_id' => $parentId,
-            'projects' => ProjectResource::collection($projects),
         ])->baseRoute('project.index');
     }
 
@@ -46,7 +41,6 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         $data = $request->validated();
-
         Project::create($data);
 
         return redirect()->route('project.index');
@@ -57,12 +51,9 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        $projects = Project::whereNull('parent_id')->whereNot('id', $project->id)->get();
-
         return Inertia::modal('Project/Edit', [
             'submit_route' => route('project.update', $project),
             'project' => ProjectResource::make($project),
-            'projects' => ProjectResource::collection($projects),
         ])->baseRoute('project.index');
     }
 
@@ -72,13 +63,13 @@ class ProjectController extends Controller
     public function update(StoreProjectRequest $request, Project $project)
     {
         $data = $request->validated();
-
-        // Prevent circular references
-        if (array_key_exists('parent_id', $data) && $data['parent_id'] === $project->id) {
-            $data['parent_id'] = null;
-        }
-
-        $project->update($data);
+        $project->update([
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'color' => $data['color'],
+            'icon' => $data['icon'] ?? null,
+            'hourly_rate' => $data['hourly_rate'] ?? null,
+        ]);
 
         return redirect()->route('project.index');
     }
@@ -89,8 +80,6 @@ class ProjectController extends Controller
     public function destroy(DestroyProjectRequest $request, Project $project)
     {
         $request->validated();
-        Project::where('parent_id', $project->id)->update(['parent_id' => null]);
-
         $project->delete();
 
         return redirect()->route('project.index');

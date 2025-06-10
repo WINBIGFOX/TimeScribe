@@ -28,9 +28,8 @@ class ProjectResource extends JsonResource
             'color' => $this->color,
             'icon' => $this->icon,
             'hourly_rate' => $this->hourly_rate,
-            'timestamps' => TimestampResource::collection($this->whenLoaded('timestamps')),
-            'parent' => ProjectResource::make($this->whenLoaded('parent')),
-            'children' => ProjectResource::collection($this->whenLoaded('children')),
+            // 'timestamps' => TimestampResource::collection($this->whenLoaded('timestamps')),
+            'work_time' => $this->whenAppended('work_time'),
         ];
     }
 }

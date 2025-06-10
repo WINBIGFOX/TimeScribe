@@ -52,6 +52,7 @@ Route::name('window.')->prefix('window')->group(function (): void {
     Route::get('updater/{darkMode}', [WindowController::class, 'openUpdater'])->name('updater.open');
     Route::get('overview/{darkMode}', [WindowController::class, 'openOverview'])->name('overview.open');
     Route::get('settings/{darkMode}', [WindowController::class, 'openSettings'])->name('settings.open');
+    Route::get('new-project/{darkMode}', [WindowController::class, 'openNewProject'])->name('new-project.open');
 });
 
 Route::name('settings.')->prefix('settings')->group(function (): void {

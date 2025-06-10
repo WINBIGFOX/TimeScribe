@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Spatie\LaravelSettings\Migrations\SettingsMigration;
 
 return new class extends SettingsMigration
@@ -8,5 +10,11 @@ return new class extends SettingsMigration
     {
         $this->migrator->add('project.currentProject', null);
         $this->migrator->add('project.showProjectTime', false);
+    }
+
+    public function down(): void
+    {
+        $this->migrator->deleteIfExists('project.currentProject');
+        $this->migrator->deleteIfExists('project.showProjectTime');
     }
 };

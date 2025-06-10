@@ -62,9 +62,8 @@ export interface Project {
     color: string
     icon?: string
     hourly_rate?: number
-    timestamps?: Timestamp[]
-    parent?: Project
-    children?: Project[]
+    timestamps?: Timestamp[],
+    work_time?: number
 }
 
 export interface AppActivityHistory {

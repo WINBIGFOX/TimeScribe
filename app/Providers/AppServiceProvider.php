@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::shouldBeStrict();
-        DB::prohibitDestructiveCommands();
+        DB::prohibitDestructiveCommands(app()->isProduction());
         Vite::prefetch(concurrency: 3);
         JsonResource::withoutWrapping();
 
