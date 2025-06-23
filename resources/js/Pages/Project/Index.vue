@@ -1,34 +1,38 @@
 <script lang="ts" setup>
 import ConfirmationDialog from '@/Components/dialogs/ConfirmationDialog.vue'
+import ProjectListItem from '@/Components/ProjectListItem.vue'
 import { Button } from '@/Components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/Components/ui/dropdown-menu'
-import { secToFormat } from '@/lib/utils'
 import { Project } from '@/types'
-import { Head, Link, router } from '@inertiajs/vue3'
-import { Archive, CalendarPlus, Edit, MoreHorizontal, Timer, Coins } from 'lucide-vue-next'
+import { Head, Link, usePage, usePoll } from '@inertiajs/vue3'
+import { CirclePlus, Plus } from 'lucide-vue-next'
+import { watch } from 'vue'
 
 const props = defineProps<{
     projects: Project[]
+    current_project_id?: number
 }>()
 
-// Delete project
-const deleteProject = (project: Project) => {
-    router.delete(route('project.destroy', { project: project.id }), {
-        data: {
-            confirm: false
-        },
-        preserveScroll: true,
-        preserveState: true
-    })
+const { start, stop } = usePoll(5000, undefined, {
+    autoStart: false
+})
+
+const page = usePage()
+if (page.props.recording) {
+    start()
+} else {
+    stop()
 }
 
-// Edit project
-const editProject = (project: Project) => {
-    router.get(route('project.edit', { project: project.id }), {
-        preserveScroll: true,
-        preserveState: true
-    })
-}
+watch(
+    () => page.props.recording,
+    (recording) => {
+        if (recording) {
+            start()
+        } else {
+            stop()
+        }
+    }
+)
 </script>
 
 <template>
@@ -46,79 +50,31 @@ const editProject = (project: Project) => {
                 size="sm"
                 variant="outline"
             >
-                <CalendarPlus />
+                <Plus />
                 {{ $t('app.create new project') }}
             </Button>
         </div>
     </div>
 
-    <div class="flex grow flex-col gap-2 overflow-y-auto pb-6">
-        <!-- Projects -->
-        <div :key="project.id" class="flex flex-col" v-for="project in props.projects">
-            <!-- Project -->
-            <div
-                :style="'--project-color: ' + (project.color ?? '#000000')"
-                class="b-2 rounded-md border-l-6 border-l-[var(--project-color)] bg-[var(--project-color)]/10 p-4 dark:bg-[var(--project-color)]/20"
-            >
-                <div class="flex items-center justify-between">
-                    <div class="flex flex-1 items-center gap-2">
-                        <span class="text-2xl" v-if="project.icon">{{ project.icon }}</span>
-                        <div class="font-medium flex-1">{{ project.name }}</div>
-
-                        <div class="flex w-24 shrink-0 items-center gap-1" v-if="project.work_time">
-                            <Coins class="text-muted-foreground size-4" />
-                            <span class="font-medium">
-                                {{
-                                    project.work_time
-                                }}
-                            </span>
-                            <span class="text-muted-foreground text-xs">
-                                €
-                            </span>
-                        </div>
-                        <div class="flex w-24 shrink-0 items-center gap-1" v-if="project.work_time">
-                            <Timer class="text-muted-foreground size-4" />
-                            <span class="font-medium">
-                                {{
-                                    project.work_time > 59
-                                        ? secToFormat(project.work_time, false, true, true)
-                                        : project.work_time
-                                }}
-                            </span>
-                            <span class="text-muted-foreground text-xs">
-                                {{ project.work_time > 59 ? $t('app.h') : $t('app.s') }}
-                            </span>
-                        </div>
-                    </div>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger as="div">
-                            <Button class="h-8 w-8" size="icon" variant="ghost">
-                                <MoreHorizontal class="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                            <DropdownMenuItem
-                                :as="Link"
-                                :href="route('project.edit', { project: project.id })"
-                                prefetch
-                                preserve-scroll
-                                preserve-state
-                            >
-                                <Edit class="mr-2 h-4 w-4" />
-                                Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem @click="deleteProject(project)">
-                                <Archive class="mr-2 h-4 w-4" />
-                                Archive
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
-                <div class="text-muted-foreground mt-2 text-sm" v-if="project.description">
-                    {{ project.description }}
-                </div>
-                <div class="text-muted-foreground mt-1 text-sm" v-if="project.hourly_rate">
-                    Hourly Rate: {{ project.hourly_rate }}€
+    <div class="flex grow flex-col gap-2 overflow-y-auto pb-6" v-if="props.projects.length">
+        <ProjectListItem
+            :is-current="project.id === props.current_project_id"
+            :key="project.id"
+            :project="project"
+            v-for="project in props.projects"
+        />
+    </div>
+    <div class="mt-32 flex grow justify-center" v-else>
+        <div class="w-2/3">
+            <div class="flex items-start space-x-4 py-4">
+                <CirclePlus />
+                <div class="flex-1 space-y-1">
+                    <p class="text-sm leading-none font-medium">
+                        {{ $t('app.create your first project') }}
+                    </p>
+                    <p class="text-muted-foreground text-sm">
+                        {{ $t('app.track your working time per project and keep an eye on costs.') }}
+                    </p>
                 </div>
             </div>
         </div>

@@ -6,6 +6,18 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }
 
+export function getCurrencySymbol(locale, currency) {
+    return (0)
+        .toLocaleString(locale, {
+            style: 'currency',
+            currency,
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        })
+        .replace(/\d/g, '')
+        .trim()
+}
+
 export function secToFormat(
     seconds: number,
     withoutHours?: boolean,

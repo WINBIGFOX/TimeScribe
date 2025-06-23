@@ -45,7 +45,7 @@ const colorGroups = [
                         backgroundColor: modelValue
                     }"
                     variant="outline"
-                    >{{ !modelValue ? $t('app.color picker') : '' }}
+                    >{{ !modelValue ? $t('app.select color') : '' }}
                 </Button>
             </PopoverTrigger>
             <PopoverContent class="w-sm" side="left">

@@ -7,10 +7,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DestroyTimestampRequest;
 use App\Http\Requests\FillTimestampRequest;
 use App\Http\Requests\StoreTimestampRequest;
+use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TimestampResource;
 use App\Jobs\CalculateWeekBalance;
 use App\Jobs\MenubarRefresh;
+use App\Models\Project;
 use App\Models\Timestamp;
+use App\Settings\ProjectSettings;
 use Carbon\Carbon;
 use Inertia\Inertia;
 
@@ -80,6 +83,7 @@ class TimestampController extends Controller
             'start_time' => $endDatetime ? $datetime->format('H:i') : null,
             'end_time' => $endDatetime ? $endDatetime->format('H:i') : null,
             'submit_route' => route('timestamp.store', ['datetime' => $datetime->format('Y-m-d H:i:s')]),
+            'projects' => ProjectResource::collection(Project::scopes('sortedByLatestTimestamp')->get()),
         ])->baseRoute('overview.day.show', ['date' => now()->format('Y-m-d')]);
     }
 
@@ -150,6 +154,7 @@ class TimestampController extends Controller
             'ended_at' => $endTime,
             'last_ping_at' => $endTime,
             'description' => $data['description'] ?? null,
+            'project_id' => $data['project_id'] ?? null,
         ]);
 
         CalculateWeekBalance::dispatch();
@@ -162,6 +167,8 @@ class TimestampController extends Controller
      */
     public function edit(Timestamp $timestamp)
     {
+        $timestamp->load('project');
+
         $timestampBefore = Timestamp::where('ended_at', '<=', $timestamp->started_at)
             ->where('ended_at', '>=', $timestamp->started_at->copy()->startOfDay())
             ->orderByDesc('started_at')
@@ -189,6 +196,7 @@ class TimestampController extends Controller
             'max_time' => $maxTime?->format('H:i'),
             'submit_route' => route('timestamp.update', ['timestamp' => $timestamp->id]),
             'timestamp' => TimestampResource::make($timestamp),
+            'projects' => ProjectResource::collection(Project::scopes('sortedByLatestTimestamp')->get()),
         ])->baseRoute('overview.day.show', ['date' => $timestamp->created_at->format('Y-m-d')]);
     }
 
@@ -265,7 +273,14 @@ class TimestampController extends Controller
             $timestamp->last_ping_at = $workingEndTime;
         }
         $timestamp->description = $data['description'] ?? null;
+        $timestamp->project_id = $data['project_id'] ?? null;
         $timestamp->save();
+
+        if (! $timestamp->ended_at && $timestamp->started_at->isToday() && $timestamp->project_id) {
+            $projectSettings = app(ProjectSettings::class);
+            $projectSettings->currentProject = $timestamp->project_id;
+            $projectSettings->save();
+        }
 
         CalculateWeekBalance::dispatch();
         if (! $hasEndedAt || $startTime->isToday()) {

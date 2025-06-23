@@ -109,7 +109,7 @@ Route::name('bug-and-feedback.')->prefix('bug-and-feedback')->group(function ():
     Route::get('import', [BugAndFeedbackController::class, 'import'])->name('import');
 });
 
-Route::get('open', function (Request $request): void {
+Route::get('open', function (Illuminate\Http\Request $request): void {
     if (\Native\Laravel\Support\Environment::isWindows()) {
         shell_exec('explorer "'.$request->string('url').'"');
     } else {

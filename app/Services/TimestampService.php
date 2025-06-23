@@ -28,7 +28,11 @@ class TimestampService
 {
     private static function create(TimestampTypeEnum $type): void
     {
-        $project = app(ProjectSettings::class)->currentProject;
+        $project = null;
+        if ($type === TimestampTypeEnum::WORK) {
+            $project = app(ProjectSettings::class)->currentProject;
+        }
+
         Timestamp::create([
             'type' => $type,
             'project_id' => $project,
@@ -159,15 +163,13 @@ class TimestampService
 
         $timestamps = Timestamp::whereDate('started_at', '>=', $date->startOfDay())
             ->whereDate('started_at', '<=', $endDate->endOfDay())
-            ->when($project, function ($query) use ($project) {
-                return $query->where('project_id', $project->id);
-            })
+            ->when($project, fn ($query) => $query->where('project_id', $project->id))
             ->where('type', $type)
             ->get();
 
         $absenceTime = 0;
 
-        if (! $project) {
+        if (! $project instanceof \App\Models\Project) {
 
             $holiday = self::getHoliday([$date->year, $endDate->year]);
             $absence = self::getAbsence($date, $endDate);
@@ -186,11 +188,11 @@ class TimestampService
             }
         }
 
-        return $timestamps->sum(function (Timestamp $timestamp) use ($date, $fallbackNow) {
-            $fallbackTime = $date->isToday() && $fallbackNow ? now() : $timestamp->last_ping_at;
+        return $timestamps->sum(function (Timestamp $timestamp) use ($date, $fallbackNow, $project, $endDate): float {
+            $fallbackTime = ($date->isToday() || $project && $endDate->isToday()) && $fallbackNow ? now() : $timestamp->last_ping_at;
             $diffTime = $timestamp->ended_at ?? $fallbackTime;
 
-            return $timestamp->started_at->diff($diffTime)->totalSeconds;
+            return floor($timestamp->started_at->diff($diffTime)->totalSeconds);
         }) + $absenceTime;
     }
 
@@ -241,17 +243,16 @@ class TimestampService
         return Timestamp::whereNull('ended_at')->first()?->type;
     }
 
-    public static function getTimestamps(Carbon $date, ?Carbon $endDate = null, ?Project $project = null): Collection
+    public static function getTimestamps(Carbon $date, ?Carbon $endDate = null, ?Project $project = null, array $with = []): Collection
     {
         if (! $endDate instanceof Carbon) {
             $endDate = $date->copy();
         }
 
-        return Timestamp::whereDate('started_at', '>=', $date->startOfDay())
+        return Timestamp::with($with)
+            ->whereDate('started_at', '>=', $date->startOfDay())
             ->whereDate('started_at', '<=', $endDate->endOfDay())
-            ->when($project, function ($query) use ($project) {
-                return $query->where('project_id', $project->id);
-            })
+            ->when($project, fn ($query) => $query->where('project_id', $project->id))
             ->orderBy('started_at')
             ->get();
     }
@@ -372,7 +373,7 @@ class TimestampService
 
         $timestampDates = self::getTimestamps($date, $endDate, $project)->map(fn (Timestamp $timestamp) => $timestamp->started_at->format('Y-m-d'));
 
-        if (! $project) {
+        if (! $project instanceof \App\Models\Project) {
             $holiday = self::getHoliday(range($date->year, $endDate->year))->map(fn (Carbon $holiday): string => $holiday->format('Y-m-d'));
 
             $absence = self::getAbsence($date, $endDate)->map(fn (Absence $absence) => $absence->date->format('Y-m-d'));

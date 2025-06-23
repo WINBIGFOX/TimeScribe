@@ -22,8 +22,12 @@ const setEmoji = (emoji: { i: string }) => {
     <div class="flex gap-2">
         <Popover :open="open">
             <PopoverTrigger as-child>
-                <Button @click="open = true" :class="cn('flex-1', modelValue ? 'p-0 text-xl' : undefined, props.class)" variant="outline">
-                    {{ !modelValue ? $t('app.emoji picker') : modelValue }}
+                <Button
+                    @click="open = true"
+                    :class="cn('flex-1', modelValue ? 'p-0 text-xl' : undefined, props.class)"
+                    variant="outline"
+                >
+                    {{ !modelValue ? $t('app.select emoji') : modelValue }}
                 </Button>
             </PopoverTrigger>
             <PopoverContent class="w-auto p-0" side="left" @focus-outside="open = false">

@@ -29,6 +29,14 @@ class MenubarController extends Controller
         $currentAppActivity = null;
         $currentType = TimestampService::getCurrentType();
         $currentProject = $projectSettings->currentProject;
+
+        if ($currentProject) {
+            $currentProject = Project::find($currentProject);
+            if (! $currentProject) {
+                $projectSettings->currentProject = null;
+                $projectSettings->save();
+            }
+        }
         if (! $request->header('x-inertia-partial-data')) {
             TimestampService::ping();
             MenubarRefresh::dispatchSync();
@@ -45,11 +53,11 @@ class MenubarController extends Controller
             'currentType' => $currentType,
             'workTime' => TimestampService::getWorkTime(),
             'breakTime' => TimestampService::getBreakTime(),
-            'currentProject' => fn () => $currentProject ? ProjectResource::make(Project::find($currentProject)) : null,
+            'currentProject' => fn () => $currentProject ? ProjectResource::make($currentProject) : null,
             'currentAppActivity' => fn () => $currentAppActivity ? ActivityHistoryResource::make($currentAppActivity) : null,
             'activeAppActivity' => $settings->appActivityTracking,
             'updateAvailable' => $autoUpdaterSettings->isDownloaded,
-            'projects' => Inertia::optional(fn () => ProjectResource::collection(Project::all())),
+            'projects' => Inertia::optional(fn () => ProjectResource::collection(Project::scopes('sortedByLatestTimestamp')->get())),
         ]);
     }
 
@@ -60,8 +68,14 @@ class MenubarController extends Controller
         return redirect()->route('menubar.index');
     }
 
-    public function storeWork(): RedirectResponse
+    public function storeWork(ProjectSettings $projectSettings): RedirectResponse
     {
+        $height = 250;
+        if ($projectSettings->currentProject) {
+            $height = 298;
+        }
+        MenuBar::resize(300, $height);
+
         TimestampService::startWork();
 
         return redirect()->route('menubar.index');

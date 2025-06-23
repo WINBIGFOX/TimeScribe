@@ -49,6 +49,7 @@ remote, hybrid, or office-based, TimeScribe helps you stay focused and organized
 - 📊 Visualize your day and weekly work patterns
 - ⏱ See app usage and categorize work vs distractions
 - 🗓️ Plan absences like vacation, sick leave, and holidays
+- 📋 Track time on projects with descriptions, hourly rates, and billing calculations
 - ⚙️ Auto start/pause based on screen time and idle status
 - 💾 Export as CSV and Excel: Easily export your time tracking data for further analysis or reporting.
 - 🪟 Supports macOS & Windows

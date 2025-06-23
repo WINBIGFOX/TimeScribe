@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateGeneralSettingsRequest;
 use App\Http\Requests\UpdateLocaleRequest;
 use App\Jobs\CalculateWeekBalance;
 use App\Settings\GeneralSettings;
+use App\Settings\ProjectSettings;
 use DateTimeZone;
 use Inertia\Inertia;
 use Native\Laravel\Enums\SystemThemesEnum;
@@ -70,13 +71,15 @@ class GeneralController extends Controller
         return redirect()->route('settings.general.edit');
     }
 
-    public function updateLocale(UpdateLocaleRequest $request, GeneralSettings $settings): void
+    public function updateLocale(UpdateLocaleRequest $request, GeneralSettings $settings, ProjectSettings $projectSettings): void
     {
         $data = $request->validated();
         if ($data['locale'] !== $settings->locale) {
 
             $settings->locale = $data['locale'];
             $settings->save();
+            $projectSettings->defaultCurrency = null;
+            $projectSettings->save();
             LocaleChanged::broadcast();
         }
     }

@@ -239,13 +239,15 @@ const removeProject = () => {
         <div class="flex grow flex-col overflow-hidden">
             <div
                 :style="'--project-color: ' + (props.currentProject.color ?? '#000000')"
-                class="mx-2 mt-2 flex h-9 items-center gap-2 rounded-md border-l-6 border-l-[var(--project-color)] bg-[var(--project-color)]/10 pl-2 text-sm font-medium transition-colors dark:bg-[var(--project-color)]/20"
+                class="mx-2 mt-2 flex h-9 shrink-0 items-center gap-2 rounded-md border-l-6 border-l-[var(--project-color)] bg-[var(--project-color)]/10 pl-2 text-sm font-medium transition-colors dark:bg-[var(--project-color)]/20"
                 v-if="props.currentProject && showProject"
             >
-                <div class="flex h-9 items-center text-xl" v-if="props.currentProject.icon">
+                <div class="flex h-9 shrink-0 items-center text-xl" v-if="props.currentProject.icon">
                     {{ props.currentProject.icon }}
                 </div>
-                {{ props.currentProject.name }}
+                <div class="line-clamp-1">
+                    {{ props.currentProject.name }}
+                </div>
                 <Button
                     :as="Link"
                     :href="route('menubar.storeStop')"
@@ -254,7 +256,7 @@ const removeProject = () => {
                     preserve-scroll
                     preserve-state
                     size="sm"
-                    v-if="currentType"
+                    v-if="currentType === 'work'"
                     variant="outline"
                 >
                     <Square class="size-4" />
@@ -263,14 +265,14 @@ const removeProject = () => {
                     @click="removeProject"
                     class="mr-0.5 ml-auto !px-2 shadow-none"
                     size="sm"
-                    v-if="!currentType"
+                    v-if="currentType !== 'work'"
                     variant="outline"
                 >
                     <X class="size-4" />
                 </Button>
             </div>
             <div class="flex grow flex-col overflow-hidden" v-if="props.projects && openProjectList">
-                <div class="text-muted-foreground p-2 px-2 text-sm">Projekte</div>
+                <div class="text-muted-foreground p-2 px-2 text-sm">{{ $t('app.projects') }}</div>
                 <div class="scroll-shadow-y flex grow flex-col gap-1 overflow-y-auto">
                     <!-- Einzelne Projekte (mit parent_id aber Parent nicht geladen) -->
                     <template :key="project.id" v-for="project in props.projects">
@@ -279,10 +281,12 @@ const removeProject = () => {
                             class="mx-2 flex h-9 items-center gap-2 rounded-md border-l-6 border-l-[var(--project-color)] bg-[var(--project-color)]/10 pl-2 text-sm font-medium dark:bg-[var(--project-color)]/20"
                             v-if="project.id !== props.currentProject?.id"
                         >
-                            <div class="flex h-9 items-center text-xl" v-if="project.icon">
+                            <div class="flex h-9 shrink-0 items-center text-xl" v-if="project.icon">
                                 {{ project.icon }}
                             </div>
-                            {{ project.name }}
+                            <div class="line-clamp-1">
+                                {{ project.name }}
+                            </div>
                             <Button
                                 @click="setProject(project)"
                                 class="mr-0.5 ml-auto !px-2 shadow-none"
@@ -305,11 +309,11 @@ const removeProject = () => {
                         preserve-scroll
                         preserve-state
                         size="sm"
-                        variant="secondary"
                         v-if="props.projects.length"
+                        variant="secondary"
                     >
                         <Plus class="size-4" />
-                        Neues Projekt anlegen
+                        {{ $t('app.create new project') }}
                     </Button>
 
                     <div class="px-2 text-sm" v-if="props.projects.length === 0">
@@ -319,9 +323,9 @@ const removeProject = () => {
                             <div>
                                 <Tag class="size-6" />
                             </div>
-                            <p class="font-medium">Keine Projekte angelegt</p>
-                            <p class="text-muted-foreground">
-                                Lege ein neues Projekt an, um Projektzeiten zu erfassen.
+                            <p class="font-medium">{{ $t('app.no projects created') }}</p>
+                            <p class="text-muted-foreground text-balance">
+                                {{ $t('app.create a new project to track project times.') }}
                             </p>
                             <Button
                                 :as="Link"
@@ -337,7 +341,7 @@ const removeProject = () => {
                                 variant="outline"
                             >
                                 <Plus />
-                                Neues Projekt anlegen
+                                {{ $t('app.create new project') }}
                             </Button>
                         </div>
                     </div>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Helpers\DateHelper;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -28,8 +29,11 @@ class ProjectResource extends JsonResource
             'color' => $this->color,
             'icon' => $this->icon,
             'hourly_rate' => $this->hourly_rate,
+            'currency' => $this->currency,
             // 'timestamps' => TimestampResource::collection($this->whenLoaded('timestamps')),
             'work_time' => $this->whenAppended('work_time'),
+            'billable_amount' => $this->whenAppended('billable_amount'),
+            'archived_at' => DateHelper::toResourceArray($this->deleted_at),
         ];
     }
 }

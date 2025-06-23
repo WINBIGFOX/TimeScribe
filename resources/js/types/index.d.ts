@@ -62,8 +62,11 @@ export interface Project {
     color: string
     icon?: string
     hourly_rate?: number
-    timestamps?: Timestamp[],
+    currency?: string
+    timestamps?: Timestamp[]
     work_time?: number
+    billable_amount?: number
+    archived_at?: Date
 }
 
 export interface AppActivityHistory {

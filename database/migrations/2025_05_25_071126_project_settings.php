@@ -10,6 +10,7 @@ return new class extends SettingsMigration
     {
         $this->migrator->add('project.currentProject', null);
         $this->migrator->add('project.showProjectTime', false);
+        $this->migrator->add('project.defaultCurrency', null);
     }
 
     public function down(): void

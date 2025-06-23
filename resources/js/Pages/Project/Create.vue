@@ -15,6 +15,7 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { Textarea } from '@/Components/ui/textarea'
 import BasicLayout from '@/Layouts/BasicLayout.vue'
+import { Enum } from '@/types'
 import 'vue3-emoji-picker/css'
 
 defineOptions({
@@ -23,6 +24,8 @@ defineOptions({
 
 const props = defineProps<{
     submit_route: string
+    currencies: Enum
+    default_currencies: string
 }>()
 
 const form = useForm({
@@ -31,7 +34,7 @@ const form = useForm({
     color: '',
     icon: '',
     hourly_rate: 0,
-    currency: 'USD'
+    currency: props.default_currencies
 })
 
 const submit = () => {
@@ -45,36 +48,54 @@ const submit = () => {
 
 <template>
     <Head title="Project Create" />
-    <SheetDialog :close="$t('app.cancel')" :submit="$t('app.save')" :title="$t('app.create project')" @submit="submit">
+    <SheetDialog
+        :close="$t('app.cancel')"
+        :submit="$t('app.save')"
+        :title="$t('app.create new project')"
+        @submit="submit"
+    >
         <div class="flex flex-col gap-2 py-4">
             <span class="text-sm leading-none font-medium">{{ $t('app.project name') }}</span>
             <Input v-model="form.name" />
+            <div class="text-destructive text-sm" v-if="form.errors.name">
+                {{ form.errors.name }}
+            </div>
         </div>
         <div class="flex flex-col gap-2 py-4">
             <span class="text-sm leading-none font-medium">{{ $t('app.description') }}</span>
             <Textarea class="h-10" v-model="form.description" />
+            <div class="text-destructive text-sm" v-if="form.errors.description">
+                {{ form.errors.description }}
+            </div>
         </div>
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-2 gap-x-4">
             <div class="flex flex-col gap-2 py-4">
                 <span class="text-sm leading-none font-medium">{{ $t('app.color') }}</span>
                 <ColorSelect required v-model="form.color" />
             </div>
             <div class="flex flex-col gap-2 py-4">
-                <span class="text-sm leading-none font-medium">{{ $t('app.color') }}</span>
+                <span class="text-sm leading-none font-medium">{{ $t('app.emoji') }}</span>
                 <EmojiSelect v-model="form.icon" />
             </div>
+            <div class="text-destructive col-span-2 text-sm" v-if="form.errors.color">
+                {{ form.errors.color }}
+            </div>
+            <div class="text-destructive col-span-2 text-sm" v-if="form.errors.icon">
+                {{ form.errors.icon }}
+            </div>
         </div>
+
         <div class="flex flex-col gap-2 py-4">
             <span class="text-sm leading-none font-medium">{{ $t('app.hourly rate') }}</span>
             <div class="flex gap-2">
                 <Select v-model="form.currency">
-                    <SelectTrigger class="w-24">
+                    <SelectTrigger class="w-32">
                         <SelectValue :placeholder="$t('app.select currency')" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="KRW">₩ KRW</SelectItem>
-                        <SelectItem value="USD">$ USD</SelectItem>
-                        <SelectItem value="EUR">€ EUR</SelectItem>
+                        <SelectItem v-for="(value, key) in props.currencies" :key="key" :value="key">
+                            {{ value }}
+                        </SelectItem>
                     </SelectContent>
                 </Select>
                 <NumberField
@@ -97,6 +118,12 @@ const submit = () => {
                         <NumberFieldIncrement />
                     </NumberFieldContent>
                 </NumberField>
+            </div>
+            <div class="text-destructive col-span-2 text-sm" v-if="form.errors.currency">
+                {{ form.errors.currency }}
+            </div>
+            <div class="text-destructive col-span-2 text-sm" v-if="form.errors.hourly_rate">
+                {{ form.errors.hourly_rate }}
             </div>
         </div>
     </SheetDialog>

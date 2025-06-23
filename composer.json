@@ -18,6 +18,7 @@
         "laravel/tinker": "^2.10",
         "nativephp/electron": "^1.1.0",
         "nunomaduro/laravel-optimize-database": "^1.0",
+        "prinsfrank/standards": "^3.12",
         "sentry/sentry-laravel": "^4.13",
         "spatie/db-dumper": "^3.8",
         "spatie/laravel-settings": "^3.4",

@@ -28,6 +28,7 @@ class TimestampResource extends JsonResource
             'description' => $this->description,
             'last_ping_at' => DateHelper::toResourceArray($this->last_ping_at, true, 'Gi') ?? null,
             'source' => $this->source,
+            'project' => ProjectResource::make($this->whenLoaded('project')),
         ];
     }
 }
