@@ -56,7 +56,7 @@ return [
     'data import' => 'Data Import',
     'day' => 'Day',
     'description' => 'Description',
-    'do you want to archive this project' => 'Do you want to archive this project?',
+    'do you want to archive this project?' => 'Do you want to archive this project?',
     'do you want to remove this entry?' => 'Do you want to remove this entry?',
     'edit :item' => 'Edit :item',
     'edit work schedule' => 'Edit Work Schedule',

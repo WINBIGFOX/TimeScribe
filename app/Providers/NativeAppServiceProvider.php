@@ -80,7 +80,7 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             ->showDockIcon(false)
             ->route('menubar.index')
             ->width(300)
-            ->height(298)
+            ->height(280)
             ->resizable(false)
             ->showOnAllWorkspaces()
             ->icon(TrayIconService::getIcon())
@@ -99,6 +99,8 @@ class NativeAppServiceProvider implements ProvidesPhpIni
     public function phpIni(): array
     {
         return [
+            'max_execution_time' => '0',
+            'max_input_time' => '0',
         ];
     }
 }

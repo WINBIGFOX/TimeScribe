@@ -56,7 +56,7 @@ return [
     'data import' => '数据导入',
     'day' => '天',
     'description' => '描述',
-    'do you want to archive this project' => '您想归档此项目吗？',
+    'do you want to archive this project?' => '您想归档此项目吗？',
     'do you want to remove this entry?' => '您要删除此条目吗？',
     'edit :item' => '编辑 :item',
     'edit work schedule' => '编辑工作计划',

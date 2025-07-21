@@ -70,12 +70,6 @@ class MenubarController extends Controller
 
     public function storeWork(ProjectSettings $projectSettings): RedirectResponse
     {
-        $height = 250;
-        if ($projectSettings->currentProject) {
-            $height = 298;
-        }
-        MenuBar::resize(300, $height);
-
         TimestampService::startWork();
 
         return redirect()->route('menubar.index');
@@ -91,14 +85,8 @@ class MenubarController extends Controller
         return redirect()->route('menubar.index');
     }
 
-    public function resize(Request $request): void
-    {
-        MenuBar::resize(300, $request->integer('height', 298));
-    }
-
     public function setProject(ProjectSettings $projectSettings, int $project): RedirectResponse
     {
-        MenuBar::resize(300, 298);
         $projectSettings->currentProject = $project;
         $projectSettings->save();
         TimestampService::startWork();
@@ -110,7 +98,6 @@ class MenubarController extends Controller
     {
         $projectSettings->currentProject = null;
         $projectSettings->save();
-        MenuBar::resize(300, 250);
 
         return redirect()->route('menubar.index');
     }

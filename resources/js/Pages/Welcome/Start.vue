@@ -53,12 +53,12 @@ const updateLocale = (locale) => {
             <div :key="locale.code" class="flex items-center justify-center" v-for="locale in locales">
                 <div
                     :class="{
-                        '!border-white': $page.props.locale === locale.code
+                        'border-white!': $page.props.locale === locale.code
                     }"
                     @click="updateLocale(locale.code)"
                     class="rounded-lg border border-transparent p-1 transition-colors hover:bg-white"
                 >
-                    <component :is="locale.component" class="!h-auto !w-10 rounded" />
+                    <component :is="locale.component" class="h-auto! w-10! rounded" />
                 </div>
             </div>
         </div>

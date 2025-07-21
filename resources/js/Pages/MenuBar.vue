@@ -91,20 +91,12 @@ router.on('finish', () => {
 })
 
 const showProjectList = () => {
-    router.post(
-        route('menubar.resize'),
-        {
-            height: 500
-        },
-        {
-            preserveScroll: true,
-            preserveState: true,
-            only: ['projects'],
-            onSuccess: () => {
-                openProjectList.value = true
-            }
+    router.reload({
+        only: ['projects'],
+        onSuccess: () => {
+            openProjectList.value = true
         }
-    )
+    })
 }
 
 const setProject = (project: Project) => {
@@ -174,7 +166,7 @@ const removeProject = () => {
                 'pt-8': props.currentType !== 'work' || !props.currentAppActivity || props.updateAvailable,
                 'pt-0': props.currentType === 'work' && props.currentAppActivity && !props.updateAvailable
             }"
-            class="flex h-36.5 shrink-0 flex-col items-center justify-center transition-all duration-1000"
+            class="flex shrink-0 grow flex-col items-center justify-center transition-all duration-1000"
         >
             <div
                 :class="{
@@ -236,117 +228,142 @@ const removeProject = () => {
                 </div>
             </transition>
         </div>
-        <div class="flex grow flex-col overflow-hidden">
-            <div
-                :style="'--project-color: ' + (props.currentProject.color ?? '#000000')"
-                class="mx-2 mt-2 flex h-9 shrink-0 items-center gap-2 rounded-md border-l-6 border-l-[var(--project-color)] bg-[var(--project-color)]/10 pl-2 text-sm font-medium transition-colors dark:bg-[var(--project-color)]/20"
-                v-if="props.currentProject && showProject"
+        <div class="flex flex-col overflow-hidden">
+            <Transition
+                class="transform-gpu overflow-clip transition-all duration-1000"
+                enter-from-class="opacity-80 max-h-0"
+                enter-to-class="opacity-100 max-h-14"
+                leave-from-class="opacity-100 max-h-14"
+                leave-to-class="opacity-80 max-h-0"
             >
-                <div class="flex h-9 shrink-0 items-center text-xl" v-if="props.currentProject.icon">
-                    {{ props.currentProject.icon }}
-                </div>
-                <div class="line-clamp-1">
-                    {{ props.currentProject.name }}
-                </div>
-                <Button
-                    :as="Link"
-                    :href="route('menubar.storeStop')"
-                    class="text-destructive hover:text-destructive mr-0.5 ml-auto !px-2 shadow-none"
-                    method="post"
-                    preserve-scroll
-                    preserve-state
-                    size="sm"
-                    v-if="currentType === 'work'"
-                    variant="outline"
-                >
-                    <Square class="size-4" />
-                </Button>
-                <Button
-                    @click="removeProject"
-                    class="mr-0.5 ml-auto !px-2 shadow-none"
-                    size="sm"
-                    v-if="currentType !== 'work'"
-                    variant="outline"
-                >
-                    <X class="size-4" />
-                </Button>
-            </div>
-            <div class="flex grow flex-col overflow-hidden" v-if="props.projects && openProjectList">
-                <div class="text-muted-foreground p-2 px-2 text-sm">{{ $t('app.projects') }}</div>
-                <div class="scroll-shadow-y flex grow flex-col gap-1 overflow-y-auto">
-                    <!-- Einzelne Projekte (mit parent_id aber Parent nicht geladen) -->
-                    <template :key="project.id" v-for="project in props.projects">
-                        <div
-                            :style="'--project-color: ' + (project.color ?? '#000000')"
-                            class="mx-2 flex h-9 items-center gap-2 rounded-md border-l-6 border-l-[var(--project-color)] bg-[var(--project-color)]/10 pl-2 text-sm font-medium dark:bg-[var(--project-color)]/20"
-                            v-if="project.id !== props.currentProject?.id"
-                        >
-                            <div class="flex h-9 shrink-0 items-center text-xl" v-if="project.icon">
-                                {{ project.icon }}
-                            </div>
-                            <div class="line-clamp-1">
-                                {{ project.name }}
-                            </div>
-                            <Button
-                                @click="setProject(project)"
-                                class="mr-0.5 ml-auto !px-2 shadow-none"
-                                size="sm"
-                                variant="outline"
-                            >
-                                <Play class="size-4" />
-                            </Button>
-                        </div>
-                    </template>
-
-                    <Button
-                        :as="Link"
-                        :href="
-                            route('window.new-project.open', {
-                                darkMode: state === 'dark' ? 1 : 0
-                            })
-                        "
-                        class="mx-2 mb-2"
-                        preserve-scroll
-                        preserve-state
-                        size="sm"
-                        v-if="props.projects.length"
-                        variant="secondary"
+                <div v-if="props.currentProject && showProject" class="px-2">
+                    <div
+                        :style="'--project-color: ' + (props.currentProject.color ?? '#000000')"
+                        class="transition-color mt-2 flex h-9 shrink-0 items-center gap-2 rounded-md border-l-6 border-l-[var(--project-color)] bg-[var(--project-color)]/10 pl-2 text-sm font-medium duration-1000 dark:bg-[var(--project-color)]/20"
                     >
-                        <Plus class="size-4" />
-                        {{ $t('app.create new project') }}
-                    </Button>
-
-                    <div class="px-2 text-sm" v-if="props.projects.length === 0">
-                        <div
-                            class="bg-muted dark:bg-muted/60 border-border flex flex-col items-center gap-2 rounded-lg border px-2 py-4 text-center"
+                        <div class="flex h-9 shrink-0 items-center text-xl" v-if="props.currentProject.icon">
+                            {{ props.currentProject.icon }}
+                        </div>
+                        <div class="line-clamp-1">
+                            {{ props.currentProject.name }}
+                        </div>
+                        <Button
+                            :as="Link"
+                            :href="route('menubar.storeStop')"
+                            class="text-destructive hover:text-destructive mr-0.5 ml-auto px-2! shadow-none"
+                            method="post"
+                            preserve-scroll
+                            preserve-state
+                            size="sm"
+                            v-if="currentType === 'work'"
+                            variant="outline"
                         >
-                            <div>
-                                <Tag class="size-6" />
-                            </div>
-                            <p class="font-medium">{{ $t('app.no projects created') }}</p>
-                            <p class="text-muted-foreground text-balance">
-                                {{ $t('app.create a new project to track project times.') }}
-                            </p>
-                            <Button
-                                :as="Link"
-                                :href="
-                                    route('window.new-project.open', {
-                                        darkMode: state === 'dark' ? 1 : 0
-                                    })
-                                "
-                                class="mt-2"
-                                preserve-scroll
-                                preserve-state
-                                size="sm"
-                                variant="outline"
+                            <Square class="size-4" />
+                        </Button>
+                        <Button
+                            @click="removeProject"
+                            class="mr-0.5 ml-auto px-2! shadow-none"
+                            size="sm"
+                            v-if="currentType !== 'work'"
+                            variant="outline"
+                        >
+                            <X class="size-4" />
+                        </Button>
+                    </div>
+                </div>
+            </Transition>
+            <Transition
+                class="transform-gpu transition-all duration-500"
+                enter-from-class="opacity-80 translate-y-full"
+                enter-to-class="opacity-100 translate-y-0"
+                leave-from-class="opacity-100 translate-y-0"
+                leave-to-class="opacity-80 translate-y-full"
+            >
+                <div
+                    v-if="props.projects && openProjectList"
+                    class="bg-background absolute inset-0 flex grow flex-col overflow-hidden"
+                >
+                    <div class="flex items-center justify-between px-2 py-2">
+                        <div class="text-muted-foreground text-sm">{{ $t('app.projects') }}</div>
+                        <Button variant="outline" size="sm" class="px-2!" @click="openProjectList = false">
+                            <X />
+                        </Button>
+                    </div>
+                    <div class="scroll-shadow-y flex grow flex-col gap-1 overflow-y-auto">
+                        <!-- Einzelne Projekte (mit parent_id aber Parent nicht geladen) -->
+                        <template :key="project.id" v-for="project in props.projects">
+                            <div
+                                :style="'--project-color: ' + (project.color ?? '#000000')"
+                                class="mx-2 flex h-9 items-center gap-2 rounded-md border-l-6 border-l-[var(--project-color)] bg-[var(--project-color)]/10 py-1 pl-2 text-sm font-medium dark:bg-[var(--project-color)]/20"
+                                v-if="project.id !== props.currentProject?.id"
                             >
-                                <Plus />
-                                {{ $t('app.create new project') }}
-                            </Button>
+                                <div class="flex h-9 shrink-0 items-center text-xl" v-if="project.icon">
+                                    {{ project.icon }}
+                                </div>
+                                <div class="line-clamp-1">
+                                    {{ project.name }}
+                                </div>
+                                <Button
+                                    @click="setProject(project)"
+                                    class="mr-0.5 ml-auto px-2! shadow-none"
+                                    size="sm"
+                                    variant="outline"
+                                >
+                                    <Play class="size-4" />
+                                </Button>
+                            </div>
+                        </template>
+
+                        <Button
+                            :as="Link"
+                            :href="
+                                route('window.new-project.open', {
+                                    darkMode: state === 'dark' ? 1 : 0
+                                })
+                            "
+                            class="mx-2 mb-2"
+                            preserve-scroll
+                            preserve-state
+                            size="sm"
+                            v-if="props.projects.length"
+                            variant="secondary"
+                        >
+                            <Plus class="size-4" />
+                            {{ $t('app.create new project') }}
+                        </Button>
+
+                        <div class="px-2 text-sm" v-if="props.projects.length === 0">
+                            <div
+                                class="bg-muted dark:bg-muted/60 border-border flex flex-col items-center gap-2 rounded-lg border px-2 py-4 text-center"
+                            >
+                                <div>
+                                    <Tag class="size-6" />
+                                </div>
+                                <p class="font-medium">{{ $t('app.no projects created') }}</p>
+                                <p class="text-muted-foreground text-balance">
+                                    {{ $t('app.create a new project to track project times.') }}
+                                </p>
+                                <Button
+                                    :as="Link"
+                                    :href="
+                                        route('window.new-project.open', {
+                                            darkMode: state === 'dark' ? 1 : 0
+                                        })
+                                    "
+                                    class="mt-2"
+                                    preserve-scroll
+                                    preserve-state
+                                    size="sm"
+                                    variant="outline"
+                                >
+                                    <Plus />
+                                    {{ $t('app.create new project') }}
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </Transition>
         </div>
         <div>
             <div class="flex gap-2 p-2">
