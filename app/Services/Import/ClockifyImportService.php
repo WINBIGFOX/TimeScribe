@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace App\Services\Import;
 
+use App\Models\Project;
 use App\Models\Timestamp;
+use App\Settings\ProjectSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use PrinsFrank\Standards\Currency\CurrencyAlpha3;
 
 class ClockifyImportService
 {
     private Collection $timestamps;
+
+    private ?string $currency = null;
 
     public function __construct(private readonly string $csvPath)
     {
@@ -21,6 +26,7 @@ class ClockifyImportService
         if (! $this->verifyFormat()) {
             throw new \Exception('Invalid CSV format');
         }
+        $this->checkCurrency();
         $this->timestamps = collect();
     }
 
@@ -49,6 +55,25 @@ class ClockifyImportService
         return preg_match($timeRegex, (string) $firstRow[10]) && preg_match($timeRegex, (string) $firstRow[12]);
     }
 
+    private function checkCurrency(): void
+    {
+        $csvFile = fopen($this->csvPath, 'r');
+        $header = fgetcsv($csvFile, escape: '\\');
+        fclose($csvFile);
+
+        if (isset($header[15]) && ($header[15] !== '' && $header[15] !== '0')) {
+            $currencyString = preg_match('/\(([A-Z]{3})\)/', $header[15], $matches) ? $matches[1] : null;
+
+            if ($currencyString && CurrencyAlpha3::from($currencyString)) {
+                $this->currency = strtoupper($currencyString);
+
+                return;
+            }
+        }
+
+        $this->currency = app(ProjectSettings::class)->defaultCurrency;
+    }
+
     public function import(): void
     {
         $csvFile = fopen($this->csvPath, 'r');
@@ -65,6 +90,7 @@ class ClockifyImportService
         $this->fixDayOverlap();
         $this->fixDatabaseTimestampCollision();
         $this->addTimestamps();
+        $this->createProjects();
         $this->saveTimestamps();
 
         Log::info('CSV file imported');
@@ -81,12 +107,16 @@ class ClockifyImportService
             }
 
             $timestamp = [
-                'description' => $row[0],
                 'type' => 'work',
                 'started_at' => $startAt->format('Y-m-d H:i:s'),
                 'ended_at' => $endAt->format('Y-m-d H:i:s'),
                 'source' => 'Clockify',
             ];
+
+            if (! empty($row[0])) {
+                $timestamp['project_name'] = $row[0];
+                $timestamp['hourly_rate'] = $row[15];
+            }
         } catch (\Throwable) {
             return;
         }
@@ -117,8 +147,6 @@ class ClockifyImportService
 
             $currentStartDate = Carbon::parse($timestamp['started_at']);
             if ($currentStartDate->lessThan($previousEndDate)) {
-                dump('Overlap detected');
-                dump($timestamp['started_at'], $previousEndDate->format('Y-m-d H:i:s'));
                 $timestamp['started_at'] = $previousEndDate->format('Y-m-d H:i:s');
             }
 
@@ -240,6 +268,32 @@ class ClockifyImportService
             $timestamp['created_at'] = $timestamp['started_at'];
             $timestamp['updated_at'] = $timestamp['ended_at'];
             $timestamp['last_ping_at'] = $timestamp['ended_at'];
+
+            return $timestamp;
+        });
+    }
+
+    private function createProjects(): void
+    {
+        $this->timestamps = $this->timestamps->map(function (array $timestamp) {
+            if (empty($timestamp['project_name'])) {
+                return $timestamp;
+            }
+
+            $project = Project::firstOrCreate(
+                ['name' => $timestamp['project_name']],
+                [
+                    'description' => __('app.project created from clockify import'),
+                    'color' => '#000000',
+                    'hourly_rate' => $timestamp['hourly_rate'],
+                    'currency' => $this->currency,
+                ]
+            );
+
+            unset($timestamp['project_name']);
+            unset($timestamp['hourly_rate']);
+
+            $timestamp['project_id'] = $project->id;
 
             return $timestamp;
         });

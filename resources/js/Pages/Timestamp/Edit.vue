@@ -3,7 +3,7 @@ import SheetDialog from '@/Components/dialogs/SheetDialog.vue'
 import { TimeSelect } from '@/Components/ui-custom/time-select'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { Textarea } from '@/Components/ui/textarea'
-import { Timestamp } from '@/types'
+import { Project, Timestamp } from '@/types'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { BriefcaseBusiness, Coffee, MoveRight } from 'lucide-vue-next'
 import moment from 'moment/min/moment-with-locales'
@@ -13,6 +13,7 @@ const props = defineProps<{
     max_time?: string
     submit_route: string
     timestamp: Timestamp
+    projects: Project[]
 }>()
 
 const form = useForm({
@@ -21,12 +22,18 @@ const form = useForm({
         ? moment(props.timestamp.ended_at.date, 'YYYY-MM-DD HH:mm:ss').format('HH:mm')
         : undefined,
     type: props.timestamp.type,
-    description: props.timestamp.description
+    description: props.timestamp.description,
+    project_id: (props.timestamp.project?.id ?? '0') as string | number | undefined
 })
 
 const submit = () => {
     router.flushAll()
-    form.patch(props.submit_route, {
+    form.transform((data) => {
+        if (data.project_id === '0' || data.type !== 'work') {
+            data.project_id = undefined
+        }
+        return data
+    }).patch(props.submit_route, {
         preserveScroll: true,
         preserveState: 'errors'
     })
@@ -123,6 +130,28 @@ const destroy = () => {
         <div class="flex flex-col gap-2 py-4">
             <span class="text-sm leading-none font-medium">{{ $t('app.notes') }}</span>
             <Textarea class="h-40" v-model="form.description" />
+        </div>
+        <div class="flex flex-col gap-2 py-4" v-if="(props.projects.length || form.project_id) && form.type === 'work'">
+            <span class="text-sm leading-none font-medium">{{ $t('app.project') }}</span>
+            <Select v-model="form.project_id">
+                <SelectTrigger class="w-full whitespace-normal">
+                    <div>
+                        <SelectValue class="line-clamp-1" :placeholder="$t('app.project')" />
+                    </div>
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="0">-</SelectItem>
+                    <SelectItem
+                        v-if="props.timestamp.project && props.timestamp.project.archived_at"
+                        :value="props.timestamp.project.id"
+                    >
+                        {{ props.timestamp.project.icon }} {{ props.timestamp.project.name }}
+                    </SelectItem>
+                    <SelectItem v-for="project in props.projects" :key="project.id" :value="project.id">
+                        {{ project.icon }} {{ project.name }}
+                    </SelectItem>
+                </SelectContent>
+            </Select>
         </div>
         <div class="flex flex-col gap-2 py-4" v-if="props.timestamp.source">
             <span class="text-sm leading-none font-medium">

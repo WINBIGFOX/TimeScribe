@@ -25,7 +25,6 @@ Thank you for considering contributing to TimeScribe! This document provides gui
 ### Development Environment Setup
 
 1. **Prerequisites**:
-
     - PHP 8.4 or higher
     - Composer
     - Node.js (LTS version recommended)

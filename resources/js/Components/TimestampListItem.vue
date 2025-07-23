@@ -96,6 +96,19 @@ const destroy = () => {
                 {{ $t('app.now') }}
             </div>
         </div>
+        <div class="flex flex-1 grow flex-col gap-1" v-if="props.timestamp.project">
+            <div
+                :style="'--project-color: ' + (props.timestamp.project.color ?? '#000000')"
+                class="mx-2 flex h-9 items-center gap-2 rounded-md border-l-6 border-l-[var(--project-color)] bg-[var(--project-color)]/10 px-2 text-sm font-medium dark:bg-[var(--project-color)]/20"
+            >
+                <div class="flex h-9 shrink-0 items-center text-xl" v-if="props.timestamp.project.icon">
+                    {{ props.timestamp.project.icon }}
+                </div>
+                <div class="line-clamp-1">
+                    {{ props.timestamp.project.name }}
+                </div>
+            </div>
+        </div>
         <div class="flex grow flex-col gap-1" v-if="props.timestamp.description">
             <span class="text-muted-foreground text-xs leading-none">
                 {{ $t('app.notes') }}
@@ -104,7 +117,7 @@ const destroy = () => {
                 {{ props.timestamp.description }}
             </span>
         </div>
-        <div class="flex flex-1 items-center justify-end">
+        <div class="ml-auto flex items-center justify-end">
             <TooltipProvider v-if="props.timestamp.source">
                 <Tooltip>
                     <TooltipTrigger as-child>

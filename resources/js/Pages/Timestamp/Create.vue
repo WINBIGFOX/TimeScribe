@@ -3,6 +3,7 @@ import SheetDialog from '@/Components/dialogs/SheetDialog.vue'
 import { TimeSelect } from '@/Components/ui-custom/time-select'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { Textarea } from '@/Components/ui/textarea'
+import { Project } from '@/types'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { BriefcaseBusiness, Coffee, MoveRight } from 'lucide-vue-next'
 
@@ -12,18 +13,25 @@ const props = defineProps<{
     start_time?: string
     end_time?: string
     submit_route: string
+    projects: Project[]
 }>()
 
 const form = useForm({
     started_at: props.start_time ?? props.min_time,
     ended_at: props.end_time ?? props.max_time,
     type: 'work',
-    description: ''
+    description: '',
+    project_id: '0' as string | number | undefined
 })
 
 const submit = () => {
     router.flushAll()
-    form.post(props.submit_route, {
+    form.transform((data) => {
+        if (data.project_id === '0' || data.type !== 'work') {
+            data.project_id = undefined
+        }
+        return data
+    }).post(props.submit_route, {
         preserveScroll: true,
         preserveState: 'errors'
     })
@@ -94,6 +102,22 @@ const submit = () => {
         <div class="flex flex-col gap-2 py-4">
             <span class="text-sm leading-none font-medium">{{ $t('app.notes') }}</span>
             <Textarea class="h-40" v-model="form.description" />
+        </div>
+        <div class="flex flex-col gap-2 py-4" v-if="props.projects.length && form.type === 'work'">
+            <span class="text-sm leading-none font-medium">{{ $t('app.project') }}</span>
+            <Select v-model="form.project_id">
+                <SelectTrigger class="w-full whitespace-normal">
+                    <div>
+                        <SelectValue class="line-clamp-1" :placeholder="$t('app.project')" />
+                    </div>
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="0">-</SelectItem>
+                    <SelectItem v-for="project in props.projects" :key="project.id" :value="project.id">
+                        {{ project.icon }} {{ project.name }}
+                    </SelectItem>
+                </SelectContent>
+            </Select>
         </div>
     </SheetDialog>
 </template>

@@ -7,6 +7,7 @@ use App\Jobs\CalculateWeekBalance;
 use App\Jobs\MenubarRefresh;
 use App\Models\Timestamp;
 use App\Settings\GeneralSettings;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 use Native\Laravel\Enums\SystemIdleStatesEnum;
 use Native\Laravel\Facades\PowerMonitor;

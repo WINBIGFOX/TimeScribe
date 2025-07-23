@@ -49,6 +49,7 @@ remote, hybrid, or office-based, TimeScribe helps you stay focused and organized
 - 📊 Visualize your day and weekly work patterns
 - ⏱ See app usage and categorize work vs distractions
 - 🗓️ Plan absences like vacation, sick leave, and holidays
+- 📋 Track time on projects with descriptions, hourly rates, and billing calculations
 - ⚙️ Auto start/pause based on screen time and idle status
 - 💾 Export as CSV and Excel: Easily export your time tracking data for further analysis or reporting.
 - 🪟 Supports macOS & Windows
@@ -147,6 +148,15 @@ php artisan native:build win
 <picture >
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/app_activity_en_dark.webp?raw=true">
   <img alt="App Activity" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/app_activity_en_light.webp?raw=true">
+</picture>
+</p>
+
+### 📋 Project Tracking
+
+<p align="center">
+<picture >
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/projects_en_dark.webp?raw=true">
+  <img alt="Project Tracking" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/projects_en_light.webp?raw=true">
 </picture>
 </p>
 

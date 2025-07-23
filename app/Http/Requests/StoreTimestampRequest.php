@@ -29,6 +29,7 @@ class StoreTimestampRequest extends FormRequest
             'started_at' => ['required', 'date_format:H:i', 'before:ended_at'],
             'ended_at' => [Rule::requiredIf($this->route('timestamp')?->ended_at ?? false), 'date_format:H:i', 'after:started_at'],
             'description' => ['nullable', 'string'],
+            'project_id' => ['nullable', 'exists:projects,id'],
         ];
     }
 }

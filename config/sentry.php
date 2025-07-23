@@ -41,6 +41,7 @@ return [
     'ignore_exceptions' => [
         \Illuminate\Validation\ValidationException::class,
         \Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class,
+        \Illuminate\Database\QueryException::class,
     ],
 
     // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#ignore-transactions

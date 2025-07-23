@@ -16,7 +16,7 @@ class ExportService
 
     public function __construct(?Carbon $startDate = null, ?Carbon $endDate = null)
     {
-        $timestamps = Timestamp::query();
+        $timestamps = Timestamp::query()->with(['project']);
         if ($startDate instanceof Carbon) {
             $timestamps->where('started_at', '>=', $startDate);
         }
@@ -61,12 +61,16 @@ class ExportService
         return [
             'Type',
             'Description',
+            'Project',
             'Import Source',
             'Start Date',
             'Start Time',
             'End Date',
             'End Time',
             'Duration (h)',
+            'Hourly Rate',
+            'Billable Amount',
+            'Currency',
         ];
     }
 
@@ -75,12 +79,16 @@ class ExportService
         return [
             $timestamp['type']->value,
             $timestamp['description'] ?? '',
+            $timestamp['project'] ? implode(' ', [$timestamp['project']->icon, $timestamp['project']->name]) : '',
             $timestamp['source'] ?? '',
             $timestamp['started_at']->format('d/m/Y'),
             $timestamp['started_at']->format('H:i:s'),
             $timestamp['ended_at'] ? $timestamp['ended_at']->format('d/m/Y') : '',
             $timestamp['ended_at'] ? $timestamp['ended_at']->format('H:i:s') : '',
             $timestamp['ended_at'] ? gmdate('H:i:s', (int) $timestamp['started_at']->diffInSeconds($timestamp['ended_at'])) : '',
+            $timestamp['project']?->hourly_rate ? number_format($timestamp['project']->hourly_rate, 2) : '',
+            $timestamp['project']?->billable_amount ? number_format($timestamp['project']->billable_amount, 2) : '',
+            $timestamp['project']?->currency ?? '',
         ];
     }
 }

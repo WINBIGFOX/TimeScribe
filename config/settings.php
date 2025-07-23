@@ -11,6 +11,7 @@ return [
     'settings' => [
         \App\Settings\GeneralSettings::class,
         \App\Settings\AutoUpdaterSettings::class,
+        \App\Settings\ProjectSettings::class,
     ],
 
     /*

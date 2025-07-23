@@ -236,6 +236,54 @@ html {
             @apply bg-muted! border-border!;
         }
     }
+
+    .scroll-shadow-x {
+        animation: auto linear 0s 1 normal none running shadow-animation-x;
+        animation-timeline: scroll(self x);
+    }
+
+    .scroll-shadow-y {
+        animation: auto linear 0s 1 normal none running shadow-animation-y;
+        animation-timeline: scroll(self y);
+    }
+
+    @keyframes shadow-animation-x {
+        0% {
+            box-shadow: rgba(0, 0, 0, 0.08) -12px 0 12px -10px inset;
+        }
+        15% {
+            box-shadow:
+                rgba(0, 0, 0, 0.08) 12px 0 12px -10px inset,
+                rgba(0, 0, 0, 0.08) -12px 0 12px -10px inset;
+        }
+        85% {
+            box-shadow:
+                rgba(0, 0, 0, 0.08) 12px 0 12px -10px inset,
+                rgba(0, 0, 0, 0.08) -12px 0 12px -10px inset;
+        }
+        100% {
+            box-shadow: rgba(0, 0, 0, 0.08) 12px 0 12px -10px inset;
+        }
+    }
+
+    @keyframes shadow-animation-y {
+        0% {
+            box-shadow: rgba(0, 0, 0, 0.08) 0 -12px 12px -10px inset;
+        }
+        15% {
+            box-shadow:
+                rgba(0, 0, 0, 0.08) 0 12px 12px -10px inset,
+                rgba(0, 0, 0, 0.08) 0 -12px 12px -10px inset;
+        }
+        85% {
+            box-shadow:
+                rgba(0, 0, 0, 0.08) 0 12px 12px -10px inset,
+                rgba(0, 0, 0, 0.08) 0 -12px 12px -10px inset;
+        }
+        100% {
+            box-shadow: rgba(0, 0, 0, 0.08) 0 12px 12px -10px inset;
+        }
+    }
 }
 
 @theme inline {

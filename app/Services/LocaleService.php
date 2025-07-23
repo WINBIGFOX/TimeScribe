@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Settings\GeneralSettings;
+use App\Settings\ProjectSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use LaravelLang\Locales\Facades\Locales;
 use Native\Laravel\Facades\System;
+use PrinsFrank\Standards\Country\CountryAlpha2;
 
 class LocaleService
 {
@@ -22,11 +24,15 @@ class LocaleService
 
     private readonly GeneralSettings $settings;
 
+    private readonly ProjectSettings $projectSettings;
+
     public function __construct()
     {
         $this->settings = app(GeneralSettings::class);
+        $this->projectSettings = app(ProjectSettings::class);
         $this->setupTimezone();
         $this->setupLocale();
+        $this->setupCurrency();
     }
 
     private function setupTimezone(): void
@@ -64,6 +70,20 @@ class LocaleService
 
         App::setLocale($language);
         Carbon::setLocale($locale);
+    }
+
+    private function setupCurrency(): void
+    {
+        try {
+            if ($this->projectSettings->defaultCurrency === null) {
+                $country = explode('_', $this->settings->locale)[1];
+                $countryInfo = CountryAlpha2::from($country);
+                $this->projectSettings->defaultCurrency = $countryInfo->getCurrenciesAlpha3()[0]->value;
+                $this->projectSettings->save();
+            }
+        } catch (\Throwable) {
+            //
+        }
     }
 
     private function detectSystemLocale(): string

@@ -22,4 +22,9 @@ class WindowController extends Controller
     {
         WindowService::openUpdater($darkMode);
     }
+
+    public function openNewProject(bool $darkMode): void
+    {
+        WindowService::openHome($darkMode, 'project.create');
+    }
 }

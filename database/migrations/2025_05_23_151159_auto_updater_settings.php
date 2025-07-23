@@ -13,4 +13,12 @@ return new class extends SettingsMigration
         $this->migrator->add('auto_updater.lastVersion', null);
         $this->migrator->add('auto_updater.isDownloaded', false);
     }
+
+    public function down(): void
+    {
+        $this->migrator->deleteIfExists('auto_updater.autoUpdate');
+        $this->migrator->deleteIfExists('auto_updater.lastCheck');
+        $this->migrator->deleteIfExists('auto_updater.lastVersion');
+        $this->migrator->deleteIfExists('auto_updater.isDownloaded');
+    }
 };

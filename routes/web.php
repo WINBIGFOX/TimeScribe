@@ -14,6 +14,7 @@ use App\Http\Controllers\Overview\DayController;
 use App\Http\Controllers\Overview\MonthController;
 use App\Http\Controllers\Overview\WeekController;
 use App\Http\Controllers\Overview\YearController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\Settings\GeneralController;
 use App\Http\Controllers\Settings\StartStopController;
 use App\Http\Controllers\TimestampController;
@@ -21,8 +22,6 @@ use App\Http\Controllers\UpdaterController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\WindowController;
 use App\Http\Controllers\WorkScheduleController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect()->route('overview.week.index'))->name('home');
 
@@ -44,12 +43,15 @@ Route::name('menubar.')->prefix('menubar')->group(function (): void {
     Route::post('break', [MenubarController::class, 'storeBreak'])->name('storeBreak');
     Route::post('work', [MenubarController::class, 'storeWork'])->name('storeWork');
     Route::post('stop', [MenubarController::class, 'storeStop'])->name('storeStop');
+    Route::post('set-project/{project}', [MenubarController::class, 'setProject'])->name('set-project');
+    Route::post('remove-project', [MenubarController::class, 'removeProject'])->name('remove-project');
 });
 
 Route::name('window.')->prefix('window')->group(function (): void {
     Route::get('updater/{darkMode}', [WindowController::class, 'openUpdater'])->name('updater.open');
     Route::get('overview/{darkMode}', [WindowController::class, 'openOverview'])->name('overview.open');
     Route::get('settings/{darkMode}', [WindowController::class, 'openSettings'])->name('settings.open');
+    Route::get('new-project/{darkMode}', [WindowController::class, 'openNewProject'])->name('new-project.open');
 });
 
 Route::name('settings.')->prefix('settings')->group(function (): void {
@@ -85,6 +87,8 @@ Route::resource('work-schedule', WorkScheduleController::class)->only('index', '
 
 Route::resource('app-activity', AppActivityController::class)->only(['index', 'show']);
 
+Route::resource('project', ProjectController::class);
+
 Route::name('absence.')->prefix('absence')->group(function (): void {
     Route::get('', [AbsenceController::class, 'index'])->name('index');
     Route::get('{date}', [AbsenceController::class, 'show'])->name('show');
@@ -104,7 +108,7 @@ Route::name('bug-and-feedback.')->prefix('bug-and-feedback')->group(function ():
     Route::get('import', [BugAndFeedbackController::class, 'import'])->name('import');
 });
 
-Route::get('open', function (Request $request): void {
+Route::get('open', function (Illuminate\Http\Request $request): void {
     if (\Native\Laravel\Support\Environment::isWindows()) {
         shell_exec('explorer "'.$request->string('url').'"');
     } else {
@@ -118,6 +122,6 @@ Route::get('/app-icon/{appIconName}', function ($appIconName) {
     }
 
     return Storage::disk('app-icon')->response($appIconName, null, [
-        'Cache-Control' => 'public, max-age=31536000, immutable',
+        'Cache-Control' => 'public, max-age=864000, must-revalidate',
     ]);
 })->where('appIconName', '.*')->name('app-icon.show');
