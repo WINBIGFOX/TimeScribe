@@ -99,6 +99,10 @@ class MenubarController extends Controller
         $projectSettings->currentProject = null;
         $projectSettings->save();
 
+        if (TimestampService::getCurrentType() === TimestampTypeEnum::WORK) {
+            TimestampService::startWork();
+        }
+
         return redirect()->route('menubar.index');
     }
 }
