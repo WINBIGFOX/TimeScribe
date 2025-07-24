@@ -248,23 +248,9 @@ const removeProject = () => {
                             {{ props.currentProject.name }}
                         </div>
                         <Button
-                            :as="Link"
-                            :href="route('menubar.storeStop')"
-                            class="text-destructive hover:text-destructive mr-0.5 ml-auto px-2! shadow-none"
-                            method="post"
-                            preserve-scroll
-                            preserve-state
-                            size="sm"
-                            v-if="currentType === 'work'"
-                            variant="outline"
-                        >
-                            <Square class="size-4" />
-                        </Button>
-                        <Button
                             @click="removeProject"
                             class="mr-0.5 ml-auto px-2! shadow-none"
                             size="sm"
-                            v-if="currentType !== 'work'"
                             variant="outline"
                         >
                             <X class="size-4" />
