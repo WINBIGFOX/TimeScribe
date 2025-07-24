@@ -47,7 +47,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Projekt bearbeiten" />
+    <Head title="Projekt edit" />
     <SheetDialog
         :close="$t('app.cancel')"
         :submit="$t('app.save')"

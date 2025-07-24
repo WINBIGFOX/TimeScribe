@@ -276,7 +276,6 @@ const removeProject = () => {
                         </Button>
                     </div>
                     <div class="scroll-shadow-y flex grow flex-col gap-1 overflow-y-auto">
-                        <!-- Einzelne Projekte (mit parent_id aber Parent nicht geladen) -->
                         <template :key="project.id" v-for="project in props.projects">
                             <div
                                 :style="'--project-color: ' + (project.color ?? '#000000')"
