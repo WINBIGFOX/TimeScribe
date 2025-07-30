@@ -19,7 +19,12 @@ createInertiaApp({
             `./Pages/${name}.vue`,
             import.meta.glob<DefineComponent>('./Pages/**/*.vue')
         )
-        if (name === 'MenuBar' || name.startsWith('Welcome') || name.startsWith('Updater')) {
+        if (
+            name === 'MenuBar' ||
+            name.startsWith('Welcome') ||
+            name.startsWith('Updater') ||
+            name.startsWith('FlyTimer')
+        ) {
             page.default.layout = BasicLayout
         } else {
             page.default.layout = DefaultLayout

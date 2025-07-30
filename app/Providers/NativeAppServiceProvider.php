@@ -9,6 +9,7 @@ use App\Models\WorkSchedule;
 use App\Services\LocaleService;
 use App\Services\TrayIconService;
 use App\Services\WindowService;
+use App\Settings\FlyTimerSettings;
 use App\Settings\GeneralSettings;
 use Native\Laravel\Contracts\ProvidesPhpIni;
 use Native\Laravel\Enums\SystemThemesEnum;
@@ -68,6 +69,12 @@ class NativeAppServiceProvider implements ProvidesPhpIni
 
         if (! $settings->wizard_completed) {
             WindowService::openWelcome();
+        } else {
+            $flyTimerSettings = app(FlyTimerSettings::class);
+
+            if ($flyTimerSettings->showWithStart) {
+                WindowService::openFlyTimer();
+            }
         }
 
         Menu::create(

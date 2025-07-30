@@ -26,7 +26,7 @@ class WindowClosing
     {
         if (Environment::isMac()) {
             $windows = Window::all();
-            if (count($windows) === 0) {
+            if (count($windows) === 0 || (count($windows) === 1 && $windows[0]->id === 'fly-timer')) {
                 Dock::hide();
             }
         }

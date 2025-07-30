@@ -7,6 +7,7 @@ use App\Http\Controllers\AppActivityController;
 use App\Http\Controllers\BugAndFeedbackController;
 use App\Http\Controllers\Export\CsvController;
 use App\Http\Controllers\Export\ExcelController;
+use App\Http\Controllers\FlyTimerController;
 use App\Http\Controllers\Import\ClockifyController;
 use App\Http\Controllers\ImportExportController;
 use App\Http\Controllers\MenubarController;
@@ -47,11 +48,20 @@ Route::name('menubar.')->prefix('menubar')->group(function (): void {
     Route::post('remove-project', [MenubarController::class, 'removeProject'])->name('remove-project');
 });
 
+Route::name('fly-timer.')->prefix('fly-timer')->group(function (): void {
+    Route::get('', [FlyTimerController::class, 'index'])->name('index');
+    Route::post('work', [FlyTimerController::class, 'storeBreak'])->name('storeBreak');
+    Route::post('break', [FlyTimerController::class, 'storeWork'])->name('storeWork');
+    Route::post('stop', [FlyTimerController::class, 'storeStop'])->name('storeStop');
+});
+
 Route::name('window.')->prefix('window')->group(function (): void {
     Route::get('updater/{darkMode}', [WindowController::class, 'openUpdater'])->name('updater.open');
     Route::get('overview/{darkMode}', [WindowController::class, 'openOverview'])->name('overview.open');
     Route::get('settings/{darkMode}', [WindowController::class, 'openSettings'])->name('settings.open');
     Route::get('new-project/{darkMode}', [WindowController::class, 'openNewProject'])->name('new-project.open');
+    Route::get('fly-timer/open', [WindowController::class, 'openFlyTimer'])->name('fly-timer.open');
+    Route::get('fly-timer/close', [WindowController::class, 'closeFlyTimer'])->name('fly-timer.close');
 });
 
 Route::name('settings.')->prefix('settings')->group(function (): void {
