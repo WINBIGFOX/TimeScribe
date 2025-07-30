@@ -78,7 +78,7 @@ const useShowMenu = refThrottled(showMenu, 5000)
 </script>
 
 <template>
-    <Head title="Timer" />
+    <Head title="FlyTimer" />
     <div
         :style="'--project-color: ' + (props.currentProject?.color ?? '#000000')"
         :class="{
