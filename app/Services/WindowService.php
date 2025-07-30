@@ -75,6 +75,31 @@ class WindowService
         }
     }
 
+    public static function openFlyTimer(): void
+    {
+        self::closeFlyTimer();
+        Window::open('fly-timer')
+            ->webPreferences([
+                'devTools' => false,
+            ])
+            ->height(70)
+            ->width(200)
+            ->route('fly-timer.index')
+            ->alwaysOnTop()
+            ->maximizable(false)
+            ->fullscreenable(false)
+            ->trafficLightPosition(0, -30)
+            ->resizable(false)
+            ->minimizable(false)
+            ->showDevTools(false)
+            ->hiddenInMissionControl()
+            ->skipTaskbar()
+            ->rememberState()
+            ->invisibleFrameless()
+            ->titleBarHidden()
+            ->hideMenu();
+    }
+
     public static function closeWelcome(): void
     {
         Window::close('welcome');
@@ -88,5 +113,10 @@ class WindowService
     public static function closeUpdater(): void
     {
         Window::close('updater');
+    }
+
+    public static function closeFlyTimer(): void
+    {
+        Window::close('fly-timer');
     }
 }

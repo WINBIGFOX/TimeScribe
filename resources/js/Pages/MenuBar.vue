@@ -5,7 +5,7 @@ import { secToFormat } from '@/lib/utils'
 import { ActivityHistory, Project } from '@/types'
 import { Head, Link, router, usePoll } from '@inertiajs/vue3'
 import { useColorMode } from '@vueuse/core'
-import { ChartPie, Coffee, Cog, Play, Plus, Sparkles, Square, Tag, X } from 'lucide-vue-next'
+import { ChartPie, Coffee, Cog, PictureInPicture, Play, Plus, Sparkles, Square, Tag, X } from 'lucide-vue-next'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 defineOptions({
@@ -41,10 +41,22 @@ const tick = () => {
     }
 }
 
-window.Native.on('Native\\Laravel\\Events\\MenuBar\\MenuBarShown', () => {
-    openProjectList.value = false
-    router.reload()
-})
+const reload = () => {
+    router.flushAll()
+    router.reload({
+        only: ['workTime', 'breakTime', 'currentType', 'currentProject'],
+        showProgress: false
+    })
+}
+
+if (window.Native) {
+    window.Native.on('App\\Events\\TimerStarted', reload)
+    window.Native.on('App\\Events\\TimerStopped', reload)
+    window.Native.on('Native\\Laravel\\Events\\MenuBar\\MenuBarShown', () => {
+        openProjectList.value = false
+        router.reload()
+    })
+}
 
 onMounted(() => {
     timer = setInterval(tick, 1000)
@@ -146,20 +158,32 @@ const removeProject = () => {
                 <Sparkles class="size-4" />
                 {{ $t('app.update available') }}
             </Button>
-            <Button
-                :as="Link"
-                :href="
-                    route('window.settings.open', {
-                        darkMode: state === 'dark' ? 1 : 0
-                    })
-                "
-                preserve-scroll
-                preserve-state
-                size="icon"
-                variant="ghost"
-            >
-                <Cog />
-            </Button>
+            <div>
+                <Button
+                    :as="Link"
+                    :href="route('window.fly-timer.open')"
+                    preserve-scroll
+                    preserve-state
+                    size="icon"
+                    variant="ghost"
+                >
+                    <PictureInPicture />
+                </Button>
+                <Button
+                    :as="Link"
+                    :href="
+                        route('window.settings.open', {
+                            darkMode: state === 'dark' ? 1 : 0
+                        })
+                    "
+                    preserve-scroll
+                    preserve-state
+                    size="icon"
+                    variant="ghost"
+                >
+                    <Cog />
+                </Button>
+            </div>
         </div>
         <div
             :class="{
