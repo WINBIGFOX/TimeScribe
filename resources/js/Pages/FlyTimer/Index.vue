@@ -83,9 +83,10 @@ const useShowMenu = refThrottled(showMenu, 5000)
         :style="'--project-color: ' + (props.currentProject?.color ?? '#000000')"
         :class="{
             'opacity-10': !props.currentType && !useShowMenu,
-            'opacity-50': props.currentType === 'break' && !useShowMenu
+            'opacity-50': props.currentType === 'break' && !useShowMenu,
+            'ring-3 hover:ring-1': props.currentProject?.color
         }"
-        class="bg-background ring-offset-background group relative flex h-full items-center justify-center overflow-clip rounded-full border ring-3 ring-(--project-color) ring-offset-1 transition-all duration-500 ring-inset hover:opacity-100! hover:ring-1"
+        class="bg-background ring-offset-background group relative flex h-full items-center justify-center overflow-clip rounded-full border ring-(--project-color) ring-offset-1 transition-all duration-500 ring-inset hover:opacity-100!"
     >
         <transition
             class="transform-gpu transition-all duration-1000"
