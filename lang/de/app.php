@@ -85,6 +85,7 @@ return [
     'get started' => 'Jetzt starten',
     'give feedback' => 'Feedback geben',
     'h' => 'Std.',
+    'holiday' => 'Feiertag',
     'hour' => 'Stunde',
     'hourly rate' => 'Stundensatz',
     'hours' => 'Stunden',

@@ -22,6 +22,7 @@ const props = defineProps<{
             :fallback-plan="props.weekday.fallbackPlan"
             :plan="props.weekday.plan"
             :work-time="props.weekday.workTime"
+            :is-holiday="props.weekday.isHoliday"
         />
     </div>
 </template>

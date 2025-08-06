@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Overview;
 use App\Helpers\DateHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AbsenceResource;
+use App\Services\HolidayService;
 use App\Services\TimestampService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -62,6 +63,7 @@ class WeekController extends Controller
                     'noWorkTime' => TimestampService::getNoWorkTime($date),
                     'activeWork' => TimestampService::getActiveWork($date),
                     'absences' => AbsenceResource::collection(TimestampService::getAbsence($date)),
+                    'isHoliday' => HolidayService::isHoliday($date),
                 ];
             })->toArray(),
         ]);

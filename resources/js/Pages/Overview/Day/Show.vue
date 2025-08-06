@@ -18,6 +18,7 @@ const props = defineProps<{
     absences: Absence[]
     dayBreakTime: number
     dayNoWorkTime: number
+    isHoliday: boolean
 }>()
 
 const calcDuration = (startTimestamp: string, endTimestamp?: string) =>
@@ -69,9 +70,14 @@ if (window.Native) {
             class="mb-6 shrink-0"
         />
         <div class="mb-6 flex gap-2">
+            <TimestampTypeBadge type="holiday" v-if="props.isHoliday" />
             <TimestampTypeBadge type="vacation" v-if="props.absences.length && props.absences[0].type === 'vacation'" />
             <TimestampTypeBadge type="sick" v-if="props.absences.length && props.absences[0].type === 'sick'" />
-            <TimestampTypeBadge :duration="props.dayWorkTime" type="work" v-if="!props.absences.length" />
+            <TimestampTypeBadge
+                :duration="props.dayWorkTime"
+                type="work"
+                v-if="!props.absences.length && !props.isHoliday"
+            />
             <TimestampTypeBadge :duration="props.dayBreakTime" type="break" />
             <TimestampTypeBadge :duration="props.dayNoWorkTime" type="noWork" />
             <TimestampTypeBadge

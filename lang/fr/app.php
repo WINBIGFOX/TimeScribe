@@ -85,6 +85,7 @@ return [
     'get started' => 'Commencer',
     'give feedback' => 'Donner un avis',
     'h' => 'h',
+    'holiday' => 'Jour férié',
     'hour' => 'heure',
     'hourly rate' => 'Taux horaire',
     'hours' => 'heures',

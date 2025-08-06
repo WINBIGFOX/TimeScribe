@@ -85,6 +85,7 @@ return [
     'get started' => 'Get started',
     'give feedback' => 'Give Feedback',
     'h' => 'h',
+    'holiday' => 'Holiday',
     'hour' => 'hour',
     'hourly rate' => 'Hourly Rate',
     'hours' => 'hours',

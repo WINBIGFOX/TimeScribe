@@ -3,7 +3,7 @@ import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
 import { Absence, Date } from '@/types'
 import { Head, Link, router } from '@inertiajs/vue3'
-import { Cross, Drama, Trash, TreePalm } from 'lucide-vue-next'
+import { Cross, Drama, Trash, TreePalm, X } from 'lucide-vue-next'
 import moment from 'moment/min/moment-with-locales'
 import { computed } from 'vue'
 
@@ -76,6 +76,33 @@ const removeAbsence = (id: number) => {
         }
     )
 }
+
+const addHoliday = (date: string) => {
+    router.flushAll()
+    router.post(
+        route('absence.holiday-rule.store'),
+        {
+            date
+        },
+        {
+            preserveScroll: true,
+            preserveState: true
+        }
+    )
+}
+
+const removeHoliday = (date: string) => {
+    router.flushAll()
+    router.delete(
+        route('absence.holiday-rule.destroy', {
+            date
+        }),
+        {
+            preserveScroll: true,
+            preserveState: true
+        }
+    )
+}
 </script>
 
 <template>
@@ -138,16 +165,34 @@ const removeAbsence = (id: number) => {
                             {{ day.format('D') }}
                         </div>
                         <div
-                            :class="{
-                                'bg-background! text-foreground! line-through opacity-50':
-                                    absences[day.format('YYYY-MM-DD')]
-                            }"
-                            class="bg-primary text-primary-foreground rounded px-1.5 text-xs"
-                            v-if="props.plans[day.format('YYYY-MM-DD')] && !holidays[day.format('YYYY-MM-DD')]"
+                            class="group/drama hover:bg-muted-foreground/20 flex rounded-lg transition-all duration-500 hover:-mr-1 hover:px-1 hover:py-1"
                         >
-                            {{ props.plans[day.format('YYYY-MM-DD')] }} {{ $t('app.h') }}
+                            <div
+                                @click="
+                                    !absences[day.format('YYYY-MM-DD')]
+                                        ? addHoliday(day.format('YYYY-MM-DD'))
+                                        : undefined
+                                "
+                                :class="{
+                                    'bg-background! text-foreground! line-through opacity-50':
+                                        absences[day.format('YYYY-MM-DD')]
+                                }"
+                                class="bg-primary text-primary-foreground rounded px-1.5 text-xs transition-all duration-500 group-hover/drama:bg-transparent group-hover/drama:text-purple-400 group-hover/drama:line-through"
+                                v-if="props.plans[day.format('YYYY-MM-DD')] && !holidays[day.format('YYYY-MM-DD')]"
+                            >
+                                {{ props.plans[day.format('YYYY-MM-DD')] }} {{ $t('app.h') }}
+                            </div>
+                            <div
+                                class="flex items-center text-purple-400"
+                                v-if="holidays[day.format('YYYY-MM-DD')]"
+                                @click="removeHoliday(day.format('YYYY-MM-DD'))"
+                            >
+                                <X
+                                    class="hidden size-4 transition-all duration-500 group-hover/drama:block starting:w-0"
+                                />
+                                <Drama class="size-4" />
+                            </div>
                         </div>
-                        <Drama class="size-4" v-if="holidays[day.format('YYYY-MM-DD')]" />
                     </div>
                     <div
                         class="text-foreground hidden grow items-center justify-center gap-2 group-hover:flex"
