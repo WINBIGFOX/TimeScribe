@@ -85,6 +85,7 @@ return [
     'get started' => '开始使用',
     'give feedback' => '提供反馈',
     'h' => '小时',
+    'holiday' => '假期',
     'hour' => '小时',
     'hourly rate' => '小时费率',
     'hours' => '小时',

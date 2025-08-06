@@ -7,6 +7,7 @@ import {
     Coffee,
     Cross,
     Diff,
+    Drama,
     TreePalm
 } from 'lucide-vue-next'
 
@@ -25,6 +26,11 @@ const badgeDetails = {
         title: 'app.sick',
         icon: Cross,
         color: 'bg-rose-400 text-primary-foreground'
+    },
+    holiday: {
+        title: 'app.holiday',
+        icon: Drama,
+        color: 'bg-purple-400 text-primary-foreground'
     },
     work: {
         title: 'app.work hours',

@@ -8,6 +8,7 @@ use App\Http\Controllers\BugAndFeedbackController;
 use App\Http\Controllers\Export\CsvController;
 use App\Http\Controllers\Export\ExcelController;
 use App\Http\Controllers\FlyTimerController;
+use App\Http\Controllers\HolidayRuleController;
 use App\Http\Controllers\Import\ClockifyController;
 use App\Http\Controllers\ImportExportController;
 use App\Http\Controllers\MenubarController;
@@ -104,6 +105,9 @@ Route::name('absence.')->prefix('absence')->group(function (): void {
     Route::get('{date}', [AbsenceController::class, 'show'])->name('show');
     Route::post('{date}', [AbsenceController::class, 'store'])->name('store');
     Route::delete('{date}/{absence}', [AbsenceController::class, 'destroy'])->name('destroy');
+
+    Route::post('holiday-rule', [HolidayRuleController::class, 'store'])->name('holiday-rule.store');
+    Route::delete('holiday-rule', [HolidayRuleController::class, 'destroy'])->name('holiday-rule.destroy');
 });
 
 Route::get('timestamp/create/{datetime}/{endDatetime?}', [TimestampController::class, 'create'])->name('timestamp.create')

@@ -19,10 +19,6 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use Umulmrum\Holiday\Constant\HolidayType;
-use Umulmrum\Holiday\Filter\IncludeTypeFilter;
-use Umulmrum\Holiday\Formatter\DateFormatter;
-use Umulmrum\Holiday\HolidayCalculator;
 
 class TimestampService
 {
@@ -171,7 +167,7 @@ class TimestampService
 
         if (! $project instanceof \App\Models\Project) {
 
-            $holiday = self::getHoliday([$date->year, $endDate->year]);
+            $holiday = HolidayService::getHoliday([$date->year, $endDate->year]);
             $absence = self::getAbsence($date, $endDate);
 
             $periode = CarbonPeriod::create($date, $endDate);
@@ -268,21 +264,6 @@ class TimestampService
             ->get();
     }
 
-    public static function getHoliday(int|array $year): Collection
-    {
-        $settings = app(GeneralSettings::class);
-        if ($settings->holidayRegion === null) {
-            return collect();
-        }
-        $holidayCalculator = new HolidayCalculator;
-
-        return collect(
-            $holidayCalculator->calculate($settings->holidayRegion, $year)
-                ->filter(new IncludeTypeFilter(HolidayType::DAY_OFF))
-                ->format(new DateFormatter)
-        )->map(fn ($holiday): ?Carbon => Carbon::create($holiday));
-    }
-
     public static function getWorkSchedule(?Carbon $date = null): array
     {
         if (! $date instanceof Carbon) {
@@ -374,7 +355,7 @@ class TimestampService
         $timestampDates = self::getTimestamps($date, $endDate, $project)->map(fn (Timestamp $timestamp) => $timestamp->started_at->format('Y-m-d'));
 
         if (! $project instanceof \App\Models\Project) {
-            $holiday = self::getHoliday(range($date->year, $endDate->year))->map(fn (Carbon $holiday): string => $holiday->format('Y-m-d'));
+            $holiday = HolidayService::getHoliday(range($date->year, $endDate->year))->map(fn (Carbon $holiday): string => $holiday->format('Y-m-d'));
 
             $absence = self::getAbsence($date, $endDate)->map(fn (Absence $absence) => $absence->date->format('Y-m-d'));
 

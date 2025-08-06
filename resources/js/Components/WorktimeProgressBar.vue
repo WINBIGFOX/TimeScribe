@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { secToFormat } from '@/lib/utils'
 import { Absence } from '@/types'
-import { BriefcaseBusiness, ClockArrowDown, ClockArrowUp, Coffee, Cross, TreePalm } from 'lucide-vue-next'
+import { BriefcaseBusiness, ClockArrowDown, ClockArrowUp, Coffee, Cross, Drama, TreePalm } from 'lucide-vue-next'
 import { computed } from 'vue'
 
 const props = withDefaults(
@@ -12,6 +12,7 @@ const props = withDefaults(
         breakTime?: number
         activeWork?: boolean
         absences: Absence[]
+        isHoliday?: boolean
     }>(),
     {
         plan: 0,
@@ -19,7 +20,8 @@ const props = withDefaults(
         progress: 0,
         workTime: 0,
         breakTime: 0,
-        activeWork: false
+        activeWork: false,
+        isHoliday: false
     }
 )
 
@@ -48,9 +50,10 @@ const percentageOverTime = computed(() => {
         <div class="bg-muted relative grow overflow-hidden rounded-t-lg">
             <div
                 :class="{
-                    'bg-primary': !props.absences.length,
+                    'bg-primary': !props.absences.length && !props.isHoliday,
                     'bg-rose-400': props.absences[0]?.type === 'sick',
-                    'bg-emerald-500': props.absences[0]?.type === 'vacation'
+                    'bg-emerald-500': props.absences[0]?.type === 'vacation',
+                    'bg-purple-400': props.isHoliday
                 }"
                 :style="{
                     height: `${percentageWorkTime}%`
@@ -93,9 +96,12 @@ const percentageOverTime = computed(() => {
                     {{ $t('app.sick') }}
                 </div>
             </div>
+            <div v-else-if="props.isHoliday" class="flex items-center justify-center text-purple-400">
+                <Drama class="size-4 shrink-0" />
+            </div>
             <div
                 class="text-muted-foreground flex items-center justify-between gap-1 text-xs"
-                v-if="props.workTime && !props.absences.length"
+                v-if="props.workTime && !props.absences.length && !props.isHoliday"
             >
                 <BriefcaseBusiness class="size-4 shrink-0" />
                 {{ secToFormat(props.workTime ?? 0, false, true) }}

@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Overview;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TimestampResource;
+use App\Services\HolidayService;
 use App\Services\TimestampService;
 use Carbon\Carbon;
 use Inertia\Inertia;
@@ -39,6 +40,7 @@ class DayController extends Controller
             'dayNoWorkTime' => TimestampService::getNoWorkTime($startDay),
             'absences' => TimestampService::getAbsence($startDay),
             'date' => $date->format('d.m.Y'),
+            'isHoliday' => HolidayService::isHoliday($startDay),
         ]);
     }
 }

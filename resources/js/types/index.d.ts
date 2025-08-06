@@ -19,6 +19,7 @@ export interface WeekdayObject {
     timestamps: unknown[]
     activeWork: boolean
     absences: Absence[]
+    isHoliday: boolean
 }
 
 export interface WorkSchedule {

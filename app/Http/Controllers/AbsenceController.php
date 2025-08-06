@@ -9,6 +9,7 @@ use App\Helpers\DateHelper;
 use App\Http\Requests\StoreAbsenceRequest;
 use App\Http\Resources\AbsenceResource;
 use App\Models\Absence;
+use App\Services\HolidayService;
 use App\Services\TimestampService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -50,7 +51,7 @@ class AbsenceController extends Controller
         $absences = Absence::query()->whereBetween('date', [$startDate, $endDate])->get();
 
         $periode = CarbonPeriod::create($startDate, $endDate);
-        $holidays = TimestampService::getHoliday([$startDate->year, $endDate->year]);
+        $holidays = HolidayService::getHoliday([$startDate->year, $endDate->year]);
         $plans = [];
         foreach ($periode as $rangeDate) {
             $plans[$rangeDate->format('Y-m-d')] = TimestampService::getPlan($rangeDate);
