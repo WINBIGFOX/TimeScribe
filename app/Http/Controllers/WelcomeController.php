@@ -10,9 +10,10 @@ use App\Models\Timestamp;
 use App\Models\WorkSchedule;
 use App\Services\WindowService;
 use App\Settings\GeneralSettings;
+use Illuminate\Support\Sleep;
 use Inertia\Inertia;
-use Native\Laravel\Facades\App;
-use Native\Laravel\Facades\MenuBar;
+use Native\Desktop\Facades\App;
+use Native\Desktop\Facades\MenuBar;
 
 class WelcomeController extends Controller
 {
@@ -39,7 +40,7 @@ class WelcomeController extends Controller
         if ($request->has('workSchedule')) {
             $firstTimestamps = Timestamp::orderBy('started_at')->first();
             $first = WorkSchedule::orderBy('valid_from')->firstOrNew();
-            $first->valid_from = $firstTimestamps?->started_at->startOfDay() ?? now()->startOfDay();
+            $first->valid_from = $firstTimestamps?->started_at->startOfDay() ?? today();
             $first->sunday = $data['workSchedule']['sunday'] ?? 0;
             $first->monday = $data['workSchedule']['monday'] ?? 0;
             $first->tuesday = $data['workSchedule']['tuesday'] ?? 0;
@@ -60,7 +61,7 @@ class WelcomeController extends Controller
         if ($openSettings) {
             WindowService::openHome(false, 'settings.index');
         } else {
-            sleep(1);
+            Sleep::sleep(1);
             MenuBar::show();
         }
     }

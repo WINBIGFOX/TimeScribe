@@ -9,6 +9,8 @@ use App\Http\Resources\TimestampResource;
 use App\Services\HolidayService;
 use App\Services\TimestampService;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Inertia\Inertia;
 
 class DayController extends Controller
@@ -16,9 +18,9 @@ class DayController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Redirector|RedirectResponse
     {
-        return redirect()->route('overview.day.show', [
+        return to_route('overview.day.show', [
             'date' => now()->format('Y-m-d'),
         ]);
     }

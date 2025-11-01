@@ -10,7 +10,7 @@ use App\Services\TimestampService;
 use App\Services\TrayIconService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Native\Laravel\Facades\MenuBar;
+use Native\Desktop\Facades\MenuBar;
 
 class MenubarRefresh implements ShouldQueue
 {

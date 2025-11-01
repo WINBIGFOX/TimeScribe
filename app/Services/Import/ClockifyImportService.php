@@ -9,6 +9,7 @@ use App\Models\Timestamp;
 use App\Settings\ProjectSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 use PrinsFrank\Standards\Currency\CurrencyAlpha3;
 
@@ -126,7 +127,7 @@ class ClockifyImportService
 
     private function dateFormat(string $date, string $time): Carbon
     {
-        $dateTime = Carbon::createFromFormat('d/m/Y H:i:s', $date.' '.$time);
+        $dateTime = Date::createFromFormat('d/m/Y H:i:s', $date.' '.$time);
         if ($dateTime === false) {
             throw new \Exception('Invalid date format');
         }
@@ -139,18 +140,18 @@ class ClockifyImportService
         $previousEndDate = null;
         $this->timestamps->transform(function (array $timestamp) use (&$previousEndDate): array {
 
-            if (! $previousEndDate instanceof \Carbon\Carbon) {
-                $previousEndDate = Carbon::parse($timestamp['ended_at']);
+            if (! $previousEndDate instanceof Carbon) {
+                $previousEndDate = Date::parse($timestamp['ended_at']);
 
                 return $timestamp;
             }
 
-            $currentStartDate = Carbon::parse($timestamp['started_at']);
+            $currentStartDate = Date::parse($timestamp['started_at']);
             if ($currentStartDate->lessThan($previousEndDate)) {
                 $timestamp['started_at'] = $previousEndDate->format('Y-m-d H:i:s');
             }
 
-            $previousEndDate = Carbon::parse($timestamp['ended_at']);
+            $previousEndDate = Date::parse($timestamp['ended_at']);
 
             return $timestamp;
         });
@@ -159,9 +160,9 @@ class ClockifyImportService
     private function fixDayOverlap(): void
     {
         $addTimestamps = [];
-        $this->timestamps->transform(function (array $timestamp) use (&$addTimestamps) {
-            $startDate = Carbon::parse($timestamp['started_at']);
-            $endDate = Carbon::parse($timestamp['ended_at']);
+        $this->timestamps->transform(function (array $timestamp) use (&$addTimestamps): array {
+            $startDate = Date::parse($timestamp['started_at']);
+            $endDate = Date::parse($timestamp['ended_at']);
 
             if ($startDate->isSameDay($endDate)) {
                 return $timestamp;
@@ -202,9 +203,9 @@ class ClockifyImportService
     {
         $addTimestamps = [];
         $timestampsRemoved = false;
-        $this->timestamps->transform(function (array $timestamp) use ($databaseTimestamps, &$addTimestamps, &$timestampsRemoved) {
-            $startDate = Carbon::parse($timestamp['started_at']);
-            $endDate = Carbon::parse($timestamp['ended_at']);
+        $this->timestamps->transform(function (array $timestamp) use ($databaseTimestamps, &$addTimestamps, &$timestampsRemoved): ?array {
+            $startDate = Date::parse($timestamp['started_at']);
+            $endDate = Date::parse($timestamp['ended_at']);
 
             foreach ($databaseTimestamps as $dbTimestamp) {
                 if ($endDate->lessThan($dbTimestamp->started_at) || $startDate->greaterThan($dbTimestamp->ended_at)) {
@@ -264,7 +265,7 @@ class ClockifyImportService
 
     private function addTimestamps(): void
     {
-        $this->timestamps = $this->timestamps->map(function (array $timestamp) {
+        $this->timestamps = $this->timestamps->map(function (array $timestamp): array {
             $timestamp['created_at'] = $timestamp['started_at'];
             $timestamp['updated_at'] = $timestamp['ended_at'];
             $timestamp['last_ping_at'] = $timestamp['ended_at'];
@@ -275,7 +276,7 @@ class ClockifyImportService
 
     private function createProjects(): void
     {
-        $this->timestamps = $this->timestamps->map(function (array $timestamp) {
+        $this->timestamps = $this->timestamps->map(function (array $timestamp): array {
             if (empty($timestamp['project_name'])) {
                 return $timestamp;
             }

@@ -8,8 +8,8 @@ use App\Jobs\CalculateWeekBalance;
 use App\Services\LocaleService;
 use App\Services\TimestampService;
 use App\Settings\GeneralSettings;
-use Native\Laravel\Events\PowerMonitor\ScreenUnlocked;
-use Native\Laravel\Facades\MenuBar;
+use Native\Desktop\Events\PowerMonitor\ScreenUnlocked;
+use Native\Desktop\Facades\MenuBar;
 
 class Unlocked
 {
@@ -35,6 +35,6 @@ class Unlocked
             MenuBar::show();
         }
 
-        CalculateWeekBalance::dispatch();
+        dispatch(new CalculateWeekBalance);
     }
 }

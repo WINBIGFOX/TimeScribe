@@ -8,8 +8,9 @@ use App\Jobs\CalculateWeekBalance;
 use App\Services\LocaleService;
 use App\Services\TimestampService;
 use App\Settings\GeneralSettings;
-use Native\Laravel\Events\App\ApplicationBooted;
-use Native\Laravel\Facades\MenuBar;
+use Illuminate\Support\Sleep;
+use Native\Desktop\Events\App\ApplicationBooted;
+use Native\Desktop\Facades\MenuBar;
 
 class Booted
 {
@@ -29,9 +30,9 @@ class Booted
         new LocaleService;
         $settings = app(GeneralSettings::class);
         TimestampService::checkStopTimeReset();
-        CalculateWeekBalance::dispatch();
+        dispatch(new CalculateWeekBalance);
         if ($settings->showTimerOnUnlock) {
-            sleep(1);
+            Sleep::sleep(1);
             MenuBar::clearResolvedInstances();
             MenuBar::show();
         }

@@ -9,8 +9,8 @@ use App\Models\Timestamp;
 use App\Settings\GeneralSettings;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
-use Native\Laravel\Enums\SystemIdleStatesEnum;
-use Native\Laravel\Facades\PowerMonitor;
+use Native\Desktop\Enums\SystemIdleStatesEnum;
+use Native\Desktop\Facades\PowerMonitor;
 
 Artisan::command('optimize', function (): void {
     exit();
@@ -33,7 +33,7 @@ Schedule::command('app:active-app')
 
         try {
             $state = PowerMonitor::getSystemIdleState(0);
-        } catch (\Throwable) {
+        } catch (Throwable) {
             $state = SystemIdleStatesEnum::IDLE;
         }
 
@@ -45,7 +45,7 @@ Schedule::command('app:active-app')
 Schedule::command('app:timestamp-ping')->when(function (): bool {
     try {
         $state = PowerMonitor::getSystemIdleState(0);
-    } catch (\Throwable) {
+    } catch (Throwable) {
         $state = SystemIdleStatesEnum::IDLE;
     }
 

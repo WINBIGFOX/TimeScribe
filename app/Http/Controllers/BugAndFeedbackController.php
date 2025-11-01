@@ -11,11 +11,11 @@ use App\Services\TimestampService;
 use App\Settings\GeneralSettings;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
-use Native\Laravel\Dialog;
-use Native\Laravel\Enums\SystemThemesEnum;
-use Native\Laravel\Facades\Alert;
-use Native\Laravel\Facades\System;
-use Native\Laravel\Support\Environment;
+use Native\Desktop\Dialog;
+use Native\Desktop\Enums\SystemThemesEnum;
+use Native\Desktop\Facades\Alert;
+use Native\Desktop\Facades\System;
+use Native\Desktop\Support\Environment;
 
 class BugAndFeedbackController extends Controller
 {
@@ -97,11 +97,11 @@ class BugAndFeedbackController extends Controller
         }
 
         TimestampService::checkStopTimeReset();
-        CalculateWeekBalance::dispatch();
+        dispatch(new CalculateWeekBalance);
         LocaleChanged::broadcast();
 
         Alert::type('info')->show(__('app.restore successful.'));
 
-        return redirect()->route('bug-and-feedback.index')->withErrors(['message' => __('app.restore successful.')]);
+        return to_route('bug-and-feedback.index')->withErrors(['message' => __('app.restore successful.')]);
     }
 }

@@ -6,8 +6,8 @@ namespace App\Console\Commands;
 
 use App\Settings\AutoUpdaterSettings;
 use Illuminate\Console\Command;
-use Native\Laravel\Facades\AutoUpdater;
-use Native\Laravel\Facades\Window;
+use Native\Desktop\Facades\AutoUpdater;
+use Native\Desktop\Facades\Window;
 
 class CheckCanInstall extends Command
 {

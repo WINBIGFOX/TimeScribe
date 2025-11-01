@@ -24,8 +24,13 @@ use App\Http\Controllers\UpdaterController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\WindowController;
 use App\Http\Controllers\WorkScheduleController;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Native\Desktop\Facades\App;
+use Native\Desktop\Support\Environment;
 
-Route::get('/', fn () => redirect()->route('overview.week.index'))->name('home');
+Route::get('/', fn (): Redirector|RedirectResponse => to_route('overview.week.index'))->name('home');
 
 Route::name('overview.')->prefix('overview')->group(function (): void {
     Route::resource('day', DayController::class)->only(['index', 'show'])->parameter('day', 'date');
@@ -34,55 +39,55 @@ Route::name('overview.')->prefix('overview')->group(function (): void {
     Route::resource('year', YearController::class)->only(['index', 'show'])->parameter('year', 'date');
 });
 
-Route::get('quit', fn () => \Native\Laravel\Facades\App::quit())->name('quit');
+Route::get('quit', fn () => App::quit())->name('quit');
 
-Route::get('welcome', [WelcomeController::class, 'index'])->name('welcome.index');
-Route::patch('welcome', [WelcomeController::class, 'update'])->name('welcome.update');
-Route::get('welcome/finish/{openSettings?}', [WelcomeController::class, 'finish'])->name('welcome.finish');
+Route::get('welcome', (new WelcomeController)->index(...))->name('welcome.index');
+Route::patch('welcome', (new WelcomeController)->update(...))->name('welcome.update');
+Route::get('welcome/finish/{openSettings?}', (new WelcomeController)->finish(...))->name('welcome.finish');
 
 Route::name('menubar.')->prefix('menubar')->group(function (): void {
-    Route::get('', [MenubarController::class, 'index'])->name('index');
-    Route::post('break', [MenubarController::class, 'storeBreak'])->name('storeBreak');
-    Route::post('work', [MenubarController::class, 'storeWork'])->name('storeWork');
-    Route::post('stop', [MenubarController::class, 'storeStop'])->name('storeStop');
-    Route::post('set-project/{project}', [MenubarController::class, 'setProject'])->name('set-project');
-    Route::post('remove-project', [MenubarController::class, 'removeProject'])->name('remove-project');
+    Route::get('', (new MenubarController)->index(...))->name('index');
+    Route::post('break', (new MenubarController)->storeBreak(...))->name('storeBreak');
+    Route::post('work', (new MenubarController)->storeWork(...))->name('storeWork');
+    Route::post('stop', (new MenubarController)->storeStop(...))->name('storeStop');
+    Route::post('set-project/{project}', (new MenubarController)->setProject(...))->name('set-project');
+    Route::post('remove-project', (new MenubarController)->removeProject(...))->name('remove-project');
 });
 
 Route::name('fly-timer.')->prefix('fly-timer')->group(function (): void {
-    Route::get('', [FlyTimerController::class, 'index'])->name('index');
-    Route::post('work', [FlyTimerController::class, 'storeBreak'])->name('storeBreak');
-    Route::post('break', [FlyTimerController::class, 'storeWork'])->name('storeWork');
-    Route::post('stop', [FlyTimerController::class, 'storeStop'])->name('storeStop');
+    Route::get('', (new FlyTimerController)->index(...))->name('index');
+    Route::post('work', (new FlyTimerController)->storeBreak(...))->name('storeBreak');
+    Route::post('break', (new FlyTimerController)->storeWork(...))->name('storeWork');
+    Route::post('stop', (new FlyTimerController)->storeStop(...))->name('storeStop');
 });
 
 Route::name('window.')->prefix('window')->group(function (): void {
-    Route::get('updater/{darkMode}', [WindowController::class, 'openUpdater'])->name('updater.open');
-    Route::get('overview/{darkMode}', [WindowController::class, 'openOverview'])->name('overview.open');
-    Route::get('settings/{darkMode}', [WindowController::class, 'openSettings'])->name('settings.open');
-    Route::get('new-project/{darkMode}', [WindowController::class, 'openNewProject'])->name('new-project.open');
-    Route::get('fly-timer/open', [WindowController::class, 'openFlyTimer'])->name('fly-timer.open');
-    Route::get('fly-timer/close', [WindowController::class, 'closeFlyTimer'])->name('fly-timer.close');
+    Route::get('updater/{darkMode}', (new WindowController)->openUpdater(...))->name('updater.open');
+    Route::get('overview/{darkMode}', (new WindowController)->openOverview(...))->name('overview.open');
+    Route::get('settings/{darkMode}', (new WindowController)->openSettings(...))->name('settings.open');
+    Route::get('new-project/{darkMode}', (new WindowController)->openNewProject(...))->name('new-project.open');
+    Route::get('fly-timer/open', (new WindowController)->openFlyTimer(...))->name('fly-timer.open');
+    Route::get('fly-timer/close', (new WindowController)->closeFlyTimer(...))->name('fly-timer.close');
 });
 
 Route::name('settings.')->prefix('settings')->group(function (): void {
-    Route::get('', fn () => redirect()->route('settings.general.edit'))->name('index');
+    Route::get('', fn (): Redirector|RedirectResponse => to_route('settings.general.edit'))->name('index');
     Route::name('general.')->prefix('general')->group(function (): void {
-        Route::get('edit', [GeneralController::class, 'edit'])->name('edit');
-        Route::patch('', [GeneralController::class, 'update'])->name('update');
-        Route::patch('locale', [GeneralController::class, 'updateLocale'])->name('updateLocale');
+        Route::get('edit', (new GeneralController)->edit(...))->name('edit');
+        Route::patch('', (new GeneralController)->update(...))->name('update');
+        Route::patch('locale', (new GeneralController)->updateLocale(...))->name('updateLocale');
     });
     Route::name('start-stop.')->prefix('start-stop')->group(function (): void {
-        Route::get('edit', [StartStopController::class, 'edit'])->name('edit');
-        Route::patch('', [StartStopController::class, 'update'])->name('update');
+        Route::get('edit', (new StartStopController)->edit(...))->name('edit');
+        Route::patch('', (new StartStopController)->update(...))->name('update');
     });
 });
 
 Route::name('updater.')->prefix('updater')->group(function (): void {
-    Route::get('', [UpdaterController::class, 'index'])->name('index');
-    Route::patch('auto-update', [UpdaterController::class, 'updateAutoUpdate'])->name('updateAutoUpdate');
-    Route::post('install', [UpdaterController::class, 'install'])->name('install');
-    Route::post('check', [UpdaterController::class, 'check'])->name('check');
+    Route::get('', (new UpdaterController)->index(...))->name('index');
+    Route::patch('auto-update', (new UpdaterController)->updateAutoUpdate(...))->name('updateAutoUpdate');
+    Route::post('install', (new UpdaterController)->install(...))->name('install');
+    Route::post('check', (new UpdaterController)->check(...))->name('check');
 });
 
 Route::resource('import-export', ImportExportController::class);
@@ -101,29 +106,29 @@ Route::resource('app-activity', AppActivityController::class)->only(['index', 's
 Route::resource('project', ProjectController::class);
 
 Route::name('absence.')->prefix('absence')->group(function (): void {
-    Route::get('', [AbsenceController::class, 'index'])->name('index');
-    Route::get('{date}', [AbsenceController::class, 'show'])->name('show');
-    Route::post('{date}', [AbsenceController::class, 'store'])->name('store');
-    Route::delete('{date}/{absence}', [AbsenceController::class, 'destroy'])->name('destroy');
+    Route::get('', (new AbsenceController)->index(...))->name('index');
+    Route::get('{date}', (new AbsenceController)->show(...))->name('show');
+    Route::post('{date}', (new AbsenceController)->store(...))->name('store');
+    Route::delete('{date}/{absence}', (new AbsenceController)->destroy(...))->name('destroy');
 
-    Route::post('holiday-rule', [HolidayRuleController::class, 'store'])->name('holiday-rule.store');
-    Route::delete('holiday-rule', [HolidayRuleController::class, 'destroy'])->name('holiday-rule.destroy');
+    Route::post('holiday-rule', (new HolidayRuleController)->store(...))->name('holiday-rule.store');
+    Route::delete('holiday-rule', (new HolidayRuleController)->destroy(...))->name('holiday-rule.destroy');
 });
 
-Route::get('timestamp/create/{datetime}/{endDatetime?}', [TimestampController::class, 'create'])->name('timestamp.create')
+Route::get('timestamp/create/{datetime}/{endDatetime?}', (new TimestampController)->create(...))->name('timestamp.create')
     ->where('endDatetime', '\d{4}-\d{2}-\d{2}\s\d{2}\:\d{2}\:\d{2}');
-Route::post('timestamp/{datetime}', [TimestampController::class, 'store'])->name('timestamp.store');
+Route::post('timestamp/{datetime}', (new TimestampController)->store(...))->name('timestamp.store');
 Route::resource('timestamp', TimestampController::class)->only(['edit', 'update', 'destroy']);
-Route::post('timestamp/fill', [TimestampController::class, 'fill'])->name('timestamp.fill');
+Route::post('timestamp/fill', (new TimestampController)->fill(...))->name('timestamp.fill');
 
 Route::name('bug-and-feedback.')->prefix('bug-and-feedback')->group(function (): void {
-    Route::get('', [BugAndFeedbackController::class, 'index'])->name('index');
-    Route::get('export', [BugAndFeedbackController::class, 'export'])->name('export');
-    Route::get('import', [BugAndFeedbackController::class, 'import'])->name('import');
+    Route::get('', (new BugAndFeedbackController)->index(...))->name('index');
+    Route::get('export', (new BugAndFeedbackController)->export(...))->name('export');
+    Route::get('import', (new BugAndFeedbackController)->import(...))->name('import');
 });
 
-Route::get('open', function (Illuminate\Http\Request $request): void {
-    if (\Native\Laravel\Support\Environment::isWindows()) {
+Route::get('open', function (Request $request): void {
+    if (Environment::isWindows()) {
         shell_exec('explorer "'.$request->string('url').'"');
     } else {
         shell_exec('open "'.$request->string('url').'"');

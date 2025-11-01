@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Settings\AutoUpdaterSettings;
-use Native\Laravel\Events\AutoUpdater\UpdateAvailable as UpdateAvailableEvent;
+use Native\Desktop\Events\AutoUpdater\UpdateAvailable as UpdateAvailableEvent;
 
 class UpdateAvailable
 {

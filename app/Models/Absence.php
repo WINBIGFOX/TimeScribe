@@ -27,15 +27,15 @@ class Absence extends Model
         parent::boot();
 
         static::created(function (): void {
-            CalculateWeekBalance::dispatch();
+            dispatch(new CalculateWeekBalance);
         });
 
         static::updated(function (): void {
-            CalculateWeekBalance::dispatch();
+            dispatch(new CalculateWeekBalance);
         });
 
         static::deleted(function (): void {
-            CalculateWeekBalance::dispatch();
+            dispatch(new CalculateWeekBalance);
         });
 
     }

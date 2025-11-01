@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use Native\Laravel\Support\Environment;
+use Native\Desktop\Support\Environment;
 
 class TrayIconService
 {

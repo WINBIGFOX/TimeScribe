@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
-use Native\Laravel\Events\Windows\WindowClosed;
-use Native\Laravel\Facades\Dock;
-use Native\Laravel\Facades\Window;
-use Native\Laravel\Support\Environment;
+use Native\Desktop\Events\Windows\WindowClosed;
+use Native\Desktop\Facades\Dock;
+use Native\Desktop\Facades\Window;
+use Native\Desktop\Support\Environment;
 
 class WindowClosing
 {

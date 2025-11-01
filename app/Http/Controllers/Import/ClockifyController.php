@@ -7,9 +7,11 @@ namespace App\Http\Controllers\Import;
 use App\Http\Controllers\Controller;
 use App\Jobs\CalculateWeekBalance;
 use App\Services\Import\ClockifyImportService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Inertia\Inertia;
-use Native\Laravel\Dialog;
-use Native\Laravel\Facades\Alert;
+use Native\Desktop\Dialog;
+use Native\Desktop\Facades\Alert;
 
 class ClockifyController extends Controller
 {
@@ -26,7 +28,7 @@ class ClockifyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store()
+    public function store(): RedirectResponse|Redirector
     {
         $clockifyCsvPath = Dialog::new()->asSheet()
             ->filter('Clockify CSV', ['csv'])
@@ -46,15 +48,15 @@ class ClockifyController extends Controller
                 __('app.an error occurred while importing the file. please check the file format and try again.')
             );
 
-            return redirect()->route('import-export.index');
+            return to_route('import-export.index');
         }
 
         Alert::type('info')
             ->title(__('app.import successful'))
             ->show(__('app.the data was successfully imported into timescribe.'));
 
-        CalculateWeekBalance::dispatch();
+        dispatch(new CalculateWeekBalance);
 
-        return redirect()->route('import-export.index');
+        return to_route('import-export.index');
     }
 }

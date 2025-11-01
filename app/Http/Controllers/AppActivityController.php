@@ -7,8 +7,8 @@ namespace App\Http\Controllers;
 use App\Http\Resources\AppActivityResource;
 use App\Models\ActivityHistory;
 use App\Settings\GeneralSettings;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Inertia\Inertia;
 
 class AppActivityController extends Controller
@@ -24,10 +24,10 @@ class AppActivityController extends Controller
         $startDate = $lastActivity?->started_at->startOfWeek() ?? now()->startOfWeek();
         $endDate = $lastActivity?->ended_at->endOfWeek() ?? now()->endOfWeek();
         if ($request->has('startDate')) {
-            $startDate = Carbon::parse($request->query('startDate'))->startOfDay();
+            $startDate = Date::parse($request->query('startDate'))->startOfDay();
         }
         if ($request->has('endDate')) {
-            $endDate = Carbon::parse($request->query('endDate'))->endOfDay();
+            $endDate = Date::parse($request->query('endDate'))->endOfDay();
         }
 
         $appActivity = ActivityHistory::where('started_at', '>=', $startDate)
@@ -35,7 +35,7 @@ class AppActivityController extends Controller
             ->orderBy('started_at', 'desc')
             ->get();
 
-        $historyApp = $appActivity->mapToGroups(fn ($item) => [
+        $historyApp = $appActivity->mapToGroups(fn ($item): array => [
             $item->app_identifier => $item,
         ])->map(function ($item, $key): array {
             $first = $item->first();
@@ -52,7 +52,7 @@ class AppActivityController extends Controller
             ];
         })->sortByDesc('sum')->values();
 
-        $historyCategory = $appActivity->mapToGroups(fn ($item) => [
+        $historyCategory = $appActivity->mapToGroups(fn ($item): array => [
             ($item->app_category?->label() ?? __('app.unknown')) => $item,
         ])->map(fn ($item, $key): array => [
             'name' => $key,

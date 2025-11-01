@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DestroyHolidayRuleRequest;
 use App\Http\Requests\StoreHolidayRuleRequest;
 use App\Services\HolidayService;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Date;
 
 class HolidayRuleController extends Controller
 {
@@ -17,7 +17,7 @@ class HolidayRuleController extends Controller
     public function store(StoreHolidayRuleRequest $request): void
     {
         $date = $request->validated()['date'];
-        HolidayService::addHoliday(Carbon::create($date));
+        HolidayService::addHoliday(Date::create($date));
     }
 
     /**
@@ -26,6 +26,6 @@ class HolidayRuleController extends Controller
     public function destroy(DestroyHolidayRuleRequest $request): void
     {
         $date = $request->validated()['date'];
-        HolidayService::removeHoliday(Carbon::create($date));
+        HolidayService::removeHoliday(Date::create($date));
     }
 }

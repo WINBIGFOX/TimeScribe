@@ -6,11 +6,12 @@ namespace App\Http\Controllers;
 
 use App\Services\WindowService;
 use App\Settings\AutoUpdaterSettings;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use Native\Laravel\Facades\AutoUpdater;
+use Native\Desktop\Facades\AutoUpdater;
 
 class UpdaterController extends Controller
 {
@@ -32,7 +33,7 @@ class UpdaterController extends Controller
         $autoUpdaterSettings->autoUpdate = $request->boolean('auto_update') ?? false;
         $autoUpdaterSettings->save();
 
-        return redirect()->route('updater.index');
+        return to_route('updater.index');
     }
 
     public function install(AutoUpdaterSettings $autoUpdaterSettings): void
@@ -51,7 +52,7 @@ class UpdaterController extends Controller
 
     public function check(AutoUpdaterSettings $autoUpdaterSettings): void
     {
-        if (! $autoUpdaterSettings->lastCheck instanceof \Carbon\Carbon || $autoUpdaterSettings->lastCheck->diffInHours(now()) > 1) {
+        if (! $autoUpdaterSettings->lastCheck instanceof Carbon || $autoUpdaterSettings->lastCheck->diffInHours(now()) > 1) {
             AutoUpdater::checkForUpdates();
         }
     }

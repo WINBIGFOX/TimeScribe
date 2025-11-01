@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Settings\AutoUpdaterSettings;
-use Native\Laravel\Events\AutoUpdater\CheckingForUpdate as CheckingForUpdateEvent;
+use Native\Desktop\Events\AutoUpdater\CheckingForUpdate as CheckingForUpdateEvent;
 
 class CheckingForUpdate
 {

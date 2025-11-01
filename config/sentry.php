@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use Illuminate\Database\QueryException;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Sentry Laravel SDK configuration file.
  *
@@ -39,9 +43,9 @@ return [
 
     // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#ignore-exceptions
     'ignore_exceptions' => [
-        \Illuminate\Validation\ValidationException::class,
-        \Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class,
-        \Illuminate\Database\QueryException::class,
+        ValidationException::class,
+        NotFoundHttpException::class,
+        QueryException::class,
     ],
 
     // @see: https://docs.sentry.io/platforms/php/guides/laravel/configuration/options/#ignore-transactions

@@ -13,6 +13,9 @@ use App\Services\HolidayService;
 use App\Services\TimestampService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Date;
 use Inertia\Inertia;
 
 class AbsenceController extends Controller
@@ -20,15 +23,15 @@ class AbsenceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Redirector|RedirectResponse
     {
-        return redirect()->route('absence.show', ['date' => Carbon::now()->format('Y-m-d')]);
+        return to_route('absence.show', ['date' => Date::now()->format('Y-m-d')]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAbsenceRequest $request, Carbon $date)
+    public function store(StoreAbsenceRequest $request, Carbon $date): Redirector|RedirectResponse
     {
         $data = $request->validated();
 
@@ -38,7 +41,7 @@ class AbsenceController extends Controller
 
         Absence::create($data);
 
-        return redirect()->route('absence.show', ['date' => $date->format('Y-m-d')]);
+        return to_route('absence.show', ['date' => $date->format('Y-m-d')]);
     }
 
     /**
@@ -60,7 +63,7 @@ class AbsenceController extends Controller
         return Inertia::render('Absence/Show', [
             'absences' => AbsenceResource::collection($absences),
             'plans' => $plans,
-            'holidays' => $holidays->map(fn ($holidayDate): ?array => DateHelper::toResourceArray($holidayDate)),
+            'holidays' => $holidays->map(fn (?Carbon $holidayDate): ?array => DateHelper::toResourceArray($holidayDate)),
             'date' => $date->format('d.m.Y'),
         ]);
     }
@@ -68,10 +71,10 @@ class AbsenceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Carbon $date, Absence $absence)
+    public function destroy(Carbon $date, Absence $absence): Redirector|RedirectResponse
     {
         $absence->delete();
 
-        return redirect()->route('absence.show', ['date' => $date->format('Y-m-d')]);
+        return to_route('absence.show', ['date' => $date->format('Y-m-d')]);
     }
 }

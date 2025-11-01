@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Settings\AutoUpdaterSettings;
-use Native\Laravel\Events\AutoUpdater\UpdateDownloaded as UpdateDownloadedEvent;
+use Native\Desktop\Events\AutoUpdater\UpdateDownloaded as UpdateDownloadedEvent;
 
 class UpdateDownloaded
 {

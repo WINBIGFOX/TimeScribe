@@ -9,9 +9,9 @@ use App\Models\WeekBalance;
 use App\Services\LocaleService;
 use App\Services\TimestampService;
 use App\Settings\GeneralSettings;
-use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Date;
 
 class CalculateWeekBalance implements ShouldQueue
 {
@@ -33,7 +33,7 @@ class CalculateWeekBalance implements ShouldQueue
         try {
             new LocaleService;
             $settings = app(GeneralSettings::class);
-            Carbon::setLocale(str_replace('-', '_', $settings->locale ?? config('app.fallback_locale')));
+            Date::setLocale(str_replace('-', '_', $settings->locale ?? config('app.fallback_locale')));
             $firstTimestamp = Timestamp::orderBy('started_at')->first();
 
             if (! $firstTimestamp) {

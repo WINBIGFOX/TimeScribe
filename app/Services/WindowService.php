@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use Native\Laravel\Facades\Window;
-use Native\Laravel\Support\Environment;
+use Native\Desktop\Facades\Window;
+use Native\Desktop\Support\Environment;
 
 class WindowService
 {

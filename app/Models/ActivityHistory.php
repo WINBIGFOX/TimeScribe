@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\AppCategoryEnum;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
 
 class ActivityHistory extends Model
 {
@@ -32,19 +32,19 @@ class ActivityHistory extends Model
         'app_category' => AppCategoryEnum::class,
     ];
 
-    public function scopeActive($query)
+    protected function scopeActive($query)
     {
-        return $query->where('ended_at', '>', Carbon::now()->subSeconds(7));
+        return $query->where('ended_at', '>', Date::now()->subSeconds(7));
     }
 
-    public function getColorAttribute(): string
+    protected function getColorAttribute(): string
     {
         mt_srand(crc32($this->app_identifier));
 
         return sprintf('#00b9cd%02x', mt_rand(50, 255));
     }
 
-    public function getCategoryColorAttribute(): string
+    protected function getCategoryColorAttribute(): string
     {
         mt_srand(crc32($this->app_category?->value ?? 'Unknow'));
 

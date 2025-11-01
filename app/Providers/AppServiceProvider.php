@@ -8,6 +8,7 @@ use App\Services\LocaleService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Vite;
@@ -44,6 +45,6 @@ class AppServiceProvider extends ServiceProvider
     {
         new LocaleService;
 
-        return Carbon::parse($value);
+        return Date::parse($value);
     }
 }

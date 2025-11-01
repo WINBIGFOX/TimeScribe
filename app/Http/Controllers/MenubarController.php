@@ -17,10 +17,11 @@ use App\Settings\GeneralSettings;
 use App\Settings\ProjectSettings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Artisan;
 use Inertia\Inertia;
 use Inertia\Response;
-use Native\Laravel\Facades\MenuBar;
+use Native\Desktop\Facades\MenuBar;
 
 class MenubarController extends Controller
 {
@@ -39,7 +40,7 @@ class MenubarController extends Controller
         }
         if (! $request->header('x-inertia-partial-data')) {
             TimestampService::ping();
-            MenubarRefresh::dispatchSync();
+            dispatch_sync(new MenubarRefresh);
             if ($settings->appActivityTracking && $currentType === TimestampTypeEnum::WORK) {
                 Artisan::call('app:active-app');
             }
@@ -65,14 +66,14 @@ class MenubarController extends Controller
     {
         TimestampService::startBreak();
 
-        return redirect()->route('menubar.index');
+        return to_route('menubar.index');
     }
 
     public function storeWork(ProjectSettings $projectSettings): RedirectResponse
     {
         TimestampService::startWork();
 
-        return redirect()->route('menubar.index');
+        return to_route('menubar.index');
     }
 
     public function storeStop(): RedirectResponse
@@ -82,7 +83,7 @@ class MenubarController extends Controller
         MenuBar::label('');
         MenuBar::icon(TrayIconService::getIcon());
 
-        return redirect()->route('menubar.index');
+        return to_route('menubar.index');
     }
 
     public function setProject(ProjectSettings $projectSettings, int $project): RedirectResponse
@@ -91,10 +92,10 @@ class MenubarController extends Controller
         $projectSettings->save();
         TimestampService::startWork();
 
-        return redirect()->route('menubar.index');
+        return to_route('menubar.index');
     }
 
-    public function removeProject(ProjectSettings $projectSettings)
+    public function removeProject(ProjectSettings $projectSettings): Redirector|RedirectResponse
     {
         $projectSettings->currentProject = null;
         $projectSettings->save();
@@ -103,6 +104,6 @@ class MenubarController extends Controller
             TimestampService::startWork();
         }
 
-        return redirect()->route('menubar.index');
+        return to_route('menubar.index');
     }
 }

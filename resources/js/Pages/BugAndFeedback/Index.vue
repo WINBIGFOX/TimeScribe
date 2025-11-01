@@ -14,7 +14,7 @@ import { Bug, DatabaseBackup, FolderOpen, Heart, Save } from 'lucide-vue-next'
         <Bug />
         <div class="flex-1 space-y-1">
             <p class="text-sm leading-none font-medium">
-                {{ $t('app.report a aug & give feedback') }}
+                {{ $t('app.report a bug & give feedback') }}
             </p>
             <p class="text-muted-foreground text-sm text-balance">
                 {{ $t('app.spotted a bug or have a suggestion? we’d love to hear your feedback and help you out!') }}

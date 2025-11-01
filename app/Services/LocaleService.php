@@ -6,10 +6,10 @@ namespace App\Services;
 
 use App\Settings\GeneralSettings;
 use App\Settings\ProjectSettings;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Date;
 use LaravelLang\Locales\Facades\Locales;
-use Native\Laravel\Facades\System;
+use Native\Desktop\Facades\System;
 use PrinsFrank\Standards\Country\CountryAlpha2;
 
 class LocaleService
@@ -69,7 +69,7 @@ class LocaleService
         }
 
         App::setLocale($language);
-        Carbon::setLocale($locale);
+        Date::setLocale($locale);
     }
 
     private function setupCurrency(): void

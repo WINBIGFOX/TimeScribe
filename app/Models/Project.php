@@ -23,7 +23,7 @@ class Project extends Model
         'currency',
     ];
 
-    public function scopeSortedByLatestTimestamp($query): Builder
+    protected function scopeSortedByLatestTimestamp($query): Builder
     {
         return $query
             ->leftJoin('timestamps', 'projects.id', '=', 'timestamps.project_id')
@@ -35,10 +35,10 @@ class Project extends Model
 
     public function timestamps(): HasMany
     {
-        return $this->hasMany(Timestamp::class)->orderBy('started_at');
+        return $this->hasMany(Timestamp::class)->oldest('started_at');
     }
 
-    public function getWorkTimeAttribute(): float
+    protected function getWorkTimeAttribute(): float
     {
         $timestamps = $this->timestamps()->get();
 
@@ -56,7 +56,7 @@ class Project extends Model
         );
     }
 
-    public function getBillableAmountAttribute(): float
+    protected function getBillableAmountAttribute(): float
     {
         return round($this->work_time / 60 / 60 * ($this->hourly_rate ?? 0.0), 2);
     }

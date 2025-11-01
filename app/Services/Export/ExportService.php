@@ -23,7 +23,7 @@ class ExportService
         if ($endDate instanceof Carbon) {
             $timestamps->where('ended_at', '<=', $endDate);
         }
-        $this->exportData = $timestamps->orderByDesc('started_at')->get();
+        $this->exportData = $timestamps->latest('started_at')->get();
     }
 
     public function exportAsCsv(string $filePath): void

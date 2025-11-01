@@ -9,6 +9,7 @@ use App\Models\HolidayRule;
 use App\Settings\GeneralSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Date;
 use Umulmrum\Holiday\Constant\HolidayType;
 use Umulmrum\Holiday\Filter\IncludeTypeFilter;
 use Umulmrum\Holiday\Formatter\DateFormatter;
@@ -29,7 +30,7 @@ class HolidayService
             );
         }
 
-        CalculateWeekBalance::dispatch();
+        dispatch(new CalculateWeekBalance);
     }
 
     public static function removeHoliday(Carbon $date): void
@@ -45,7 +46,7 @@ class HolidayService
             );
         }
 
-        CalculateWeekBalance::dispatch();
+        dispatch(new CalculateWeekBalance);
     }
 
     private static function mergeHolidays(Collection $dates): Collection
@@ -79,7 +80,7 @@ class HolidayService
             $holidayCalculator->calculate($settings->holidayRegion, $year)
                 ->filter(new IncludeTypeFilter(HolidayType::DAY_OFF))
                 ->format(new DateFormatter)
-        )->map(fn ($holiday): ?Carbon => Carbon::create($holiday)));
+        )->map(fn ($holiday): ?Carbon => Date::create($holiday)));
     }
 
     public static function isHoliday(Carbon $date): bool

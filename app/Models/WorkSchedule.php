@@ -30,7 +30,7 @@ class WorkSchedule extends Model
         'valid_from' => 'date',
     ];
 
-    public function getIsCurrentAttribute(): bool
+    protected function getIsCurrentAttribute(): bool
     {
         $firstValid = self::where('valid_from', '<=', now())->orderByDesc('valid_from')->first();
 

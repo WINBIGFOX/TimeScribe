@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
-use Native\Laravel\Events\Windows\WindowShown;
-use Native\Laravel\Facades\Dock;
-use Native\Laravel\Support\Environment;
+use Native\Desktop\Events\Windows\WindowShown;
+use Native\Desktop\Facades\Dock;
+use Native\Desktop\Support\Environment;
 
 class WindowOpening
 {

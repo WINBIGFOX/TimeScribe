@@ -13,10 +13,12 @@ use App\Jobs\CalculateWeekBalance;
 use App\Settings\GeneralSettings;
 use App\Settings\ProjectSettings;
 use DateTimeZone;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Inertia\Inertia;
-use Native\Laravel\Enums\SystemThemesEnum;
-use Native\Laravel\Facades\App;
-use Native\Laravel\Facades\System;
+use Native\Desktop\Enums\SystemThemesEnum;
+use Native\Desktop\Facades\App;
+use Native\Desktop\Facades\System;
 
 class GeneralController extends Controller
 {
@@ -41,7 +43,7 @@ class GeneralController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateGeneralSettingsRequest $request, GeneralSettings $settings)
+    public function update(UpdateGeneralSettingsRequest $request, GeneralSettings $settings): Redirector|RedirectResponse
     {
         $data = $request->validated();
 
@@ -66,9 +68,9 @@ class GeneralController extends Controller
 
         $settings->save();
 
-        CalculateWeekBalance::dispatch();
+        dispatch(new CalculateWeekBalance);
 
-        return redirect()->route('settings.general.edit');
+        return to_route('settings.general.edit');
     }
 
     public function updateLocale(UpdateLocaleRequest $request, GeneralSettings $settings, ProjectSettings $projectSettings): void

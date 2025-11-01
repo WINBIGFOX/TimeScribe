@@ -11,12 +11,12 @@ use App\Services\TrayIconService;
 use App\Services\WindowService;
 use App\Settings\FlyTimerSettings;
 use App\Settings\GeneralSettings;
-use Native\Laravel\Contracts\ProvidesPhpIni;
-use Native\Laravel\Enums\SystemThemesEnum;
-use Native\Laravel\Facades\Menu;
-use Native\Laravel\Facades\MenuBar;
-use Native\Laravel\Facades\Settings;
-use Native\Laravel\Facades\System;
+use Native\Desktop\Contracts\ProvidesPhpIni;
+use Native\Desktop\Enums\SystemThemesEnum;
+use Native\Desktop\Facades\Menu;
+use Native\Desktop\Facades\MenuBar;
+use Native\Desktop\Facades\Settings;
+use Native\Desktop\Facades\System;
 use Sentry\State\Scope;
 
 use function Sentry\configureScope;
@@ -57,7 +57,7 @@ class NativeAppServiceProvider implements ProvidesPhpIni
                 'thursday' => $workSchedule['thursday'] ?? 0,
                 'friday' => $workSchedule['friday'] ?? 0,
                 'saturday' => $workSchedule['saturday'] ?? 0,
-                'valid_from' => $firstTimestamp ? $firstTimestamp->started_at->startOfDay() : now()->startOfDay(),
+                'valid_from' => $firstTimestamp ? $firstTimestamp->started_at->startOfDay() : today(),
             ]);
             Settings::forget('workdays');
             $settings->wizard_completed = true;

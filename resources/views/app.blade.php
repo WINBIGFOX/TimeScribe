@@ -27,7 +27,7 @@
         gtag('js', new Date());
 
         gtag('config', '{{ config('services.google.analytics.id') }}', {
-            'user_id': '{{ \Native\Laravel\Facades\Settings::get('id', '')  }}',
+            'user_id': '{{ \Native\Desktop\Facades\Settings::get('id', '')  }}',
             'user_properties': {
                 'app_version': '{{ config('nativephp.version') }}',
                 'locale': '{{ app()->getLocale() }}',

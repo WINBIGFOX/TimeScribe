@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Native\Laravel\Support\Environment;
+use Native\Desktop\Support\Environment;
 use Spatie\DbDumper\Databases\Sqlite;
 
 class BackupService

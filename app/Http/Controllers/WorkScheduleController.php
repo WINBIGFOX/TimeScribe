@@ -9,6 +9,8 @@ use App\Http\Requests\StoreWorkScheduleRequest;
 use App\Http\Resources\WorkScheduleResource;
 use App\Jobs\CalculateWeekBalance;
 use App\Models\WorkSchedule;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
@@ -37,16 +39,16 @@ class WorkScheduleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreWorkScheduleRequest $request)
+    public function store(StoreWorkScheduleRequest $request): Redirector|RedirectResponse
     {
         $data = $request->validated();
 
         WorkSchedule::create($data);
 
         Cache::flush();
-        CalculateWeekBalance::dispatch();
+        dispatch(new CalculateWeekBalance);
 
-        return redirect()->route('work-schedule.index');
+        return to_route('work-schedule.index');
     }
 
     /**
@@ -64,29 +66,29 @@ class WorkScheduleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreWorkScheduleRequest $request, WorkSchedule $workSchedule)
+    public function update(StoreWorkScheduleRequest $request, WorkSchedule $workSchedule): Redirector|RedirectResponse
     {
         $data = $request->validated();
 
         $workSchedule->update($data);
 
         Cache::flush();
-        CalculateWeekBalance::dispatch();
+        dispatch(new CalculateWeekBalance);
 
-        return redirect()->route('work-schedule.index');
+        return to_route('work-schedule.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DestroyWorkScheduleRequest $request, WorkSchedule $workSchedule)
+    public function destroy(DestroyWorkScheduleRequest $request, WorkSchedule $workSchedule): Redirector|RedirectResponse
     {
         $request->validated();
         $workSchedule->delete();
 
         Cache::flush();
-        CalculateWeekBalance::dispatch();
+        dispatch(new CalculateWeekBalance);
 
-        return redirect()->route('work-schedule.index');
+        return to_route('work-schedule.index');
     }
 }

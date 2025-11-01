@@ -11,9 +11,12 @@ use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use App\Services\TimestampService;
 use App\Settings\ProjectSettings;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Inertia\Inertia;
 use PrinsFrank\Standards\Currency\CurrencyAlpha3;
+use PrinsFrank\Standards\Currency\CurrencySymbol;
 
 class ProjectController extends Controller
 {
@@ -37,7 +40,7 @@ class ProjectController extends Controller
     {
         return Inertia::modal('Project/Create', [
             'submit_route' => route('project.store'),
-            'currencies' => collect(CurrencyAlpha3::cases())->mapWithKeys(fn (CurrencyAlpha3 $currency) => [$currency->value => $currency->value.($currency->getSymbol() instanceof \PrinsFrank\Standards\Currency\CurrencySymbol ? ' ('.$currency->getSymbol()->value.')' : '')])->sortKeys(),
+            'currencies' => collect(CurrencyAlpha3::cases())->mapWithKeys(fn (CurrencyAlpha3 $currency): array => [$currency->value => $currency->value.($currency->getSymbol() instanceof CurrencySymbol ? ' ('.$currency->getSymbol()->value.')' : '')])->sortKeys(),
             'default_currencies' => $projectSettings->defaultCurrency,
         ])->baseRoute('project.index');
     }
@@ -45,7 +48,7 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProjectRequest $request, ProjectSettings $projectSettings)
+    public function store(StoreProjectRequest $request, ProjectSettings $projectSettings): Redirector|RedirectResponse
     {
         $data = $request->validated();
         Project::create($data);
@@ -55,7 +58,7 @@ class ProjectController extends Controller
             $projectSettings->save();
         }
 
-        return redirect()->route('project.index');
+        return to_route('project.index');
     }
 
     /**
@@ -66,14 +69,14 @@ class ProjectController extends Controller
         return Inertia::modal('Project/Edit', [
             'submit_route' => route('project.update', $project),
             'project' => ProjectResource::make($project),
-            'currencies' => collect(CurrencyAlpha3::cases())->mapWithKeys(fn (CurrencyAlpha3 $currency) => [$currency->value => $currency->value.($currency->getSymbol() instanceof \PrinsFrank\Standards\Currency\CurrencySymbol ? ' ('.$currency->getSymbol()->value.')' : '')])->sortKeys(),
+            'currencies' => collect(CurrencyAlpha3::cases())->mapWithKeys(fn (CurrencyAlpha3 $currency): array => [$currency->value => $currency->value.($currency->getSymbol() instanceof CurrencySymbol ? ' ('.$currency->getSymbol()->value.')' : '')])->sortKeys(),
         ])->baseRoute('project.index');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreProjectRequest $request, Project $project, ProjectSettings $projectSettings)
+    public function update(StoreProjectRequest $request, Project $project, ProjectSettings $projectSettings): Redirector|RedirectResponse
     {
         $data = $request->validated();
         $project->update([
@@ -90,13 +93,13 @@ class ProjectController extends Controller
             $projectSettings->save();
         }
 
-        return redirect()->route('project.index');
+        return to_route('project.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DestroyProjectRequest $request, Project $project, ProjectSettings $projectSettings)
+    public function destroy(DestroyProjectRequest $request, Project $project, ProjectSettings $projectSettings): Redirector|RedirectResponse
     {
         $request->validated();
 
@@ -110,6 +113,6 @@ class ProjectController extends Controller
 
         $project->delete();
 
-        return redirect()->route('project.index');
+        return to_route('project.index');
     }
 }

@@ -15,6 +15,9 @@ use App\Models\Project;
 use App\Models\Timestamp;
 use App\Settings\ProjectSettings;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Date;
 use Inertia\Inertia;
 
 class TimestampController extends Controller
@@ -25,7 +28,7 @@ class TimestampController extends Controller
     public function create(Carbon $datetime, ?string $endDatetime = null)
     {
         if ($endDatetime) {
-            $endDatetime = Carbon::parse($endDatetime);
+            $endDatetime = Date::parse($endDatetime);
         }
 
         $timestampBefore = Timestamp::where('ended_at', '<=', $datetime)
@@ -98,19 +101,19 @@ class TimestampController extends Controller
         $endTime = $datetime->setTimezone(config('app.timezone'))->copy()->setTimeFromTimeString($data['ended_at']);
 
         if ($startTime > $endTime) {
-            return redirect()->back()->withErrors([
+            return back()->withErrors([
                 'started_at' => __('app.the start time must be before the end time.'),
             ]);
         }
 
         if ($startTime->isAfter(now())) {
-            return redirect()->back()->withErrors([
+            return back()->withErrors([
                 'started_at' => __('app.the start time must be in the past.'),
             ]);
         }
 
         if ($endTime->isAfter(now())) {
-            return redirect()->back()->withErrors([
+            return back()->withErrors([
                 'ended_at' => __('app.the end time must be in the past.'),
             ]);
         }
@@ -134,7 +137,7 @@ class TimestampController extends Controller
         }
 
         if (($lastTimestamp && $lastTimestamp->ended_at > $startTime) || ($nextTimestamp && $nextTimestamp->started_at < $endTime)) {
-            return redirect()->back()->withErrors([
+            return back()->withErrors([
                 'started_at' => __('app.the start or end time overlaps with another time span.'),
             ]);
         }
@@ -157,9 +160,9 @@ class TimestampController extends Controller
             'project_id' => $data['project_id'] ?? null,
         ]);
 
-        CalculateWeekBalance::dispatch();
+        dispatch(new CalculateWeekBalance);
 
-        return redirect()->route('overview.day.show', ['date' => $datetime->format('Y-m-d')]);
+        return to_route('overview.day.show', ['date' => $datetime->format('Y-m-d')]);
     }
 
     /**
@@ -213,19 +216,19 @@ class TimestampController extends Controller
         $workingEndTime = $hasEndedAt ? $timestamp->ended_at->copy()->setTimeFromTimeString($data['ended_at']) : now();
 
         if ($startTime > $workingEndTime) {
-            return redirect()->back()->withErrors([
+            return back()->withErrors([
                 'started_at' => __('app.the start time must be before the end time.'),
             ]);
         }
 
         if ($startTime->isAfter(now())) {
-            return redirect()->back()->withErrors([
+            return back()->withErrors([
                 'started_at' => __('app.the start time must be in the past.'),
             ]);
         }
 
         if ($hasEndedAt && $workingEndTime->isAfter(now())) {
-            return redirect()->back()->withErrors([
+            return back()->withErrors([
                 'ended_at' => __('app.the end time must be in the past.'),
             ]);
         }
@@ -249,7 +252,7 @@ class TimestampController extends Controller
             ->first();
 
         if (($lastTimestamp && $lastTimestamp->ended_at > $startTime) || ($nextTimestamp && $nextTimestamp->started_at < $workingEndTime)) {
-            return redirect()->back()->withErrors([
+            return back()->withErrors([
                 'started_at' => __('app.the start or end time overlaps with another time span.'),
             ]);
         }
@@ -282,18 +285,18 @@ class TimestampController extends Controller
             $projectSettings->save();
         }
 
-        CalculateWeekBalance::dispatch();
+        dispatch(new CalculateWeekBalance);
         if (! $hasEndedAt || $startTime->isToday()) {
-            MenubarRefresh::dispatchSync();
+            dispatch_sync(new MenubarRefresh);
         }
 
-        return redirect()->route('overview.day.show', ['date' => $startTime->format('Y-m-d')]);
+        return to_route('overview.day.show', ['date' => $startTime->format('Y-m-d')]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DestroyTimestampRequest $request, Timestamp $timestamp)
+    public function destroy(DestroyTimestampRequest $request, Timestamp $timestamp): Redirector|RedirectResponse
     {
         Inertia::share(['date' => $timestamp->started_at->format('d.m.Y')]);
         $date = $timestamp->started_at->format('Y-m-d');
@@ -301,16 +304,16 @@ class TimestampController extends Controller
         $request->validated();
         $timestamp->delete();
 
-        CalculateWeekBalance::dispatch();
+        dispatch(new CalculateWeekBalance);
 
         if ($isToday) {
-            MenubarRefresh::dispatchSync();
+            dispatch_sync(new MenubarRefresh);
         }
 
-        return redirect()->route('overview.day.show', ['date' => $date]);
+        return to_route('overview.day.show', ['date' => $date]);
     }
 
-    public function fill(FillTimestampRequest $request)
+    public function fill(FillTimestampRequest $request): Redirector|RedirectResponse
     {
         $data = $request->validated();
 
@@ -324,12 +327,12 @@ class TimestampController extends Controller
             'last_ping_at' => $timestampAfter->started_at,
         ]);
 
-        CalculateWeekBalance::dispatch();
+        dispatch(new CalculateWeekBalance);
 
         if ($timestampBefore->ended_at->isToday()) {
-            MenubarRefresh::dispatchSync();
+            dispatch_sync(new MenubarRefresh);
         }
 
-        return redirect()->route('overview.day.show', ['date' => $timestampBefore->created_at->format('Y-m-d')]);
+        return to_route('overview.day.show', ['date' => $timestampBefore->created_at->format('Y-m-d')]);
     }
 }

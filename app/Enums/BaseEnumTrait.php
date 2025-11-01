@@ -20,7 +20,7 @@ trait BaseEnumTrait
         }
 
         return $collection->mapWithKeys(
-            fn ($enum) => [$enum->value ?? $enum->name => $enum->$property()]
+            fn ($enum): array => [$enum->value ?? $enum->name => $enum->$property()]
         )->toArray();
     }
 

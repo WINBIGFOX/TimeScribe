@@ -6,14 +6,15 @@ namespace App\Http\Controllers\Export;
 
 use App\Http\Controllers\Controller;
 use App\Services\Export\ExportService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Native\Laravel\Dialog;
-use Native\Laravel\Facades\Alert;
-use Native\Laravel\Support\Environment;
+use Native\Desktop\Dialog;
+use Native\Desktop\Facades\Alert;
+use Native\Desktop\Support\Environment;
 
 class CsvController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): RedirectResponse
     {
         $savePath = Dialog::new()->asSheet()
             ->defaultPath('TimeScribe-Export.csv')

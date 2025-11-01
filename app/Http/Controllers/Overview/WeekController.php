@@ -13,6 +13,10 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use DateInterval;
 use DatePeriod;
+use DateTime;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Date;
 use Inertia\Inertia;
 
 class WeekController extends Controller
@@ -20,9 +24,9 @@ class WeekController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Redirector|RedirectResponse
     {
-        return redirect()->route('overview.week.show', [
+        return to_route('overview.week.show', [
             'date' => now()->format('Y-m-d'),
         ]);
     }
@@ -50,8 +54,8 @@ class WeekController extends Controller
             'weekDatesWithTimestamps' => TimestampService::getDatesWithTimestamps($date->copy()->subYear()->startOfYear(), $date->copy()->addYear()->endOfYear()),
             'balance' => TimestampService::getBalance($startOfWeek),
             'lastCalendarWeek' => $date->copy()->subWeek()->weekOfYear,
-            'weekdays' => collect(new DatePeriod($startOfWeek, new DateInterval('P1D'), $endOfWeek))->map(function (\DateTime $date): array {
-                $date = Carbon::parse($date);
+            'weekdays' => collect(new DatePeriod($startOfWeek, new DateInterval('P1D'), $endOfWeek))->map(function (DateTime $date): array {
+                $date = Date::parse($date);
 
                 return [
                     'plan' => TimestampService::getPlan($date),
@@ -65,7 +69,7 @@ class WeekController extends Controller
                     'absences' => AbsenceResource::collection(TimestampService::getAbsence($date)),
                     'isHoliday' => HolidayService::isHoliday($date),
                 ];
-            })->toArray(),
+            })->all(),
         ]);
     }
 }

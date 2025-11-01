@@ -19,6 +19,7 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Date;
 
 class TimestampService
 {
@@ -40,7 +41,7 @@ class TimestampService
     private static function makeEndings(): void
     {
         $unclosedDays = Timestamp::whereNull('ended_at')
-            ->whereDate('started_at', '<', now()->startOfDay())
+            ->whereDate('started_at', '<', today())
             ->get();
 
         foreach ($unclosedDays as $timestamp) {
@@ -48,7 +49,7 @@ class TimestampService
             if ($timestamp->last_ping_at->diffInMinutes(now()) < 60) {
                 Timestamp::create([
                     'type' => $timestamp->type,
-                    'started_at' => now()->startOfDay(),
+                    'started_at' => today(),
                     'last_ping_at' => now(),
                 ]);
             }
@@ -96,10 +97,10 @@ class TimestampService
                 ]);
                 Timestamp::create([
                     'type' => $timestamp->type,
-                    'started_at' => now()->startOfDay(),
+                    'started_at' => today(),
                     'last_ping_at' => now(),
                 ]);
-                CalculateWeekBalance::dispatch();
+                dispatch(new CalculateWeekBalance);
             }
         }
         self::createStopByOldTimestamps();
@@ -151,7 +152,7 @@ class TimestampService
     private static function getTime(TimestampTypeEnum $type, ?Carbon $date, ?Carbon $endDate = null, ?bool $fallbackNow = true, ?Project $project = null): float
     {
         if (! $date instanceof Carbon) {
-            $date = Carbon::now();
+            $date = Date::now();
         }
         if (! $endDate instanceof Carbon) {
             $endDate = $date->copy();
@@ -165,7 +166,7 @@ class TimestampService
 
         $absenceTime = 0;
 
-        if (! $project instanceof \App\Models\Project) {
+        if (! $project instanceof Project) {
 
             $holiday = HolidayService::getHoliday([$date->year, $endDate->year]);
             $absence = self::getAbsence($date, $endDate);
@@ -249,7 +250,7 @@ class TimestampService
             ->whereDate('started_at', '>=', $date->startOfDay())
             ->whereDate('started_at', '<=', $endDate->endOfDay())
             ->when($project, fn ($query) => $query->where('project_id', $project->id))
-            ->orderBy('started_at')
+            ->oldest('started_at')
             ->get();
     }
 
@@ -267,7 +268,7 @@ class TimestampService
     public static function getWorkSchedule(?Carbon $date = null): array
     {
         if (! $date instanceof Carbon) {
-            $date = Carbon::now();
+            $date = Date::now();
         }
 
         return Cache::flexible($date->format('Y-m-d'), [10, 0], function () use ($date) {
@@ -346,7 +347,7 @@ class TimestampService
     public static function getDatesWithTimestamps(?Carbon $date, ?Carbon $endDate = null, ?Project $project = null): Collection
     {
         if (! $date instanceof Carbon) {
-            $date = Carbon::now();
+            $date = Date::now();
         }
         if (! $endDate instanceof Carbon) {
             $endDate = $date->copy();
@@ -354,7 +355,7 @@ class TimestampService
 
         $timestampDates = self::getTimestamps($date, $endDate, $project)->map(fn (Timestamp $timestamp) => $timestamp->started_at->format('Y-m-d'));
 
-        if (! $project instanceof \App\Models\Project) {
+        if (! $project instanceof Project) {
             $holiday = HolidayService::getHoliday(range($date->year, $endDate->year))->map(fn (Carbon $holiday): string => $holiday->format('Y-m-d'));
 
             $absence = self::getAbsence($date, $endDate)->map(fn (Absence $absence) => $absence->date->format('Y-m-d'));

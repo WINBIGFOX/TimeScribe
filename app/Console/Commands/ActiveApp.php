@@ -7,12 +7,12 @@ namespace App\Console\Commands;
 use App\Enums\AppCategoryEnum;
 use App\Models\ActivityHistory;
 use App\Services\LocaleService;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Native\Laravel\Support\Environment;
+use Native\Desktop\Support\Environment;
 
 class ActiveApp extends Command
 {
@@ -152,7 +152,7 @@ class ActiveApp extends Command
         $activity = ActivityHistory::active()->latest()->first();
 
         if ($activity && $activity->app_identifier === $appData['identifier']) {
-            $nextEndedAt = Carbon::now()->addSeconds(self::ACTIVITY_DURATION_SECONDS);
+            $nextEndedAt = Date::now()->addSeconds(self::ACTIVITY_DURATION_SECONDS);
             $activity->update([
                 'duration' => (int) $activity->started_at->diffInSeconds($nextEndedAt),
                 'ended_at' => $nextEndedAt,
@@ -165,7 +165,7 @@ class ActiveApp extends Command
     private function createNewActivity(?ActivityHistory $previousActivity, array $appData): void
     {
         if ($previousActivity instanceof ActivityHistory) {
-            $endedAt = Carbon::now()->subSecond();
+            $endedAt = Date::now()->subSecond();
             $previousActivity->update([
                 'duration' => (int) $previousActivity->started_at->diffInSeconds($endedAt),
                 'ended_at' => $endedAt,
@@ -181,9 +181,9 @@ class ActiveApp extends Command
             'app_identifier' => $appData['identifier'],
             'app_icon' => $appData['icon'],
             'app_category' => $appData['category'],
-            'started_at' => Carbon::now(),
+            'started_at' => Date::now(),
             'duration' => self::ACTIVITY_DURATION_SECONDS,
-            'ended_at' => Carbon::now()->addSeconds(self::ACTIVITY_DURATION_SECONDS),
+            'ended_at' => Date::now()->addSeconds(self::ACTIVITY_DURATION_SECONDS),
         ]);
     }
 
@@ -268,7 +268,7 @@ class ActiveApp extends Command
 
         $timestamp = filemtime($fullPath);
 
-        return $timestamp && Carbon::createFromTimestamp($timestamp)->diffInDays() < self::ICON_CACHE_DAYS;
+        return $timestamp && Date::createFromTimestamp($timestamp)->diffInDays() < self::ICON_CACHE_DAYS;
     }
 
     private function ensureDirectoryExists(string $directory): void

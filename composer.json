@@ -13,26 +13,27 @@
         "ext-zip": "*",
         "emargareten/inertia-modal": "^1.5",
         "inertiajs/inertia-laravel": "^2.0",
-        "laravel-lang/lang": "^15.22",
-        "laravel/framework": "^12.21",
+        "laravel-lang/lang": "^15.26",
+        "laravel/framework": "^12.36",
         "laravel/tinker": "^2.10",
-        "nativephp/electron": "^1.2",
+        "nativephp/desktop": "^2.0",
         "nunomaduro/laravel-optimize-database": "^1.0",
-        "prinsfrank/standards": "^3.12",
-        "sentry/sentry-laravel": "^4.15",
+        "prinsfrank/standards": "^3.13",
+        "sentry/sentry-laravel": "^4.18",
         "spatie/db-dumper": "^3.8",
-        "spatie/laravel-settings": "^3.4",
+        "spatie/laravel-settings": "^3.5",
         "spatie/simple-excel": "^3.8",
-        "tightenco/ziggy": "^2.5",
+        "tightenco/ziggy": "^2.6",
         "umulmrum/holiday": "^0.11"
     },
     "require-dev": {
-        "driftingly/rector-laravel": "^2.0",
+        "driftingly/rector-laravel": "^2.1",
         "fakerphp/faker": "^1.24",
+        "laravel/boost": "^1.6",
         "laravel/breeze": "^2.3",
         "laravel/pail": "^1.2",
-        "laravel/pint": "^1.24",
-        "laravel/sail": "^1.44",
+        "laravel/pint": "^1.25",
+        "laravel/sail": "^1.47",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.8",
         "pestphp/pest": "^3.8",
@@ -73,7 +74,7 @@
         ],
         "native:dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -k -c \"#93c5fd,#c4b5fd\" \"php artisan native:serve --no-interaction\" \"npm run dev\" --names=app,vite"
+            "npx concurrently -k -c \"#93c5fd,#c4b5fd\" \"php artisan native:run --no-interaction\" \"npm run dev\" --names=app,vite"
         ]
     },
     "extra": {

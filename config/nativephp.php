@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Providers\NativeAppServiceProvider;
+
 return [
     /**
      * The version of your app.
@@ -48,7 +50,7 @@ return [
      * takes care of bootstrapping your application and configuring
      * any global hotkeys, menus, windows, etc.
      */
-    'provider' => \App\Providers\NativeAppServiceProvider::class,
+    'provider' => NativeAppServiceProvider::class,
 
     /**
      * A list of environment keys that should be removed from the
@@ -74,6 +76,7 @@ return [
     'cleanup_exclude_files' => [
         '.env.sentry-build-plugin',
         'content',
+        'node_modules',
         'storage/app/framework/{sessions,testing,cache}',
         'storage/logs/laravel.log',
     ],

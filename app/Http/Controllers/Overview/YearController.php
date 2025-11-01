@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Services\TimestampService;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Inertia\Inertia;
 
 class YearController extends Controller
@@ -15,9 +17,9 @@ class YearController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Redirector|RedirectResponse
     {
-        return redirect()->route('overview.year.show', [
+        return to_route('overview.year.show', [
             'date' => now()->format('Y-m-d'),
         ]);
     }
