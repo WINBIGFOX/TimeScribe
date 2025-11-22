@@ -21,8 +21,11 @@ return RectorConfig::configure()
     ])
     ->withPhpSets()
     ->withSets([
+        LaravelSetList::LARAVEL_120,
         LaravelSetList::LARAVEL_CODE_QUALITY,
         LaravelSetList::LARAVEL_COLLECTION,
+        LaravelSetList::LARAVEL_CONTAINER_STRING_TO_FULLY_QUALIFIED_NAME,
+        LaravelSetList::LARAVEL_ARRAY_STR_FUNCTION_TO_STATIC_CALL,
     ])
     ->withTypeCoverageLevel(49)
     ->withDeadCodeLevel(49)

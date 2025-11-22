@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Services\TimestampService;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,7 +24,8 @@ class Project extends Model
         'currency',
     ];
 
-    protected function scopeSortedByLatestTimestamp($query): Builder
+    #[Scope]
+    protected function sortedByLatestTimestamp($query): Builder
     {
         return $query
             ->leftJoin('timestamps', 'projects.id', '=', 'timestamps.project_id')

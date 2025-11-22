@@ -131,7 +131,11 @@ router.on('navigate', () => {
                 <SidebarMenuButton as-child>
                     <Link
                         :class="{
-                            'text-primary! font-bold': current === 'absence.show'
+                            'text-primary! font-bold': [
+                                'absence.show',
+                                'absence.vacation.index',
+                                'absence.vacation-entitlement.edit'
+                            ].includes(current ?? '')
                         }"
                         :href="route('absence.show', { date })"
                         class="transition-all duration-200"
@@ -141,6 +145,43 @@ router.on('navigate', () => {
                         {{ $t('app.absences and leave') }}
                     </Link>
                 </SidebarMenuButton>
+                <SidebarMenuSub>
+                    <SidebarMenuSubItem>
+                        <SidebarMenuSubButton as-child>
+                            <Link
+                                :class="{
+                                    'text-primary! font-bold': current === 'absence.show'
+                                }"
+                                :href="route('absence.show', { date })"
+                                class="transition-all duration-200"
+                                prefetch
+                            >
+                                {{ $t('app.calendar view') }}
+                            </Link>
+                        </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                    <SidebarMenuSubItem>
+                        <SidebarMenuSubButton as-child>
+                            <Link
+                                :class="{
+                                    'text-primary! font-bold': [
+                                        'absence.vacation.index',
+                                        'absence.vacation-entitlement.edit'
+                                    ].includes(current ?? '')
+                                }"
+                                :href="
+                                    route('absence.vacation.index', {
+                                        date: moment(date).format('YYYY-MM-DD')
+                                    })
+                                "
+                                class="transition-all duration-200"
+                                prefetch
+                            >
+                                {{ $t('app.vacation overview') }}
+                            </Link>
+                        </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                </SidebarMenuSub>
             </SidebarMenuItem>
             <SidebarMenuItem>
                 <SidebarMenuButton as-child>
@@ -202,6 +243,20 @@ router.on('navigate', () => {
                                 prefetch
                             >
                                 {{ $t('app.general') }}
+                            </Link>
+                        </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                    <SidebarMenuSubItem>
+                        <SidebarMenuSubButton as-child>
+                            <Link
+                                :class="{
+                                    'text-primary! font-bold': current === 'settings.vacation.edit'
+                                }"
+                                :href="route('settings.vacation.edit')"
+                                class="transition-all duration-200"
+                                prefetch
+                            >
+                                {{ $t('app.vacation settings') }}
                             </Link>
                         </SidebarMenuSubButton>
                     </SidebarMenuSubItem>

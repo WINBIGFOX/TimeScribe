@@ -19,8 +19,11 @@ use App\Http\Controllers\Overview\YearController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\Settings\GeneralController;
 use App\Http\Controllers\Settings\StartStopController;
+use App\Http\Controllers\Settings\VacationController as SettingsVacationController;
 use App\Http\Controllers\TimestampController;
 use App\Http\Controllers\UpdaterController;
+use App\Http\Controllers\VacationController;
+use App\Http\Controllers\VacationEntitlementController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\WindowController;
 use App\Http\Controllers\WorkScheduleController;
@@ -41,53 +44,57 @@ Route::name('overview.')->prefix('overview')->group(function (): void {
 
 Route::get('quit', fn () => App::quit())->name('quit');
 
-Route::get('welcome', (new WelcomeController)->index(...))->name('welcome.index');
-Route::patch('welcome', (new WelcomeController)->update(...))->name('welcome.update');
-Route::get('welcome/finish/{openSettings?}', (new WelcomeController)->finish(...))->name('welcome.finish');
+Route::get('welcome', new WelcomeController()->index(...))->name('welcome.index');
+Route::patch('welcome', new WelcomeController()->update(...))->name('welcome.update');
+Route::get('welcome/finish/{openSettings?}', new WelcomeController()->finish(...))->name('welcome.finish');
 
 Route::name('menubar.')->prefix('menubar')->group(function (): void {
-    Route::get('', (new MenubarController)->index(...))->name('index');
-    Route::post('break', (new MenubarController)->storeBreak(...))->name('storeBreak');
-    Route::post('work', (new MenubarController)->storeWork(...))->name('storeWork');
-    Route::post('stop', (new MenubarController)->storeStop(...))->name('storeStop');
-    Route::post('set-project/{project}', (new MenubarController)->setProject(...))->name('set-project');
-    Route::post('remove-project', (new MenubarController)->removeProject(...))->name('remove-project');
+    Route::get('', new MenubarController()->index(...))->name('index');
+    Route::post('break', new MenubarController()->storeBreak(...))->name('storeBreak');
+    Route::post('work', new MenubarController()->storeWork(...))->name('storeWork');
+    Route::post('stop', new MenubarController()->storeStop(...))->name('storeStop');
+    Route::post('set-project/{project}', new MenubarController()->setProject(...))->name('set-project');
+    Route::post('remove-project', new MenubarController()->removeProject(...))->name('remove-project');
 });
 
 Route::name('fly-timer.')->prefix('fly-timer')->group(function (): void {
-    Route::get('', (new FlyTimerController)->index(...))->name('index');
-    Route::post('work', (new FlyTimerController)->storeBreak(...))->name('storeBreak');
-    Route::post('break', (new FlyTimerController)->storeWork(...))->name('storeWork');
-    Route::post('stop', (new FlyTimerController)->storeStop(...))->name('storeStop');
+    Route::get('', new FlyTimerController()->index(...))->name('index');
+    Route::post('work', new FlyTimerController()->storeBreak(...))->name('storeBreak');
+    Route::post('break', new FlyTimerController()->storeWork(...))->name('storeWork');
+    Route::post('stop', new FlyTimerController()->storeStop(...))->name('storeStop');
 });
 
 Route::name('window.')->prefix('window')->group(function (): void {
-    Route::get('updater/{darkMode}', (new WindowController)->openUpdater(...))->name('updater.open');
-    Route::get('overview/{darkMode}', (new WindowController)->openOverview(...))->name('overview.open');
-    Route::get('settings/{darkMode}', (new WindowController)->openSettings(...))->name('settings.open');
-    Route::get('new-project/{darkMode}', (new WindowController)->openNewProject(...))->name('new-project.open');
-    Route::get('fly-timer/open', (new WindowController)->openFlyTimer(...))->name('fly-timer.open');
-    Route::get('fly-timer/close', (new WindowController)->closeFlyTimer(...))->name('fly-timer.close');
+    Route::get('updater/{darkMode}', new WindowController()->openUpdater(...))->name('updater.open');
+    Route::get('overview/{darkMode}', new WindowController()->openOverview(...))->name('overview.open');
+    Route::get('settings/{darkMode}', new WindowController()->openSettings(...))->name('settings.open');
+    Route::get('new-project/{darkMode}', new WindowController()->openNewProject(...))->name('new-project.open');
+    Route::get('fly-timer/open', new WindowController()->openFlyTimer(...))->name('fly-timer.open');
+    Route::get('fly-timer/close', new WindowController()->closeFlyTimer(...))->name('fly-timer.close');
 });
 
 Route::name('settings.')->prefix('settings')->group(function (): void {
     Route::get('', fn (): Redirector|RedirectResponse => to_route('settings.general.edit'))->name('index');
     Route::name('general.')->prefix('general')->group(function (): void {
-        Route::get('edit', (new GeneralController)->edit(...))->name('edit');
-        Route::patch('', (new GeneralController)->update(...))->name('update');
-        Route::patch('locale', (new GeneralController)->updateLocale(...))->name('updateLocale');
+        Route::get('edit', new GeneralController()->edit(...))->name('edit');
+        Route::patch('', new GeneralController()->update(...))->name('update');
+        Route::patch('locale', new GeneralController()->updateLocale(...))->name('updateLocale');
     });
     Route::name('start-stop.')->prefix('start-stop')->group(function (): void {
-        Route::get('edit', (new StartStopController)->edit(...))->name('edit');
-        Route::patch('', (new StartStopController)->update(...))->name('update');
+        Route::get('edit', new StartStopController()->edit(...))->name('edit');
+        Route::patch('', new StartStopController()->update(...))->name('update');
+    });
+    Route::name('vacation.')->prefix('vacation')->group(function (): void {
+        Route::get('edit', new SettingsVacationController()->edit(...))->name('edit');
+        Route::patch('', new SettingsVacationController()->update(...))->name('update');
     });
 });
 
 Route::name('updater.')->prefix('updater')->group(function (): void {
-    Route::get('', (new UpdaterController)->index(...))->name('index');
-    Route::patch('auto-update', (new UpdaterController)->updateAutoUpdate(...))->name('updateAutoUpdate');
-    Route::post('install', (new UpdaterController)->install(...))->name('install');
-    Route::post('check', (new UpdaterController)->check(...))->name('check');
+    Route::get('', new UpdaterController()->index(...))->name('index');
+    Route::patch('auto-update', new UpdaterController()->updateAutoUpdate(...))->name('updateAutoUpdate');
+    Route::post('install', new UpdaterController()->install(...))->name('install');
+    Route::post('check', new UpdaterController()->check(...))->name('check');
 });
 
 Route::resource('import-export', ImportExportController::class);
@@ -106,25 +113,29 @@ Route::resource('app-activity', AppActivityController::class)->only(['index', 's
 Route::resource('project', ProjectController::class);
 
 Route::name('absence.')->prefix('absence')->group(function (): void {
-    Route::get('', (new AbsenceController)->index(...))->name('index');
-    Route::get('{date}', (new AbsenceController)->show(...))->name('show');
-    Route::post('{date}', (new AbsenceController)->store(...))->name('store');
-    Route::delete('{date}/{absence}', (new AbsenceController)->destroy(...))->name('destroy');
+    Route::get('', new AbsenceController()->index(...))->name('index');
+    Route::get('{date}', new AbsenceController()->show(...))->name('show');
+    Route::post('{date}', new AbsenceController()->store(...))->name('store');
+    Route::delete('{date}/{absence}', new AbsenceController()->destroy(...))->name('destroy');
 
-    Route::post('holiday-rule', (new HolidayRuleController)->store(...))->name('holiday-rule.store');
-    Route::delete('holiday-rule', (new HolidayRuleController)->destroy(...))->name('holiday-rule.destroy');
+    Route::post('holiday-rule', new HolidayRuleController()->store(...))->name('holiday-rule.store');
+    Route::delete('holiday-rule', new HolidayRuleController()->destroy(...))->name('holiday-rule.destroy');
+    Route::get('vacation/{date?}', new VacationController()->index(...))->name('vacation.index');
+    Route::delete('vacation/{absence}', new VacationController()->destroy(...))->name('vacation.destroy');
+    Route::get('vacation-entitlement/{date}', new VacationEntitlementController()->edit(...))->name('vacation-entitlement.edit');
+    Route::post('vacation-entitlement', new VacationEntitlementController()->update(...))->name('vacation-entitlement.update');
 });
 
-Route::get('timestamp/create/{datetime}/{endDatetime?}', (new TimestampController)->create(...))->name('timestamp.create')
+Route::get('timestamp/create/{datetime}/{endDatetime?}', new TimestampController()->create(...))->name('timestamp.create')
     ->where('endDatetime', '\d{4}-\d{2}-\d{2}\s\d{2}\:\d{2}\:\d{2}');
-Route::post('timestamp/{datetime}', (new TimestampController)->store(...))->name('timestamp.store');
+Route::post('timestamp/{datetime}', new TimestampController()->store(...))->name('timestamp.store');
 Route::resource('timestamp', TimestampController::class)->only(['edit', 'update', 'destroy']);
-Route::post('timestamp/fill', (new TimestampController)->fill(...))->name('timestamp.fill');
+Route::post('timestamp/fill', new TimestampController()->fill(...))->name('timestamp.fill');
 
 Route::name('bug-and-feedback.')->prefix('bug-and-feedback')->group(function (): void {
-    Route::get('', (new BugAndFeedbackController)->index(...))->name('index');
-    Route::get('export', (new BugAndFeedbackController)->export(...))->name('export');
-    Route::get('import', (new BugAndFeedbackController)->import(...))->name('import');
+    Route::get('', new BugAndFeedbackController()->index(...))->name('index');
+    Route::get('export', new BugAndFeedbackController()->export(...))->name('export');
+    Route::get('import', new BugAndFeedbackController()->import(...))->name('import');
 });
 
 Route::get('open', function (Request $request): void {

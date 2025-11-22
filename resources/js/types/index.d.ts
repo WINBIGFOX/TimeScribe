@@ -88,6 +88,33 @@ export interface Absence {
     duration?: number
 }
 
+export interface VacationEntry {
+    id: number
+    type: 'vacation'
+    date: Date
+    hours: number
+    day_equivalent: number
+    status: 'taken' | 'planned'
+    plan_hours?: number | null
+}
+
+export interface VacationSummary {
+    taken: number
+    planned: number
+    consumed: number
+    totalEntitlement: number
+    remaining: number
+}
+
+export interface VacationEntitlement {
+    year: number
+    days?: number | null
+    carryover?: number | null
+    defaultDays?: number
+    autoCarryover?: boolean
+    calculatedCarryover?: number | null
+}
+
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     js_locale: string
     locale: string

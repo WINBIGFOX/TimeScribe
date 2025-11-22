@@ -6,6 +6,7 @@ use App\Settings\AutoUpdaterSettings;
 use App\Settings\FlyTimerSettings;
 use App\Settings\GeneralSettings;
 use App\Settings\ProjectSettings;
+use App\Settings\VacationSettings;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelSettings\SettingsCasts\DataCast;
 use Spatie\LaravelSettings\SettingsCasts\DateTimeInterfaceCast;
@@ -24,6 +25,7 @@ return [
         AutoUpdaterSettings::class,
         ProjectSettings::class,
         FlyTimerSettings::class,
+        VacationSettings::class,
     ],
 
     /*

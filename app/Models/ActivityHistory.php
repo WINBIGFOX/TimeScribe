@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\AppCategoryEnum;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
 
@@ -32,7 +33,8 @@ class ActivityHistory extends Model
         'app_category' => AppCategoryEnum::class,
     ];
 
-    protected function scopeActive($query)
+    #[Scope]
+    protected function active($query)
     {
         return $query->where('ended_at', '>', Date::now()->subSeconds(7));
     }
