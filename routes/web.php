@@ -148,6 +148,7 @@ Route::name('bug-and-feedback.')->prefix('bug-and-feedback')->group(function ():
     Route::get('', new BugAndFeedbackController()->index(...))->name('index');
     Route::get('export', new BugAndFeedbackController()->export(...))->name('export');
     Route::get('import', new BugAndFeedbackController()->import(...))->name('import');
+    Route::delete('delete-all', new BugAndFeedbackController()->destroy(...))->name('delete-all');
 });
 
 Route::get('open', function (Request $request): void {

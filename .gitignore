@@ -7,6 +7,7 @@
 /lang/php_*.json
 /storage/*.key
 /storage/pail
+/storage/testing
 /vendor
 .env
 .env.backup

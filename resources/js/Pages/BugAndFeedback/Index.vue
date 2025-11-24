@@ -1,7 +1,31 @@
 <script lang="ts" setup>
+import { PageHeader } from '@/Components/ui-custom/page-header'
+import {
+    AlertDialog,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
+} from '@/Components/ui/alert-dialog'
 import { Button } from '@/Components/ui/button'
-import { Head, Link } from '@inertiajs/vue3'
-import { Bug, DatabaseBackup, FolderOpen, Heart, Save } from 'lucide-vue-next'
+import { Input } from '@/Components/ui/input'
+import { Head, Link, useForm } from '@inertiajs/vue3'
+import { Bug, DatabaseBackup, FolderOpen, Heart, Loader2, Save, Shredder, TriangleAlert } from 'lucide-vue-next'
+import { ref } from 'vue'
+
+const confirmDeleteInput = ref('')
+const deleteForm = useForm({})
+
+const handleDelete = () =>
+    deleteForm.delete(route('bug-and-feedback.delete-all'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            confirmDeleteInput.value = ''
+        }
+    })
 </script>
 
 <template>
@@ -66,7 +90,9 @@ import { Bug, DatabaseBackup, FolderOpen, Heart, Save } from 'lucide-vue-next'
         </Button>
     </div>
 
-    <div class="mt-4 flex items-start space-x-4 border-t py-4 pt-8">
+    <hr class="my-4" />
+
+    <div class="flex items-start space-x-4 py-4">
         <DatabaseBackup />
         <div class="flex-1 space-y-1">
             <p class="text-sm leading-none font-medium">
@@ -93,5 +119,59 @@ import { Bug, DatabaseBackup, FolderOpen, Heart, Save } from 'lucide-vue-next'
                 {{ $page.props.errors.message }}
             </div>
         </div>
+    </div>
+
+    <hr class="my-4" />
+    <div
+        class="border-destructive/30 bg-destructive/5 text-destructive/80 dark:bg-destructive/10 mt-4 flex items-start space-x-4 rounded-xl border-1 p-4"
+    >
+        <Shredder />
+        <div class="flex-1 space-y-1">
+            <p class="text-sm leading-none font-medium">
+                {{ $t('app.delete all data') }}
+            </p>
+            <p class="text-muted-foreground text-sm text-balance">
+                {{ $t('app.delete all data description') }}
+            </p>
+        </div>
+        <AlertDialog>
+            <AlertDialogTrigger as-child>
+                <Button class="self-center" variant="outline">
+                    <TriangleAlert />
+                    {{ $t('app.delete all data permanently') }}
+                </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent class="sm:max-w-lg" disable-outside-pointer-events @escape-key-down.prevent.stop>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>
+                        {{ $t('app.warning') }}
+                    </AlertDialogTitle>
+                    <AlertDialogDescription class="text-balance">
+                        {{ $t('app.do you really want to delete all timescribe data? this action cannot be undone.') }}
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <p class="text-sm">
+                    {{ $t('app.confirm deletion by entering the word \"delete\".') }}
+                </p>
+                <div class="flex flex-col gap-2 py-4">
+                    <span class="text-sm leading-none font-medium">{{ $t('app.security check') }}</span>
+                    <Input :placeholder="$t('app.type delete')" v-model="confirmDeleteInput" />
+                </div>
+                <AlertDialogFooter>
+                    <AlertDialogCancel :disabled="deleteForm.processing">
+                        {{ $t('app.cancel') }}
+                    </AlertDialogCancel>
+                    <Button
+                        variant="destructive"
+                        :disabled="confirmDeleteInput !== 'DELETE' || deleteForm.processing"
+                        @click="handleDelete"
+                        type="button"
+                    >
+                        <Loader2 v-if="deleteForm.processing" />
+                        {{ $t('app.delete all data permanently') }}
+                    </Button>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     </div>
 </template>
