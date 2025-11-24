@@ -44,7 +44,7 @@ router.on('navigate', () => {
                                     ].includes(current ?? '')
                                 }"
                                 :href="route('overview.day.show', { date })"
-                                class="transition-all duration-200"
+                                class="transition-[color,background-color,font-weight] duration-200"
                                 prefetch
                             >
                                 {{ $t('app.day') }}
@@ -58,7 +58,7 @@ router.on('navigate', () => {
                                     'text-primary! font-bold': current === 'overview.week.show'
                                 }"
                                 :href="route('overview.week.show', { date })"
-                                class="transition-all duration-200"
+                                class="transition-[color,background-color,font-weight] duration-200"
                                 prefetch
                             >
                                 {{ $t('app.week') }}
@@ -72,7 +72,7 @@ router.on('navigate', () => {
                                     'text-primary! font-bold': current === 'overview.month.show'
                                 }"
                                 :href="route('overview.month.show', { date })"
-                                class="transition-all duration-200"
+                                class="transition-[color,background-color,font-weight] duration-200"
                                 prefetch
                             >
                                 {{ $t('app.month') }}
@@ -86,7 +86,7 @@ router.on('navigate', () => {
                                     'text-primary! font-bold': current === 'overview.year.show'
                                 }"
                                 :href="route('overview.year.show', { date })"
-                                class="transition-all duration-200"
+                                class="transition-[color,background-color,font-weight] duration-200"
                                 prefetch
                             >
                                 {{ $t('app.year') }}
@@ -104,7 +104,7 @@ router.on('navigate', () => {
                             )
                         }"
                         :href="route('project.index')"
-                        class="transition-all duration-200"
+                        class="transition-[color,background-color,font-weight] duration-200"
                         prefetch
                     >
                         <Tag />
@@ -119,7 +119,7 @@ router.on('navigate', () => {
                             'text-primary! font-bold': current === 'app-activity.index'
                         }"
                         :href="route('app-activity.index')"
-                        class="transition-all duration-200"
+                        class="transition-[color,background-color,font-weight] duration-200"
                         prefetch
                     >
                         <AppWindowMac />
@@ -138,7 +138,7 @@ router.on('navigate', () => {
                             ].includes(current ?? '')
                         }"
                         :href="route('absence.show', { date })"
-                        class="transition-all duration-200"
+                        class="transition-[color,background-color,font-weight] duration-200"
                         prefetch
                     >
                         <TentTree />
@@ -153,7 +153,7 @@ router.on('navigate', () => {
                                     'text-primary! font-bold': current === 'absence.show'
                                 }"
                                 :href="route('absence.show', { date })"
-                                class="transition-all duration-200"
+                                class="transition-[color,background-color,font-weight] duration-200"
                                 prefetch
                             >
                                 {{ $t('app.calendar view') }}
@@ -170,7 +170,7 @@ router.on('navigate', () => {
                                     ].includes(current ?? '')
                                 }"
                                 :href="route('absence.vacation.index', { date })"
-                                class="transition-all duration-200"
+                                class="transition-[color,background-color,font-weight] duration-200"
                                 prefetch
                             >
                                 {{ $t('app.vacation overview') }}
@@ -190,7 +190,7 @@ router.on('navigate', () => {
                             ].includes(current ?? '')
                         }"
                         :href="route('work-schedule.index')"
-                        class="transition-all duration-200"
+                        class="transition-[color,background-color,font-weight] duration-200"
                         prefetch
                     >
                         <FileClock />
@@ -207,7 +207,7 @@ router.on('navigate', () => {
                             )
                         }"
                         :href="route('import-export.index')"
-                        class="transition-all duration-200"
+                        class="transition-[color,background-color,font-weight] duration-200"
                         prefetch
                     >
                         <FileChartColumn />
@@ -222,7 +222,7 @@ router.on('navigate', () => {
                             'text-primary! font-bold': current === 'settings.index'
                         }"
                         :href="route('settings.index')"
-                        class="transition-all duration-200"
+                        class="transition-[color,background-color,font-weight] duration-200"
                         prefetch
                     >
                         <Cog />
@@ -237,7 +237,7 @@ router.on('navigate', () => {
                                     'text-primary! font-bold': current === 'settings.general.edit'
                                 }"
                                 :href="route('settings.general.edit')"
-                                class="transition-all duration-200"
+                                class="transition-[color,background-color,font-weight] duration-200"
                                 prefetch
                             >
                                 {{ $t('app.general') }}
@@ -251,7 +251,7 @@ router.on('navigate', () => {
                                     'text-primary! font-bold': current === 'settings.vacation.edit'
                                 }"
                                 :href="route('settings.vacation.edit')"
-                                class="transition-all duration-200"
+                                class="transition-[color,background-color,font-weight] duration-200"
                                 prefetch
                             >
                                 {{ $t('app.vacation settings') }}
@@ -265,7 +265,7 @@ router.on('navigate', () => {
                                     'text-primary! font-bold': current === 'settings.start-stop.edit'
                                 }"
                                 :href="route('settings.start-stop.edit')"
-                                class="transition-all duration-200"
+                                class="transition-[color,background-color,font-weight] duration-200"
                                 prefetch
                             >
                                 {{ $t('app.auto start/break') }}

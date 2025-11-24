@@ -338,7 +338,11 @@ class BackupService
                     continue;
                 }
 
-                DB::unprepared($statement);
+                try {
+                    DB::unprepared($statement);
+                } catch (\Exception) {
+                    //
+                }
             }
         }
 

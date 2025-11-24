@@ -55,7 +55,7 @@ watch(
         </Button>
     </PageHeader>
 
-    <div class="flex grow flex-col gap-2 overflow-y-auto pb-6" v-if="props.projects.length">
+    <div class="flex grow flex-col gap-2" v-if="props.projects.length">
         <ProjectListItem
             :is-current="project.id === props.current_project_id"
             :key="project.id"

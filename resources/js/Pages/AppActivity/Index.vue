@@ -133,7 +133,7 @@ if (window.Native) {
                             width: item.percentage + '%',
                             background: item.item.color
                         }"
-                        class="flex h-10 items-center justify-center rounded backdrop-blur-3xl transition-all hover:z-10 hover:scale-110"
+                        class="flex h-10 items-center justify-center rounded transition-[scale] hover:z-10 hover:scale-110"
                     >
                         <img
                             :alt="item.item.name"
@@ -154,7 +154,7 @@ if (window.Native) {
                             width: item.percentage + '%',
                             background: item.item.color
                         }"
-                        class="flex h-10 items-center justify-center rounded backdrop-blur-3xl transition-all hover:z-10 hover:scale-110"
+                        class="flex h-10 items-center justify-center rounded transition-[scale] hover:z-10 hover:scale-110"
                     >
                         <span v-if="parseInt(item.percentage) > 10">
                             {{ categoryIcon(item.item.identifier) }}
