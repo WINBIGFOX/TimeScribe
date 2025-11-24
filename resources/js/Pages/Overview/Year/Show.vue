@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { PageHeader } from '@/Components/ui-custom/page-header'
 import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
 import { secToFormat } from '@/lib/utils'
@@ -239,24 +240,22 @@ if (window.Native) {
 <template>
     <Head title="Week Overview" />
 
-    <div class="mb-4 flex items-center gap-4">
-        <div class="text-foreground/80 text-base font-medium">{{ $t('app.yearly overview') }}</div>
+    <PageHeader :title="$t('app.yearly overview')">
         <div class="flex flex-1 items-center justify-center text-sm">
             <TimeWheel :date="props.date" route="overview.year.show" type="year" />
         </div>
-        <div>
-            <Button
-                :as="Link"
-                :href="route('overview.year.show', { date: moment().format('YYYY-MM-DD') })"
-                prefetch
-                size="sm"
-                variant="outline"
-            >
-                {{ $t('app.today') }}
-            </Button>
-        </div>
-    </div>
-    <div class="mt-2 mb-6 h-full">
+        <Button
+            :as="Link"
+            :href="route('overview.year.show', { date: moment().format('YYYY-MM-DD') })"
+            prefetch
+            size="sm"
+            variant="outline"
+        >
+            {{ $t('app.today') }}
+        </Button>
+    </PageHeader>
+
+    <div class="h-full">
         <apexchart :options="data.chartOptions" :series="data.series" height="100%" type="bar"></apexchart>
     </div>
 </template>

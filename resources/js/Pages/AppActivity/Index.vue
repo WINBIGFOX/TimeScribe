@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import DateRangePicker from '@/Components/DateRangePicker.vue'
+import { EmptyState } from '@/Components/ui-custom/empty-state'
+import { PageHeader } from '@/Components/ui-custom/page-header'
 import { categoryIcon } from '@/lib/utils'
 import { AppActivityHistory } from '@/types'
 import { Head, router, usePage, usePoll } from '@inertiajs/vue3'
 import { trans } from 'laravel-vue-i18n'
-import { CircleAlert } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 
 const props = defineProps<{
@@ -116,10 +117,9 @@ if (window.Native) {
 
 <template>
     <Head title="App-Activity" />
-    <div class="mb-4 flex h-8 items-center justify-between gap-4">
-        <div class="text-foreground/80 text-base font-medium">{{ $t('app.app activities') }}</div>
+    <PageHeader :title="$t('app.app activities')">
         <DateRangePicker :max="props.maxDate" :min="props.minDate" v-model="dateRange" />
-    </div>
+    </PageHeader>
     <div
         :class="{ 'opacity-50': loading }"
         class="mb-4 flex h-10 shrink-0 gap-10 transition-opacity duration-500"
@@ -209,40 +209,26 @@ if (window.Native) {
             </div>
         </div>
     </div>
-    <div class="mt-32 flex grow justify-center" v-else>
-        <div class="w-2/3" v-if="props.active">
-            <div class="flex items-start space-x-4 py-4">
-                <CircleAlert />
-                <div class="flex-1 space-y-1">
-                    <p class="text-sm leading-none font-medium">
-                        {{ $t('app.no app activity recorded') }}
-                    </p>
-                    <p class="text-muted-foreground text-sm">
-                        {{
-                            $t(
-                                'app.no app activity has been recorded yet. start the working time timer to record the app activity.'
-                            )
-                        }}
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="w-2/3" v-else>
-            <div class="flex items-start space-x-4 py-4">
-                <CircleAlert />
-                <div class="flex-1 space-y-1">
-                    <p class="text-sm leading-none font-medium">
-                        {{ $t('app.app activity is deactivated') }}
-                    </p>
-                    <p class="text-muted-foreground text-sm">
-                        {{
-                            $t(
-                                'app.activity recording is deactivated. Activate "record app activity" in the settings, to record future app activities.'
-                            )
-                        }}
-                    </p>
-                </div>
-            </div>
-        </div>
+    <div class="flex grow items-center justify-center" v-else>
+        <EmptyState
+            v-if="props.active"
+            :title="$t('app.no app activity recorded')"
+            :description="
+                $t(
+                    'app.no app activity has been recorded yet. start the working time timer to record the app activity.'
+                )
+            "
+        />
+        <EmptyState
+            v-else
+            :title="$t('app.app activity is deactivated')"
+            :description="
+                $t(
+                    'app.activity recording is deactivated. Activate \'record app activity\' in the settings, to record future app activities.'
+                )
+            "
+            :action-href="route('settings.general.edit')"
+            :action-label="$t('app.go to settings')"
+        />
     </div>
 </template>

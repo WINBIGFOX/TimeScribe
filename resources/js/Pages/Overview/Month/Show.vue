@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import TimestampTypeBadge from '@/Components/TimestampTypeBadge.vue'
+import { PageHeader } from '@/Components/ui-custom/page-header'
 import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
 import { secToFormat } from '@/lib/utils'
@@ -234,27 +235,24 @@ if (window.Native) {
 
 <template>
     <Head title="Month Overview" />
-    <div class="mb-4 flex items-center gap-4">
-        <div class="text-foreground/80 text-base font-medium">{{ $t('app.monthly overview') }}</div>
+    <PageHeader :title="$t('app.monthly overview')">
         <div class="flex flex-1 items-center justify-center text-sm">
             <TimeWheel :date="props.date" route="overview.month.show" type="month" />
         </div>
-        <div>
-            <Button
-                :as="Link"
-                :href="route('overview.month.show', { date: moment().format('YYYY-MM-DD') })"
-                prefetch
-                size="sm"
-                variant="outline"
-            >
-                {{ $t('app.today') }}
-            </Button>
-        </div>
-    </div>
+        <Button
+            :as="Link"
+            :href="route('overview.month.show', { date: moment().format('YYYY-MM-DD') })"
+            prefetch
+            size="sm"
+            variant="outline"
+        >
+            {{ $t('app.today') }}
+        </Button>
+    </PageHeader>
     <div class="mt-2 mb-6 h-full">
         <apexchart :options="data.chartOptions" :series="data.series" height="100%" type="bar"></apexchart>
     </div>
-    <div class="mb-6 flex gap-2">
+    <div class=" flex gap-2">
         <TimestampTypeBadge :duration="props.sumWorkTime" type="work" />
         <TimestampTypeBadge :duration="props.sumBreakTime" type="break" />
         <TimestampTypeBadge :duration="Math.max(props.sumOvertime, 0)" type="overtime" />

@@ -76,7 +76,7 @@ const durationLabel = secToFormat(props.duration ?? 0, true, true, true)
 
 <template>
     <div :class="badgeColor" class="flex items-center gap-2 rounded-lg px-4 py-2">
-        <Component :is="badgeIcon" class="size-5" />
+        <component :is="badgeIcon" class="size-5" />
 
         <div class="space-y-1">
             <div class="text-xs leading-none">{{ $t(badgeTitle) }}</div>

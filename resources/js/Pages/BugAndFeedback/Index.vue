@@ -30,10 +30,7 @@ const handleDelete = () =>
 
 <template>
     <Head title="Bug and Feedback" />
-    <div class="mb-4 flex h-8 items-center justify-between gap-4">
-        <div class="text-foreground/80 text-base font-medium">{{ $t('app.bugs and feedback') }}</div>
-    </div>
-
+    <PageHeader :title="$t('app.bugs and feedback')" />
     <div class="flex items-start space-x-4 py-4">
         <Bug />
         <div class="flex-1 space-y-1">

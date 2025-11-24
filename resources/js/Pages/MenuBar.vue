@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { EmptyState } from '@/Components/ui-custom/empty-state'
 import { Button } from '@/Components/ui/button'
 import BasicLayout from '@/Layouts/BasicLayout.vue'
 import { secToFormat } from '@/lib/utils'
@@ -342,33 +343,18 @@ const removeProject = () => {
                         </Button>
 
                         <div class="px-2 text-sm" v-if="props.projects.length === 0">
-                            <div
-                                class="bg-muted dark:bg-muted/60 border-border flex flex-col items-center gap-2 rounded-lg border px-2 py-4 text-center"
-                            >
-                                <div>
-                                    <Tag class="size-6" />
-                                </div>
-                                <p class="font-medium">{{ $t('app.no projects created') }}</p>
-                                <p class="text-muted-foreground text-balance">
-                                    {{ $t('app.create a new project to track project times.') }}
-                                </p>
-                                <Button
-                                    :as="Link"
-                                    :href="
-                                        route('window.new-project.open', {
-                                            darkMode: state === 'dark' ? 1 : 0
-                                        })
-                                    "
-                                    class="mt-2"
-                                    preserve-scroll
-                                    preserve-state
-                                    size="sm"
-                                    variant="outline"
-                                >
-                                    <Plus />
-                                    {{ $t('app.create new project') }}
-                                </Button>
-                            </div>
+                            <EmptyState
+                                :action-href="
+                                    route('window.new-project.open', {
+                                        darkMode: state === 'dark' ? 1 : 0
+                                    })
+                                "
+                                :action-label="$t('app.create new project')"
+                                :icon="Tag"
+                                class="h-auto grow p-4 text-sm!"
+                                :title="$t('app.no projects created')"
+                                :description="$t('app.create a new project to track project times.')"
+                            />
                         </div>
                     </div>
                 </div>

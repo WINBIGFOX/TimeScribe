@@ -169,11 +169,7 @@ router.on('navigate', () => {
                                         'absence.vacation-entitlement.edit'
                                     ].includes(current ?? '')
                                 }"
-                                :href="
-                                    route('absence.vacation.index', {
-                                        date: moment(date).format('YYYY-MM-DD')
-                                    })
-                                "
+                                :href="route('absence.vacation.index', { date })"
                                 class="transition-all duration-200"
                                 prefetch
                             >
@@ -187,9 +183,11 @@ router.on('navigate', () => {
                 <SidebarMenuButton as-child>
                     <Link
                         :class="{
-                            'text-primary! font-bold': ['work-schedule.index', 'work-schedule.edit'].includes(
-                                current ?? ''
-                            )
+                            'text-primary! font-bold': [
+                                'work-schedule.index',
+                                'work-schedule.edit',
+                                'work-schedule.create'
+                            ].includes(current ?? '')
                         }"
                         :href="route('work-schedule.index')"
                         class="transition-all duration-200"

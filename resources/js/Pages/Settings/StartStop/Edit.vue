@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { PageHeader } from '@/Components/ui-custom/page-header'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { Switch } from '@/Components/ui/switch'
 import { Head, router, useForm } from '@inertiajs/vue3'
@@ -65,9 +66,7 @@ watch(stopTimeResetCheck, () => {
 
 <template>
     <Head title="Settings - Start/Stop" />
-    <div class="mb-4 flex h-8 items-center justify-between gap-4">
-        <div class="text-foreground/80 text-base font-medium">{{ $t('app.auto start/break') }}</div>
-    </div>
+    <PageHeader :title="$t('app.auto start/break')" />
     <div>
         <div class="flex items-start space-x-4 py-4">
             <LockKeyhole />

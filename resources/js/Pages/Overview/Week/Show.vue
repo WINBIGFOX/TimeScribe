@@ -2,6 +2,7 @@
 import TimestampTypeBadge from '@/Components/TimestampTypeBadge.vue'
 import WeekdayColumn from '@/Components/WeekdayColumn.vue'
 import WorktimeProgressBar from '@/Components/WorktimeProgressBar.vue'
+import { PageHeader } from '@/Components/ui-custom/page-header'
 import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
 import { WeekdayObject } from '@/types'
@@ -74,23 +75,21 @@ if (window.Native) {
 <template>
     <Head title="Week Overview" />
 
-    <div class="mb-4 flex items-center gap-4">
-        <div class="text-foreground/80 text-base font-medium">{{ $t('app.weekly overview') }}</div>
+    <PageHeader :title="$t('app.weekly overview')">
         <div class="flex flex-1 items-center justify-center text-sm">
             <TimeWheel :date="props.date" route="overview.week.show" type="week" />
         </div>
-        <div>
-            <Button
-                :as="Link"
-                :href="route('overview.week.show', { date: moment().format('YYYY-MM-DD') })"
-                prefetch
-                size="sm"
-                variant="outline"
-            >
-                {{ $t('app.today') }}
-            </Button>
-        </div>
-    </div>
+        <Button
+            :as="Link"
+            :href="route('overview.week.show', { date: moment().format('YYYY-MM-DD') })"
+            prefetch
+            size="sm"
+            variant="outline"
+        >
+            {{ $t('app.today') }}
+        </Button>
+    </PageHeader>
+
     <div class="border-border relative mb-6 flex grow gap-8 border-b">
         <div class="flex grow flex-col">
             <div class="flex grow justify-between">
@@ -123,7 +122,7 @@ if (window.Native) {
         </div>
         <div class="border-border absolute inset-x-0 bottom-18 border-t" />
     </div>
-    <div class="mb-6 flex gap-2">
+    <div class="flex gap-2">
         <TimestampTypeBadge :duration="props.weekWorkTime" type="work" />
         <TimestampTypeBadge :duration="props.weekBreakTime" type="break" />
         <TimestampTypeBadge

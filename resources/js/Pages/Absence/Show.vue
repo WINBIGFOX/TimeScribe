@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { PageHeader } from '@/Components/ui-custom/page-header'
 import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
 import { Absence, Date } from '@/types'
@@ -107,24 +108,21 @@ const removeHoliday = (date: string) => {
 
 <template>
     <Head title="Absence" />
-    <div class="mb-4 flex items-center gap-4">
-        <div class="text-foreground/80 text-base font-medium">{{ $t('app.absences') }}</div>
+    <PageHeader :title="$t('app.absences')">
         <div class="flex flex-1 items-center justify-center text-sm">
             <TimeWheel :date="props.date" route="absence.show" type="month" />
         </div>
-        <div>
-            <Button
-                :as="Link"
-                :href="route('absence.show', { date: moment().format('YYYY-MM-DD') })"
-                prefetch
-                size="sm"
-                variant="outline"
-            >
-                {{ $t('app.today') }}
-            </Button>
-        </div>
-    </div>
-    <div class="mb-6 flex grow flex-col divide-y overflow-clip rounded-lg select-none" ref="el">
+        <Button
+            :as="Link"
+            :href="route('absence.show', { date: moment().format('YYYY-MM-DD') })"
+            prefetch
+            size="sm"
+            variant="outline"
+        >
+            {{ $t('app.today') }}
+        </Button>
+    </PageHeader>
+    <div class="flex grow flex-col divide-y overflow-clip rounded-lg select-none" ref="el">
         <div class="grid h-8 grid-cols-7">
             <div :key="day" class="px-2" v-for="day in 7">
                 {{

@@ -2,13 +2,12 @@
 import { Button } from '@/Components/ui/button'
 import { Head, Link } from '@inertiajs/vue3'
 import { FileChartPie, FileType, FolderInput, FolderOutput } from 'lucide-vue-next'
+import { PageHeader } from '@/Components/ui-custom/page-header'
 </script>
 
 <template>
     <Head title="Import/Export" />
-    <div class="mb-4 flex h-8 items-center justify-between gap-4">
-        <div class="text-foreground/80 text-base font-medium">{{ $t('app.import / export') }}</div>
-    </div>
+    <PageHeader :title="$t('app.import / export')" />
     <div class="mt-4 flex items-start space-x-4">
         <FolderInput />
         <div class="flex-1 space-y-1">

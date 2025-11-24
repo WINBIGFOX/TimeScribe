@@ -4,6 +4,7 @@ import Timeline from '@/Components/Timeline.vue'
 import TimestampListItem from '@/Components/TimestampListItem.vue'
 import TimestampListPlaceholderItem from '@/Components/TimestampListPlaceholderItem.vue'
 import TimestampTypeBadge from '@/Components/TimestampTypeBadge.vue'
+import { PageHeader } from '@/Components/ui-custom/page-header'
 import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
 import { Absence, Timestamp } from '@/types'
@@ -43,24 +44,21 @@ if (window.Native) {
 
 <template>
     <Head title="Day Overview" />
-    <div class="mb-4 flex items-center gap-4">
-        <div class="text-foreground/80 text-base font-medium">{{ $t('app.daily overview') }}</div>
+    <PageHeader :title="$t('app.daily overview')">
         <div class="flex flex-1 items-center justify-center text-sm">
             <TimeWheel :date="props.date" route="overview.day.show" type="day" />
         </div>
-        <div>
-            <Button
-                :as="Link"
-                :href="route('overview.day.show', { date: moment().format('YYYY-MM-DD') })"
-                class="z-20"
-                prefetch
-                size="sm"
-                variant="outline"
-            >
-                {{ $t('app.today') }}
-            </Button>
-        </div>
-    </div>
+        <Button
+            :as="Link"
+            :href="route('overview.day.show', { date: moment().format('YYYY-MM-DD') })"
+            class="z-20"
+            prefetch
+            size="sm"
+            variant="outline"
+        >
+            {{ $t('app.today') }}
+        </Button>
+    </PageHeader>
     <div class="flex grow flex-col overflow-hidden">
         <Timeline
             :date="props.date"
@@ -86,7 +84,7 @@ if (window.Native) {
             />
             <TimestampTypeBadge :duration="(props.dayPlan ?? 0) * 60 * 60" type="plan" />
         </div>
-        <div class="grow space-y-1 overflow-y-auto pb-4" scroll-region v-if="!isFuture">
+        <div class="grow space-y-1 overflow-y-auto" scroll-region v-if="!isFuture">
             <TimestampListPlaceholderItem
                 :start-of-day="startOfDay"
                 v-if="props.timestamps.length === 0 || props.timestamps[0].started_at.date !== startOfDay"

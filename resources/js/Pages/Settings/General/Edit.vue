@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { PageHeader } from '@/Components/ui-custom/page-header'
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { Switch } from '@/Components/ui/switch'
 import { Enum } from '@/types'
@@ -64,9 +65,7 @@ watch(holidayCheck, () => {
 
 <template>
     <Head title="Settings - General" />
-    <div class="mb-4 flex h-8 items-center justify-between gap-4">
-        <div class="text-foreground/80 text-base font-medium">{{ $t('app.general settings') }}</div>
-    </div>
+    <PageHeader :title="$t('app.general settings')"/>
     <div>
         <div class="flex items-center space-x-4 py-4">
             <KeyRound />

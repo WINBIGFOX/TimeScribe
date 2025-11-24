@@ -12,6 +12,7 @@ import { Head, router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
 import { RedoDot, CalendarSync, CircleDivide, Timer } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
+import { PageHeader } from '@/Components/ui-custom/page-header'
 
 const props = defineProps<{
     defaultEntitlementDays: number
@@ -68,9 +69,7 @@ watch(
 
 <template>
     <Head title="Settings - Vacation" />
-    <div class="mb-4 flex h-8 items-center justify-between gap-4">
-        <div class="text-foreground/80 text-base font-medium">{{ $t('app.vacation settings') }}</div>
-    </div>
+    <PageHeader :title="$t('app.vacation settings')"/>
     <div>
         <div class="flex items-start space-x-4 py-4">
             <CalendarSync />
