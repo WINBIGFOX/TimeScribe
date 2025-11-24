@@ -48,6 +48,7 @@
         "lucide-vue-next": "latest",
         "moment": "^2.30",
         "moment-timezone": "^0.6",
+        "playwright": "^1.56.1",
         "reka-ui": "^2.6",
         "tailwind-merge": "^3.4",
         "tailwindcss-animate": "^1.0",
