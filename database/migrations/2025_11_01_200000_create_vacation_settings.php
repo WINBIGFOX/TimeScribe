@@ -11,7 +11,7 @@ return new class extends SettingsMigration
         $this->migrator->add('vacation.default_entitlement_days', 30.0);
         $this->migrator->add('vacation.prorate_consumption', true);
         $this->migrator->add('vacation.proration_step', 0.5);
-        $this->migrator->add('vacation.auto_carryover', false);
+        $this->migrator->add('vacation.auto_carryover', true);
     }
 
     public function down(): void
