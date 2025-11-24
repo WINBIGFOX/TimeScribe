@@ -1,0 +1,18 @@
+--- a/src/Playwright/Page.php
++++ b/src/Playwright/Page.php
+@@
+-        return [
+-            'type' => 'png',
+-            'fullPage' => $fullPage,
+-            'caret' => 'hide',
+-            'animations' => 'disabled',
+-            'scale' => 'css',
+-        ];
++        return [
++            'type' => 'png',
++            'fullPage' => $fullPage,
++            'caret' => 'hide',
++            'animations' => 'disabled',
++            'scale' => 'device',
++        ];
+    }
