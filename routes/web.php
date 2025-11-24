@@ -27,13 +27,25 @@ use App\Http\Controllers\VacationEntitlementController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\WindowController;
 use App\Http\Controllers\WorkScheduleController;
+use App\Settings\GeneralSettings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Native\Desktop\Facades\App;
 use Native\Desktop\Support\Environment;
 
-Route::get('/', fn (): Redirector|RedirectResponse => to_route('overview.week.index'))->name('home');
+Route::get('/', function (GeneralSettings $settings): Redirector|RedirectResponse {
+    $target = $settings->default_overview ?? 'week';
+
+    $route = match ($target) {
+        'day' => 'overview.day.index',
+        'month' => 'overview.month.index',
+        'year' => 'overview.year.index',
+        default => 'overview.week.index',
+    };
+
+    return to_route($route);
+})->name('home');
 
 Route::name('overview.')->prefix('overview')->group(function (): void {
     Route::resource('day', DayController::class)->only(['index', 'show'])->parameter('day', 'date');

@@ -4,7 +4,7 @@ import { Switch } from '@/Components/ui/switch'
 import { Enum } from '@/types'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
-import { AppWindowMac, CalendarMinus, Eye, Globe, KeyRound, Languages, SunMoon } from 'lucide-vue-next'
+import { AppWindowMac, CalendarMinus, Eye, Globe, KeyRound, Languages, PanelsTopLeft, SunMoon } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
 
 const props = defineProps<{
@@ -17,6 +17,7 @@ const props = defineProps<{
     appActivityTracking?: boolean
     timezones?: string[]
     timezone: string
+    defaultOverview: string
 }>()
 
 const form = useForm({
@@ -26,7 +27,8 @@ const form = useForm({
     holidayRegion: props.holidayRegion ?? '',
     locale: props.locale,
     appActivityTracking: props.appActivityTracking ?? false,
-    timezone: props.timezone
+    timezone: props.timezone,
+    default_overview: props.defaultOverview ?? 'week'
 })
 
 const submit = () => {
@@ -47,7 +49,8 @@ watch(
         form.showTimerOnUnlock,
         form.holidayRegion,
         form.appActivityTracking,
-        form.timezone
+        form.timezone,
+        form.default_overview
     ],
     debouncedSubmit,
     { deep: true }
@@ -150,6 +153,33 @@ watch(holidayCheck, () => {
                         </SelectItem>
                         <SelectItem value="dark">
                             {{ $t('app.dark') }}
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
+        </div>
+        <div class="flex items-start space-x-4 py-4">
+            <PanelsTopLeft />
+            <div class="flex flex-1 items-center gap-4 space-y-1">
+                <p class="flex-1 text-sm leading-none font-medium">
+                    {{ $t('app.default overview') }}
+                </p>
+                <Select size="5" v-model="form.default_overview">
+                    <SelectTrigger class="w-1/2">
+                        <SelectValue :placeholder="$t('app.default overview')" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="day">
+                            {{ $t('app.daily overview') }}
+                        </SelectItem>
+                        <SelectItem value="week">
+                            {{ $t('app.weekly overview') }}
+                        </SelectItem>
+                        <SelectItem value="month">
+                            {{ $t('app.monthly overview') }}
+                        </SelectItem>
+                        <SelectItem value="year">
+                            {{ $t('app.yearly overview') }}
                         </SelectItem>
                     </SelectContent>
                 </Select>

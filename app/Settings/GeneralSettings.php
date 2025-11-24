@@ -32,6 +32,8 @@ class GeneralSettings extends Settings
 
     public string $theme;
 
+    public string $default_overview = 'week';
+
     public static function group(): string
     {
         return 'general';

@@ -34,6 +34,7 @@ class UpdateGeneralSettingsRequest extends FormRequest
             'locale' => ['required', 'string', 'regex:/^[a-z]{2}_[A-Z]{2}$/'],
             'appActivityTracking' => ['required', 'boolean'],
             'timezone' => ['required', 'string', 'timezone'],
+            'default_overview' => ['required', Rule::in(['day', 'week', 'month', 'year'])],
         ];
     }
 }
