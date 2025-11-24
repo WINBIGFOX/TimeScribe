@@ -9,6 +9,7 @@ use App\Http\Requests\DestroyVacationRequest;
 use App\Http\Resources\VacationAbsenceResource;
 use App\Models\Absence;
 use App\Models\VacationEntitlement;
+use App\Models\WorkSchedule;
 use App\Services\VacationContextService;
 use App\Settings\VacationSettings;
 use Illuminate\Http\RedirectResponse;
@@ -41,6 +42,7 @@ class VacationController extends Controller
         $context = $vacationContextService->yearContext($selectedYear, $overrides, $minYear, $vacations, Date::now());
 
         $override = $overrides->get($selectedYear);
+        $hasWorkSchedule = WorkSchedule::exists();
 
         return Inertia::render('Absence/Vacation/Index', [
             'date' => $referenceDate->format('d.m.Y'),
@@ -60,6 +62,7 @@ class VacationController extends Controller
             ],
             'entries' => VacationAbsenceResource::collection($context['vacations']),
             'availableYears' => $availableYears,
+            'hasWorkSchedule' => $hasWorkSchedule,
         ]);
     }
 

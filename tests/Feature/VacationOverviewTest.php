@@ -132,3 +132,48 @@ it('updates vacation settings', function (): void {
     expect($settings->auto_carryover)->toBeTrue();
     expect($settings->minimum_day_hours)->toBe(6.5);
 });
+
+it('allows negative remaining days and carries them over automatically', function (): void {
+    Date::setTestNow(Date::create(2025, 1, 15));
+
+    $settings = app(VacationSettings::class);
+    $settings->auto_carryover = true;
+    $settings->save();
+
+    WorkSchedule::create([
+        'valid_from' => Date::create(2024, 1, 1),
+        'sunday' => 0,
+        'monday' => 8,
+        'tuesday' => 8,
+        'wednesday' => 8,
+        'thursday' => 8,
+        'friday' => 8,
+        'saturday' => 0,
+    ]);
+
+    VacationEntitlement::create([
+        'year' => 2024,
+        'days' => 10,
+    ]);
+
+    foreach ([1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 15, 16] as $day) {
+        Absence::create([
+            'type' => AbsenceTypeEnum::VACATION,
+            'date' => Date::create(2024, 1, $day),
+            'duration' => null,
+        ]);
+    }
+
+    $this->get(route('absence.vacation.index', ['date' => '2024-01-01']))
+        ->assertInertia(fn (Assert $page): Assert => $page
+            ->where('summary.totalEntitlement', 10)
+            ->where('summary.remaining', -2)
+        );
+
+    $this->get(route('absence.vacation.index', ['date' => '2025-01-01']))
+        ->assertInertia(fn (Assert $page): Assert => $page
+            ->where('summary.totalEntitlement', 28)
+            ->where('summary.remaining', 28)
+            ->where('entitlement.autoCarryover', true)
+        );
+});

@@ -96,7 +96,7 @@ class VacationContextService
         $summary = VacationService::summarize($vacations, $referenceDate, $this->settings);
 
         $totalEntitlement = round($days + $carryover, 2);
-        $remaining = round(max(0.0, $totalEntitlement - $summary['total']), 2);
+        $remaining = round($totalEntitlement - $summary['total'], 2);
 
         return $this->yearContextCache[$year] = [
             'days' => $days,
