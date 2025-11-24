@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Native\Desktop\Support\Environment;
 use Spatie\DbDumper\Databases\Sqlite;
+use ZipArchive;
 
 class BackupService
 {
@@ -20,6 +21,10 @@ class BackupService
     private const string BACKUP_FILE_EXTENSION = 'bak';
 
     private const string SQL_FILENAME = 'database.sql';
+
+    private const string MANIFEST_FILENAME = 'manifest.json';
+
+    private const int BACKUP_VERSION = 1;
 
     private const array STORAGE_FILES_OR_FOLDERS_TO_BACKUP = [
         'app_icons',
@@ -35,6 +40,7 @@ class BackupService
         $this->prepareBackup();
         $this->makeDbDump();
         $this->addDropTableStatements();
+        $this->createManifest();
         $backupPath = $this->zipBackup($path);
         $this->cleanup();
 
@@ -50,6 +56,7 @@ class BackupService
     {
         File::ensureDirectoryExists(storage_path(self::TEMP_BACKUP_PATH));
         File::delete(storage_path(self::TEMP_BACKUP_PATH.'/'.self::SQL_FILENAME));
+        File::delete(storage_path(self::TEMP_BACKUP_PATH.'/'.self::MANIFEST_FILENAME));
     }
 
     private function cleanup(): void
@@ -78,6 +85,10 @@ class BackupService
         $in = fopen($inputFile, 'r');
         $out = fopen($tempFile, 'w');
 
+        if (! $in || ! $out) {
+            throw new \Exception(__('app.backup could not be created.'));
+        }
+
         $tables = DB::select("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'");
 
         $dropStatements = '';
@@ -85,11 +96,11 @@ class BackupService
             $dropStatements .= 'DROP TABLE IF EXISTS "'.$table->name.'";'.PHP_EOL;
         }
 
-        if (! $in || ! $out) {
-            throw new \Exception(__('app.backup could not be created.'));
-        }
-
         while (($line = fgets($in)) !== false) {
+            if (str_starts_with(trim($line), 'INSERT INTO failed_jobs')) {
+                continue;
+            }
+
             fwrite($out, $line);
 
             if (trim($line) === 'BEGIN TRANSACTION;') {
@@ -100,51 +111,130 @@ class BackupService
         fclose($in);
         fclose($out);
 
-        rename($tempFile, $inputFile);
+        if (! rename($tempFile, $inputFile)) {
+            throw new \Exception(__('app.backup could not be created.'));
+        }
     }
 
-    private function zipBackup(string $path): string
+    private function createManifest(): void
     {
-        $zip = new \ZipArchive;
-        if ($zip->open($path.'/'.$this->backupFileName.'.'.self::BACKUP_FILE_EXTENSION, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
-            foreach ([...self::STORAGE_FILES_OR_FOLDERS_TO_BACKUP, self::TEMP_BACKUP_PATH] as $fileOrFolder) {
-                $path = $fileOrFolder;
-                if (is_dir(storage_path($path))) {
-                    $files = File::allFiles(storage_path($path));
-                    foreach ($files as $file) {
-                        $zip->addFile($file->getRealPath(), $path.'/'.$file->getRelativePathname());
-                    }
-                } elseif (is_file(storage_path($path))) {
-                    $zip->addFile(storage_path($path), $path);
-                }
+        $manifest = [
+            'backup_version' => self::BACKUP_VERSION,
+            'app_version' => config('nativephp.version'),
+            'created_at' => now()->toIso8601String(),
+            'files' => $this->manifestFiles(),
+        ];
+
+        File::put(
+            storage_path(self::TEMP_BACKUP_PATH.'/'.self::MANIFEST_FILENAME),
+            json_encode($manifest, JSON_PRETTY_PRINT)
+        );
+    }
+
+    private function manifestFiles(): array
+    {
+        $files = [];
+
+        foreach ($this->filesToBackup() as $relativePath) {
+            $absolutePath = storage_path($relativePath);
+
+            if (! File::isFile($absolutePath)) {
+                continue;
             }
-        } else {
+
+            $files[$relativePath] = [
+                'sha256' => hash_file('sha256', $absolutePath),
+                'size' => File::size($absolutePath),
+            ];
+        }
+
+        return $files;
+    }
+
+    private function filesToBackup(): array
+    {
+        $files = [];
+
+        $sqlPath = self::TEMP_BACKUP_PATH.'/'.self::SQL_FILENAME;
+
+        if (File::isFile(storage_path($sqlPath))) {
+            $files[] = $sqlPath;
+        }
+
+        foreach (self::STORAGE_FILES_OR_FOLDERS_TO_BACKUP as $fileOrFolder) {
+            if (File::isDirectory(storage_path($fileOrFolder))) {
+                $storageFiles = File::allFiles(storage_path($fileOrFolder));
+
+                foreach ($storageFiles as $file) {
+                    $files[] = $fileOrFolder.'/'.$file->getRelativePathname();
+                }
+            } elseif (File::isFile(storage_path($fileOrFolder))) {
+                $files[] = $fileOrFolder;
+            }
+        }
+
+        $manifestPath = self::TEMP_BACKUP_PATH.'/'.self::MANIFEST_FILENAME;
+
+        if (File::isFile(storage_path($manifestPath))) {
+            $files[] = $manifestPath;
+        }
+
+        return $files;
+    }
+
+    private function zipBackup(string $destination): string
+    {
+        $zip = new ZipArchive;
+        $backupFilePath = $destination.'/'.$this->backupFileName.'.'.self::BACKUP_FILE_EXTENSION;
+
+        if ($zip->open($backupFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
             throw new \Exception(__('app.backup could not be created.'));
         }
 
-        $zip->close();
+        foreach ($this->filesToBackup() as $relativePath) {
+            $absolutePath = storage_path($relativePath);
 
-        return $path.'/'.$this->backupFileName.'.'.self::BACKUP_FILE_EXTENSION;
+            if (! $zip->addFile($absolutePath, $relativePath)) {
+                $zip->close();
+
+                throw new \Exception(__('app.backup could not be created.'));
+            }
+        }
+
+        if (! $zip->close()) {
+            throw new \Exception(__('app.backup could not be created.'));
+        }
+
+        return $backupFilePath;
     }
 
     public function restore(string $path): void
     {
-        if (! file_exists($path)) {
+        if (! is_file($path) || pathinfo($path, PATHINFO_EXTENSION) !== self::BACKUP_FILE_EXTENSION) {
             throw new \Exception(__('app.restore failed.'));
         }
-        if (pathinfo($path, PATHINFO_EXTENSION) === 'bak') {
-            $this->restoreFiles($path);
-            $this->restoreDatabase();
-            $this->cleanup();
-        } else {
-            $this->restoreOldBackup($path);
+
+        $manifest = $this->readManifest($path);
+
+        if ($manifest !== null) {
+            $this->assertAppVersionIsCompatible($manifest);
         }
+
+        $this->restoreFiles($path);
+        if ($manifest !== null) {
+            $this->assertChecksums($manifest);
+        }
+        if ($manifest === null) {
+            $this->sanitizeLegacySqlFile();
+        }
+        $this->restoreDatabase();
+        $this->cleanup();
         Cache::flush();
     }
 
     private function restoreFiles(string $path): void
     {
-        $zip = new \ZipArchive;
+        $zip = new ZipArchive;
         if ($zip->open($path) === true) {
             $zip->extractTo(storage_path());
             $zip->close();
@@ -161,36 +251,164 @@ class BackupService
             throw new \Exception(__('app.restore failed.'));
         }
 
-        DB::unprepared(file_get_contents($databaseSqlPath));
+        static::dropExistingTablesAndViews();
+        $this->executeSqlDump($databaseSqlPath);
+        $this->truncateFailedJobs();
         Artisan::call('migrate', ['--force' => true]);
         Artisan::call('native:migrate', ['--force' => true]);
         Artisan::call('db:optimize');
     }
 
-    private function restoreOldBackup(string $path): void
+    public static function dropExistingTablesAndViews(): void
     {
-        $zip = new \ZipArchive;
+        DB::statement('PRAGMA foreign_keys = OFF;');
 
-        if ($zip->open($path) === true) {
-            $nbFile = $zip->numFiles;
-            for ($i = 0; $i < $nbFile; $i++) {
-                if ($zip->getNameIndex($i) === 'database.sqlite') {
-                    \DB::disconnect();
-                    \DB::purge();
-                    File::delete(storage_path('../database/database.sqlite-shm'));
-                    File::delete(storage_path('../database/database.sqlite-wal'));
-                    $zip->extractTo(storage_path('../database/'), ['database.sqlite']);
-                    Artisan::call('migrate', ['--force' => true]);
-                    Artisan::call('native:migrate', ['--force' => true]);
-                    Artisan::call('db:optimize');
-                    \DB::reconnect();
-                } elseif (str_contains($zip->getNameIndex($i), 'app_icons/') || str_contains($zip->getNameIndex($i), 'logs/')) {
-                    $zip->extractTo(storage_path(), [$zip->getNameIndex($i)]);
-                }
-            }
-            $zip->close();
-        } else {
+        $structures = DB::select("SELECT name, type FROM sqlite_master WHERE type IN ('table','view') AND name NOT LIKE 'sqlite_%'");
+
+        foreach ($structures as $structure) {
+            $dropStatement = $structure->type === 'view'
+                ? 'DROP VIEW IF EXISTS "'.$structure->name.'";'
+                : 'DROP TABLE IF EXISTS "'.$structure->name.'";';
+
+            DB::statement($dropStatement);
+        }
+
+        DB::statement('PRAGMA foreign_keys = ON;');
+    }
+
+    private function truncateFailedJobs(): void
+    {
+        if (! DB::getSchemaBuilder()->hasTable('failed_jobs')) {
+            return;
+        }
+
+        DB::table('failed_jobs')->truncate();
+    }
+
+    private function sanitizeLegacySqlFile(): void
+    {
+        $inputFile = storage_path(self::TEMP_BACKUP_PATH.'/'.self::SQL_FILENAME);
+        $tempFile = storage_path(self::TEMP_BACKUP_PATH.'/temp.sql');
+
+        $in = fopen($inputFile, 'r');
+        $out = fopen($tempFile, 'w');
+
+        if (! $in || ! $out) {
             throw new \Exception(__('app.restore failed.'));
+        }
+
+        while (($line = fgets($in)) !== false) {
+            if (str_starts_with(trim($line), 'INSERT INTO "failed_jobs"')) {
+                continue;
+            }
+
+            fwrite($out, $line);
+        }
+
+        fclose($in);
+        fclose($out);
+
+        if (! rename($tempFile, $inputFile)) {
+            throw new \Exception(__('app.restore failed.'));
+        }
+    }
+
+    private function executeSqlDump(string $path): void
+    {
+        $handle = fopen($path, 'r');
+
+        if (! $handle) {
+            throw new \Exception(__('app.restore failed.'));
+        }
+
+        $buffer = '';
+
+        while (($line = fgets($handle)) !== false) {
+            if (str_starts_with(trim($line), 'INSERT INTO failed_jobs')) {
+                continue;
+            }
+
+            $buffer .= $line;
+
+            while (($position = strpos($buffer, ';')) !== false) {
+                $statement = trim(substr($buffer, 0, $position + 1));
+                $buffer = substr($buffer, $position + 1);
+
+                if ($statement === '') {
+                    continue;
+                }
+
+                DB::unprepared($statement);
+            }
+        }
+
+        fclose($handle);
+    }
+
+    private function readManifest(string $path): ?array
+    {
+        $zip = new ZipArchive;
+
+        if ($zip->open($path) !== true) {
+            throw new \Exception(__('app.restore failed.'));
+        }
+
+        $manifestContent = $zip->getFromName(self::TEMP_BACKUP_PATH.'/'.self::MANIFEST_FILENAME);
+        $zip->close();
+
+        if ($manifestContent === false) {
+            return null;
+        }
+
+        $manifest = json_decode($manifestContent, true);
+
+        if (! is_array($manifest)) {
+            throw new \Exception(__('app.restore failed.'));
+        }
+
+        if (! array_key_exists('app_version', $manifest)) {
+            return null;
+        }
+
+        return $manifest;
+    }
+
+    private function assertAppVersionIsCompatible(array $manifest): void
+    {
+        $backupAppVersion = $manifest['app_version'] ?? null;
+        $currentAppVersion = (string) config('nativephp.version');
+
+        if (! is_string($backupAppVersion)) {
+            throw new \Exception(__('app.restore failed.'));
+        }
+
+        if (version_compare($backupAppVersion, $currentAppVersion, '>')) {
+            throw new \Exception(__('app.restore failed.'));
+        }
+    }
+
+    private function assertChecksums(array $manifest): void
+    {
+        if (! isset($manifest['files']) || ! is_array($manifest['files'])) {
+            return;
+        }
+
+        foreach ($manifest['files'] as $relativePath => $metadata) {
+            $absolutePath = storage_path($relativePath);
+
+            if (! File::isFile($absolutePath)) {
+                throw new \Exception(__('app.restore failed.'));
+            }
+
+            if (! isset($metadata['sha256'])) {
+                continue;
+            }
+
+            $hash = hash_file('sha256', $absolutePath);
+
+            if ($hash !== $metadata['sha256']) {
+                throw new \Exception(__('app.restore failed.'));
+            }
         }
     }
 }

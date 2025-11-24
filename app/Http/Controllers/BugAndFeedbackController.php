@@ -72,7 +72,7 @@ class BugAndFeedbackController extends Controller
     public function import()
     {
         $backupFilePath = Dialog::new()->asSheet()
-            ->filter('TimeScribe Backup', ['bac', 'bak'])
+            ->filter('TimeScribe Backup', ['bak'])
             ->files()
             ->button(__('app.restoring'))
             ->open();
