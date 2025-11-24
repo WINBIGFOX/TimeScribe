@@ -2,17 +2,37 @@
 import Finish from '@/Pages/Welcome/Finish.vue'
 import Start from '@/Pages/Welcome/Start.vue'
 import Step1 from '@/Pages/Welcome/Step1.vue'
+import Step2 from '@/Pages/Welcome/Step2.vue'
+import StepIntent from '@/Pages/Welcome/StepIntent.vue'
+import StepVacationToggle from '@/Pages/Welcome/StepVacationToggle.vue'
 import { Head } from '@inertiajs/vue3'
 import { useColorMode } from '@vueuse/core'
-import { ref } from 'vue'
+import { type Component, computed, ref, watch } from 'vue'
 
 const currentStep = ref(0)
-const steps = [Start, Step1, Finish]
+const mode = ref<'fixed' | 'flexible'>('fixed')
+const trackVacation = ref(true)
+
+const steps = computed(() => {
+    const items = [Start, StepIntent] as Component[]
+
+    if (mode.value === 'fixed') {
+        items.push(StepVacationToggle, Step1)
+
+        if (trackVacation.value) {
+            items.push(Step2)
+        }
+    }
+
+    items.push(Finish)
+
+    return items
+})
 
 const fadeAnimation = ref('fade-forward')
 const nextStep = () => {
     fadeAnimation.value = 'fade-forward'
-    if (currentStep.value === steps.length - 1) {
+    if (currentStep.value === steps.value.length - 1) {
         return
     }
     currentStep.value++
@@ -25,6 +45,25 @@ const prevStep = () => {
     }
     currentStep.value--
 }
+
+watch(
+    steps,
+    (list) => {
+        if (currentStep.value > list.length - 1) {
+            currentStep.value = list.length - 1
+        }
+    },
+    { immediate: true }
+)
+
+watch(
+    () => mode.value,
+    (value) => {
+        if (value === 'flexible') {
+            trackVacation.value = false
+        }
+    }
+)
 useColorMode()
 </script>
 
@@ -38,7 +77,14 @@ useColorMode()
         class="bg-primary dark:bg-sidebar text-primary-foreground absolute inset-0 flex items-center justify-center duration-1000 select-none"
     >
         <Transition :name="fadeAnimation" mode="out-in">
-            <component :is="steps[currentStep]" @nextStep="nextStep" @prevStep="prevStep" v-bind="$page.props" />
+            <component
+                :is="steps[currentStep]"
+                @nextStep="nextStep"
+                @prevStep="prevStep"
+                @update:mode="mode = $event"
+                @update:trackVacation="trackVacation = $event"
+                v-bind="{ ...$page.props, mode, trackVacation }"
+            />
         </Transition>
     </div>
 </template>

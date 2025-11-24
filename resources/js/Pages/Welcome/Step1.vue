@@ -1,4 +1,12 @@
 <script lang="ts" setup>
+import {
+    AlertDialog,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle
+} from '@/Components/ui/alert-dialog'
 import { Button } from '@/Components/ui/button'
 import WorkdayTimeInput from '@/Components/WorkdayTimeInput.vue'
 import { weekdayTranslate } from '@/lib/utils'
@@ -6,7 +14,7 @@ import { router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
 import { ArrowRight, CalendarClock } from 'lucide-vue-next'
 import moment from 'moment/min/moment-with-locales'
-import { computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const props = defineProps<{
     workSchedule?: {
@@ -18,6 +26,11 @@ const props = defineProps<{
         friday?: number
         saturday?: number
     }
+    vacationSettings: {
+        minimum_day_hours: number
+    }
+    mode?: 'fixed' | 'flexible'
+    trackVacation?: boolean
 }>()
 
 const form = useForm({
@@ -40,7 +53,7 @@ const submit = () => {
     })
 }
 const debouncedSubmit = useDebounceFn(submit, 500)
-watch(form, debouncedSubmit)
+watch(() => form.workSchedule, debouncedSubmit, { deep: true })
 
 const weekWorkTime = computed(() => {
     return (
