@@ -7,10 +7,12 @@ namespace App\Providers;
 use App\Models\Timestamp;
 use App\Models\WorkSchedule;
 use App\Services\LocaleService;
+use App\Services\ShortcutService;
 use App\Services\TrayIconService;
 use App\Services\WindowService;
 use App\Settings\FlyTimerSettings;
 use App\Settings\GeneralSettings;
+use App\Settings\ShortcutSettings;
 use Native\Desktop\Contracts\ProvidesPhpIni;
 use Native\Desktop\Enums\SystemThemesEnum;
 use Native\Desktop\Facades\Menu;
@@ -76,6 +78,10 @@ class NativeAppServiceProvider implements ProvidesPhpIni
                 WindowService::openFlyTimer();
             }
         }
+
+        $shortcutService = app(ShortcutService::class);
+        $shortcutSettings = app(ShortcutSettings::class);
+        $shortcutService->refresh($shortcutSettings);
 
         Menu::create(
             Menu::app(),

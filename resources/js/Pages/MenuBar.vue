@@ -6,7 +6,7 @@ import { secToFormat } from '@/lib/utils'
 import { ActivityHistory, Project } from '@/types'
 import { Head, Link, router, usePoll } from '@inertiajs/vue3'
 import { useColorMode } from '@vueuse/core'
-import { ChartPie, Coffee, Cog, PictureInPicture, Play, Plus, Sparkles, Square, Tag, X } from 'lucide-vue-next'
+import { ChartColumnBig, Coffee, Cog, PictureInPicture, Play, Plus, Sparkles, Square, Tag, X } from 'lucide-vue-next'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 defineOptions({
@@ -375,7 +375,7 @@ const removeProject = () => {
                     size="sm"
                     variant="outline"
                 >
-                    <ChartPie />
+                    <ChartColumnBig />
                     {{ $t('app.overview') }}
                 </Button>
                 <Button

@@ -6,6 +6,7 @@ use App\Settings\AutoUpdaterSettings;
 use App\Settings\FlyTimerSettings;
 use App\Settings\GeneralSettings;
 use App\Settings\ProjectSettings;
+use App\Settings\ShortcutSettings;
 use App\Settings\VacationSettings;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelSettings\SettingsCasts\DataCast;
@@ -26,6 +27,7 @@ return [
         ProjectSettings::class,
         FlyTimerSettings::class,
         VacationSettings::class,
+        ShortcutSettings::class,
     ],
 
     /*

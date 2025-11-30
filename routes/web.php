@@ -18,6 +18,7 @@ use App\Http\Controllers\Overview\WeekController;
 use App\Http\Controllers\Overview\YearController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\Settings\GeneralController;
+use App\Http\Controllers\Settings\ShortcutController;
 use App\Http\Controllers\Settings\StartStopController;
 use App\Http\Controllers\Settings\VacationController as SettingsVacationController;
 use App\Http\Controllers\TimestampController;
@@ -95,6 +96,10 @@ Route::name('settings.')->prefix('settings')->group(function (): void {
     Route::name('start-stop.')->prefix('start-stop')->group(function (): void {
         Route::get('edit', new StartStopController()->edit(...))->name('edit');
         Route::patch('', new StartStopController()->update(...))->name('update');
+    });
+    Route::name('shortcuts.')->prefix('shortcuts')->group(function (): void {
+        Route::get('edit', new ShortcutController()->edit(...))->name('edit');
+        Route::patch('', new ShortcutController()->update(...))->name('update');
     });
     Route::name('vacation.')->prefix('vacation')->group(function (): void {
         Route::get('edit', new SettingsVacationController()->edit(...))->name('edit');

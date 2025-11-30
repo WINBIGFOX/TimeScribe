@@ -272,6 +272,20 @@ router.on('navigate', () => {
                             </Link>
                         </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
+                    <SidebarMenuSubItem>
+                        <SidebarMenuSubButton as-child>
+                            <Link
+                                :class="{
+                                    'text-primary! font-bold': current === 'settings.shortcuts.edit'
+                                }"
+                                :href="route('settings.shortcuts.edit')"
+                                class="transition-[color,background-color,font-weight] duration-200"
+                                prefetch
+                            >
+                                {{ $t('app.shortcuts') }}
+                            </Link>
+                        </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
                 </SidebarMenuSub>
             </SidebarMenuItem>
         </SidebarMenu>
