@@ -53,6 +53,7 @@ remote, hybrid, or office-based, TimeScribe helps you stay focused and organized
 - ⚙️ Auto start/pause based on screen time and idle status
 - 💾 Export as CSV and Excel: Easily export your time tracking data for further analysis or reporting.
 - 🪟 Supports macOS & Windows
+- ⌨️ Custom keyboard shortcuts
 - 🔒 100% Local: No cloud, no registration, no paywall
 - 🔄 Auto Updates: Always up-to-date
 
