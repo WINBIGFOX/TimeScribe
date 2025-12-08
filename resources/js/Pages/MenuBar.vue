@@ -53,7 +53,7 @@ const reload = () => {
 if (window.Native) {
     window.Native.on('App\\Events\\TimerStarted', reload)
     window.Native.on('App\\Events\\TimerStopped', reload)
-    window.Native.on('Native\\Laravel\\Events\\MenuBar\\MenuBarShown', () => {
+    window.Native.on('Native\\Desktop\\Events\\MenuBar\\MenuBarShown', () => {
         openProjectList.value = false
         router.reload()
     })
