@@ -357,8 +357,6 @@ const clearShortcut = () => {
     modelValue.value = undefined
 }
 
-const placeholderText = computed(() => props.placeholder ?? t('app.select shortcut'))
-
 const displayValue = computed(() => {
     if (recording.value) {
         return formatDisplay(preview.value) ?? null
