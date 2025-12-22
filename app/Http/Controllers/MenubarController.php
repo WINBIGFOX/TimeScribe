@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\TimestampTypeEnum;
+use App\Events\ProjectChanged;
 use App\Http\Resources\ActivityHistoryResource;
 use App\Http\Resources\ProjectResource;
 use App\Jobs\MenubarRefresh;
@@ -92,6 +93,8 @@ class MenubarController extends Controller
         $projectSettings->save();
         TimestampService::startWork();
 
+        ProjectChanged::broadcast();
+
         return to_route('menubar.index');
     }
 
@@ -103,6 +106,8 @@ class MenubarController extends Controller
         if (TimestampService::getCurrentType() === TimestampTypeEnum::WORK) {
             TimestampService::startWork();
         }
+
+        ProjectChanged::broadcast();
 
         return to_route('menubar.index');
     }

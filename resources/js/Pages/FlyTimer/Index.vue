@@ -2,7 +2,7 @@
 import { Button } from '@/Components/ui/button'
 import { secToFormat } from '@/lib/utils'
 import { Project } from '@/types'
-import { Head, Link, router, usePoll } from '@inertiajs/vue3'
+import { Head, Link, router } from '@inertiajs/vue3'
 import { refThrottled, useColorMode } from '@vueuse/core'
 import { Coffee, Play, Square, Tally2, X } from 'lucide-vue-next'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
@@ -40,6 +40,7 @@ const reload = () => {
 if (window.Native) {
     window.Native.on('App\\Events\\TimerStarted', reload)
     window.Native.on('App\\Events\\TimerStopped', reload)
+    window.Native.on('App\\Events\\ProjectChanged', reload)
 }
 
 onMounted(() => {
@@ -65,11 +66,6 @@ watch(
         breakSeconds.value = newVal
     }
 )
-
-usePoll(5000, {
-    only: ['workTime', 'breakTime', 'currentType', 'currentProject'],
-    showProgress: false
-})
 
 useColorMode()
 

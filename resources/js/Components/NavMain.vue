@@ -130,13 +130,6 @@ router.on('navigate', () => {
             <SidebarMenuItem>
                 <SidebarMenuButton as-child>
                     <Link
-                        :class="{
-                            'text-primary! font-bold': [
-                                'absence.show',
-                                'absence.vacation.index',
-                                'absence.vacation-entitlement.edit'
-                            ].includes(current ?? '')
-                        }"
                         :href="route('absence.show', { date })"
                         class="transition-[color,background-color,font-weight] duration-200"
                         prefetch
