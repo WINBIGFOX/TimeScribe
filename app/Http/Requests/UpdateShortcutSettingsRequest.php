@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateShortcutSettingsRequest extends FormRequest
 {
-    private const SHORTCUT_FIELDS = [
+    private const array SHORTCUT_FIELDS = [
         'startShortcut',
         'stopShortcut',
         'pauseShortcut',

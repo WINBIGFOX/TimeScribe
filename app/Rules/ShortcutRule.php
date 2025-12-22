@@ -12,7 +12,7 @@ use Illuminate\Translation\PotentiallyTranslatedString;
 
 class ShortcutRule implements DataAwareRule, ValidationRule
 {
-    private const ALLOWED_MODIFIERS = [
+    private const array ALLOWED_MODIFIERS = [
         'Cmd',
         'CmdOrCtrl',
         'Ctrl',
@@ -24,7 +24,7 @@ class ShortcutRule implements DataAwareRule, ValidationRule
         'Meta',
     ];
 
-    private const ALLOWED_KEYS = [
+    private const array ALLOWED_KEYS = [
         '0',
         '1',
         '2',
