@@ -218,6 +218,7 @@ html {
     * {
         -webkit-user-drag: none;
         @apply border-border;
+        scrollbar-color: var(--scrollbar-thumb) transparent;
     }
 
     html,
