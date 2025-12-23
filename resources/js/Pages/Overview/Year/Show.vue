@@ -20,6 +20,7 @@ const props = defineProps<{
     plans: number[]
     overtimes: number[]
     xaxis: string[]
+    hasWorkSchedules: boolean
     sumBreakTime: number
     sumWorkTime: number
     sumOvertime: number
@@ -44,23 +45,40 @@ const showWeek = (opts) => {
         preserveState: true
     })
 }
-const data = {
-    series: [
-        {
-            name: trans('app.work hours'),
-            data: props.workTimes
-        },
-        {
+
+const buildSeries = () => {
+    const series = [] as Record<string, string | number[]>[]
+    series.push({
+        name: trans('app.work hours'),
+        data: props.workTimes
+    })
+    if (props.hasWorkSchedules) {
+        series.push({
             name: trans('app.overtime'),
             data: props.overtimes
-        },
-        {
-            name: trans('app.break time'),
-            data: props.breakTimes
-        }
-    ],
+        })
+    }
+    series.push({
+        name: trans('app.break time'),
+        data: props.breakTimes
+    })
+    return series
+}
+
+const buildColors = () => {
+    const colors = [] as string[]
+    colors.push('var(--color-primary)')
+    if (props.hasWorkSchedules) {
+        colors.push('var(--color-amber-400)')
+    }
+    colors.push('var(--color-pink-400)')
+    return colors
+}
+
+const data = {
+    series: buildSeries(),
     chartOptions: {
-        colors: ['var(--color-primary)', 'var(--color-amber-400)', 'var(--color-pink-400)'],
+        colors: buildColors(),
         chart: {
             events: {
                 dataPointSelection: (_1, _2, opts) => showWeek(opts)

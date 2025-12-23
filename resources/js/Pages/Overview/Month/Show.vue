@@ -21,6 +21,7 @@ const props = defineProps<{
     plans: number[]
     overtimes: number[]
     xaxis: string[]
+    hasWorkSchedules: boolean
     sumBreakTime: number
     sumWorkTime: number
     sumOvertime: number
@@ -44,23 +45,40 @@ const localeMapping = {
     'zh-CN': 'zh-cn'
 }
 const currentLocale = localeMapping[usePage().props.js_locale]
-const data = {
-    series: [
-        {
-            name: trans('app.work hours'),
-            data: props.workTimes
-        },
-        {
+
+const buildSeries = () => {
+    const series = [] as Record<string, string | number[]>[]
+    series.push({
+        name: trans('app.work hours'),
+        data: props.workTimes
+    })
+    if (props.hasWorkSchedules) {
+        series.push({
             name: trans('app.overtime'),
             data: props.overtimes
-        },
-        {
-            name: trans('app.break time'),
-            data: props.breakTimes
-        }
-    ],
+        })
+    }
+    series.push({
+        name: trans('app.break time'),
+        data: props.breakTimes
+    })
+    return series
+}
+
+const buildColors = () => {
+    const colors = [] as string[]
+    colors.push('var(--color-primary)')
+    if (props.hasWorkSchedules) {
+        colors.push('var(--color-amber-400)')
+    }
+    colors.push('var(--color-pink-400)')
+    return colors
+}
+
+const data = {
+    series: buildSeries(),
     chartOptions: {
-        colors: ['var(--color-primary)', 'var(--color-amber-400)', 'var(--color-pink-400)'],
+        colors: buildColors(),
         chart: {
             events: {
                 dataPointSelection: (_1, _2, opts) => showWeek(opts)
@@ -249,13 +267,13 @@ if (window.Native) {
             {{ $t('app.today') }}
         </Button>
     </PageHeader>
-    <div class="mt-2 mb-6 h-full">
+    <div class="mb-6 h-full">
         <apexchart :options="data.chartOptions" :series="data.series" height="100%" type="bar"></apexchart>
     </div>
-    <div class=" flex gap-2">
+    <div class="flex gap-2">
         <TimestampTypeBadge :duration="props.sumWorkTime" type="work" />
         <TimestampTypeBadge :duration="props.sumBreakTime" type="break" />
-        <TimestampTypeBadge :duration="Math.max(props.sumOvertime, 0)" type="overtime" />
-        <TimestampTypeBadge :duration="(props.sumPlan ?? 0) * 60 * 60" type="plan" />
+        <TimestampTypeBadge v-if="props.hasWorkSchedules" :duration="Math.max(props.sumOvertime, 0)" type="overtime" />
+        <TimestampTypeBadge v-if="props.hasWorkSchedules" :duration="(props.sumPlan ?? 0) * 60 * 60" type="plan" />
     </div>
 </template>

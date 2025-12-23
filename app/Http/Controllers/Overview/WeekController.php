@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Overview;
 use App\Helpers\DateHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AbsenceResource;
+use App\Models\WorkSchedule;
 use App\Services\HolidayService;
 use App\Services\TimestampService;
 use Carbon\Carbon;
@@ -36,11 +37,39 @@ class WeekController extends Controller
      */
     public function show(Carbon $date)
     {
+        $hasWorkSchedules = WorkSchedule::exists();
         $week = $date->copy()->weekOfYear;
         $startOfWeek = $date->copy()->startOfWeek();
         $endOfWeek = $date->copy()->endOfWeek();
 
-        CarbonPeriod::between($startOfWeek, $endOfWeek)->toArray();
+        $weekDays = collect(new DatePeriod($startOfWeek, new DateInterval('P1D'), $endOfWeek))->map(function (DateTime $date): array {
+            $date = Date::parse($date);
+
+            return [
+                'plan' => TimestampService::getPlan($date),
+                'fallbackPlan' => TimestampService::getFallbackPlan($date),
+                'date' => DateHelper::toResourceArray($date),
+                'workTime' => TimestampService::getWorkTime($date),
+                'breakTime' => TimestampService::getBreakTime($date),
+                'timestamps' => TimestampService::getTimestamps($date),
+                'noWorkTime' => TimestampService::getNoWorkTime($date),
+                'activeWork' => TimestampService::getActiveWork($date),
+                'absences' => AbsenceResource::collection(TimestampService::getAbsence($date)),
+                'isHoliday' => HolidayService::isHoliday($date),
+            ];
+        });
+
+        $weekPlan = TimestampService::getWeekPlan($startOfWeek);
+
+        if (! $hasWorkSchedules) {
+            $maxWorkTime = $weekDays->max('workTime');
+            $weekDays = $weekDays->map(function (array $day) use ($maxWorkTime): array {
+                $day['plan'] = $maxWorkTime / 3600;
+
+                return $day;
+            });
+            $weekPlan = $weekDays->sum('workTime') / 3600;
+        }
 
         return Inertia::render('Overview/Week/Show', [
             'date' => $date->format('d.m.Y'),
@@ -49,27 +78,13 @@ class WeekController extends Controller
             'endOfWeek' => $endOfWeek,
             'weekWorkTime' => TimestampService::getWorkTime($startOfWeek, $endOfWeek),
             'weekBreakTime' => TimestampService::getBreakTime($startOfWeek, $endOfWeek),
-            'weekPlan' => TimestampService::getWeekPlan($startOfWeek),
+            'weekPlan' => $weekPlan,
             'weekFallbackPlan' => TimestampService::getFallbackPlan($startOfWeek, $endOfWeek),
             'weekDatesWithTimestamps' => TimestampService::getDatesWithTimestamps($date->copy()->subYear()->startOfYear(), $date->copy()->addYear()->endOfYear()),
             'balance' => TimestampService::getBalance($startOfWeek),
             'lastCalendarWeek' => $date->copy()->subWeek()->weekOfYear,
-            'weekdays' => collect(new DatePeriod($startOfWeek, new DateInterval('P1D'), $endOfWeek))->map(function (DateTime $date): array {
-                $date = Date::parse($date);
-
-                return [
-                    'plan' => TimestampService::getPlan($date),
-                    'fallbackPlan' => TimestampService::getFallbackPlan($date),
-                    'date' => DateHelper::toResourceArray($date),
-                    'workTime' => TimestampService::getWorkTime($date),
-                    'breakTime' => TimestampService::getBreakTime($date),
-                    'timestamps' => TimestampService::getTimestamps($date),
-                    'noWorkTime' => TimestampService::getNoWorkTime($date),
-                    'activeWork' => TimestampService::getActiveWork($date),
-                    'absences' => AbsenceResource::collection(TimestampService::getAbsence($date)),
-                    'isHoliday' => HolidayService::isHoliday($date),
-                ];
-            })->all(),
+            'hasWorkSchedules' => $hasWorkSchedules,
+            'weekdays' => $weekDays->all(),
         ]);
     }
 }

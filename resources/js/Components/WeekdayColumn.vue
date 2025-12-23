@@ -5,6 +5,7 @@ import { WeekdayObject } from '@/types'
 
 const props = defineProps<{
     weekday: WeekdayObject
+    hasWorkSchedule?: boolean
 }>()
 </script>
 
@@ -16,6 +17,7 @@ const props = defineProps<{
             <WeekdayHeader :date="props.weekday.date.date" />
         </div>
         <WorktimeProgressBar
+            :has-work-schedule="props.hasWorkSchedule"
             :absences="props.weekday.absences"
             :active-work="props.weekday.activeWork"
             :break-time="props.weekday.breakTime"

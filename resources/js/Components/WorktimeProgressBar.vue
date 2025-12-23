@@ -13,6 +13,7 @@ const props = withDefaults(
         activeWork?: boolean
         absences: Absence[]
         isHoliday?: boolean
+        hasWorkSchedule?: boolean
     }>(),
     {
         plan: 0,
@@ -21,7 +22,8 @@ const props = withDefaults(
         workTime: 0,
         breakTime: 0,
         activeWork: false,
-        isHoliday: false
+        isHoliday: false,
+        hasWorkSchedule: false
     }
 )
 
@@ -43,7 +45,7 @@ const percentageOverTime = computed(() => {
 
 <template>
     <div class="flex grow flex-col" v-if="props.plan || props.workTime">
-        <div class="text-foreground/80 mb-2 text-center text-sm">
+        <div class="text-foreground/80 mb-2 text-center text-sm" v-if="props.hasWorkSchedule">
             {{ props.plan.toLocaleString($page.props.js_locale) }}
             {{ $t('app.h') }}
         </div>
@@ -70,7 +72,7 @@ const percentageOverTime = computed(() => {
                     height: `${percentageOverTime}%`
                 }"
                 class="absolute inset-x-0 bottom-0 flex flex-col bg-amber-400 transition-all duration-300 starting:h-0"
-                v-if="percentageOverTime"
+                v-if="percentageOverTime && props.hasWorkSchedule"
             >
                 <div
                     class="animate-progress grow bg-gradient-to-t from-transparent via-transparent to-white/40"
@@ -112,7 +114,7 @@ const percentageOverTime = computed(() => {
                     'text-amber-400': timePlanDifference > 0
                 }"
                 class="flex items-center justify-between gap-1 text-xs"
-                v-if="timePlanDifference !== 0 && props.workTime"
+                v-if="timePlanDifference !== 0 && props.workTime && props.hasWorkSchedule"
             >
                 <ClockArrowUp class="size-4 shrink-0" v-if="timePlanDifference > 0" />
                 <ClockArrowDown class="size-4 shrink-0" v-if="timePlanDifference < 0" />

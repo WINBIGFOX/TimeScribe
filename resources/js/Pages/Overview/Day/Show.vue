@@ -20,6 +20,7 @@ const props = defineProps<{
     dayBreakTime: number
     dayNoWorkTime: number
     isHoliday: boolean
+    hasWorkSchedules: boolean
 }>()
 
 const calcDuration = (startTimestamp: string, endTimestamp?: string) =>
@@ -62,7 +63,7 @@ if (window.Native) {
     <div class="flex grow flex-col overflow-hidden">
         <Timeline
             :date="props.date"
-            :overtime="Math.max(props.dayWorkTime - (props.dayPlan ?? 0) * 60 * 60, 0)"
+            :overtime="props.hasWorkSchedules ? Math.max(props.dayWorkTime - (props.dayPlan ?? 0) * 60 * 60, 0) : 0"
             :timestamps="props.timestamps"
             :work-time="props.dayWorkTime"
             class="mb-6 shrink-0"
@@ -79,10 +80,11 @@ if (window.Native) {
             <TimestampTypeBadge :duration="props.dayBreakTime" type="break" />
             <TimestampTypeBadge :duration="props.dayNoWorkTime" type="noWork" />
             <TimestampTypeBadge
+                v-if="props.hasWorkSchedules"
                 :duration="Math.max(props.dayWorkTime - (props.dayPlan ?? 0) * 60 * 60, 0)"
                 type="overtime"
             />
-            <TimestampTypeBadge :duration="(props.dayPlan ?? 0) * 60 * 60" type="plan" />
+            <TimestampTypeBadge v-if="props.hasWorkSchedules" :duration="(props.dayPlan ?? 0) * 60 * 60" type="plan" />
         </div>
         <div class="grow space-y-1 overflow-y-auto" scroll-region v-if="!isFuture">
             <TimestampListPlaceholderItem

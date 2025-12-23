@@ -23,6 +23,7 @@ const props = defineProps<{
     weekDatesWithTimestamps: string[]
     balance: number
     lastCalendarWeek: number
+    hasWorkSchedules: boolean
     weekdays: Record<string, WeekdayObject>
 }>()
 
@@ -94,6 +95,7 @@ if (window.Native) {
         <div class="flex grow flex-col">
             <div class="flex grow justify-between">
                 <WeekdayColumn
+                    :has-work-schedule="props.hasWorkSchedules"
                     :key="weekday.date.date"
                     :weekday="weekday"
                     @click="openDayView(weekday.date.date)"
@@ -111,6 +113,7 @@ if (window.Native) {
                 </span>
             </div>
             <WorktimeProgressBar
+                :has-work-schedule="props.hasWorkSchedules"
                 :absences="[]"
                 :break-time="props.weekBreakTime"
                 :fallback-plan="props.weekFallbackPlan"
@@ -126,11 +129,13 @@ if (window.Native) {
         <TimestampTypeBadge :duration="props.weekWorkTime" type="work" />
         <TimestampTypeBadge :duration="props.weekBreakTime" type="break" />
         <TimestampTypeBadge
+            v-if="props.hasWorkSchedules"
             :duration="Math.max(props.weekWorkTime - (props.weekPlan ?? 0) * 60 * 60, 0)"
             type="overtime"
         />
-        <TimestampTypeBadge :duration="(props.weekPlan ?? 0) * 60 * 60" type="plan" />
+        <TimestampTypeBadge v-if="props.hasWorkSchedules" :duration="(props.weekPlan ?? 0) * 60 * 60" type="plan" />
         <TimestampTypeBadge
+            v-if="props.hasWorkSchedules"
             :duration="props.balance + Math.max(props.weekWorkTime - (props.weekPlan ?? 0) * 60 * 60, 0)"
             class="ml-auto"
             type="balance"
