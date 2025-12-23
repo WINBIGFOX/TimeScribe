@@ -11,7 +11,6 @@ use App\Models\WorkSchedule;
 use App\Services\HolidayService;
 use App\Services\TimestampService;
 use Carbon\Carbon;
-use Carbon\CarbonPeriod;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -64,7 +63,9 @@ class WeekController extends Controller
         if (! $hasWorkSchedules) {
             $maxWorkTime = $weekDays->max('workTime');
             $weekDays = $weekDays->map(function (array $day) use ($maxWorkTime): array {
-                $day['plan'] = $maxWorkTime / 3600;
+                if (($day['timestamps'])->isNotEmpty()) {
+                    $day['plan'] = $maxWorkTime ? $maxWorkTime / 3600 : 10;
+                }
 
                 return $day;
             });

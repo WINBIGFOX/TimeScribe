@@ -69,7 +69,7 @@ usePoll(
         only: ['currentAppActivity', 'updateAvailable']
     },
     {
-        autoStart: props.activeAppActivity,
+        autoStart: props.activeAppActivity && (props.currentType === 'work' || props.currentType === 'break'),
         keepAlive: true
     }
 )

@@ -32,7 +32,7 @@ class NativeAppServiceProvider implements ProvidesPhpIni
     public function boot(): void
     {
         new LocaleService;
-        $settings = app(GeneralSettings::class);
+        $settings = resolve(GeneralSettings::class);
         $theme = $settings->theme ?? SystemThemesEnum::SYSTEM->value;
         if ($theme !== SystemThemesEnum::SYSTEM->value) {
             System::theme(SystemThemesEnum::tryFrom($theme));
@@ -72,15 +72,15 @@ class NativeAppServiceProvider implements ProvidesPhpIni
         if (! $settings->wizard_completed) {
             WindowService::openWelcome();
         } else {
-            $flyTimerSettings = app(FlyTimerSettings::class);
+            $flyTimerSettings = resolve(FlyTimerSettings::class);
 
             if ($flyTimerSettings->showWithStart) {
                 WindowService::openFlyTimer();
             }
         }
 
-        $shortcutService = app(ShortcutService::class);
-        $shortcutSettings = app(ShortcutSettings::class);
+        $shortcutService = resolve(ShortcutService::class);
+        $shortcutSettings = resolve(ShortcutSettings::class);
         $shortcutService->refresh($shortcutSettings);
 
         Menu::create(
