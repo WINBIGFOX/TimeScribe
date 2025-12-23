@@ -75,7 +75,7 @@ if (window.Native) {
             <TimestampTypeBadge
                 :duration="props.dayWorkTime"
                 type="work"
-                v-if="!props.absences.length && !props.isHoliday"
+                v-if="(!props.absences.length && !props.isHoliday) || (!props.hasWorkSchedules && props.dayWorkTime)"
             />
             <TimestampTypeBadge :duration="props.dayBreakTime" type="break" />
             <TimestampTypeBadge :duration="props.dayNoWorkTime" type="noWork" />
