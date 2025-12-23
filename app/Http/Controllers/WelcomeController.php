@@ -46,7 +46,7 @@ class WelcomeController extends Controller
         }
 
         /** @var VacationSettings $vacationSettings */
-        $vacationSettings = app(VacationSettings::class);
+        $vacationSettings = resolve(VacationSettings::class);
         $shouldPersistVacation = false;
         $workScheduleForMinimum = null;
 

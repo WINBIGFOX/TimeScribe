@@ -23,7 +23,7 @@ Schedule::when(fn () => Timestamp::whereNull('ended_at')->exists())->group(funct
 
 Schedule::command('app:active-app')
     ->when(function (): bool {
-        $settings = app(GeneralSettings::class);
+        $settings = resolve(GeneralSettings::class);
         if (! $settings->appActivityTracking) {
             return false;
         }

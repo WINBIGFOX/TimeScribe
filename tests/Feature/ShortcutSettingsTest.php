@@ -14,7 +14,7 @@ it('saves shortcut settings', function (): void {
 
     $response->assertRedirect(route('settings.shortcuts.edit'));
 
-    $settings = app(ShortcutSettings::class);
+    $settings = resolve(ShortcutSettings::class);
 
     expect($settings->startShortcut)->toBe('Cmd+Shift+S')
         ->and($settings->stopShortcut)->toBe('Cmd+Shift+X')

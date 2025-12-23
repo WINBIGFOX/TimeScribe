@@ -14,7 +14,7 @@ use Inertia\Testing\AssertableInertia as Assert;
 beforeEach(function (): void {
     Cache::clear();
 
-    $settings = app(VacationSettings::class);
+    $settings = resolve(VacationSettings::class);
     $settings->default_entitlement_days = 30.0;
     $settings->prorate_consumption = true;
     $settings->proration_step = 0.5;
@@ -123,7 +123,7 @@ it('updates vacation settings', function (): void {
 
     $response->assertRedirect(route('settings.vacation.edit'));
 
-    $settings = app(VacationSettings::class);
+    $settings = resolve(VacationSettings::class);
     $settings->refresh();
 
     expect($settings->default_entitlement_days)->toBe(28.0);
@@ -136,7 +136,7 @@ it('updates vacation settings', function (): void {
 it('allows negative remaining days and carries them over automatically', function (): void {
     Date::setTestNow(Date::create(2025, 1, 15));
 
-    $settings = app(VacationSettings::class);
+    $settings = resolve(VacationSettings::class);
     $settings->auto_carryover = true;
     $settings->save();
 

@@ -18,7 +18,7 @@ class VacationEntitlementController extends Controller
 {
     public function edit(Carbon $date)
     {
-        $settings = app(VacationSettings::class);
+        $settings = resolve(VacationSettings::class);
 
         $year = $date->year;
 
@@ -26,7 +26,7 @@ class VacationEntitlementController extends Controller
 
         $entitlement = $overrides->get($year);
 
-        $vacationContextService = app(VacationContextService::class);
+        $vacationContextService = resolve(VacationContextService::class);
 
         $minYear = $vacationContextService->minYear($year, $overrides);
 

@@ -97,7 +97,7 @@ class BugAndFeedbackController extends Controller
             return back()->withErrors(['message' => $e->getMessage()]);
         }
 
-        $settings = app(GeneralSettings::class);
+        $settings = resolve(GeneralSettings::class);
 
         if (System::theme()->value !== $settings->theme ?? SystemThemesEnum::SYSTEM->value) {
             System::theme(SystemThemesEnum::tryFrom($settings->theme ?? SystemThemesEnum::SYSTEM));

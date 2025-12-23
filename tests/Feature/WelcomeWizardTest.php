@@ -11,7 +11,7 @@ beforeEach(function (): void {
 });
 
 it('exposes vacation settings in the welcome wizard', function (): void {
-    $vacationSettings = app(VacationSettings::class);
+    $vacationSettings = resolve(VacationSettings::class);
     $vacationSettings->default_entitlement_days = 25.5;
     $vacationSettings->auto_carryover = true;
     $vacationSettings->minimum_day_hours = 6.5;
@@ -44,7 +44,7 @@ it('updates vacation settings and derives minimum hours from the work schedule',
     ])->assertOk();
 
     /** @var VacationSettings $vacationSettings */
-    $vacationSettings = app(VacationSettings::class);
+    $vacationSettings = resolve(VacationSettings::class);
     $vacationSettings->refresh();
 
     expect($vacationSettings->default_entitlement_days)->toBe(28.0);

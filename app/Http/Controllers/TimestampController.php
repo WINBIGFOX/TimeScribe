@@ -280,7 +280,7 @@ class TimestampController extends Controller
         $timestamp->save();
 
         if (! $timestamp->ended_at && $timestamp->started_at->isToday() && $timestamp->project_id) {
-            $projectSettings = app(ProjectSettings::class);
+            $projectSettings = resolve(ProjectSettings::class);
             $projectSettings->currentProject = $timestamp->project_id;
             $projectSettings->save();
         }

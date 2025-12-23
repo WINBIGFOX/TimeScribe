@@ -22,7 +22,7 @@ class UpdateAvailable
      */
     public function handle(UpdateAvailableEvent $event): void
     {
-        $autoUpdaterSettings = app(AutoUpdaterSettings::class);
+        $autoUpdaterSettings = resolve(AutoUpdaterSettings::class);
         if ($autoUpdaterSettings->lastVersion !== $event->version) {
             $autoUpdaterSettings->isDownloaded = false;
         }

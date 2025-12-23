@@ -29,7 +29,7 @@ class StandbyOrLocked
     public function handle(ScreenLocked|Shutdown $event): void
     {
         new LocaleService;
-        $settings = app(GeneralSettings::class);
+        $settings = resolve(GeneralSettings::class);
         $stopBreakAutomatic = $settings->stopBreakAutomatic;
         if (! $stopBreakAutomatic) {
             return;

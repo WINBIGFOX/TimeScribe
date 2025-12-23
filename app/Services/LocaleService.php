@@ -28,8 +28,8 @@ class LocaleService
 
     public function __construct()
     {
-        $this->settings = app(GeneralSettings::class);
-        $this->projectSettings = app(ProjectSettings::class);
+        $this->settings = resolve(GeneralSettings::class);
+        $this->projectSettings = resolve(ProjectSettings::class);
         $this->setupTimezone();
         $this->setupLocale();
         $this->setupCurrency();

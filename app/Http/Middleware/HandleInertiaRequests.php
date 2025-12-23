@@ -35,7 +35,7 @@ class HandleInertiaRequests extends Middleware
     #[\Override]
     public function share(Request $request): array
     {
-        $settings = app(GeneralSettings::class);
+        $settings = resolve(GeneralSettings::class);
 
         return [
             ...parent::share($request),

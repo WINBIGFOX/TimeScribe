@@ -70,7 +70,7 @@ class HolidayService
 
     public static function getHoliday(int|array $year): Collection
     {
-        $settings = app(GeneralSettings::class);
+        $settings = resolve(GeneralSettings::class);
         if ($settings->holidayRegion === null) {
             return collect();
         }

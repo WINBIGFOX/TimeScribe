@@ -27,7 +27,7 @@ class TimestampService
     {
         $project = null;
         if ($type === TimestampTypeEnum::WORK) {
-            $project = app(ProjectSettings::class)->currentProject;
+            $project = resolve(ProjectSettings::class)->currentProject;
         }
 
         Timestamp::create([
@@ -60,23 +60,23 @@ class TimestampService
 
     public static function startWork(): void
     {
-        TimerStarted::broadcast();
         self::makeEndings();
         self::create(TimestampTypeEnum::WORK);
+        TimerStarted::broadcast();
     }
 
     public static function startBreak(): void
     {
-        TimerStopped::broadcast();
         self::makeEndings();
         self::create(TimestampTypeEnum::BREAK);
+        TimerStopped::broadcast();
     }
 
     public static function stop(): void
     {
-        TimerStopped::broadcast();
         self::ping();
         self::makeEndings();
+        TimerStopped::broadcast();
     }
 
     public static function ping(): void
@@ -108,7 +108,7 @@ class TimestampService
 
     public static function checkStopTimeReset(): void
     {
-        $settings = app(GeneralSettings::class);
+        $settings = resolve(GeneralSettings::class);
         $workTimeReset = $settings->stopWorkTimeReset;
         $breakTimeReset = $settings->stopBreakTimeReset;
 

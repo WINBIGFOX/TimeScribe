@@ -27,7 +27,7 @@ class Unlocked
     public function handle(ScreenUnlocked $event): void
     {
         new LocaleService;
-        $settings = app(GeneralSettings::class);
+        $settings = resolve(GeneralSettings::class);
         TimestampService::checkStopTimeReset();
 
         if ($settings->showTimerOnUnlock) {

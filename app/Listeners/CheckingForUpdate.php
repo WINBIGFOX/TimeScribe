@@ -22,7 +22,7 @@ class CheckingForUpdate
      */
     public function handle(CheckingForUpdateEvent $event): void
     {
-        $autoUpdaterSettings = app(AutoUpdaterSettings::class);
+        $autoUpdaterSettings = resolve(AutoUpdaterSettings::class);
         $autoUpdaterSettings->lastCheck = now();
         $autoUpdaterSettings->save();
     }

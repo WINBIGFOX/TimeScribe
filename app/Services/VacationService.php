@@ -38,7 +38,7 @@ class VacationService
         }
 
         $referenceDate ??= Date::now();
-        $settings ??= app(VacationSettings::class);
+        $settings ??= resolve(VacationSettings::class);
 
         $planHours = TimestampService::getPlan($absence->date);
         $averagePlanHours = self::averagePlannedHours($absence);
@@ -88,7 +88,7 @@ class VacationService
         ?Carbon $referenceDate = null,
         ?VacationSettings $settings = null
     ): array {
-        $settings ??= app(VacationSettings::class);
+        $settings ??= resolve(VacationSettings::class);
 
         $metrics = $absences
             ->filter(fn (Absence $absence): bool => $absence->type === AbsenceTypeEnum::VACATION)

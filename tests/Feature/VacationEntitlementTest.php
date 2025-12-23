@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Date;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function (): void {
-    $settings = app(VacationSettings::class);
+    $settings = resolve(VacationSettings::class);
     $settings->default_entitlement_days = 30.0;
     $settings->prorate_consumption = true;
     $settings->proration_step = 0.5;

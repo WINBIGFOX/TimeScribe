@@ -22,7 +22,7 @@ class UpdateDownloaded
      */
     public function handle(UpdateDownloadedEvent $event): void
     {
-        $autoUpdaterSettings = app(AutoUpdaterSettings::class);
+        $autoUpdaterSettings = resolve(AutoUpdaterSettings::class);
 
         $autoUpdaterSettings->lastVersion = $event->version;
         $autoUpdaterSettings->isDownloaded = true;

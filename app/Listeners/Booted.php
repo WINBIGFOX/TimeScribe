@@ -28,7 +28,7 @@ class Booted
     public function handle(ApplicationBooted $event): void
     {
         new LocaleService;
-        $settings = app(GeneralSettings::class);
+        $settings = resolve(GeneralSettings::class);
         TimestampService::checkStopTimeReset();
         dispatch(new CalculateWeekBalance);
         if ($settings->showTimerOnUnlock) {

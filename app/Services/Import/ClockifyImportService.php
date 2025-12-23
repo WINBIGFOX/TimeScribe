@@ -72,7 +72,7 @@ class ClockifyImportService
             }
         }
 
-        $this->currency = app(ProjectSettings::class)->defaultCurrency;
+        $this->currency = resolve(ProjectSettings::class)->defaultCurrency;
     }
 
     public function import(): void

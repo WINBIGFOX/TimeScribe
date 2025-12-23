@@ -34,7 +34,7 @@ class CheckCanInstall extends Command
             return;
         }
 
-        $autoUpdaterSettings = app(AutoUpdaterSettings::class);
+        $autoUpdaterSettings = resolve(AutoUpdaterSettings::class);
 
         if (! $autoUpdaterSettings->autoUpdate || ! $autoUpdaterSettings->isDownloaded) {
             return;

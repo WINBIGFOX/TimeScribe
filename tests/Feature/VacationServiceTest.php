@@ -15,7 +15,7 @@ beforeEach(function (): void {
 
     Date::setTestNow(Date::create(2025, 1, 15));
 
-    $settings = app(VacationSettings::class);
+    $settings = resolve(VacationSettings::class);
     $settings->default_entitlement_days = 30.0;
     $settings->prorate_consumption = true;
     $settings->proration_step = 0.25;
@@ -53,7 +53,7 @@ it('uses the configured minimum day hours when scheduled hours are lower', funct
 });
 
 it('honors custom minimum day hours values', function (): void {
-    $settings = app(VacationSettings::class);
+    $settings = resolve(VacationSettings::class);
     $settings->minimum_day_hours = 6.0;
     $settings->save();
 

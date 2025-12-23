@@ -32,7 +32,7 @@ class CalculateWeekBalance implements ShouldQueue
     {
         try {
             new LocaleService;
-            $settings = app(GeneralSettings::class);
+            $settings = resolve(GeneralSettings::class);
             Date::setLocale(str_replace('-', '_', $settings->locale ?? config('app.fallback_locale')));
             $firstTimestamp = Timestamp::orderBy('started_at')->first();
 

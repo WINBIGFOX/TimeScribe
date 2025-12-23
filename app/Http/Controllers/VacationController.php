@@ -25,7 +25,7 @@ class VacationController extends Controller
         $referenceDate = $date ? Date::parse($date) : Date::now();
         $selectedYear = $referenceDate->year;
 
-        $settings = app(VacationSettings::class);
+        $settings = resolve(VacationSettings::class);
         $overrides = VacationEntitlement::query()->get()->keyBy('year');
 
         $vacations = Absence::query()
@@ -34,7 +34,7 @@ class VacationController extends Controller
             ->orderByDesc('date')
             ->get();
 
-        $vacationContextService = app(VacationContextService::class);
+        $vacationContextService = resolve(VacationContextService::class);
 
         $availableYears = $vacationContextService->availableYears($selectedYear, $overrides);
         $minYear = min($availableYears);
