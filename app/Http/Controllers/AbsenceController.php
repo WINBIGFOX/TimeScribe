@@ -9,6 +9,7 @@ use App\Helpers\DateHelper;
 use App\Http\Requests\StoreAbsenceRequest;
 use App\Http\Resources\AbsenceResource;
 use App\Models\Absence;
+use App\Models\WorkSchedule;
 use App\Services\HolidayService;
 use App\Services\TimestampService;
 use Carbon\Carbon;
@@ -63,6 +64,7 @@ class AbsenceController extends Controller
         return Inertia::render('Absence/Show', [
             'absences' => AbsenceResource::collection($absences),
             'plans' => $plans,
+            'hasWorkSchedules' => WorkSchedule::exists(),
             'holidays' => $holidays->map(fn (?Carbon $holidayDate): ?array => DateHelper::toResourceArray($holidayDate)),
             'date' => $date->format('d.m.Y'),
         ]);

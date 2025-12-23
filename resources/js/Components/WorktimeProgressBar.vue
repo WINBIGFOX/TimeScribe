@@ -44,7 +44,10 @@ const percentageOverTime = computed(() => {
 </script>
 
 <template>
-    <div class="flex grow flex-col" v-if="props.plan || props.workTime">
+    <div
+        class="flex grow flex-col"
+        v-if="props.plan || props.workTime || (!props.hasWorkSchedule && (props.absences.length || props.isHoliday))"
+    >
         <div class="text-foreground/80 mb-2 text-center text-sm" v-if="props.hasWorkSchedule">
             {{ props.plan.toLocaleString($page.props.js_locale) }}
             {{ $t('app.h') }}
@@ -103,7 +106,7 @@ const percentageOverTime = computed(() => {
             </div>
             <div
                 class="text-muted-foreground flex items-center justify-between gap-1 text-xs"
-                v-if="props.workTime && !props.absences.length && !props.isHoliday"
+                v-if="props.workTime && ((!props.absences.length && !props.isHoliday) || !props.hasWorkSchedule)"
             >
                 <BriefcaseBusiness class="size-4 shrink-0" />
                 {{ secToFormat(props.workTime ?? 0, false, true) }}

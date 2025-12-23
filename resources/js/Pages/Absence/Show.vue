@@ -10,6 +10,7 @@ import { computed } from 'vue'
 
 const props = defineProps<{
     date: string
+    hasWorkSchedules: boolean
     plans: Record<string, number>
     absences: Absence[]
     holidays: Date[]
@@ -200,7 +201,10 @@ const removeHoliday = (date: string) => {
                             @click="createAbsence('vacation', day.format('YYYY-MM-DD'))"
                             class="rounded-full"
                             size="icon"
-                            v-if="!holidays[day.format('YYYY-MM-DD')] && props.plans[day.format('YYYY-MM-DD')]"
+                            v-if="
+                                !holidays[day.format('YYYY-MM-DD')] &&
+                                (props.plans[day.format('YYYY-MM-DD')] || !props.hasWorkSchedules)
+                            "
                             variant="outline"
                         >
                             <TreePalm />
