@@ -34,6 +34,15 @@ const breakTimeFormatted = computed(() => secToFormat(breakSeconds.value, true))
 const openProjectList = ref(false)
 const showProject = ref(!!props.currentProject)
 
+const showProjectList = () => {
+    router.reload({
+        only: ['projects'],
+        onSuccess: () => {
+            openProjectList.value = true
+        }
+    })
+}
+
 const tick = () => {
     if (props.currentType === 'work') {
         workSeconds.value += 1
@@ -54,9 +63,15 @@ if (window.Native) {
     window.Native.on('App\\Events\\TimerStarted', reload)
     window.Native.on('App\\Events\\TimerStopped', reload)
     window.Native.on('Native\\Desktop\\Events\\MenuBar\\MenuBarShown', () => {
-        openProjectList.value = false
-        router.reload()
+        router.reload({
+            only: ['workTime', 'breakTime', 'currentType', 'currentProject'],
+            showProgress: false
+        })
     })
+    window.Native.on('Native\\Desktop\\Events\\MenuBar\\MenuBarHidden', () => {
+        openProjectList.value = false
+    })
+    window.Native.on('App\\Events\\MenubarProjectPickerRequested', showProjectList)
 }
 
 onMounted(() => {
@@ -102,15 +117,6 @@ router.on('start', () => {
 router.on('finish', () => {
     loading.value = false
 })
-
-const showProjectList = () => {
-    router.reload({
-        only: ['projects'],
-        onSuccess: () => {
-            openProjectList.value = true
-        }
-    })
-}
 
 const setProject = (project: Project) => {
     openProjectList.value = false

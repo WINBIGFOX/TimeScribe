@@ -15,6 +15,7 @@ class UpdateShortcutSettingsRequest extends FormRequest
         'stopShortcut',
         'pauseShortcut',
         'overviewShortcut',
+        'projectPickerShortcut',
     ];
 
     /**
@@ -37,6 +38,7 @@ class UpdateShortcutSettingsRequest extends FormRequest
             'stopShortcut' => ['nullable', 'string', new ShortcutRule(self::SHORTCUT_FIELDS)],
             'pauseShortcut' => ['nullable', 'string', new ShortcutRule(self::SHORTCUT_FIELDS)],
             'overviewShortcut' => ['nullable', 'string', new ShortcutRule(self::SHORTCUT_FIELDS)],
+            'projectPickerShortcut' => ['nullable', 'string', new ShortcutRule(self::SHORTCUT_FIELDS)],
         ];
     }
 }

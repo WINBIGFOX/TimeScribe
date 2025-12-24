@@ -24,6 +24,7 @@ class ShortcutController extends Controller
             'stopShortcut' => $settings->stopShortcut,
             'pauseShortcut' => $settings->pauseShortcut,
             'overviewShortcut' => $settings->overviewShortcut,
+            'projectPickerShortcut' => $settings->projectPickerShortcut,
         ]);
     }
 
@@ -39,12 +40,14 @@ class ShortcutController extends Controller
             $settings->stopShortcut,
             $settings->pauseShortcut,
             $settings->overviewShortcut,
+            $settings->projectPickerShortcut,
         ];
 
         $settings->startShortcut = $data['startShortcut'] ?? null;
         $settings->stopShortcut = $data['stopShortcut'] ?? null;
         $settings->pauseShortcut = $data['pauseShortcut'] ?? null;
         $settings->overviewShortcut = $data['overviewShortcut'] ?? null;
+        $settings->projectPickerShortcut = $data['projectPickerShortcut'] ?? null;
         $settings->save();
 
         $shortcutService->refresh($settings, $previousShortcuts);

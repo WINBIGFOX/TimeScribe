@@ -255,6 +255,8 @@ return [
     'settings' => '设置',
     'setup entitlement carryover minimum hours' => '设置假期额度、结转和最少小时。',
     'shortcuts' => '快捷键',
+    'show project picker' => '显示项目选择',
+    'show the project picker in the menu bar.' => '在菜单栏中显示项目选择。',
     'show timer automatically' => '自动显示计时器',
     'sick' => '病假',
     'skip vacation steps' => '暂时跳过休假设置。',

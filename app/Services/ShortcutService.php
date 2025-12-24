@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Events\OpenOverviewShortcutTriggered;
+use App\Events\OpenProjectPickerShortcutTriggered;
 use App\Events\PauseTimerShortcutTriggered;
 use App\Events\StartTimerShortcutTriggered;
 use App\Events\StopTimerShortcutTriggered;
@@ -25,6 +26,7 @@ class ShortcutService
         $this->registerShortcut($settings->stopShortcut, StopTimerShortcutTriggered::class);
         $this->registerShortcut($settings->pauseShortcut, PauseTimerShortcutTriggered::class);
         $this->registerShortcut($settings->overviewShortcut, OpenOverviewShortcutTriggered::class);
+        $this->registerShortcut($settings->projectPickerShortcut, OpenProjectPickerShortcutTriggered::class);
     }
 
     public function unregisterAll(array $shortcuts): void
@@ -65,6 +67,7 @@ class ShortcutService
             $settings->stopShortcut,
             $settings->pauseShortcut,
             $settings->overviewShortcut,
+            $settings->projectPickerShortcut,
         ];
     }
 }

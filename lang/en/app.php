@@ -255,6 +255,8 @@ return [
     'settings' => 'Settings',
     'setup entitlement carryover minimum hours' => 'Set allowance, carryover, and minimum hours.',
     'shortcuts' => 'Shortcuts',
+    'show project picker' => 'Show project picker',
+    'show the project picker in the menu bar.' => 'Show the project picker in the menu bar.',
     'show timer automatically' => 'Show timer automatically',
     'sick' => 'Sick',
     'skip vacation steps' => 'Skip vacation setup for now.',

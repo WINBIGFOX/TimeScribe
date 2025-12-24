@@ -3,7 +3,7 @@ import { PageHeader } from '@/Components/ui-custom/page-header'
 import { ShortcutInput } from '@/Components/ui-custom/shortcut-input'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
-import { ChartColumnBig, Coffee, Play, Square } from 'lucide-vue-next'
+import { ChartColumnBig, Coffee, Play, Square, Tag } from 'lucide-vue-next'
 import { watch } from 'vue'
 
 const props = defineProps<{
@@ -11,13 +11,15 @@ const props = defineProps<{
     stopShortcut?: string
     pauseShortcut?: string
     overviewShortcut?: string
+    projectPickerShortcut?: string
 }>()
 
 const form = useForm({
     startShortcut: props.startShortcut,
     stopShortcut: props.stopShortcut,
     pauseShortcut: props.pauseShortcut,
-    overviewShortcut: props.overviewShortcut
+    overviewShortcut: props.overviewShortcut,
+    projectPickerShortcut: props.projectPickerShortcut
 })
 
 const submit = () => {
@@ -31,18 +33,23 @@ const submit = () => {
 
 const debouncedSubmit = useDebounceFn(submit, 500)
 
-watch(() => [form.startShortcut, form.stopShortcut, form.pauseShortcut, form.overviewShortcut], debouncedSubmit, {
-    deep: true
-})
+watch(
+    () => [form.startShortcut, form.stopShortcut, form.pauseShortcut, form.overviewShortcut, form.projectPickerShortcut],
+    debouncedSubmit,
+    {
+        deep: true
+    }
+)
 
 watch(
-    () => [props.startShortcut, props.stopShortcut, props.pauseShortcut, props.overviewShortcut],
-    ([start, stop, pause, overview]) => {
+    () => [props.startShortcut, props.stopShortcut, props.pauseShortcut, props.overviewShortcut, props.projectPickerShortcut],
+    ([start, stop, pause, overview, projectPicker]) => {
         form.defaults({
             startShortcut: start ?? undefined,
             stopShortcut: stop ?? undefined,
             pauseShortcut: pause ?? undefined,
-            overviewShortcut: overview ?? undefined
+            overviewShortcut: overview ?? undefined,
+            projectPickerShortcut: projectPicker ?? undefined
         })
         form.reset()
     },
@@ -126,6 +133,25 @@ watch(
                     <ShortcutInput :placeholder="$t('app.select shortcut')" v-model="form.overviewShortcut" />
                     <p class="text-destructive mt-1 text-xs" v-if="form.errors.overviewShortcut">
                         {{ $t(form.errors.overviewShortcut) }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-start space-x-4 py-4">
+            <Tag />
+            <div class="flex flex-1 items-start gap-4">
+                <div class="flex-1 space-y-1">
+                    <p class="text-sm leading-none font-medium">
+                        {{ $t('app.show project picker') }}
+                    </p>
+                    <p class="text-muted-foreground text-sm text-balance">
+                        {{ $t('app.show the project picker in the menu bar.') }}
+                    </p>
+                </div>
+                <div class="w-full sm:w-1/2">
+                    <ShortcutInput :placeholder="$t('app.select shortcut')" v-model="form.projectPickerShortcut" />
+                    <p class="text-destructive mt-1 text-xs" v-if="form.errors.projectPickerShortcut">
+                        {{ $t(form.errors.projectPickerShortcut) }}
                     </p>
                 </div>
             </div>

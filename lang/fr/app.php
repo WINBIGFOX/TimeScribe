@@ -255,6 +255,8 @@ return [
     'settings' => 'Paramètres',
     'setup entitlement carryover minimum hours' => 'Définir quotas, reports et heures minimales.',
     'shortcuts' => 'Raccourcis',
+    'show project picker' => 'Afficher la sélection de projets',
+    'show the project picker in the menu bar.' => 'Afficher la sélection de projets dans la barre de menus.',
     'show timer automatically' => 'Afficher le minuteur automatiquement',
     'sick' => 'Maladie',
     'skip vacation steps' => 'Passer la configuration des congés.',

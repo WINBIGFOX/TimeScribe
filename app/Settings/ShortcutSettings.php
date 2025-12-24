@@ -16,6 +16,8 @@ class ShortcutSettings extends Settings
 
     public ?string $overviewShortcut = null;
 
+    public ?string $projectPickerShortcut = null;
+
     public static function group(): string
     {
         return 'shortcuts';

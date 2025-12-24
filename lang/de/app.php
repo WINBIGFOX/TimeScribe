@@ -255,6 +255,8 @@ return [
     'settings' => 'Einstellungen',
     'setup entitlement carryover minimum hours' => 'Kontingent, Übertrag und Mindeststunden einrichten.',
     'shortcuts' => 'Tastenkombinationen',
+    'show project picker' => 'Projektauswahl anzeigen',
+    'show the project picker in the menu bar.' => 'Zeigt die Projektauswahl in der Menubar.',
     'show timer automatically' => 'Timer automatisch einblenden',
     'sick' => 'Krank',
     'skip vacation steps' => 'Urlaubs-Setup vorerst überspringen.',
