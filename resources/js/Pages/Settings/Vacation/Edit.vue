@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { PageHeader } from '@/Components/ui-custom/page-header'
 import {
     NumberField,
     NumberFieldContent,
@@ -10,9 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/Components/ui/switch'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
-import { RedoDot, CalendarSync, CircleDivide, Timer } from 'lucide-vue-next'
+import { CalendarSync, CircleDivide, RedoDot, Timer } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
-import { PageHeader } from '@/Components/ui-custom/page-header'
 
 const props = defineProps<{
     defaultEntitlementDays: number
@@ -41,7 +41,6 @@ const submit = () => {
 
 const debouncedSubmit = useDebounceFn(submit, 500)
 
-
 watch(prorateConsumption, () => {
     if (prorateConsumption.value === false) {
         form.prorate_consumption = false
@@ -69,7 +68,7 @@ watch(
 
 <template>
     <Head title="Settings - Vacation" />
-    <PageHeader :title="$t('app.vacation settings')"/>
+    <PageHeader :title="$t('app.vacation settings')" />
     <div>
         <div class="flex items-start space-x-4 py-4">
             <CalendarSync />
@@ -149,7 +148,6 @@ watch(
             <Switch class="self-center" v-model="form.auto_carryover" />
         </div>
 
-
         <div class="mt-4 flex items-start space-x-4 border-t py-4 pt-8">
             <CircleDivide />
             <div class="flex-1 space-y-1">
@@ -177,9 +175,7 @@ watch(
                             {{ $t('app.choose how fractional days are rounded.') }}
                         </p>
                     </div>
-                    <Select
-                        v-model="form.proration_step"
-                    >
+                    <Select v-model="form.proration_step">
                         <SelectTrigger class="md:w-40">
                             <SelectValue />
                         </SelectTrigger>

@@ -1,13 +1,13 @@
 <script lang="ts" setup>
+import { EmptyState } from '@/Components/ui-custom/empty-state'
+import { PageHeader } from '@/Components/ui-custom/page-header'
 import { Badge } from '@/Components/ui/badge'
 import { Button } from '@/Components/ui/button'
-import { EmptyState } from '@/Components/ui-custom/empty-state'
 import { weekdayTranslate } from '@/lib/utils'
 import { WorkSchedule } from '@/types'
 import { Head, Link } from '@inertiajs/vue3'
 import { CalendarPlus, Pen } from 'lucide-vue-next'
 import moment from 'moment/min/moment-with-locales'
-import { PageHeader } from '@/Components/ui-custom/page-header'
 
 const props = defineProps<{
     workSchedules: WorkSchedule[]
@@ -88,7 +88,7 @@ const weekTotal = (workSchedule: WorkSchedule): number => {
                                 preserve-scroll
                                 preserve-state
                                 size="icon"
-                                variant="outline"
+                                variant="ghost"
                             >
                                 <Pen />
                             </Button>

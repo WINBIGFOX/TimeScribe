@@ -134,11 +134,7 @@ const indicatorIcon = (done: boolean) => (done ? CheckCircle2 : Circle)
                 {{ $t('app.quick check') }}
             </div>
             <div class="space-y-2">
-                <div
-                    :key="item.labelKey"
-                    class="flex items-center gap-3"
-                    v-for="item in checklist"
-                >
+                <div :key="item.labelKey" class="flex items-center gap-3" v-for="item in checklist">
                     <component
                         :is="indicatorIcon(item.done)"
                         :class="item.done ? 'text-emerald-500' : 'text-muted-foreground'"

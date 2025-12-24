@@ -34,7 +34,13 @@ const submit = () => {
 const debouncedSubmit = useDebounceFn(submit, 500)
 
 watch(
-    () => [form.startShortcut, form.stopShortcut, form.pauseShortcut, form.overviewShortcut, form.projectPickerShortcut],
+    () => [
+        form.startShortcut,
+        form.stopShortcut,
+        form.pauseShortcut,
+        form.overviewShortcut,
+        form.projectPickerShortcut
+    ],
     debouncedSubmit,
     {
         deep: true
@@ -42,7 +48,13 @@ watch(
 )
 
 watch(
-    () => [props.startShortcut, props.stopShortcut, props.pauseShortcut, props.overviewShortcut, props.projectPickerShortcut],
+    () => [
+        props.startShortcut,
+        props.stopShortcut,
+        props.pauseShortcut,
+        props.overviewShortcut,
+        props.projectPickerShortcut
+    ],
     ([start, stop, pause, overview, projectPicker]) => {
         form.defaults({
             startShortcut: start ?? undefined,

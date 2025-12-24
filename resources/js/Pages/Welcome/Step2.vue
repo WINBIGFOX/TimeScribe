@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { Button } from '@/Components/ui/button'
 import {
     NumberField,
     NumberFieldContent,
@@ -7,7 +8,6 @@ import {
     NumberFieldInput
 } from '@/Components/ui/number-field'
 import { Switch } from '@/Components/ui/switch'
-import { Button } from '@/Components/ui/button'
 import { router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
 import { ArrowRight, CheckCircle2 } from 'lucide-vue-next'
@@ -60,13 +60,13 @@ const totalEntitlementPreview = computed(() => form.vacation.default_entitlement
             <span class="font-lobster-two text-4xl italic">
                 {{ $t('app.vacation settings') }}
             </span>
-            <span class="text-white/80 text-sm">
+            <span class="text-sm text-white/80">
                 {{ $t('app.default annual entitlement') }}
             </span>
         </div>
 
         <div class="bg-background text-foreground mx-auto flex w-96 flex-col gap-4 rounded-xl p-5 shadow-lg">
-            <div class="flex items-center justify-between gap-3 rounded-lg bg-muted/10 p-3">
+            <div class="bg-muted/10 flex items-center justify-between gap-3 rounded-lg p-3">
                 <div class="space-y-1">
                     <p class="text-sm font-medium">
                         {{ $t('app.default annual entitlement') }}
@@ -99,7 +99,7 @@ const totalEntitlementPreview = computed(() => form.vacation.default_entitlement
                 </div>
             </div>
 
-            <div class="flex items-center justify-between gap-3 rounded-lg bg-muted/10 p-3">
+            <div class="bg-muted/10 flex items-center justify-between gap-3 rounded-lg p-3">
                 <div class="space-y-1">
                     <p class="text-sm font-medium">
                         {{ $t('app.carry remaining days over automatically') }}
@@ -108,10 +108,14 @@ const totalEntitlementPreview = computed(() => form.vacation.default_entitlement
                         {{ $t('app.add the unused balance of the previous year if no custom carryover is defined.') }}
                     </p>
                 </div>
-                <Switch class="self-center" v-model="form.vacation.auto_carryover" @update:model-value="debouncedSubmit" />
+                <Switch
+                    class="self-center"
+                    v-model="form.vacation.auto_carryover"
+                    @update:model-value="debouncedSubmit"
+                />
             </div>
 
-            <div class="rounded-lg bg-muted/15 p-3">
+            <div class="bg-muted/15 rounded-lg p-3">
                 <div class="flex items-center justify-between gap-3">
                     <div class="flex items-center gap-2">
                         <CheckCircle2 class="text-emerald-500" />
@@ -120,7 +124,9 @@ const totalEntitlementPreview = computed(() => form.vacation.default_entitlement
                         </div>
                     </div>
                     <div class="text-lg font-semibold tabular-nums">
-                        {{ totalEntitlementPreview.toLocaleString($page.props.js_locale, { maximumFractionDigits: 2 }) }}
+                        {{
+                            totalEntitlementPreview.toLocaleString($page.props.js_locale, { maximumFractionDigits: 2 })
+                        }}
                         {{ $t('app.days') }}
                     </div>
                 </div>
@@ -138,20 +144,11 @@ const totalEntitlementPreview = computed(() => form.vacation.default_entitlement
             <Button @click="$emit('prevStep')" class="dark:text-foreground" size="lg" variant="ghost">
                 {{ $t('app.back') }}
             </Button>
-            <Button
-                class="dark:hidden"
-                size="lg"
-                variant="secondary"
-                @click="$emit('nextStep')"
-            >
+            <Button class="dark:hidden" size="lg" variant="secondary" @click="$emit('nextStep')">
                 {{ $t('app.next') }}
                 <ArrowRight />
             </Button>
-            <Button
-                class="hidden dark:flex"
-                size="lg"
-                @click="$emit('nextStep')"
-            >
+            <Button class="hidden dark:flex" size="lg" @click="$emit('nextStep')">
                 {{ $t('app.next') }}
                 <ArrowRight />
             </Button>

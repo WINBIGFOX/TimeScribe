@@ -1,8 +1,8 @@
 <script lang="ts" setup>
+import { PageHeader } from '@/Components/ui-custom/page-header'
 import { Button } from '@/Components/ui/button'
 import { Head, Link } from '@inertiajs/vue3'
 import { FileChartPie, FileType, FolderInput, FolderOutput } from 'lucide-vue-next'
-import { PageHeader } from '@/Components/ui-custom/page-header'
 </script>
 
 <template>

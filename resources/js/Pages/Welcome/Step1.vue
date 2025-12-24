@@ -1,12 +1,4 @@
 <script lang="ts" setup>
-import {
-    AlertDialog,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle
-} from '@/Components/ui/alert-dialog'
 import { Button } from '@/Components/ui/button'
 import WorkdayTimeInput from '@/Components/WorkdayTimeInput.vue'
 import { weekdayTranslate } from '@/lib/utils'
@@ -14,7 +6,7 @@ import { router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
 import { ArrowRight, CalendarClock } from 'lucide-vue-next'
 import moment from 'moment/min/moment-with-locales'
-import { computed, ref, watch } from 'vue'
+import { computed, watch } from 'vue'
 
 const props = defineProps<{
     workSchedule?: {

@@ -37,7 +37,7 @@ const select = (value: 'fixed' | 'flexible') => {
             <span class="font-lobster-two text-4xl italic">
                 {{ $t('app.how do you want to use timescribe') }}
             </span>
-            <span class="text-white/80 text-sm">
+            <span class="text-sm text-white/80">
                 {{ $t('app.choose your mode') }}
             </span>
         </div>
@@ -46,9 +46,9 @@ const select = (value: 'fixed' | 'flexible') => {
             <button
                 :aria-pressed="props.mode === option.value"
                 :class="[
-                    'border-border/60 text-left rounded-lg border p-4 transition flex items-start gap-3',
+                    'border-border/60 flex items-start gap-3 rounded-lg border p-4 text-left transition',
                     props.mode === option.value
-                        ? 'bg-background text-foreground shadow-md border-primary/50'
+                        ? 'bg-background text-foreground border-primary/50 shadow-md'
                         : 'bg-background/80 text-foreground/80 hover:bg-background'
                 ]"
                 :key="option.value"
@@ -78,19 +78,10 @@ const select = (value: 'fixed' | 'flexible') => {
             <Button @click="$emit('prevStep')" class="dark:text-foreground" size="lg" variant="ghost">
                 {{ $t('app.back') }}
             </Button>
-            <Button
-                class="dark:hidden"
-                size="lg"
-                variant="secondary"
-                @click="$emit('nextStep')"
-            >
+            <Button class="dark:hidden" size="lg" variant="secondary" @click="$emit('nextStep')">
                 {{ $t('app.next') }}
             </Button>
-            <Button
-                class="hidden dark:flex"
-                size="lg"
-                @click="$emit('nextStep')"
-            >
+            <Button class="hidden dark:flex" size="lg" @click="$emit('nextStep')">
                 {{ $t('app.next') }}
             </Button>
         </div>

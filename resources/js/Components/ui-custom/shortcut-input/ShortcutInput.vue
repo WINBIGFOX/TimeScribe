@@ -18,16 +18,7 @@ const props = withDefaults(
 
 const modelValue = defineModel<string | null>()
 
-type Modifier =
-    | 'Cmd'
-    | 'CmdOrCtrl'
-    | 'Ctrl'
-    | 'Alt'
-    | 'Option'
-    | 'AltGr'
-    | 'Shift'
-    | 'Super'
-    | 'Meta'
+type Modifier = 'Cmd' | 'CmdOrCtrl' | 'Ctrl' | 'Alt' | 'Option' | 'AltGr' | 'Shift' | 'Super' | 'Meta'
 
 const MODIFIER_ORDER: Modifier[] = ['Cmd', 'CmdOrCtrl', 'Ctrl', 'Alt', 'Option', 'AltGr', 'Shift', 'Super', 'Meta']
 const MODIFIER_SYMBOLS: Record<Modifier, string> = {
@@ -257,9 +248,7 @@ const formatDisplay = (value: string | null | undefined): string | null => {
 
     const parts = value.split('+')
 
-    return parts
-        .map((part) => MODIFIER_SYMBOLS[part as Modifier] ?? KEY_SYMBOLS[part] ?? part)
-        .join(' + ')
+    return parts.map((part) => MODIFIER_SYMBOLS[part as Modifier] ?? KEY_SYMBOLS[part] ?? part).join(' + ')
 }
 
 const handleKeydown = (event: KeyboardEvent) => {
@@ -393,7 +382,7 @@ const hasClearButton = computed(() => Boolean(modelValue.value) && !props.requir
                 <span :class="cn('truncate', !modelValue && !recording ? 'text-muted-foreground' : undefined)">
                     {{
                         displayValue ??
-                            (recording ? $t('app.press a shortcut...') : props.placeholder ?? $t('app.select shortcut'))
+                        (recording ? $t('app.press a shortcut...') : (props.placeholder ?? $t('app.select shortcut')))
                     }}
                 </span>
                 <span v-if="recording" class="text-muted-foreground flex items-center gap-1 text-xs">
@@ -403,7 +392,7 @@ const hasClearButton = computed(() => Boolean(modelValue.value) && !props.requir
             </div>
             <Button
                 v-if="hasClearButton"
-                class="absolute right-1 top-1 h-7 w-7"
+                class="absolute top-1 right-1 h-7 w-7"
                 size="icon"
                 variant="ghost"
                 :disabled="props.disabled"

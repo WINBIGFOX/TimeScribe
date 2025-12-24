@@ -139,7 +139,7 @@ if (window.Native) {
                             :alt="item.item.name"
                             :src="item.item.icon"
                             class="size-6"
-                            onerror="this.style.opacity='0'"
+                            onerror="this.style.opacity = '0'"
                             v-if="parseInt(item.percentage) > 10"
                         />
                     </div>
@@ -176,7 +176,7 @@ if (window.Native) {
                 class="flex items-center gap-1 border-r-4 pr-2"
                 v-for="app in props.historyApp"
             >
-                <img :alt="app.name" :src="app.icon" class="size-5" onerror="this.style.opacity='0'" />
+                <img :alt="app.name" :src="app.icon" class="size-5" onerror="this.style.opacity = '0'" />
 
                 {{ app.name }}
                 <div class="text-muted-foreground ml-auto tabular-nums" v-if="app.sum >= 60">

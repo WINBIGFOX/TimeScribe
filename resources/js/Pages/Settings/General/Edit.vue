@@ -65,7 +65,7 @@ watch(holidayCheck, () => {
 
 <template>
     <Head title="Settings - General" />
-    <PageHeader :title="$t('app.general settings')"/>
+    <PageHeader :title="$t('app.general settings')" />
     <div>
         <div class="flex items-center space-x-4 py-4">
             <KeyRound />

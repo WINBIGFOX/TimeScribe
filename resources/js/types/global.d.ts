@@ -1,7 +1,7 @@
 import type { Page, PageProps } from '@inertiajs/core'
-import type { ComponentCustomProperties as VueComponentCustomProperties } from 'vue'
-import type { trans as translate, transChoice as translateChoice } from 'laravel-vue-i18n'
 import { AxiosInstance } from 'axios'
+import type { trans as translate, transChoice as translateChoice } from 'laravel-vue-i18n'
+import type { ComponentCustomProperties as VueComponentCustomProperties } from 'vue'
 import { route as ziggyRoute } from 'ziggy-js'
 import { PageProps as AppPageProps } from './'
 

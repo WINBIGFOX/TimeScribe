@@ -81,7 +81,6 @@ watch(
 )
 
 const calendarDate = computed(() => selectedMoment.value.format('YYYY-MM-DD'))
-const yearStartDate = computed(() => selectedMoment.value.clone().startOf('year').format('YYYY-MM-DD'))
 
 const entries = computed(() => props.entries)
 const hasEntries = computed(() => entries.value.length > 0)
