@@ -14,7 +14,7 @@
         "emargareten/inertia-modal": "^1.5",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel-lang/lang": "^15.26",
-        "laravel/framework": "^12.43",
+        "laravel/framework": "^12.44",
         "laravel/tinker": "^2.10",
         "nativephp/desktop": "^2.0",
         "nunomaduro/laravel-optimize-database": "^1.0",
