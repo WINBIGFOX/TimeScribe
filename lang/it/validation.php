@@ -104,4 +104,3 @@ return [
     'url' => 'Il campo :attribute deve essere un URL valido.',
     'uuid' => 'Il campo :attribute deve essere un UUID valido.',
 ];
-

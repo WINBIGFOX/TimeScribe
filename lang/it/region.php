@@ -189,4 +189,3 @@ return [
     // USA
     'US' => 'Stati Uniti',
 ];
-

@@ -140,6 +140,7 @@ return [
     'import failed' => '导入失败',
     'import successful' => '导入成功',
     'imported from :name' => '从 :name 导入',
+    'italian' => '意大利语',
     'language' => '语言',
     'language selected' => '语言已选择',
     'leave' => '休假',

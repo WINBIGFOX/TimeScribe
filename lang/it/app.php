@@ -71,7 +71,7 @@ return [
     'current minimum day hours' => 'Attuale: :value h · funziona anche per ore frazionarie/importazioni.',
     'current work schedule' => 'Orario di lavoro attuale',
     'current year' => 'Anno corrente',
-    'cw' => 'Settimana',
+    'cw' => 'sett.',
     'daily overview' => 'Panoramica giornaliera',
     'dark' => 'Scuro',
     'data export' => 'Esportazione dati',
@@ -140,6 +140,7 @@ return [
     'import failed' => 'Importazione fallita',
     'import successful' => 'Importazione riuscita',
     'imported from :name' => 'Importato da :name',
+    'italian' => 'Italiano',
     'language' => 'Lingua',
     'language selected' => 'Lingua selezionata',
     'leave' => 'Permesso',
@@ -338,6 +339,3 @@ return [
     'yes' => 'Sì',
     'yes track vacation' => 'Traccia ferie e assenze',
 ];
-
-
-
