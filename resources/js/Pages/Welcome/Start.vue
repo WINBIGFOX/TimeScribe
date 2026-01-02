@@ -4,6 +4,7 @@ import CnFlag from '@/Components/flags/CnFlag.vue'
 import DeFlag from '@/Components/flags/DeFlag.vue'
 import EnFlag from '@/Components/flags/EnFlag.vue'
 import FrFlag from '@/Components/flags/FrFlag.vue'
+import ItFlag from '@/Components/flags/ItFlag.vue'
 import UsFlag from '@/Components/flags/UsFlag.vue'
 import { Button } from '@/Components/ui/button'
 import { router } from '@inertiajs/vue3'
@@ -15,6 +16,7 @@ const locales = [
     { code: 'en_US', component: UsFlag },
     { code: 'fr_FR', component: FrFlag },
     { code: 'fr_CA', component: CaFlag },
+    { code: 'it_IT', component: ItFlag },
     { code: 'zh_CN', component: CnFlag }
 ]
 

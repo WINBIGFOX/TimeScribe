@@ -140,6 +140,7 @@ return [
     'import failed' => 'Import fehlgeschlagen',
     'import successful' => 'Import erfolgreich',
     'imported from :name' => 'Importiert von :name',
+    'italian' => 'Italienisch',
     'language' => 'Sprache',
     'language selected' => 'Sprache gewählt',
     'leave' => 'Urlaub',
