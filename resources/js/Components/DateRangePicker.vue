@@ -47,12 +47,21 @@ const updateInternalValue = () => {
 watch(externalValue, () => {
     updateInternalValue()
 })
+
 watch(value, () => {
-    externalValue.value = {
-        start: value.value.start?.toString() || '',
-        end: value.value.end?.toString() || ''
+    if (value.value.start !== undefined && value.value.end !== undefined) {
+        externalValue.value = {
+            start: value.value.start?.toString() || '',
+            end: value.value.end?.toString() || ''
+        }
+        open.value = false
     }
-    open.value = false
+})
+
+watch(open, () => {
+    if (!open.value && (value.value.start === undefined || value.value.end === undefined)) {
+        updateInternalValue()
+    }
 })
 
 const page = usePage()

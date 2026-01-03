@@ -63,11 +63,16 @@ class AppActivityController extends Controller
             'items' => AppActivityResource::collection($item),
         ])->sortByDesc('sum')->values();
 
+        $minDate = $firstActivity?->created_at ?? $startDate;
+        if ($minDate->isCurrentWeek()) {
+            $minDate = $minDate->startOfWeek();
+        }
+
         return Inertia::render('AppActivity/Index', [
             'startDate' => $startDate->format('Y-m-d'),
             'endDate' => $endDate->format('Y-m-d'),
             'maxDate' => now()->endOfWeek()->format('Y-m-d'),
-            'minDate' => $firstActivity?->created_at->format('Y-m-d') ?? $startDate->format('Y-m-d'),
+            'minDate' => $minDate->format('Y-m-d'),
             'historyApp' => $historyApp,
             'historyCategory' => $historyCategory,
             'active' => $settings->appActivityTracking ?? false,
