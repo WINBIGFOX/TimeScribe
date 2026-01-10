@@ -20,6 +20,7 @@ class LocaleService
         'en_GB' => 'en',
         'fr_CA' => 'fr',
         'fr_FR' => 'fr',
+        'it_IT' => 'it',
     ];
 
     private readonly GeneralSettings $settings;
