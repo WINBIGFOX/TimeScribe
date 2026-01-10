@@ -75,6 +75,9 @@ return [
      */
     'cleanup_exclude_files' => [
         '.env.sentry-build-plugin',
+        '.ai',
+        '.github',
+        '.junie',
         'content',
         'node_modules',
         'storage/app/framework/{sessions,testing,cache}',

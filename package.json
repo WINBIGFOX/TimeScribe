@@ -35,7 +35,7 @@
         "typescript": "5.9",
         "vite": "^7.3",
         "vue": "3.5",
-        "vue-tsc": "3.2.1"
+        "vue-tsc": "3.2.2"
     },
     "dependencies": {
         "@sentry/vite-plugin": "^4.6",
