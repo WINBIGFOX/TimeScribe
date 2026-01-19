@@ -65,7 +65,6 @@ Thank you for considering contributing to TimeScribe! This document provides gui
     ```bash
     php artisan migrate
     ```
-
    
 ### Running the Application
 
