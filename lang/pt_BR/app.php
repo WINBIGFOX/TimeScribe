@@ -71,7 +71,7 @@ return [
     'current minimum day hours' => 'Atual: :value h · funciona também para horas/importações fracionadas.',
     'current work schedule' => 'Cronograma de Trabalho Atual',
     'current year' => 'Ano atual',
-    'cw' => 'SC',
+    'cw' => 'S',
     'daily overview' => 'Visão Geral Diária',
     'dark' => 'Escuro',
     'data export' => 'Exportação de Dados',

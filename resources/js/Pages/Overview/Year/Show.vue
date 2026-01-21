@@ -10,6 +10,7 @@ import de from 'apexcharts/dist/locales/de.json'
 import en from 'apexcharts/dist/locales/en.json'
 import fr from 'apexcharts/dist/locales/fr.json'
 import it from 'apexcharts/dist/locales/it.json'
+import ptBr from 'apexcharts/dist/locales/pt-br.json'
 import zhCn from 'apexcharts/dist/locales/zh-cn.json'
 import { trans } from 'laravel-vue-i18n'
 import moment from 'moment/min/moment-with-locales'
@@ -37,6 +38,7 @@ const localeMapping = {
     'fr-FR': 'fr',
     'fr-CA': 'fr',
     'it-IT': 'it',
+    'pt-BR': 'pt-br',
     'zh-CN': 'zh-cn'
 }
 const currentLocale = localeMapping[usePage().props.js_locale]
@@ -87,7 +89,7 @@ const data = {
             },
             background: 'transparent',
             fontFamily: 'var(--font-sans)',
-            locales: [de, en, fr, it, zhCn],
+            locales: [de, en, fr, it, ptBr, zhCn],
             defaultLocale: currentLocale,
             type: 'bar',
             stacked: true,

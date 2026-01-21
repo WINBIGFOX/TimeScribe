@@ -108,7 +108,7 @@ const destroy = () => {
             <Popover>
                 <PopoverTrigger as-child>
                     <Button
-                        :class="cn('w-[280px] justify-start text-left font-normal', !value && 'text-muted-foreground')"
+                        :class="cn('w-[250px] justify-start text-left font-normal', !value && 'text-muted-foreground')"
                         variant="outline"
                     >
                         <CalendarIcon class="mr-2 h-4 w-4" />
