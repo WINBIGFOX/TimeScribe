@@ -54,7 +54,7 @@ Thank you for considering contributing to TimeScribe! This document provides gui
 5. **Database configuration and setup**:
     Update the `.env` file with your database credentials.
 
-    Optionally, if you want use sqlite for local development, follow the step below:
+    For local development, we use SQLite. Follow the steps below:
 
     ```bash
     touch database/database.sqlite
