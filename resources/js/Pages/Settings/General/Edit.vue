@@ -108,6 +108,9 @@ watch(holidayCheck, () => {
                         <SelectItem value="zh_CN">
                             {{ $t('app.chinese') }}
                         </SelectItem>
+                        <SelectItem value="pt_BR">
+                            {{ $t('app.portuguese (BR)') }}
+                        </SelectItem>
                     </SelectContent>
                 </Select>
             </div>

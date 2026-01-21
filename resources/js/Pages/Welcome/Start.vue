@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import BrFlag from '@/Components/flags/BrFlag.vue'
 import CaFlag from '@/Components/flags/CaFlag.vue'
 import CnFlag from '@/Components/flags/CnFlag.vue'
 import DeFlag from '@/Components/flags/DeFlag.vue'
@@ -17,7 +18,8 @@ const locales = [
     { code: 'fr_FR', component: FrFlag },
     { code: 'fr_CA', component: CaFlag },
     { code: 'it_IT', component: ItFlag },
-    { code: 'zh_CN', component: CnFlag }
+    { code: 'zh_CN', component: CnFlag },
+    { code: 'pt_BR', component: BrFlag }
 ]
 
 const updateLocale = (locale) => {

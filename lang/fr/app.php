@@ -179,6 +179,7 @@ return [
     'pause timer' => 'Mettre en pause / reprendre',
     'pick a date' => 'Choisir une date',
     'planned' => 'Planifié',
+    'portuguese (BR)' => 'Portugais (BR)',
     'press a shortcut...' => 'Appuyez sur un raccourci...',
     'project' => 'Projet',
     'project created from clockify import' => 'Projet créé à partir de l\'importation Clockify',
