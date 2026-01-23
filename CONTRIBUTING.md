@@ -50,9 +50,8 @@ Thank you for considering contributing to TimeScribe! This document provides gui
     cp .env.example .env
     php artisan key:generate
     ```
-   
 5. **Database configuration and setup**:
-    Update the `.env` file with your database credentials.
+   Update the `.env` file with your database credentials.
 
     For local development, we use SQLite. Follow the steps below:
 
@@ -65,7 +64,7 @@ Thank you for considering contributing to TimeScribe! This document provides gui
     ```bash
     php artisan migrate
     ```
-   
+
 ### Running the Application
 
 For local development, you can use the following commands:

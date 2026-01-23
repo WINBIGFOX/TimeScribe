@@ -25,6 +25,8 @@ yarn-error.log
 /.vscode
 /.zed
 /.vite
+/.ai
+**/mcp.json
 /dist
 
 # Sentry Config File

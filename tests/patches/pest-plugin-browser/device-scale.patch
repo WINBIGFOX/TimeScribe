@@ -1,18 +1,12 @@
+diff --git a/src/Playwright/Page.php b/src/Playwright/Page.php
 --- a/src/Playwright/Page.php
 +++ b/src/Playwright/Page.php
-@@
--        return [
--            'type' => 'png',
--            'fullPage' => $fullPage,
--            'caret' => 'hide',
--            'animations' => 'disabled',
+@@ -656,7 +656,7 @@
+         return [
+             'type' => 'png',
+             'fullPage' => $fullPage,
+             'caret' => 'hide',
+             'animations' => 'disabled',
 -            'scale' => 'css',
--        ];
-+        return [
-+            'type' => 'png',
-+            'fullPage' => $fullPage,
-+            'caret' => 'hide',
-+            'animations' => 'disabled',
 +            'scale' => 'device',
-+        ];
-    }
+         ];

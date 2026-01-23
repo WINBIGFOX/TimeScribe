@@ -4,6 +4,7 @@
         "phpstorm"
     ],
     "editors": [
+        "codex",
         "phpstorm"
     ],
     "guidelines": [],

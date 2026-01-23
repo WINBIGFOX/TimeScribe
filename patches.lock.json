@@ -1,4 +1,17 @@
 {
-    "_hash": "6142bfcb78f54dfbf5247ae5e463f25bdb8fff1890806e2e45aa81a59c211653",
-    "patches": []
+    "_hash": "c0a69ea91b56852fa82f5c745a455830eb698a0d0b962870d1eceb0f8a9aef0c",
+    "patches": {
+        "pestphp/pest-plugin-browser": [
+            {
+                "package": "pestphp/pest-plugin-browser",
+                "description": "Use device scale for browser screenshots",
+                "url": "tests/patches/pest-plugin-browser/device-scale.patch",
+                "sha256": "ded2df277baa8e175ca598515425cebd9784a6515838300d7326f70b382df0a1",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ]
+    }
 }
