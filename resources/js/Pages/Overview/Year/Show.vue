@@ -260,7 +260,7 @@ if (window.Native) {
 </script>
 
 <template>
-    <Head title="Week Overview" />
+    <Head title="Year Overview" />
 
     <PageHeader :title="$t('app.yearly overview')">
         <div class="flex flex-1 items-center justify-center text-sm">
