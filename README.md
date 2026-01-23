@@ -161,6 +161,10 @@ php artisan native:build win
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/projects_en_dark.webp?raw=true">
   <img alt="Project Tracking" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/projects_en_light.webp?raw=true">
 </picture>
+<picture >
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/project_detail_en_dark.webp?raw=true">
+  <img alt="Project Tracking" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/project_detail_en_light.webp?raw=true">
+</picture>
 </p>
 
 ### 🗓️ Absence Planning
