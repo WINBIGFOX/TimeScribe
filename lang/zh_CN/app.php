@@ -179,6 +179,7 @@ return [
     'pause timer' => '暂停/继续计时',
     'pick a date' => '选择日期',
     'planned' => '已计划',
+    'portuguese (BR)' => '葡萄牙语 (巴西)',
     'press a shortcut...' => '按下快捷键...',
     'project' => '项目',
     'project created from clockify import' => '从 Clockify 导入创建的项目',
