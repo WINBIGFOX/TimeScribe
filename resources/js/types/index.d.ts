@@ -40,10 +40,13 @@ export interface Timestamp {
     type: string
     started_at: Date
     ended_at?: Date
+    duration: number
+    billable_amount?: number
     description?: string
     last_ping_at?: Date
     source?: string
     project?: Project
+    paid: boolean
 }
 
 export interface ActivityHistory {

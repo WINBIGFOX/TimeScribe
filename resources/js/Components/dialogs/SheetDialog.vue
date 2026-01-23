@@ -74,9 +74,9 @@ const internalSubmit = () => {
         <SheetContent
             :class="{
                 'sm:max-w-[425px]': props.size === 'md',
-                'sm:max-w-3xl': props.size === 'lg'
+                'sm:max-w-none': props.size === 'lg'
             }"
-            class="inset-y-2 right-2 h-auto rounded-l-lg rounded-r border"
+            class="inset-y-2 right-2 h-auto rounded-lg border"
         >
             <form @submit.prevent="internalSubmit" class="flex h-full flex-col gap-4 pb-4 outline-none">
                 <SheetHeader class="pb-0">

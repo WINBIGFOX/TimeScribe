@@ -71,6 +71,7 @@ class ExportService
             'Hourly Rate',
             'Billable Amount',
             'Currency',
+            'Paid',
         ];
     }
 
@@ -87,8 +88,9 @@ class ExportService
             $timestamp['ended_at'] ? $timestamp['ended_at']->format('H:i:s') : '',
             $timestamp['ended_at'] ? gmdate('H:i:s', (int) $timestamp['started_at']->diffInSeconds($timestamp['ended_at'])) : '',
             $timestamp['project']?->hourly_rate ? number_format($timestamp['project']->hourly_rate, 2) : '',
-            $timestamp['project']?->billable_amount ? number_format($timestamp['project']->billable_amount, 2) : '',
-            $timestamp['project']?->currency ?? '',
+            $timestamp['duration'] && $timestamp['project']?->hourly_rate ? number_format($timestamp['duration'] / 60 * $timestamp['project']?->hourly_rate / 60, 2) : '',
+            $timestamp['project']?->hourly_rate ? $timestamp['project']?->currency ?? '' : '',
+            $timestamp['paid'] ? 'Yes' : '',
         ];
     }
 }

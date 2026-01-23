@@ -1,10 +1,21 @@
 <script setup lang="ts">
 import { Button } from '@/Components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/Components/ui/dropdown-menu'
-import { getCurrencySymbol, secToFormat } from '@/lib/utils'
+import { secToFormat } from '@/lib/utils'
 import { Project } from '@/types'
 import { Link, router } from '@inertiajs/vue3'
-import { Archive, Coins, Edit, MoreHorizontal, Timer } from 'lucide-vue-next'
+import {
+    Archive,
+    ArchiveRestore,
+    CircleCheckBig,
+    CircleEqual,
+    CircleSlash,
+    Edit,
+    FolderOpen,
+    MoreHorizontal,
+    Timer
+} from 'lucide-vue-next'
+import { computed } from 'vue'
 
 const props = defineProps<{
     project: Project
@@ -21,6 +32,20 @@ const deleteProject = (project: Project) => {
         preserveState: true
     })
 }
+
+const calcAmount = (paid: boolean) => {
+    if (!props.project.hourly_rate) {
+        return undefined
+    }
+    const duration =
+        props.project.timestamps
+            ?.filter((t) => t.paid === paid)
+            .reduce((partialSum, a) => partialSum + a.duration, 0) ?? 0
+    return ((duration / 60) * props.project.hourly_rate) / 60
+}
+
+const amountPaid = computed(() => calcAmount(true))
+const amountOpen = computed(() => calcAmount(false))
 </script>
 
 <template>
@@ -28,38 +53,16 @@ const deleteProject = (project: Project) => {
         <!-- Project -->
         <div
             :style="'--project-color: ' + (props.project.color ?? '#000000')"
-            class="b-2 rounded-md border-l-6 border-l-[var(--project-color)] bg-[var(--project-color)]/10 p-4 dark:bg-[var(--project-color)]/20"
+            class="b-2 rounded-md border-l-6 border-l-(--project-color) bg-(--project-color)/10 p-4 dark:bg-(--project-color)/20"
         >
             <div class="flex items-center justify-between tabular-nums">
                 <div class="flex flex-1 items-center gap-2">
                     <span class="text-2xl" v-if="props.project.icon">{{ props.project.icon }}</span>
-                    <div class="flex-1 font-medium">{{ props.project.name }}</div>
-
+                    <div class="flex-1 pr-2 font-medium">{{ props.project.name }}</div>
                     <div
-                        class="flex w-24 shrink-0 items-center gap-1"
-                        v-if="props.project.billable_amount && props.project.currency"
+                        class="flex shrink-0 items-center gap-1"
+                        v-if="props.project.work_time && (!props.project.hourly_rate || !props.project.currency)"
                     >
-                        <Coins class="text-muted-foreground size-4" />
-                        <span
-                            class="*:text-muted-foreground flex items-center gap-1 leading-none font-medium *:text-xs"
-                            v-html="
-                                props.project.billable_amount
-                                    .toLocaleString($page.props.js_locale, {
-                                        style: 'currency',
-                                        currency: props.project.currency,
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    })
-                                    .replace(
-                                        getCurrencySymbol($page.props.js_locale, props.project.currency),
-                                        '<span>$&amp;</span>'
-                                    )
-                                    .replace('&nbsp;', '')
-                            "
-                        >
-                        </span>
-                    </div>
-                    <div class="flex w-24 shrink-0 items-center gap-1" v-if="props.project.work_time">
                         <Timer class="text-muted-foreground size-4" />
                         <span class="font-medium">
                             {{
@@ -73,7 +76,17 @@ const deleteProject = (project: Project) => {
                         </span>
                     </div>
                 </div>
-                <DropdownMenu>
+                <Button
+                    :as="Link"
+                    :href="route('project.show', { project: props.project.id })"
+                    size="sm"
+                    variant="ghost"
+                    preserve-scroll
+                    preserve-state
+                >
+                    <FolderOpen />
+                </Button>
+                <DropdownMenu v-if="!props.project.archived_at">
                     <DropdownMenuTrigger as="div">
                         <Button class="h-8 w-8" size="icon" variant="ghost">
                             <MoreHorizontal class="h-4 w-4" />
@@ -96,20 +109,86 @@ const deleteProject = (project: Project) => {
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
+                <Button
+                    :as="Link"
+                    :href="route('project.restore', { project: props.project.id })"
+                    size="sm"
+                    method="patch"
+                    variant="ghost"
+                    preserve-scroll
+                    preserve-state
+                    v-else
+                >
+                    <ArchiveRestore />
+                </Button>
             </div>
             <div class="text-muted-foreground mt-2 text-sm" v-if="props.project.description">
                 {{ props.project.description }}
             </div>
-            <div class="text-muted-foreground mt-1 text-sm" v-if="props.project.hourly_rate && props.project.currency">
-                {{ $t('app.hourly rate') }}:
-                {{
-                    props.project.hourly_rate.toLocaleString($page.props.js_locale, {
-                        style: 'currency',
-                        currency: props.project.currency,
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 2
-                    })
-                }}
+            <div class="flex items-center justify-between" v-if="props.project.hourly_rate && props.project.currency">
+                <div class="text-muted-foreground mt-1 text-sm">
+                    {{ $t('app.hourly rate') }}:
+                    {{
+                        props.project.hourly_rate.toLocaleString($page.props.js_locale, {
+                            style: 'currency',
+                            currency: props.project.currency,
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 2
+                        })
+                    }}
+                </div>
+                <div class="flex gap-4">
+                    <div class="flex items-center gap-2 text-stone-500">
+                        <CircleSlash class="size-4" />
+                        <span class="text-sm tabular-nums">
+                            {{
+                                amountOpen?.toLocaleString($page.props.js_locale, {
+                                    style: 'currency',
+                                    currency: props.project.currency,
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                })
+                            }}
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-2 text-emerald-500">
+                        <CircleCheckBig class="size-4" />
+                        <span class="text-sm tabular-nums">
+                            {{
+                                amountPaid?.toLocaleString($page.props.js_locale, {
+                                    style: 'currency',
+                                    currency: props.project.currency,
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                })
+                            }}
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-2 text-blue-500">
+                        <CircleEqual class="size-4" />
+                        <span class="text-sm tabular-nums">
+                            {{
+                                props.project.billable_amount?.toLocaleString($page.props.js_locale, {
+                                    style: 'currency',
+                                    currency: props.project.currency,
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                })
+                            }}
+                        </span>
+                    </div>
+                    <div class="text-muted-foreground flex items-center gap-2">
+                        <Timer class="size-4" />
+                        <span class="text-sm tabular-nums">
+                            {{
+                                (props.project.work_time ?? 0) > 59
+                                    ? secToFormat(props.project.work_time ?? 0, false, true, true)
+                                    : (props.project.work_time ?? 0).toFixed(0)
+                            }}
+                            {{ (props.project.work_time ?? 0) > 59 ? $t('app.h') : $t('app.s') }}
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

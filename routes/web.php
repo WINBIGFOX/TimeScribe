@@ -127,7 +127,8 @@ Route::resource('work-schedule', WorkScheduleController::class)->only('index', '
 
 Route::resource('app-activity', AppActivityController::class)->only(['index', 'show']);
 
-Route::resource('project', ProjectController::class);
+Route::patch('project/{project}/restore', new ProjectController()->restore(...))->name('project.restore')->withTrashed();
+Route::resource('project', ProjectController::class)->withTrashed();
 
 Route::name('absence.')->prefix('absence')->group(function (): void {
     Route::get('', new AbsenceController()->index(...))->name('index');
@@ -147,6 +148,7 @@ Route::get('timestamp/create/{datetime}/{endDatetime?}', new TimestampController
     ->where('endDatetime', '\d{4}-\d{2}-\d{2}\s\d{2}\:\d{2}\:\d{2}');
 Route::post('timestamp/{datetime}', new TimestampController()->store(...))->name('timestamp.store');
 Route::resource('timestamp', TimestampController::class)->only(['edit', 'update', 'destroy']);
+Route::patch('timestamp/{timestamp}/paid', new TimestampController()->updatePaid(...))->name('timestamp.update.paid');
 Route::post('timestamp/fill', new TimestampController()->fill(...))->name('timestamp.fill');
 
 Route::name('bug-and-feedback.')->prefix('bug-and-feedback')->group(function (): void {

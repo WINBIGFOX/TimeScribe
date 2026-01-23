@@ -35,21 +35,21 @@ class Project extends Model
             ->orderByRaw('last_started_at IS NULL DESC, last_started_at DESC');
     }
 
-    public function timestamps(): HasMany
+    public function timestampItems(): HasMany
     {
-        return $this->hasMany(Timestamp::class)->oldest('started_at');
+        return $this->hasMany(Timestamp::class)->latest('started_at');
     }
 
     protected function getWorkTimeAttribute(): float
     {
-        $timestamps = $this->timestamps()->get();
+        $timestamps = $this->timestampItems()->get();
 
         if ($timestamps->isEmpty()) {
             return 0.0;
         }
 
-        $firstTimestamp = $timestamps->first();
-        $lastTimestamp = $timestamps->last();
+        $firstTimestamp = $timestamps->last();
+        $lastTimestamp = $timestamps->first();
 
         return TimestampService::getWorkTime(
             date: $firstTimestamp->started_at,

@@ -30,7 +30,7 @@ class ProjectResource extends JsonResource
             'icon' => $this->icon,
             'hourly_rate' => $this->hourly_rate,
             'currency' => $this->currency,
-            // 'timestamps' => TimestampResource::collection($this->whenLoaded('timestamps')),
+            'timestamps' => TimestampResource::collection($this->whenLoaded('timestampItems')),
             'work_time' => $this->whenAppended('work_time'),
             'billable_amount' => $this->whenAppended('billable_amount'),
             'archived_at' => DateHelper::toResourceArray($this->deleted_at),

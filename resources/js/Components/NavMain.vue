@@ -99,9 +99,12 @@ router.on('navigate', () => {
                 <SidebarMenuButton as-child>
                     <Link
                         :class="{
-                            'text-primary! font-bold': ['project.index', 'project.edit', 'project.create'].includes(
-                                current ?? ''
-                            )
+                            'text-primary! font-bold': [
+                                'project.index',
+                                'project.edit',
+                                'project.create',
+                                'project.show'
+                            ].includes(current ?? '')
                         }"
                         :href="route('project.index')"
                         class="transition-[color,background-color,font-weight] duration-200"

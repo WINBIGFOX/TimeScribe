@@ -25,7 +25,7 @@ class ProjectController extends Controller
      */
     public function index(ProjectSettings $projectSettings)
     {
-        $projects = Project::with('timestamps')->scopes('sortedByLatestTimestamp')->get()->append(['work_time', 'billable_amount']);
+        $projects = Project::with('timestampItems')->withTrashed()->scopes('sortedByLatestTimestamp')->get()->append(['work_time', 'billable_amount']);
 
         return Inertia::render('Project/Index', [
             'projects' => fn () => ProjectResource::collection($projects),
@@ -59,6 +59,16 @@ class ProjectController extends Controller
         }
 
         return to_route('project.index');
+    }
+
+    public function show(Project $project)
+    {
+        $project->load('timestampItems.project')->append(['billable_amount']);
+
+        return Inertia::modal('Project/Show', [
+            'project' => ProjectResource::make($project),
+            'currencies' => collect(CurrencyAlpha3::cases())->mapWithKeys(fn (CurrencyAlpha3 $currency): array => [$currency->value => $currency->value.($currency->getSymbol() instanceof CurrencySymbol ? ' ('.$currency->getSymbol()->value.')' : '')])->sortKeys(),
+        ])->baseRoute('project.index');
     }
 
     /**
@@ -112,6 +122,13 @@ class ProjectController extends Controller
         }
 
         $project->delete();
+
+        return to_route('project.index');
+    }
+
+    public function restore(Project $project): Redirector|RedirectResponse
+    {
+        $project->restore();
 
         return to_route('project.index');
     }

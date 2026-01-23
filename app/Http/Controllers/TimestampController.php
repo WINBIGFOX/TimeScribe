@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DestroyTimestampRequest;
 use App\Http\Requests\FillTimestampRequest;
 use App\Http\Requests\StoreTimestampRequest;
+use App\Http\Requests\UpdateTimestampPaidRequest;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TimestampResource;
 use App\Jobs\CalculateWeekBalance;
@@ -334,5 +335,13 @@ class TimestampController extends Controller
         }
 
         return to_route('overview.day.show', ['date' => $timestampBefore->created_at->format('Y-m-d')]);
+    }
+
+    public function updatePaid(UpdateTimestampPaidRequest $request, Timestamp $timestamp): void
+    {
+        $data = $request->validated();
+
+        $timestamp->paid = $data['paid'];
+        $timestamp->save();
     }
 }

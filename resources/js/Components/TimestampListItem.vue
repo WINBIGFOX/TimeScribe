@@ -97,17 +97,20 @@ const destroy = () => {
             </div>
         </div>
         <div class="flex flex-1 grow flex-col gap-1" v-if="props.timestamp.project">
-            <div
+            <Link
+                preserve-scroll
+                preserve-state
+                :href="route('project.show', { project: props.timestamp.project.id })"
                 :style="'--project-color: ' + (props.timestamp.project.color ?? '#000000')"
-                class="mx-2 flex h-9 items-center gap-2 rounded-md border-l-6 border-l-[var(--project-color)] bg-[var(--project-color)]/10 px-2 text-sm font-medium dark:bg-[var(--project-color)]/20"
+                class="mx-2 flex h-9 items-center gap-2 rounded-md border-l-6 border-l-(--project-color) bg-(--project-color)/10 px-2 text-sm font-medium hover:bg-(--project-color)/20 dark:bg-(--project-color)/20 dark:hover:bg-(--project-color)/30"
             >
                 <div class="flex h-9 shrink-0 items-center text-xl" v-if="props.timestamp.project.icon">
                     {{ props.timestamp.project.icon }}
                 </div>
-                <div class="line-clamp-1">
+                <div class="line-clamp-1 flex-1">
                     {{ props.timestamp.project.name }}
                 </div>
-            </div>
+            </Link>
         </div>
         <div class="flex grow flex-col gap-1" v-if="props.timestamp.description">
             <span class="text-muted-foreground text-xs leading-none">
