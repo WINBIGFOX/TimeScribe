@@ -65,6 +65,7 @@ remote, hybrid, or office-based, TimeScribe helps you stay focused and organized
 - 🇫🇷 French (FR/CA)
 - 🇩🇪 German
 - 🇮🇹 Italian
+- 🇧🇷 Portuguese (BR)
 - 🇨🇳 Chinese (中文)
 
 ---

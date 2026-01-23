@@ -267,7 +267,7 @@ const removeProject = () => {
                 <div v-if="props.currentProject && showProject" class="px-2">
                     <div
                         :style="'--project-color: ' + (props.currentProject.color ?? '#000000')"
-                        class="transition-color mt-2 flex h-9 shrink-0 items-center gap-2 rounded-md border-l-6 border-l-[var(--project-color)] bg-[var(--project-color)]/10 pl-2 text-sm font-medium duration-1000 dark:bg-[var(--project-color)]/20"
+                        class="transition-color mt-2 flex h-9 shrink-0 items-center gap-2 rounded-md border-l-6 border-l-(--project-color) bg-(--project-color)/10 pl-2 text-sm font-medium duration-1000 dark:bg-(--project-color)/20"
                     >
                         <div class="flex h-9 shrink-0 items-center text-xl" v-if="props.currentProject.icon">
                             {{ props.currentProject.icon }}
@@ -307,7 +307,7 @@ const removeProject = () => {
                         <template :key="project.id" v-for="project in props.projects">
                             <div
                                 :style="'--project-color: ' + (project.color ?? '#000000')"
-                                class="mx-2 flex h-9 items-center gap-2 rounded-md border-l-6 border-l-[var(--project-color)] bg-[var(--project-color)]/10 py-1 pl-2 text-sm font-medium dark:bg-[var(--project-color)]/20"
+                                class="mx-2 flex h-9 items-center gap-2 rounded-md border-l-6 border-l-(--project-color) bg-(--project-color)/10 py-1 pl-2 text-sm font-medium dark:bg-(--project-color)/20"
                                 v-if="project.id !== props.currentProject?.id"
                             >
                                 <div class="flex h-9 shrink-0 items-center text-xl" v-if="project.icon">
