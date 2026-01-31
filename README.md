@@ -1,9 +1,10 @@
-<p align="center">
-  <a href="https://timescribe.app" target="_blank">
-    <img src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/icon.png?raw=true" width="130" alt="TimeScribe Logo">
-  </a>
-</p>
-<h1 align="center">TimeScribe</h1>
+<a href="https://timescribe.app?utm_source=github&utm_medium=banner" target="_blank">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/banner_dark.png?raw=true">
+    <img alt="Banner TimeScribe" src="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/banner_light.png?raw=true">
+  </picture>
+</a>
+
 <p align="center">
   <b>Smart & private time tracking for macOS & Windows</b><br/>
 Track, analyze and own your work hours—no cloud, no registration, no paywall.
@@ -131,8 +132,8 @@ php artisan native:build win
 
 <p align="center">
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/menubar_dark.png?raw=true">
-        <img alt="Menu Bar" width="550" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/menubar_light.png?raw=true">
+        <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/menubar_dark.png?raw=true">
+        <img alt="Menu Bar" width="550" src="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/menubar_light.png?raw=true">
     </picture>
 </p>
 
@@ -140,8 +141,8 @@ php artisan native:build win
 
 <p align="center">
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/dayview_en_dark.webp?raw=true">
-  <img alt="Time Tracking" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/dayview_en_light.webp?raw=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/dayview_en_dark.webp?raw=true">
+  <img alt="Time Tracking" src="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/dayview_en_light.webp?raw=true">
 </picture>
 </p>
 
@@ -149,8 +150,8 @@ php artisan native:build win
 
 <p align="center">
 <picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/app_activity_en_dark.webp?raw=true">
-  <img alt="App Activity" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/app_activity_en_light.webp?raw=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/app_activity_en_dark.webp?raw=true">
+  <img alt="App Activity" src="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/app_activity_en_light.webp?raw=true">
 </picture>
 </p>
 
@@ -158,12 +159,12 @@ php artisan native:build win
 
 <p align="center">
 <picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/projects_en_dark.webp?raw=true">
-  <img alt="Project Tracking" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/projects_en_light.webp?raw=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/projects_en_dark.webp?raw=true">
+  <img alt="Project Tracking" src="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/projects_en_light.webp?raw=true">
 </picture>
 <picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/project_detail_en_dark.webp?raw=true">
-  <img alt="Project Tracking" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/project_detail_en_light.webp?raw=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/project_detail_en_dark.webp?raw=true">
+  <img alt="Project Tracking" src="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/project_detail_en_light.webp?raw=true">
 </picture>
 </p>
 
@@ -171,8 +172,8 @@ php artisan native:build win
 
 <p align="center">
 <picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/absences_en_dark.webp?raw=true">
-  <img alt="Absence Planning" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/absences_en_light.webp?raw=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/absences_en_dark.webp?raw=true">
+  <img alt="Absence Planning" src="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/absences_en_light.webp?raw=true">
 </picture>
 </p>
 
@@ -180,8 +181,8 @@ php artisan native:build win
 
 <p align="center">
 <picture >
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/start_break_en_dark.webp?raw=true">
-  <img alt="Automatic Start/Pause" src="https://github.com/WINBIGFOX/Stempeluhr/blob/main/.github/images/start_break_en_light.webp?raw=true">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/start_break_en_dark.webp?raw=true">
+  <img alt="Automatic Start/Pause" src="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/start_break_en_light.webp?raw=true">
 </picture>
 </p>
 
