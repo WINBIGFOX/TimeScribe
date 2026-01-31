@@ -6,8 +6,11 @@
 </a>
 
 <p align="center">
-  <b>Smart & private time tracking for macOS & Windows</b><br/>
-Track, analyze and own your work hours—no cloud, no registration, no paywall.
+  <b>Smart & Private Time Tracking for macOS & Windows</b>
+</p>
+<p align="center">
+  <b>Track, analyze and own your work hours</b><br/>
+  No cloud. No registration. No paywall. Just productivity.
 </p>
 
 <p align="center">
@@ -37,14 +40,25 @@ Track, analyze and own your work hours—no cloud, no registration, no paywall.
 
 ---
 
-## 🕒 Description
+## 🚀 About
 
-**TimeScribe** is a modern, flexible time clock app for accurately tracking and managing working hours. Whether you're
-remote, hybrid, or office-based, TimeScribe helps you stay focused and organized with minimal effort.
+**TimeScribe is the easiest way to track your work hours — without the hassle.**
+
+It is designed for everyone who needs to keep track of their time but doesn't want to pay for a subscription, create an
+account, or upload their private data to the cloud. Whether you are a freelancer billing clients, a remote worker
+logging hours, or just want to improve your personal productivity, TimeScribe gives you full control.
+
+**Why use TimeScribe?**
+
+- Completely Free: No hidden costs, no premium plans, no paywalls.
+- No Registration: No email required. Just download, open, and start tracking.
+- 100% Offline & Private: Your data stays on your device. We don't track you.
+
+Simply put: It's a professional time tracking tool that respects your privacy and your wallet.
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
 - ✅ Start, pause, and stop tracking with one click
 - 📊 Visualize your day and weekly work patterns
@@ -60,7 +74,7 @@ remote, hybrid, or office-based, TimeScribe helps you stay focused and organized
 
 ---
 
-## 💬 Supported Languages
+## 🌍 Supported Languages
 
 - 🇬🇧 English (UK/US)
 - 🇫🇷 French (FR/CA)
@@ -188,7 +202,20 @@ php artisan native:build win
 
 ---
 
+## 🛠️ Tech Stack
+
+TimeScribe is built with a modern stack, leveraging the best of web and desktop technologies:
+
+- Core: [Laravel](https://laravel.com/) (PHP)
+- Desktop Runtime: [NativePHP](https://nativephp.com/) (Electron)
+- Frontend: [Vue.js](https://vuejs.org/) + [Tailwind CSS](https://tailwindcss.com/)
+- Database: SQLite (Local)
+
+---
+
 ## 👥 Community & Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
 - 👉 [GitHub Discussions](https://github.com/WINBIGFOX/TimeScribe/discussions)
 - 🐞 [GitHub Issues](https://github.com/WINBIGFOX/TimeScribe/issues)
@@ -199,7 +226,8 @@ php artisan native:build win
 
 ## 💖 Sponsor & License
 
-<b>Love TimeScribe?</b><br/>
+If TimeScribe helps you save time or money, please consider supporting the development.
+
 <a href="https://github.com/sponsors/WINBIGFOX" target="_blank">
 <img src="https://img.shields.io/badge/GitHub Sponsors-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" />
 </a>
@@ -207,4 +235,5 @@ php artisan native:build win
 <img height="28px" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" />
 </a>
 
-This project is licensed under the [GPL-3.0 License](LICENSE).
+## 📄 License
+Distributed under the GPL-3.0 License. See [LICENSE](LICENSE) for more information.
