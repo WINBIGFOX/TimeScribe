@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Date;
 
 class TimestampService
 {
-    private static function create(TimestampTypeEnum $type): void
+    private static function start(TimestampTypeEnum $type): void
     {
         $project = null;
         if ($type === TimestampTypeEnum::WORK) {
@@ -61,14 +61,14 @@ class TimestampService
     public static function startWork(): void
     {
         self::makeEndings();
-        self::create(TimestampTypeEnum::WORK);
+        self::start(TimestampTypeEnum::WORK);
         TimerStarted::broadcast();
     }
 
     public static function startBreak(): void
     {
         self::makeEndings();
-        self::create(TimestampTypeEnum::BREAK);
+        self::start(TimestampTypeEnum::BREAK);
         TimerStopped::broadcast();
     }
 
@@ -379,5 +379,87 @@ class TimestampService
     {
         return WeekBalance::where('end_week_at', '<', $currentDate->startOfWeek())
             ->sum('balance') ?? 0;
+    }
+
+    public static function create(Carbon $date, Carbon $endDate, TimestampTypeEnum $type, ?string $description = null, ?int $projectId = null): void
+    {
+        if ($endDate->lessThanOrEqualTo($date)) {
+            return;
+        }
+
+        $start = $date->copy();
+        $end = $endDate->copy();
+
+        $overlappingTimestamps = Timestamp::where('started_at', '<', $end)
+            ->where(function ($query) use ($start): void {
+                $query->whereNull('ended_at')
+                    ->orWhere('ended_at', '>', $start);
+            })
+            ->oldest('started_at')
+            ->get();
+
+        foreach ($overlappingTimestamps as $timestamp) {
+            $timestampEnd = $timestamp->ended_at ?? $timestamp->last_ping_at ?? $timestamp->started_at;
+
+            if ($timestampEnd->lessThanOrEqualTo($start) || $timestamp->started_at->greaterThanOrEqualTo($end)) {
+                continue;
+            }
+
+            if ($timestamp->started_at->greaterThanOrEqualTo($start) && $timestampEnd->lessThanOrEqualTo($end)) {
+                $timestamp->delete();
+
+                continue;
+            }
+
+            if ($timestamp->started_at->lessThan($start) && $timestampEnd->greaterThan($end)) {
+                $timestamp->update([
+                    'ended_at' => $start->copy(),
+                    'last_ping_at' => $start->copy(),
+                ]);
+
+                Timestamp::create([
+                    'type' => $timestamp->type,
+                    'project_id' => $timestamp->project_id,
+                    'description' => $timestamp->description,
+                    'source' => $timestamp->source,
+                    'paid' => $timestamp->paid,
+                    'started_at' => $end->copy(),
+                    'ended_at' => $timestampEnd->copy(),
+                    'last_ping_at' => $timestampEnd->copy(),
+                ]);
+
+                continue;
+            }
+
+            if ($timestamp->started_at->lessThan($start) && $timestampEnd->greaterThan($start)) {
+                $timestamp->update([
+                    'ended_at' => $start->copy(),
+                    'last_ping_at' => $start->copy(),
+                ]);
+
+                continue;
+            }
+
+            if ($timestamp->started_at->lessThan($end) && $timestampEnd->greaterThan($end)) {
+                $updates = [
+                    'started_at' => $end->copy(),
+                ];
+
+                if ($timestamp->last_ping_at instanceof Carbon && $timestamp->last_ping_at->lessThan($end)) {
+                    $updates['last_ping_at'] = $end->copy();
+                }
+
+                $timestamp->update($updates);
+            }
+        }
+
+        Timestamp::create([
+            'type' => $type,
+            'project_id' => $projectId,
+            'started_at' => $start->copy(),
+            'ended_at' => $end->copy(),
+            'last_ping_at' => $end->copy(),
+            'description' => $description,
+        ]);
     }
 }

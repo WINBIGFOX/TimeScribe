@@ -144,7 +144,7 @@ Route::name('absence.')->prefix('absence')->group(function (): void {
     Route::post('vacation-entitlement', new VacationEntitlementController()->update(...))->name('vacation-entitlement.update');
 });
 
-Route::get('timestamp/create/{datetime}/{endDatetime?}', new TimestampController()->create(...))->name('timestamp.create')
+Route::get('timestamp/create/{datetime}/{endDatetime?}/{type?}', new TimestampController()->create(...))->name('timestamp.create')
     ->where('endDatetime', '\d{4}-\d{2}-\d{2}\s\d{2}\:\d{2}\:\d{2}');
 Route::post('timestamp/{datetime}', new TimestampController()->store(...))->name('timestamp.store');
 Route::resource('timestamp', TimestampController::class)->only(['edit', 'update', 'destroy']);
