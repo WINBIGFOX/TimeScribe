@@ -25,7 +25,6 @@ const props = defineProps<{
 const page = usePage()
 const locale = computed(() => page.props.js_locale)
 const summary = computed(() => props.summary)
-const selectedMoment = computed(() => moment(props.date, 'DD.MM.YYYY'))
 
 const form = useForm({
     year: props.entitlement.year,
@@ -80,8 +79,6 @@ watch(
     { deep: true }
 )
 
-const calendarDate = computed(() => selectedMoment.value.format('YYYY-MM-DD'))
-
 const entries = computed(() => props.entries)
 const hasEntries = computed(() => entries.value.length > 0)
 </script>
@@ -103,13 +100,7 @@ const hasEntries = computed(() => entries.value.length > 0)
             >
                 {{ $t('app.today') }}
             </Button>
-            <Button
-                :as="Link"
-                :href="route('absence.show', { date: calendarDate })"
-                prefetch
-                size="sm"
-                variant="outline"
-            >
+            <Button :as="Link" :href="route('absence.show', { date: props.date })" prefetch size="sm" variant="outline">
                 {{ $t('app.calendar view') }}
             </Button>
         </div>
@@ -141,7 +132,7 @@ const hasEntries = computed(() => entries.value.length > 0)
                         {{ $t('app.days') }}
                     </div>
                     <Link
-                        :href="route('absence.vacation-entitlement.edit', { date: calendarDate })"
+                        :href="route('absence.vacation-entitlement.edit', { date: props.date })"
                         class="bg-background/50 absolute inset-0 flex flex-col items-center justify-center gap-2 rounded-lg p-4 opacity-0 backdrop-blur-xs transition-all duration-300 group-hover:opacity-100"
                     >
                         <Pen />
@@ -276,7 +267,7 @@ const hasEntries = computed(() => entries.value.length > 0)
                 </div>
                 <div class="flex flex-1 items-center justify-center" v-else>
                     <EmptyState
-                        :action-href="route('absence.show', { date: calendarDate })"
+                        :action-href="route('absence.show', { date: props.date })"
                         :action-label="$t('app.create vacation entry')"
                         :description="$t('app.no vacation days recorded for this year yet.')"
                         :title="$t('app.vacation entries')"

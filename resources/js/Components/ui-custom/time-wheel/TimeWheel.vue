@@ -14,7 +14,7 @@ const props = defineProps<{
 }>()
 
 const items = computed(() => {
-    const currentMoment = moment(props.date, 'DD.MM.YYYY')
+    const currentMoment = moment(props.date, 'YYYY-MM-DD')
     const thirdPreviousMoment = currentMoment.clone().subtract(3, props.type)
     const secondPreviousMoment = currentMoment.clone().subtract(2, props.type)
     const previousMoment = currentMoment.clone().subtract(1, props.type)

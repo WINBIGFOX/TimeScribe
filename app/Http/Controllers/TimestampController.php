@@ -79,7 +79,7 @@ class TimestampController extends Controller
             $endDatetime = $maxTime;
         }
 
-        Inertia::share(['date' => $datetime->format('d.m.Y')]);
+        Inertia::share(['date' => $datetime->format('Y-m-d')]);
 
         return Inertia::modal('Timestamp/Create', [
             'min_time' => $minTime->format('H:i'),
@@ -150,7 +150,7 @@ class TimestampController extends Controller
             $endTime = $endTime->endOfDay();
         }
 
-        Inertia::share(['date' => $datetime->format('d.m.Y')]);
+        Inertia::share(['date' => $datetime->format('Y-m-d')]);
 
         Timestamp::create([
             'type' => $data['type'],
@@ -193,7 +193,7 @@ class TimestampController extends Controller
             $maxTime = $timestampAfter ? $timestampAfter->started_at : $timestamp->ended_at->copy()->endOfDay();
         }
 
-        Inertia::share(['date' => $timestamp->created_at->format('d.m.Y')]);
+        Inertia::share(['date' => $timestamp->created_at->format('Y-m-d')]);
 
         return Inertia::modal('Timestamp/Edit', [
             'min_time' => $minTime->format('H:i'),
@@ -268,7 +268,7 @@ class TimestampController extends Controller
             $workingEndTime = $workingEndTime->endOfDay();
         }
 
-        Inertia::share(['date' => $startTime->format('d.m.Y')]);
+        Inertia::share(['date' => $startTime->format('Y-m-d')]);
 
         $timestamp->type = $data['type'];
         $timestamp->started_at = $startTime;
@@ -299,7 +299,7 @@ class TimestampController extends Controller
      */
     public function destroy(DestroyTimestampRequest $request, Timestamp $timestamp): Redirector|RedirectResponse
     {
-        Inertia::share(['date' => $timestamp->started_at->format('d.m.Y')]);
+        Inertia::share(['date' => $timestamp->started_at->format('Y-m-d')]);
         $date = $timestamp->started_at->format('Y-m-d');
         $isToday = $timestamp->started_at->isToday();
         $request->validated();
