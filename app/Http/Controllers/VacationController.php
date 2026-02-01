@@ -45,7 +45,7 @@ class VacationController extends Controller
         $hasWorkSchedule = WorkSchedule::exists();
 
         return Inertia::render('Absence/Vacation/Index', [
-            'date' => $referenceDate->format('d.m.Y'),
+            'date' => $referenceDate->format('Y-m-d'),
             'summary' => [
                 'taken' => $context['summary']['taken'],
                 'planned' => $context['summary']['planned'],

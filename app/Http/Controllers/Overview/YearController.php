@@ -73,7 +73,7 @@ class YearController extends Controller
         }
 
         return Inertia::render('Overview/Year/Show', [
-            'date' => $date->format('d.m.Y'),
+            'date' => $date->format('Y-m-d'),
             'breakTimes' => $breakTimes,
             'workTimes' => $hasWorkSchedule ? $workTimes : $fullWorkTimes,
             'overtimes' => $overtimes,

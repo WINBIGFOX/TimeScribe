@@ -13,11 +13,11 @@ import { AppWindowMac, ChartColumnBig, Cog, FileChartColumn, FileClock, Tag, Ten
 import moment from 'moment/min/moment-with-locales'
 import { ref } from 'vue'
 
-const date = ref(moment(usePage().props.date ?? undefined, 'DD.MM.YYYY').format('YYYY-MM-DD'))
+const date = ref(usePage().props.date ?? moment().format('YYYY-MM-DD'))
 const current = ref(route().current())
 
 router.on('navigate', () => {
-    date.value = moment(usePage().props.date ?? undefined, 'DD.MM.YYYY').format('YYYY-MM-DD')
+    date.value = usePage().props.date ?? moment().format('YYYY-MM-DD')
     current.value = route().current()
 })
 </script>

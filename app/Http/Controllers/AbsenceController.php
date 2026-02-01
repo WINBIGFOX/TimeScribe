@@ -66,7 +66,7 @@ class AbsenceController extends Controller
             'plans' => $plans,
             'hasWorkSchedules' => WorkSchedule::exists(),
             'holidays' => $holidays->map(fn (?Carbon $holidayDate): ?array => DateHelper::toResourceArray($holidayDate)),
-            'date' => $date->format('d.m.Y'),
+            'date' => $date->format('Y-m-d'),
         ]);
     }
 

@@ -42,7 +42,7 @@ class DayController extends Controller
             'dayFallbackPlan' => TimestampService::getFallbackPlan($startDay, $endDay),
             'dayNoWorkTime' => TimestampService::getNoWorkTime($startDay),
             'absences' => TimestampService::getAbsence($startDay),
-            'date' => $date->format('d.m.Y'),
+            'date' => $date->format('Y-m-d'),
             'isHoliday' => HolidayService::isHoliday($startDay),
             'hasWorkSchedules' => WorkSchedule::exists(),
         ]);

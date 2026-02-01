@@ -43,7 +43,7 @@ class HandleInertiaRequests extends Middleware
             'locale' => $settings->locale ?? config('app.fallback_locale'),
             'timezone' => $settings->timezone ?? config('app.timezone'),
             'app_version' => config('nativephp.version'),
-            'date' => now()->format('d.m.Y'),
+            'date' => now()->format('Y-m-d'),
             'recording' => (bool) TimestampService::getCurrentType(),
             'environment' => PHP_OS_FAMILY,
         ];

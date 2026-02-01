@@ -7,9 +7,7 @@ import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
 import { WeekdayObject } from '@/types'
 import { Head, Link, router } from '@inertiajs/vue3'
-import { CalendarDate, type DateValue } from '@internationalized/date'
 import moment from 'moment/min/moment-with-locales'
-import { Ref, ref, watch } from 'vue'
 
 const props = defineProps<{
     date: string
@@ -26,27 +24,6 @@ const props = defineProps<{
     hasWorkSchedules: boolean
     weekdays: Record<string, WeekdayObject>
 }>()
-
-const routeDate = moment(props.date, 'DD.MM.YYYY')
-
-const selectedDate = ref(new CalendarDate(routeDate.year(), routeDate.month() + 1, routeDate.date())) as Ref<DateValue>
-
-watch(
-    () => selectedDate.value,
-    (newVal) => visitDate(newVal.toString())
-)
-
-const visitDate = (date: string) => {
-    router.visit(
-        route('overview.show', {
-            date: date
-        }),
-        {
-            preserveScroll: true,
-            preserveState: true
-        }
-    )
-}
 
 const openDayView = (date: string) => {
     router.visit(
@@ -75,7 +52,6 @@ if (window.Native) {
 
 <template>
     <Head title="Week Overview" />
-
     <PageHeader :title="$t('app.weekly overview')">
         <div class="flex flex-1 items-center justify-center text-sm">
             <TimeWheel :date="props.date" route="overview.week.show" type="week" />

@@ -16,7 +16,7 @@ const props = defineProps<{
     holidays: Date[]
 }>()
 
-const momentSelectedDate = computed(() => moment(props.date, 'DD.MM.YYYY'))
+const momentSelectedDate = computed(() => moment(props.date, 'YYYY-MM-DD'))
 
 const calendar = computed(() => {
     const startMonth = momentSelectedDate.value.clone().startOf('month')
@@ -51,7 +51,7 @@ const createAbsence = (type: 'vacation' | 'sick', date: string, duration?: numbe
     router.flushAll()
     router.post(
         route('absence.store', {
-            date: moment(props.date, 'DD.MM.YYYY').format('YYYY-MM-DD')
+            date: props.date
         }),
         {
             type,
@@ -69,7 +69,7 @@ const removeAbsence = (id: number) => {
     router.flushAll()
     router.delete(
         route('absence.destroy', {
-            date: moment(props.date, 'DD.MM.YYYY').format('YYYY-MM-DD'),
+            date: props.date,
             absence: id
         }),
         {

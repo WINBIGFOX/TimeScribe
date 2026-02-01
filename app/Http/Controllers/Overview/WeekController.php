@@ -73,7 +73,7 @@ class WeekController extends Controller
         }
 
         return Inertia::render('Overview/Week/Show', [
-            'date' => $date->format('d.m.Y'),
+            'date' => $date->format('Y-m-d'),
             'week' => $week,
             'startOfWeek' => $startOfWeek,
             'endOfWeek' => $endOfWeek,

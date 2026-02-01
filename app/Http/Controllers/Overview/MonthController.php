@@ -63,7 +63,7 @@ class MonthController extends Controller
         }
 
         return Inertia::render('Overview/Month/Show', [
-            'date' => $date->format('d.m.Y'),
+            'date' => $date->format('Y-m-d'),
             'breakTimes' => $breakTimes,
             'workTimes' => $hasWorkSchedule ? $workTimes : $fullWorkTimes,
             'overtimes' => $overtimes,

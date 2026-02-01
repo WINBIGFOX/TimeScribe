@@ -26,8 +26,8 @@ const props = defineProps<{
 const calcDuration = (startTimestamp: string, endTimestamp?: string) =>
     Math.floor(moment(startTimestamp).diff(endTimestamp).valueOf() / 1000 / 60)
 
-const startOfDay = moment(props.date, 'DD.MM.YYYY').format('YYYY-MM-DD 00:00:00')
-const isFuture = moment().isBefore(moment(props.date, 'DD.MM.YYYY'), 'day')
+const startOfDay = props.date + ' 00:00:00'
+const isFuture = moment().isBefore(moment(props.date, 'YYYY-MM-DD'), 'day')
 
 const reload = () => {
     router.flushAll()

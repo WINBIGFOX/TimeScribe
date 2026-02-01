@@ -20,8 +20,8 @@ const props = withDefaults(
 )
 
 const timeline = ref<Record<string, Timestamp | undefined>>({})
-const isToday = moment().isSame(moment(props.date, 'DD.MM.YYYY'), 'day')
-const isFuture = moment().isBefore(moment(props.date, 'DD.MM.YYYY'), 'day')
+const isToday = moment().isSame(moment(props.date, 'YYYY-MM-DD'), 'day')
+const isFuture = moment().isBefore(moment(props.date, 'YYYY-MM-DD'), 'day')
 
 const parseTimestamps = () => {
     props.timestamps.forEach((timestamp) => {
@@ -123,7 +123,7 @@ const dragStop = () => {
 }
 
 const createDateTimeFromIndex = (index: number, addMinutes?: number) => {
-    const date = moment(props.date, 'DD.MM.YYYY')
+    const date = moment(props.date, 'YYYY-MM-DD')
     const hours = Math.floor(index / 100)
     const minutes = index % 100
     date.hour(hours)
