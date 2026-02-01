@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\TimestampTypeEnum;
 use App\Http\Requests\DestroyTimestampRequest;
 use App\Http\Requests\FillTimestampRequest;
 use App\Http\Requests\StoreTimestampRequest;
@@ -14,6 +15,7 @@ use App\Jobs\CalculateWeekBalance;
 use App\Jobs\MenubarRefresh;
 use App\Models\Project;
 use App\Models\Timestamp;
+use App\Services\TimestampService;
 use App\Settings\ProjectSettings;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -26,7 +28,7 @@ class TimestampController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Carbon $datetime, ?string $endDatetime = null)
+    public function create(Carbon $datetime, ?string $endDatetime = null, ?string $type = null)
     {
         if ($endDatetime) {
             $endDatetime = Date::parse($endDatetime);
@@ -47,8 +49,8 @@ class TimestampController extends Controller
             ->orderBy('started_at')
             ->first();
 
-        $minTime = $timestampBefore ? $timestampBefore->ended_at : $datetime->copy()->startOfDay();
-        $maxTime = $timestampAfter ? $timestampAfter->started_at : $datetime->copy()->endOfDay();
+        $minTime = $timestampBefore && $type !== 'work' ? $timestampBefore->ended_at : $datetime->copy()->startOfDay();
+        $maxTime = $timestampAfter && $type !== 'work' ? $timestampAfter->started_at : $datetime->copy()->endOfDay();
 
         if ($maxTime > now()) {
             $maxTime = now();
@@ -88,6 +90,7 @@ class TimestampController extends Controller
             'end_time' => $endDatetime ? $endDatetime->format('H:i') : null,
             'submit_route' => route('timestamp.store', ['datetime' => $datetime->format('Y-m-d H:i:s')]),
             'projects' => ProjectResource::collection(Project::scopes('sortedByLatestTimestamp')->get()),
+            'type' => $type === 'work' ? 'break' : null,
         ])->baseRoute('overview.day.show', ['date' => now()->format('Y-m-d')]);
     }
 
@@ -152,14 +155,7 @@ class TimestampController extends Controller
 
         Inertia::share(['date' => $datetime->format('Y-m-d')]);
 
-        Timestamp::create([
-            'type' => $data['type'],
-            'started_at' => $startTime,
-            'ended_at' => $endTime,
-            'last_ping_at' => $endTime,
-            'description' => $data['description'] ?? null,
-            'project_id' => $data['project_id'] ?? null,
-        ]);
+        TimestampService::create($startTime, $endTime, TimestampTypeEnum::tryFrom($data['type']), $data['description'] ?? null, $data['project_id'] ?? null);
 
         dispatch(new CalculateWeekBalance);
 

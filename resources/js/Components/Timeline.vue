@@ -4,7 +4,7 @@ import { Timestamp } from '@/types'
 import { router } from '@inertiajs/vue3'
 import { BriefcaseBusiness, Coffee } from 'lucide-vue-next'
 import moment from 'moment/min/moment-with-locales'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = withDefaults(
     defineProps<{
@@ -73,6 +73,7 @@ const createTimeline = () => {
 createTimeline()
 
 const drag = ref(false)
+const dragType = ref<'work' | 'break'>()
 const startDragIndex = ref<number | undefined>(undefined)
 const currentDragIndex = ref<number | undefined>(undefined)
 
@@ -85,14 +86,15 @@ const ifSelected = (index: string) => {
     return parseInt(index) >= min && parseInt(index) <= max
 }
 
-const dragStart = (index: string) => {
+const dragStart = (index: string, type?: 'work' | 'break') => {
     dragReset()
     drag.value = true
+    dragType.value = type
     startDragIndex.value = parseInt(index)
 }
-const dragOver = (index: string) => {
+const dragOver = (index: string, type?: 'work' | 'break') => {
     if (drag.value && startDragIndex.value !== undefined) {
-        if (isToday && parseInt(moment().format('HHmm')) < parseInt(index.toString())) {
+        if (dragType.value !== type || (isToday && parseInt(moment().format('HHmm')) < parseInt(index.toString()))) {
             dragStop()
             return
         }
@@ -111,7 +113,8 @@ const dragStop = () => {
         router.visit(
             route('timestamp.create', {
                 datetime: startDatetime,
-                endDatetime: endDatetime
+                endDatetime: endDatetime,
+                type: dragType.value === 'work' ? 'work' : undefined
             }),
             {
                 preserveState: true,
@@ -120,6 +123,7 @@ const dragStop = () => {
         )
     }
     drag.value = false
+    dragType.value = undefined
 }
 
 const createDateTimeFromIndex = (index: number, addMinutes?: number) => {
@@ -137,6 +141,7 @@ const createDateTimeFromIndex = (index: number, addMinutes?: number) => {
 
 const dragReset = () => {
     drag.value = false
+    dragType.value = undefined
     startDragIndex.value = undefined
     currentDragIndex.value = undefined
 }
@@ -151,18 +156,24 @@ const dragLeave = () => {
     }
 }
 
-const indexToTimeFormat = (index: string, withoutMinutesBy12H?: boolean) => {
+const indexToTimeFormat = (index: string, withoutMinutesBy12H?: boolean, dragModus?: boolean) => {
     const time = moment(
         (parseInt(index) > 100 ? index.toString().slice(0, -2) : '0') +
             ':' +
             (parseInt(index) > 10 ? index.toString().slice(-2) : '00'),
         'H:mm'
-    )
-        .format('LT')
-        .replace(/^0([0-9])/g, '$1')
+    ).add(dragModus ? 10 : 0, 'm')
 
-    return withoutMinutesBy12H ? time.replace(/:00 (PM|AM)/, ' $1') : time
+    const output = time.format('LT').replace(/^0([0-9])/g, '$1')
+
+    return withoutMinutesBy12H ? output.replace(/:00 (PM|AM)/, ' $1') : output
 }
+
+watch(props, () => {
+    if (route().current('overview.day.show')) {
+        dragReset()
+    }
+})
 </script>
 
 <template>
@@ -178,10 +189,29 @@ const indexToTimeFormat = (index: string, withoutMinutesBy12H?: boolean) => {
                                     'bg-pink-400 ring-pink-400': time?.type === 'break',
                                     'ring-gray-300 hover:bg-gray-300 dark:ring-gray-600 dark:hover:bg-gray-600': !time,
                                     'bg-gray-400! ring-gray-400! hover:bg-gray-500! hover:ring-gray-500! dark:ring-gray-500! dark:hover:bg-gray-500!':
-                                        ifSelected(index)
+                                        ifSelected(index) && !time,
+                                    'bg-pink-400! ring-pink-400!': ifSelected(index) && time
                                 }"
-                                @mousedown="!time && !isFuture ? dragStart(index) : undefined"
-                                @mouseover="!time && !isFuture ? dragOver(index) : dragStop()"
+                                @mousedown="
+                                    time?.type !== 'break' && !isFuture
+                                        ? dragStart(
+                                              index,
+                                              !time || time?.type === 'break'
+                                                  ? (time?.type as 'work' | 'break' | undefined)
+                                                  : 'work'
+                                          )
+                                        : undefined
+                                "
+                                @mouseover="
+                                    time?.type !== 'break' && !isFuture
+                                        ? dragOver(
+                                              index,
+                                              !time || time?.type === 'break'
+                                                  ? (time?.type as 'work' | 'break' | undefined)
+                                                  : 'work'
+                                          )
+                                        : dragStop()
+                                "
                                 class="bg-muted ring-offset-background h-14 shrink-0 rounded-full ring-offset-1 transition-transform duration-100 group-hover:scale-110 group-hover:ring-2"
                             />
                             <div
@@ -207,7 +237,7 @@ const indexToTimeFormat = (index: string, withoutMinutesBy12H?: boolean) => {
                                     'text-muted-foreground': time === undefined
                                 }"
                             >
-                                {{ indexToTimeFormat(index) }}
+                                {{ indexToTimeFormat(index, false, drag) }}
                             </div>
                             <div class="flex justify-center">
                                 <BriefcaseBusiness

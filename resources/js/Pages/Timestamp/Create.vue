@@ -14,12 +14,13 @@ const props = defineProps<{
     end_time?: string
     submit_route: string
     projects: Project[]
+    type?: 'work' | 'break'
 }>()
 
 const form = useForm({
     started_at: props.start_time ?? props.min_time,
     ended_at: props.end_time ?? props.max_time,
-    type: 'work',
+    type: props.type ?? 'work',
     description: '',
     project_id: '0' as string | number | undefined
 })
@@ -53,7 +54,7 @@ const submit = () => {
                     <BriefcaseBusiness class="size-5" v-if="form.type === 'work'" />
                     <Coffee class="size-5" v-if="form.type === 'break'" />
                 </div>
-                <Select v-model="form.type">
+                <Select :disabled="!!props.type" v-model="form.type">
                     <SelectTrigger>
                         <SelectValue class="text-base" placeholder="Type">
                             {{ $t(form.type === 'work' ? 'app.work hours' : 'app.break time') }}
