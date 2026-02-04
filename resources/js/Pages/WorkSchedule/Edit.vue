@@ -104,7 +104,7 @@ const destroy = () => {
             />
         </div>
         <div class="mt-4 flex items-center justify-between">
-            {{ $t('app.valid from') }}
+            <span class="text-sm leading-none font-medium">{{ $t('app.valid from') }}</span>
             <Popover>
                 <PopoverTrigger as-child>
                     <Button

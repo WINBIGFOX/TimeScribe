@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Facades\Date;
 use App\Enums\TimestampTypeEnum;
 use App\Models\Timestamp;
 use App\Services\TimestampService;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Date;
 
 it('deletes timestamps fully inside the new range', function (): void {
     $start = Date::parse('2025-01-01 10:00:00');
