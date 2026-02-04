@@ -236,4 +236,5 @@ If TimeScribe helps you save time or money, please consider supporting the devel
 </a>
 
 ## 📄 License
+
 Distributed under the GPL-3.0 License. See [LICENSE](LICENSE) for more information.

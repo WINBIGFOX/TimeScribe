@@ -31,9 +31,11 @@ const props = withDefaults(
         disabled?: boolean
         size?: 'md' | 'lg'
         forceModal?: boolean
+        global?: boolean
     }>(),
     {
-        size: 'md'
+        size: 'md',
+        global: true
     }
 )
 
@@ -41,13 +43,14 @@ const openModel = defineModel('open', {
     type: Boolean,
     default: false
 })
-const page = usePage()
 const emit = defineEmits(['submit', 'destroy', 'edit'])
+
+const page = usePage()
 const { show, redirect } = useModal()
-const open = ref<boolean>(page.props.modal ? show : false)
+const open = ref<boolean>(page.props.modal && props.global ? show : openModel.value ?? false)
 watch(open, (value: boolean) => {
     openModel.value = value
-    if (!value) {
+    if (!value && props.global) {
         setTimeout(() => {
             redirect({ preserveScroll: true, preserveState: true })
         }, 200)
@@ -62,7 +65,9 @@ const internalSubmit = () => {
         setTimeout(() => {
             router.visit(props.submitHref || '')
         }, 100)
-        open.value = false
+        if (props.global) {
+            open.value = false
+        }
     } else {
         emit('submit')
     }
@@ -93,9 +98,10 @@ const internalSubmit = () => {
                 </SheetHeader>
                 <div
                     :class="{
-                        'overflow-y-auto overscroll-none': props.scrollable
+                        'overflow-y-auto overscroll-none': props.scrollable,
+                        'overflow-hidden': !props.scrollable
                     }"
-                    class="grow px-4"
+                    class="flex grow flex-col px-4"
                 >
                     <slot />
                 </div>

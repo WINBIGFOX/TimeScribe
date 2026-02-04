@@ -133,12 +133,16 @@ const hasEntries = computed(() => entries.value.length > 0)
                     </div>
                     <Link
                         :href="route('absence.vacation-entitlement.edit', { date: props.date })"
-                        class="bg-background/50 absolute inset-0 flex flex-col items-center justify-center gap-2 rounded-lg p-4 opacity-0 backdrop-blur-xs transition-all duration-300 group-hover:opacity-100"
+                        class="bg-background/50 absolute inset-0 flex flex-col items-center justify-center gap-2 rounded-lg p-4 opacity-0 backdrop-blur-xs transition-opacity duration-300 group-hover:opacity-100"
                     >
                         <Pen />
-                        <span class="text-center text-xs">{{
-                            $t('app.edit :item', { item: $t('app.vacation allowance') + ' ' + props.entitlement.year })
-                        }}</span>
+                        <span class="text-center text-xs">
+                            {{
+                                $t('app.edit :item', {
+                                    item: $t('app.vacation allowance') + ' ' + props.entitlement.year
+                                })
+                            }}
+                        </span>
                     </Link>
                 </div>
                 <div class="border-border bg-muted/40 rounded-lg border p-4">
