@@ -37,7 +37,12 @@ const props = defineProps<{
             </p>
         </div>
         <div class="flex gap-2" v-if="(props.actionHref || props.actionClick) && props.actionLabel">
-            <Button @click="props.actionClick ? props.actionClick() : undefined" :as="props.actionClick ? undefined : Link" :href="props.actionHref ? props.actionHref : undefined" variant="outline">
+            <Button
+                @click="props.actionClick ? props.actionClick() : undefined"
+                :as="props.actionClick ? undefined : Link"
+                :href="props.actionHref ? props.actionHref : undefined"
+                variant="outline"
+            >
                 <component v-if="props.icon" :is="props.icon" />
                 {{ props.actionLabel }}
             </Button>
