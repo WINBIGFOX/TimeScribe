@@ -12,6 +12,8 @@ class WeekBalance extends Model
         'start_week_at',
         'end_week_at',
         'balance',
+        'start_balance',
+        'end_balance',
     ];
 
     protected $casts = [

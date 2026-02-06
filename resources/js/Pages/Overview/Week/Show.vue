@@ -19,7 +19,7 @@ const props = defineProps<{
     weekPlan?: number
     weekFallbackPlan?: number
     weekDatesWithTimestamps: string[]
-    balance: number
+    start_balance: number
     lastCalendarWeek: number
     hasWorkSchedules: boolean
     weekdays: Record<string, WeekdayObject>
@@ -110,11 +110,17 @@ if (window.Native) {
             type="overtime"
         />
         <TimestampTypeBadge v-if="props.hasWorkSchedules" :duration="(props.weekPlan ?? 0) * 60 * 60" type="plan" />
-        <TimestampTypeBadge
-            v-if="props.hasWorkSchedules"
-            :duration="props.balance + Math.max(props.weekWorkTime - (props.weekPlan ?? 0) * 60 * 60, 0)"
+        <Link
             class="ml-auto"
-            type="balance"
-        />
+            preserve-state
+            preserve-scroll
+            :href="route('overtime-adjustment.show', { date: props.date })"
+        >
+            <TimestampTypeBadge
+                v-if="props.hasWorkSchedules"
+                :duration="props.start_balance + Math.max(props.weekWorkTime - (props.weekPlan ?? 0) * 60 * 60, 0)"
+                type="balance"
+            />
+        </Link>
     </div>
 </template>
