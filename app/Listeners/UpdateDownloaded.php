@@ -10,14 +10,6 @@ use Native\Desktop\Events\AutoUpdater\UpdateDownloaded as UpdateDownloadedEvent;
 class UpdateDownloaded
 {
     /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      */
     public function handle(UpdateDownloadedEvent $event): void
