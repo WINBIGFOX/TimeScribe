@@ -164,7 +164,7 @@ watch(
                 </div>
 
                 <div
-                    class="border-border/60 mt-4 flex flex-col gap-4 rounded-lg border border-dashed p-4 md:flex-row md:items-center md:justify-between"
+                    class="border-border/60 mt-4 flex flex-col gap-4 rounded-lg border border-dashed p-4 flex-row items-center justify-between"
                     v-if="prorateConsumption"
                 >
                     <div class="flex-1 space-y-1">
@@ -176,7 +176,7 @@ watch(
                         </p>
                     </div>
                     <Select v-model="form.proration_step">
-                        <SelectTrigger class="md:w-40">
+                        <SelectTrigger class="w-60">
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
