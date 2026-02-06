@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
+use Rector\Php81\Rector\Array_\ArrayToFirstClassCallableRector;
 use RectorLaravel\Set\LaravelSetList;
 
 return RectorConfig::configure()
@@ -27,7 +28,10 @@ return RectorConfig::configure()
         LaravelSetList::LARAVEL_CONTAINER_STRING_TO_FULLY_QUALIFIED_NAME,
         LaravelSetList::LARAVEL_ARRAY_STR_FUNCTION_TO_STATIC_CALL,
     ])
+    ->withSkip([
+        ArrayToFirstClassCallableRector::class,
+    ])
+    ->withImportNames(importShortClasses: false)
     ->withTypeCoverageLevel(49)
     ->withDeadCodeLevel(49)
-    ->withCodeQualityLevel(71)
-    ->withImportNames(importShortClasses: false);
+    ->withCodeQualityLevel(71);
