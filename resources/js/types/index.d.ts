@@ -118,6 +118,27 @@ export interface VacationEntitlement {
     calculatedCarryover?: number | null
 }
 
+export interface WeekBalance {
+    id: number
+    week_number: number
+    year: number
+    start_date: Date
+    end_date: Date
+    balance: number
+    start_balance: number
+    end_balance: number
+}
+
+export interface OvertimeAdjustment {
+    id: number
+    effective_date: Date
+    type: string
+    seconds: number
+    note?: string
+    week: number
+    year: number
+}
+
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     js_locale: string
     locale: string

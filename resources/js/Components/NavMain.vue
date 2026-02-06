@@ -55,7 +55,10 @@ router.on('navigate', () => {
                         <SidebarMenuSubButton as-child>
                             <Link
                                 :class="{
-                                    'text-primary! font-bold': current === 'overview.week.show'
+                                    'text-primary! font-bold': [
+                                        'overview.week.show',
+                                        'overtime-adjustment.show',
+                                    ].includes(current ?? '')
                                 }"
                                 :href="route('overview.week.show', { date })"
                                 class="transition-[color,background-color,font-weight] duration-200"

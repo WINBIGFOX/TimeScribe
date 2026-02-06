@@ -380,4 +380,15 @@ html {
             opacity: 0;
         }
     }
+
+    @keyframes ringOffset {
+        0%,
+        100% {
+            --tw-ring-offset-width: 1px;
+        }
+
+        50% {
+            --tw-ring-offset-width: 3px;
+        }
+    }
 }

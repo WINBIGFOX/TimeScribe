@@ -10,6 +10,7 @@ import {
     Drama,
     TreePalm
 } from 'lucide-vue-next'
+import { computed } from 'vue'
 
 const props = defineProps<{
     type: string
@@ -60,7 +61,7 @@ const badgeDetails = {
     balance: {
         title: 'app.time balance',
         icon: Diff,
-        color: 'bg-lime-400 text-primary-foreground'
+        color: 'bg-lime-400 text-primary-foreground ring-lime-400 ring-2 ring-offset-background ring-offset-2  hover:bg-lime-500 hover:ring-offset-1! transition-all animate-[ringOffset_2s_ease-in-out_infinite]'
     },
     default: {
         title: 'Unbekannt',
@@ -71,7 +72,7 @@ const badgeDetails = {
 
 const { title: badgeTitle, icon: badgeIcon, color: badgeColor } = badgeDetails[props.type] || badgeDetails.default
 
-const durationLabel = secToFormat(props.duration ?? 0, true, true, true)
+const durationLabel = computed(() => secToFormat(props.duration ?? 0, true, true, true))
 </script>
 
 <template>

@@ -82,7 +82,7 @@ class WeekController extends Controller
             'weekPlan' => $weekPlan,
             'weekFallbackPlan' => TimestampService::getFallbackPlan($startOfWeek, $endOfWeek),
             'weekDatesWithTimestamps' => TimestampService::getDatesWithTimestamps($date->copy()->subYear()->startOfYear(), $date->copy()->addYear()->endOfYear()),
-            'balance' => TimestampService::getBalance($startOfWeek),
+            'start_balance' => TimestampService::getBalance($startOfWeek),
             'lastCalendarWeek' => $date->copy()->subWeek()->weekOfYear,
             'hasWorkSchedules' => $hasWorkSchedules,
             'weekdays' => $weekDays->all(),

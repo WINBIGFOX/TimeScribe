@@ -377,8 +377,9 @@ class TimestampService
 
     public static function getBalance(Carbon $currentDate): float
     {
-        return WeekBalance::where('end_week_at', '<', $currentDate->startOfWeek())
-            ->sum('balance') ?? 0;
+        $weekBalance = WeekBalance::whereDate('start_week_at', '<=', $currentDate)->latest('start_week_at')->first();
+
+        return $weekBalance->start_balance ?? 0;
     }
 
     public static function create(Carbon $date, Carbon $endDate, TimestampTypeEnum $type, ?string $description = null, ?int $projectId = null): void

@@ -12,6 +12,7 @@ use App\Http\Controllers\HolidayRuleController;
 use App\Http\Controllers\Import\ClockifyController;
 use App\Http\Controllers\ImportExportController;
 use App\Http\Controllers\MenubarController;
+use App\Http\Controllers\OvertimeAdjustment\OvertimeAdjustmentController;
 use App\Http\Controllers\Overview\DayController;
 use App\Http\Controllers\Overview\MonthController;
 use App\Http\Controllers\Overview\WeekController;
@@ -53,6 +54,13 @@ Route::name('overview.')->prefix('overview')->group(function (): void {
     Route::resource('week', WeekController::class)->only(['index', 'show'])->parameter('week', 'date');
     Route::resource('month', MonthController::class)->only(['index', 'show'])->parameter('month', 'date');
     Route::resource('year', YearController::class)->only(['index', 'show'])->parameter('year', 'date');
+});
+
+Route::name('overtime-adjustment.')->prefix('overtime-adjustment')->group(function (): void {
+    Route::get('{date}', [OvertimeAdjustmentController::class, 'show'])->name('show');
+    Route::post('{date}', [OvertimeAdjustmentController::class, 'store'])->name('store');
+    Route::patch('{date}/{overtimeAdjustment}', [OvertimeAdjustmentController::class, 'update'])->name('update');
+    Route::delete('{date}/{overtimeAdjustment}', [OvertimeAdjustmentController::class, 'destroy'])->name('destroy');
 });
 
 Route::get('quit', fn () => App::quit())->name('quit');
