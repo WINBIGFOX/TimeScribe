@@ -12,7 +12,7 @@ beforeEach(function (): void {
 
 it('exposes vacation settings in the welcome wizard', function (): void {
     $vacationSettings = resolve(VacationSettings::class);
-    $vacationSettings->default_entitlement_days = 25.5;
+    $vacationSettings->default_entitlement_days = 30;
     $vacationSettings->auto_carryover = true;
     $vacationSettings->minimum_day_hours = 6.5;
     $vacationSettings->save();
@@ -20,7 +20,7 @@ it('exposes vacation settings in the welcome wizard', function (): void {
     $this->get(route('welcome.index'))
         ->assertInertia(fn (Assert $page): Assert => $page
             ->component('Welcome/Index')
-            ->where('vacationSettings.default_entitlement_days', 25.5)
+            ->where('vacationSettings.default_entitlement_days', 30)
             ->where('vacationSettings.auto_carryover', true)
             ->where('vacationSettings.minimum_day_hours', 6.5)
         );

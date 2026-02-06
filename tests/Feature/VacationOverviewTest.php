@@ -99,7 +99,7 @@ it('renders the vacation overview with calculated summary data', function (): vo
 it('stores or updates a vacation entitlement', function (): void {
     $response = $this->post(route('absence.vacation-entitlement.update'), [
         'year' => 2026,
-        'days' => 25.5,
+        'days' => 30,
         'carryover' => 1.0,
     ]);
 
@@ -108,7 +108,7 @@ it('stores or updates a vacation entitlement', function (): void {
     $entitlement = VacationEntitlement::where('year', 2026)->first();
 
     expect($entitlement)->not->toBeNull();
-    expect($entitlement?->days)->toBe(25.5);
+    expect($entitlement?->days)->toBe(30);
     expect($entitlement?->carryover)->toBe(1.0);
 });
 
