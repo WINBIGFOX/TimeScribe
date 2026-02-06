@@ -32,6 +32,6 @@ return RectorConfig::configure()
         ArrayToFirstClassCallableRector::class,
     ])
     ->withImportNames(importShortClasses: false)
-    ->withTypeCoverageLevel(49)
-    ->withDeadCodeLevel(49)
-    ->withCodeQualityLevel(71);
+    ->withTypeCoverageLevel(63)
+    ->withDeadCodeLevel(59)
+    ->withCodeQualityLevel(78);
