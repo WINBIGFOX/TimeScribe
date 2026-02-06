@@ -11,14 +11,6 @@ use App\Jobs\MenubarRefresh;
 class RefreshMenubar
 {
     /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      */
     public function handle(TimerStarted|TimerStopped $event): void

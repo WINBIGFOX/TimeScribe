@@ -14,14 +14,6 @@ use Native\Desktop\Facades\MenuBar;
 class Unlocked
 {
     /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      */
     public function handle(ScreenUnlocked $event): void

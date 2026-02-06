@@ -11,14 +11,6 @@ use App\Services\LocaleService;
 class AppActivityStopScan
 {
     /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      */
     public function handle(TimerStopped $event): void

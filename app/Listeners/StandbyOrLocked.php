@@ -16,14 +16,6 @@ use Native\Desktop\Events\PowerMonitor\Shutdown;
 class StandbyOrLocked
 {
     /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      */
     public function handle(ScreenLocked|Shutdown $event): void

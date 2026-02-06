@@ -10,14 +10,6 @@ use Native\Desktop\Events\AutoUpdater\UpdateAvailable as UpdateAvailableEvent;
 class UpdateAvailable
 {
     /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      */
     public function handle(UpdateAvailableEvent $event): void

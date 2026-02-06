@@ -10,14 +10,6 @@ use Native\Desktop\Events\AutoUpdater\CheckingForUpdate as CheckingForUpdateEven
 class CheckingForUpdate
 {
     /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      */
     public function handle(CheckingForUpdateEvent $event): void

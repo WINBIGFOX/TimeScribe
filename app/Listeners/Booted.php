@@ -15,14 +15,6 @@ use Native\Desktop\Facades\MenuBar;
 class Booted
 {
     /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      */
     public function handle(ApplicationBooted $event): void
