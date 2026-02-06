@@ -20,6 +20,7 @@ use Carbon\Carbon;
 use DateInterval;
 use DatePeriod;
 use DateTime;
+use Emargareten\InertiaModal\Modal;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Date;
 use Inertia\Inertia;
@@ -30,7 +31,7 @@ class OvertimeAdjustmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Carbon $date): Response
+    public function show(Carbon $date): Modal
     {
         Inertia::share(['date' => $date->format('Y-m-d')]);
 
