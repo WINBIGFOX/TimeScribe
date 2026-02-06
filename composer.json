@@ -11,10 +11,10 @@
     "require": {
         "php": "^8.4",
         "ext-zip": "*",
-        "emargareten/inertia-modal": "^1.5",
+        "emargareten/inertia-modal": "^1.6",
         "inertiajs/inertia-laravel": "^2.0",
-        "laravel-lang/lang": "^15.26",
-        "laravel/framework": "^12.48",
+        "laravel-lang/lang": "^15.28",
+        "laravel/framework": "^12.50",
         "laravel/tinker": "^2.11",
         "nativephp/desktop": "^2.1",
         "nunomaduro/laravel-optimize-database": "^1.0",
