@@ -47,7 +47,7 @@ const emit = defineEmits(['submit', 'destroy', 'edit'])
 
 const page = usePage()
 const { show, redirect } = useModal()
-const open = ref<boolean>(page.props.modal && props.global ? show : openModel.value ?? false)
+const open = ref<boolean>(page.props.modal && props.global ? show : (openModel.value ?? false))
 watch(open, (value: boolean) => {
     openModel.value = value
     if (!value && props.global) {
