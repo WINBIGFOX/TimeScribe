@@ -8,10 +8,10 @@ return new class extends SettingsMigration
 {
     public function up(): void
     {
-        $this->migrator->add('shortcuts.startShortcut', null);
-        $this->migrator->add('shortcuts.stopShortcut', null);
-        $this->migrator->add('shortcuts.pauseShortcut', null);
-        $this->migrator->add('shortcuts.overviewShortcut', null);
+        $this->migrator->add('shortcuts.startShortcut');
+        $this->migrator->add('shortcuts.stopShortcut');
+        $this->migrator->add('shortcuts.pauseShortcut');
+        $this->migrator->add('shortcuts.overviewShortcut');
     }
 
     public function down(): void

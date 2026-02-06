@@ -8,7 +8,7 @@ return new class extends SettingsMigration
 {
     public function up(): void
     {
-        $this->migrator->add('shortcuts.projectPickerShortcut', null);
+        $this->migrator->add('shortcuts.projectPickerShortcut');
     }
 
     public function down(): void
