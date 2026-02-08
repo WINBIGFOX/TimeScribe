@@ -24,7 +24,6 @@ use Emargareten\InertiaModal\Modal;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Date;
 use Inertia\Inertia;
-use Inertia\Response;
 
 class OvertimeAdjustmentController extends Controller
 {
