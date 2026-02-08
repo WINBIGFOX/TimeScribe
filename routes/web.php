@@ -155,6 +155,7 @@ Route::name('absence.')->prefix('absence')->group(function (): void {
 Route::get('timestamp/create/{datetime}/{endDatetime?}/{type?}', [TimestampController::class, 'create'])->name('timestamp.create')
     ->where('endDatetime', '\d{4}-\d{2}-\d{2}\s\d{2}\:\d{2}\:\d{2}');
 Route::post('timestamp/{datetime}', [TimestampController::class, 'store'])->name('timestamp.store');
+Route::patch('timestamp/merge', [TimestampController::class, 'merge'])->name('timestamp.merge');
 Route::resource('timestamp', TimestampController::class)->only(['edit', 'update', 'destroy']);
 Route::patch('timestamp/{timestamp}/paid', [TimestampController::class, 'updatePaid'])->name('timestamp.update.paid');
 Route::post('timestamp/fill', [TimestampController::class, 'fill'])->name('timestamp.fill');

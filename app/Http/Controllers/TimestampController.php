@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Enums\TimestampTypeEnum;
 use App\Http\Requests\DestroyTimestampRequest;
 use App\Http\Requests\FillTimestampRequest;
+use App\Http\Requests\MergeTimestampRequest;
 use App\Http\Requests\StoreTimestampRequest;
 use App\Http\Requests\UpdateTimestampPaidRequest;
 use App\Http\Resources\ProjectResource;
@@ -331,6 +332,32 @@ class TimestampController extends Controller
         }
 
         return to_route('overview.day.show', ['date' => $timestampBefore->created_at->format('Y-m-d')]);
+    }
+
+    public function merge(MergeTimestampRequest $request): Redirector|RedirectResponse
+    {
+        $data = $request->validated();
+
+        $timestamp = Timestamp::findOrFail($data['timestamp']);
+        $timestampBefore = Timestamp::findOrFail($data['timestamp_before']);
+
+        $mergedTimestamp = TimestampService::merge($timestamp, $timestampBefore);
+
+        if (! $mergedTimestamp instanceof Timestamp) {
+            return back();
+        }
+
+        $date = $mergedTimestamp->started_at->format('Y-m-d');
+
+        Inertia::share(['date' => $date]);
+
+        dispatch(new CalculateWeekBalance);
+
+        if (! $mergedTimestamp->ended_at || $mergedTimestamp->started_at->isToday()) {
+            dispatch_sync(new MenubarRefresh);
+        }
+
+        return to_route('overview.day.show', ['date' => $date]);
     }
 
     public function updatePaid(UpdateTimestampPaidRequest $request, Timestamp $timestamp): void

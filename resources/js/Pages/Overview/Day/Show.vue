@@ -101,7 +101,10 @@ if (window.Native) {
                         index > 0 && timestamp.started_at.formatted !== props.timestamps[index - 1].ended_at?.formatted
                     "
                 />
-                <TimestampListItem :timestamp="timestamp" />
+                <TimestampListItem
+                    :timestamp="timestamp"
+                    :timestamp-before="index > 0 ? props.timestamps[index - 1] : undefined"
+                />
             </template>
             <TimestampListPlaceholderItem
                 :timestamp-before="props.timestamps[props.timestamps.length - 1]"
