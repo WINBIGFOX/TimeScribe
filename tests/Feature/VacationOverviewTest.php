@@ -74,7 +74,7 @@ it('renders the vacation overview with calculated summary data', function (): vo
     $this->get(route('absence.vacation.index', ['date' => '2025-01-01']))
         ->assertInertia(fn (Assert $page): Assert => $page
             ->component('Absence/Vacation/Index')
-            ->where('date', '01.01.2025')
+            ->where('date', '2025-01-01')
             ->where('summary.taken', 1.5)
             ->where('summary.planned', 1)
             ->where('summary.consumed', 2.5)
@@ -108,7 +108,7 @@ it('stores or updates a vacation entitlement', function (): void {
     $entitlement = VacationEntitlement::where('year', 2026)->first();
 
     expect($entitlement)->not->toBeNull();
-    expect($entitlement?->days)->toBe(30);
+    expect($entitlement?->days)->toBe(30.0);
     expect($entitlement?->carryover)->toBe(1.0);
 });
 
