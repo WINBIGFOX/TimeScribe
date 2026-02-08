@@ -42,7 +42,7 @@ it('entfernt Tabellen, die nach dem Backup hinzugekommen sind', function (): voi
     DB::shouldReceive('select')
         ->once()
         ->andReturn([(object) ['name' => 'extra_table', 'type' => 'table']]);
-    DB::shouldReceive('statement')->with('DROP TABLE IF EXISTS extra_table;')->once()->andReturn(true);
+    DB::shouldReceive('statement')->with('DROP TABLE IF EXISTS "extra_table";')->once()->andReturn(true);
     DB::shouldReceive('statement')->with('PRAGMA foreign_keys = ON;')->once()->andReturn(true);
     DB::shouldReceive('getSchemaBuilder')->andReturnSelf();
     DB::shouldReceive('hasTable')->with('failed_jobs')->andReturn(true);
@@ -98,7 +98,7 @@ it('akzeptiert legacy bak ohne Manifest', function (): void {
     DB::shouldReceive('select')
         ->once()
         ->andReturn([(object) ['name' => 'legacy_table', 'type' => 'table']]);
-    DB::shouldReceive('statement')->with('DROP TABLE IF EXISTS legacy_table;')->once()->andReturn(true);
+    DB::shouldReceive('statement')->with('DROP TABLE IF EXISTS "legacy_table";')->once()->andReturn(true);
     DB::shouldReceive('statement')->with('PRAGMA foreign_keys = ON;')->once()->andReturn(true);
     DB::shouldReceive('getSchemaBuilder')->andReturnSelf();
     DB::shouldReceive('hasTable')->with('failed_jobs')->andReturn(true);
