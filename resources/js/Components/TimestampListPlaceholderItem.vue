@@ -21,7 +21,7 @@ const props = defineProps<{
 
 <template>
     <div
-        v-if="(props.duration ?? 0) > 0"
+        v-if="(props.duration ?? 0) > 0 || !props.timestampAfter || !props.timestampBefore"
         :class="{
             'py-1 pl-4': props.duration,
             'py-1 pl-2': !props.duration
