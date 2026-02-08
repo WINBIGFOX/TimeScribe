@@ -153,6 +153,7 @@ return [
     'leave' => 'Permesso',
     'light' => 'Chiaro',
     'min' => 'min',
+    'merge' => 'Unisci',
     'minimum hours per vacation day' => 'Ore minime per giorno di ferie',
     'minute' => 'minuto',
     'minutes' => 'minuti',

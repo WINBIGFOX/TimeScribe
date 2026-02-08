@@ -153,6 +153,7 @@ return [
     'leave' => 'Urlaub',
     'light' => 'Hell',
     'min' => 'Min.',
+    'merge' => 'Zusammenführen',
     'minimum hours per vacation day' => 'Mindeststunden pro Urlaubstag',
     'minute' => 'Minute',
     'minutes' => 'Minuten',

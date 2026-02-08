@@ -153,6 +153,7 @@ return [
     'leave' => '休假',
     'light' => '浅色',
     'min' => '分钟',
+    'merge' => '合并',
     'minimum hours per vacation day' => '每个休假日的最少小时数',
     'minute' => '分钟',
     'minutes' => '分钟',

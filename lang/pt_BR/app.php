@@ -153,6 +153,7 @@ return [
     'leave' => 'Licença',
     'light' => 'Claro',
     'min' => 'min',
+    'merge' => 'Mesclar',
     'minimum hours per vacation day' => 'Horas mínimas por dia de férias',
     'minute' => 'minuto',
     'minutes' => 'minutos',

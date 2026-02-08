@@ -463,4 +463,52 @@ class TimestampService
             'description' => $description,
         ]);
     }
+
+    public static function merge(Timestamp $timestamp, Timestamp $timestampBefore): ?Timestamp
+    {
+        if (! self::canMerge($timestamp, $timestampBefore)) {
+            return null;
+        }
+
+        $description = self::mergeDescription($timestampBefore->description, $timestamp->description);
+
+        $timestamp->started_at = $timestampBefore->started_at;
+        $timestamp->description = $description;
+        $timestamp->save();
+
+        $timestampBefore->forceDelete();
+
+        return $timestamp->refresh();
+    }
+
+    private static function canMerge(Timestamp $timestamp, Timestamp $timestampBefore): bool
+    {
+        $endedAt = $timestampBefore->ended_at;
+
+        if (! $endedAt) {
+            return false;
+        }
+
+        $windowStart = $timestamp->started_at->copy()->subSeconds(59);
+        $windowEnd = $timestamp->started_at->copy()->endOfMinute();
+        $withinWindow = $endedAt->greaterThanOrEqualTo($windowStart) && $endedAt->lessThanOrEqualTo($windowEnd);
+
+        return $timestamp->id !== $timestampBefore->id
+            && $withinWindow
+            && $timestampBefore->type === $timestamp->type
+            && $timestampBefore->project_id === $timestamp->project_id
+            && $timestampBefore->paid === $timestamp->paid;
+    }
+
+    private static function mergeDescription(?string $before, ?string $current): ?string
+    {
+        $beforeDescription = filled($before) ? $before : null;
+        $currentDescription = filled($current) ? $current : null;
+
+        if ($beforeDescription && $currentDescription) {
+            return $beforeDescription."\n".$currentDescription;
+        }
+
+        return $beforeDescription ?? $currentDescription;
+    }
 }

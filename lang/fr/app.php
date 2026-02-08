@@ -153,6 +153,7 @@ return [
     'leave' => 'Congé',
     'light' => 'Clair',
     'min' => 'min',
+    'merge' => 'Fusionner',
     'minimum hours per vacation day' => 'Heures minimales par jour de congé',
     'minute' => 'minute',
     'minutes' => 'minutes',

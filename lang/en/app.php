@@ -153,6 +153,7 @@ return [
     'leave' => 'Leave',
     'light' => 'Light',
     'min' => 'min',
+    'merge' => 'Merge',
     'minimum hours per vacation day' => 'Minimum hours per vacation day',
     'minute' => 'minute',
     'minutes' => 'minutes',
