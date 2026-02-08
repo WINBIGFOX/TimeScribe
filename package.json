@@ -11,7 +11,8 @@
         "typecheck": "vue-tsc --noEmit",
         "check-update": "npx npm-check-updates",
         "update-all": "npx npm-check-updates -u && npm install",
-        "update-all-patch": "npx npm-check-updates --target patch -u && npm install"
+        "update-all-patch": "npx npm-check-updates --target patch -u && npm install",
+        "update-playwright": "npm install playwright@latest && npx playwright install"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^2.3",
@@ -48,7 +49,7 @@
         "lucide-vue-next": "latest",
         "moment": "^2.30",
         "moment-timezone": "^0.6",
-        "playwright": "^1.58.1",
+        "playwright": "^1.58.2",
         "reka-ui": "^2.8.0",
         "tailwind-merge": "^3.4",
         "tailwindcss-animate": "^1.0",
