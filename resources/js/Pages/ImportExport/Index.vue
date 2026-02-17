@@ -109,6 +109,21 @@ const submitPdf = () => {
                 }}
             </p>
             <div class="mt-4 space-y-3">
+
+                <div class="flex gap-4">
+                    <Button class="flex-1" variant="outline" @click="submitCsv" :disabled="form.processing">
+                        <FileType />
+                        {{ $t('app.export as csv file') }}
+                    </Button>
+                    <Button class="flex-1" variant="outline" @click="submitExcel" :disabled="form.processing">
+                        <FileChartPie />
+                        {{ $t('app.export as excel file') }}
+                    </Button>
+                    <Button class="flex-1" variant="outline" @click="submitPdf" :disabled="form.processing">
+                        <FileText />
+                        {{ $t('app.export as pdf file') }}
+                    </Button>
+                </div>
                 <div class="flex flex-wrap items-end gap-4">
                     <div class="flex flex-col gap-2">
                         <span class="text-sm leading-none font-medium">{{ $t('app.select the time period you want to export.') }}</span>
@@ -148,20 +163,6 @@ const submitPdf = () => {
                             </SelectContent>
                         </Select>
                     </div>
-                </div>
-                <div class="flex gap-4">
-                    <Button class="flex-1" variant="outline" @click="submitCsv" :disabled="form.processing">
-                        <FileType />
-                        {{ $t('app.export as csv file') }}
-                    </Button>
-                    <Button class="flex-1" variant="outline" @click="submitExcel" :disabled="form.processing">
-                        <FileChartPie />
-                        {{ $t('app.export as excel file') }}
-                    </Button>
-                    <Button class="flex-1" variant="outline" @click="submitPdf" :disabled="form.processing">
-                        <FileText />
-                        {{ $t('app.export as pdf file') }}
-                    </Button>
                 </div>
             </div>
         </div>
