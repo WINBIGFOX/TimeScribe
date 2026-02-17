@@ -49,6 +49,7 @@ return [
     'carryover' => 'Riporto',
     'carryover is calculated automatically from the previous year.' => 'Il riporto viene calcolato automaticamente dall\'anno precedente.',
     'chinese' => 'Cinese',
+    'danish' => 'Danese',
     'choose how fractional days are rounded.' => 'Scegli come arrotondare i giorni frazionari.',
     'choose the appearance of the application.' => 'Scegli l\'aspetto dell\'applicazione.',
     'choose whether to show vacation steps' => 'Scegli se mostrare i passaggi per le ferie.',

@@ -32,6 +32,7 @@ const props = defineProps<{
 }>()
 
 const localeMapping = {
+    'da-DK': 'da',
     'de-DE': 'de',
     'en-GB': 'en',
     'en-US': 'en',

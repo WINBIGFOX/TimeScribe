@@ -49,6 +49,7 @@ return [
     'carryover' => 'Carryover',
     'carryover is calculated automatically from the previous year.' => 'Carryover is calculated automatically from the previous year.',
     'chinese' => 'Chinese',
+    'danish' => 'Danish',
     'choose how fractional days are rounded.' => 'Choose how fractional days are rounded.',
     'choose the appearance of the application.' => 'Choose the appearance of the application.',
     'choose whether to show vacation steps' => 'Choose whether to show vacation steps.',
