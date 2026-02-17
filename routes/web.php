@@ -7,6 +7,7 @@ use App\Http\Controllers\AppActivityController;
 use App\Http\Controllers\BugAndFeedbackController;
 use App\Http\Controllers\Export\CsvController;
 use App\Http\Controllers\Export\ExcelController;
+use App\Http\Controllers\Export\PdfController;
 use App\Http\Controllers\FlyTimerController;
 use App\Http\Controllers\HolidayRuleController;
 use App\Http\Controllers\Import\ClockifyController;
@@ -15,9 +16,11 @@ use App\Http\Controllers\MenubarController;
 use App\Http\Controllers\OvertimeAdjustment\OvertimeAdjustmentController;
 use App\Http\Controllers\Overview\DayController;
 use App\Http\Controllers\Overview\MonthController;
+use App\Http\Controllers\Overview\RangeController;
 use App\Http\Controllers\Overview\WeekController;
 use App\Http\Controllers\Overview\YearController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\Settings\ExportController as SettingsExportController;
 use App\Http\Controllers\Settings\GeneralController;
 use App\Http\Controllers\Settings\ShortcutController;
 use App\Http\Controllers\Settings\StartStopController;
@@ -43,6 +46,7 @@ Route::get('/', function (GeneralSettings $settings): Redirector|RedirectRespons
         'day' => 'overview.day.index',
         'month' => 'overview.month.index',
         'year' => 'overview.year.index',
+        'period' => 'overview.range.index',
         default => 'overview.week.index',
     };
 
@@ -54,6 +58,8 @@ Route::name('overview.')->prefix('overview')->group(function (): void {
     Route::resource('week', WeekController::class)->only(['index', 'show'])->parameter('week', 'date');
     Route::resource('month', MonthController::class)->only(['index', 'show'])->parameter('month', 'date');
     Route::resource('year', YearController::class)->only(['index', 'show'])->parameter('year', 'date');
+    Route::get('range', [RangeController::class, 'index'])->name('range.index');
+    Route::get('range/{start}/{end}', [RangeController::class, 'show'])->name('range.show');
 });
 
 Route::name('overtime-adjustment.')->prefix('overtime-adjustment')->group(function (): void {
@@ -113,6 +119,10 @@ Route::name('settings.')->prefix('settings')->group(function (): void {
         Route::get('edit', [SettingsVacationController::class, 'edit'])->name('edit');
         Route::patch('', [SettingsVacationController::class, 'update'])->name('update');
     });
+    Route::name('export.')->prefix('export')->group(function (): void {
+        Route::get('edit', [SettingsExportController::class, 'edit'])->name('edit');
+        Route::patch('', [SettingsExportController::class, 'update'])->name('update');
+    });
 });
 
 Route::name('updater.')->prefix('updater')->group(function (): void {
@@ -129,6 +139,7 @@ Route::name('import.')->prefix('import')->group(function (): void {
 Route::name('export.')->prefix('export')->group(function (): void {
     Route::post('csv', CsvController::class)->name('csv');
     Route::post('excel', ExcelController::class)->name('excel');
+    Route::post('pdf', PdfController::class)->name('pdf');
 });
 
 Route::resource('work-schedule', WorkScheduleController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');
@@ -168,10 +179,11 @@ Route::name('bug-and-feedback.')->prefix('bug-and-feedback')->group(function ():
 });
 
 Route::get('open', function (Request $request): void {
+    $url = $request->string('url')->toString();
     if (Environment::isWindows()) {
-        shell_exec('explorer "'.$request->string('url').'"');
+        shell_exec('explorer '.escapeshellarg($url));
     } else {
-        shell_exec('open "'.$request->string('url').'"');
+        shell_exec('open '.escapeshellarg($url));
     }
 })->name('open');
 

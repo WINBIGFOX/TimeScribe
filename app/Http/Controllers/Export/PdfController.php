@@ -13,12 +13,12 @@ use Native\Desktop\Dialog;
 use Native\Desktop\Facades\Alert;
 use Native\Desktop\Support\Environment;
 
-class CsvController extends Controller
+class PdfController extends Controller
 {
     public function __invoke(Request $request): RedirectResponse
     {
         $savePath = Dialog::new()->asSheet()
-            ->defaultPath('TimeScribe-Export.csv')
+            ->defaultPath('TimeScribe-Export.pdf')
             ->button(__('app.save'))
             ->save();
 
@@ -31,9 +31,12 @@ class CsvController extends Controller
         $projectId = $request->input('project_id') ? (int) $request->input('project_id') : null;
 
         try {
-            (new ExportService($startDate, $endDate, $projectId))->exportAsCsv($savePath);
+            (new ExportService($startDate, $endDate, $projectId))->exportAsPdf($savePath);
         } catch (\Throwable) {
-            Alert::error(__('app.export failed'), __('app.an error occurred while exporting the data. please try again.'));
+            Alert::error(
+                __('app.export failed'),
+                __('app.an error occurred while exporting the data. please try again.')
+            );
         }
 
         Alert::type('info')

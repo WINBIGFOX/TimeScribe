@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import TimestampTypeBadge from '@/Components/TimestampTypeBadge.vue'
-import { PageHeader } from '@/Components/ui-custom/page-header'
-import { TimeWheel } from '@/Components/ui-custom/time-wheel'
+import { Calendar } from '@/Components/ui/calendar'
 import { Button } from '@/Components/ui/button'
+import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover'
+import { PageHeader } from '@/Components/ui-custom/page-header'
 import { secToFormat } from '@/lib/utils'
-import { Head, Link, router, usePage } from '@inertiajs/vue3'
+import { Head, router, usePage } from '@inertiajs/vue3'
 import { useCssVar } from '@vueuse/core'
+import { useDateFormatter } from 'reka-ui'
 import { ApexOptions } from 'apexcharts'
 import de from 'apexcharts/dist/locales/de.json'
 import en from 'apexcharts/dist/locales/en.json'
@@ -13,11 +15,14 @@ import fr from 'apexcharts/dist/locales/fr.json'
 import it from 'apexcharts/dist/locales/it.json'
 import ptBr from 'apexcharts/dist/locales/pt-br.json'
 import zhCn from 'apexcharts/dist/locales/zh-cn.json'
+import { parseDate } from '@internationalized/date'
 import { trans } from 'laravel-vue-i18n'
 import moment from 'moment/min/moment-with-locales'
+import { computed, ref } from 'vue'
 
 const props = defineProps<{
-    date: string
+    startDate: string
+    endDate: string
     workTimes: number[]
     breakTimes: number[]
     plans: number[]
@@ -31,11 +36,38 @@ const props = defineProps<{
     links: string[]
 }>()
 
-const showWeek = (opts) => {
-    router.get(props.links[opts.dataPointIndex], {
-        preserveScroll: true,
-        preserveState: true
-    })
+const startValue = ref(parseDate(props.startDate))
+const endValue = ref(parseDate(props.endDate))
+const startOpen = ref(false)
+const endOpen = ref(false)
+
+const locale = usePage().props.js_locale as string
+const formatter = useDateFormatter(locale)
+
+function navigate(start: string, end: string) {
+    router.get(
+        route('overview.range.show', { start, end }),
+        {},
+        { preserveScroll: true, preserveState: false }
+    )
+}
+
+function selectStart(val) {
+    startOpen.value = false
+    const start = val.compare(endValue.value) > 0 ? endValue.value : val
+    const end = val.compare(endValue.value) > 0 ? val : endValue.value
+    navigate(start.toString(), end.toString())
+}
+
+function selectEnd(val) {
+    endOpen.value = false
+    const start = val.compare(startValue.value) < 0 ? val : startValue.value
+    const end = val.compare(startValue.value) < 0 ? startValue.value : val
+    navigate(start.toString(), end.toString())
+}
+
+const showDay = (opts) => {
+    router.get(props.links[opts.dataPointIndex])
 }
 
 const localeMapping = {
@@ -80,13 +112,15 @@ const buildColors = () => {
     return colors
 }
 
+const series = computed(() => buildSeries())
+const categories = computed(() => props.xaxis)
+
 const data = {
-    series: buildSeries(),
     chartOptions: {
         colors: buildColors(),
         chart: {
             events: {
-                dataPointSelection: (_1, _2, opts) => showWeek(opts)
+                dataPointSelection: (_1, _2, opts) => showDay(opts)
             },
             background: 'transparent',
             fontFamily: 'var(--font-sans)',
@@ -111,21 +145,21 @@ const data = {
                 horizontal: false,
                 borderRadius: 2,
                 borderRadiusApplication: 'end',
-                borderRadiusWhenStacked: 'last' // 'all', 'last'
+                borderRadiusWhenStacked: 'last'
             }
         },
         dataLabels: {
             enabled: false
         },
         xaxis: {
-            stepSize: 0,
-            type: 'datetime',
-            categories: props.xaxis,
+            type: 'category',
+            categories: [],
             labels: {
-                hideOverlappingLabels: false,
-                format: 'dd',
-                datetimeFormatter: {
-                    day: 'dd'
+                hideOverlappingLabels: true,
+                rotate: 0,
+                formatter: (value: string) => {
+                    const m = moment(value, 'YYYY-MM-DD')
+                    return m.date() === 1 ? m.format('D MMM') : String(m.date())
                 },
                 style: {
                     colors: 'var(--color-foreground)',
@@ -206,8 +240,8 @@ const data = {
                 fontSize: useCssVar('--text-sm').value
             },
             x: {
-                formatter: (value) => {
-                    return moment(value, 'x').format('dd. D MMMM')
+                formatter: (_value, { dataPointIndex }) => {
+                    return moment(props.xaxis[dataPointIndex]).format('dd. D MMMM')
                 }
             },
             y: {
@@ -257,23 +291,47 @@ if (window.Native) {
 </script>
 
 <template>
-    <Head title="Month Overview" />
-    <PageHeader :title="$t('app.monthly overview')">
-        <div class="flex flex-1 items-center justify-center text-sm">
-            <TimeWheel :date="props.date" route="overview.month.show" type="month" />
+    <Head title="Period Overview" />
+    <PageHeader :title="$t('app.date range overview')">
+        <div class="flex flex-1 items-center justify-center gap-2 text-sm">
+            <Popover v-model:open="startOpen">
+                <PopoverTrigger as-child>
+                    <Button variant="outline" size="sm">
+                        {{ formatter.custom(startValue.toDate('UTC'), { dateStyle: 'medium' }) }}
+                    </Button>
+                </PopoverTrigger>
+                <PopoverContent class="w-auto p-0">
+                    <Calendar
+                        :locale="locale"
+                        :model-value="startValue"
+                        @update:model-value="selectStart"
+                    />
+                </PopoverContent>
+            </Popover>
+            <span class="text-muted-foreground">–</span>
+            <Popover v-model:open="endOpen">
+                <PopoverTrigger as-child>
+                    <Button variant="outline" size="sm">
+                        {{ formatter.custom(endValue.toDate('UTC'), { dateStyle: 'medium' }) }}
+                    </Button>
+                </PopoverTrigger>
+                <PopoverContent class="w-auto p-0">
+                    <Calendar
+                        :locale="locale"
+                        :model-value="endValue"
+                        @update:model-value="selectEnd"
+                    />
+                </PopoverContent>
+            </Popover>
         </div>
-        <Button
-            :as="Link"
-            :href="route('overview.month.show', { date: moment().format('YYYY-MM-DD') })"
-            prefetch
-            size="sm"
-            variant="outline"
-        >
-            {{ $t('app.today') }}
-        </Button>
     </PageHeader>
     <div class="mb-6 h-full">
-        <apexchart :options="data.chartOptions" :series="data.series" height="100%" type="bar"></apexchart>
+        <apexchart
+            :options="{ ...data.chartOptions, xaxis: { ...data.chartOptions.xaxis, categories: categories } }"
+            :series="series"
+            height="100%"
+            type="bar"
+        ></apexchart>
     </div>
     <div class="flex gap-2">
         <TimestampTypeBadge :duration="props.sumWorkTime" type="work" />
