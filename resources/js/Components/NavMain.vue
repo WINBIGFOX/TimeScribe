@@ -57,7 +57,7 @@ router.on('navigate', () => {
                                 :class="{
                                     'text-primary! font-bold': [
                                         'overview.week.show',
-                                        'overtime-adjustment.show',
+                                        'overtime-adjustment.show'
                                     ].includes(current ?? '')
                                 }"
                                 :href="route('overview.week.show', { date })"
