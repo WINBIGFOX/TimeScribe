@@ -49,6 +49,7 @@ return [
     'carryover' => 'Transferência',
     'carryover is calculated automatically from the previous year.' => 'A transferência é calculada automaticamente a partir do ano anterior.',
     'chinese' => 'Chinês',
+    'danish' => 'Dinamarquês',
     'choose how fractional days are rounded.' => 'Escolha como os dias fracionados são arredondados.',
     'choose the appearance of the application.' => 'Escolha a aparência do aplicativo.',
     'choose whether to show vacation steps' => 'Escolha se deseja mostrar as etapas de férias.',

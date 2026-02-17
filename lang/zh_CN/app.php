@@ -49,6 +49,7 @@ return [
     'carryover' => '结转',
     'carryover is calculated automatically from the previous year.' => '若未设定自定义结转，系统将自动使用上一年的剩余假期。',
     'chinese' => '中文',
+    'danish' => '丹麦语',
     'choose how fractional days are rounded.' => '控制休假日的小数步长。',
     'choose the appearance of the application.' => '选择应用程序的外观。',
     'choose whether to show vacation steps' => '选择是否显示休假步骤。',

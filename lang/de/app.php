@@ -49,6 +49,7 @@ return [
     'carryover' => 'Übertrag',
     'carryover is calculated automatically from the previous year.' => 'Der Resturlaub wird automatisch aus dem Vorjahr übernommen.',
     'chinese' => 'Chinesisch',
+    'danish' => 'Dänisch',
     'choose how fractional days are rounded.' => 'Legt fest, in welchen Abstufungen Urlaubstage gerundet werden.',
     'choose the appearance of the application.' => 'Wähle das Erscheinungsbild der Anwendung.',
     'choose whether to show vacation steps' => 'Wähle, ob wir Urlaubsschritte zeigen sollen.',
