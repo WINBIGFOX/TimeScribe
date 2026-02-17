@@ -15,6 +15,7 @@ use PrinsFrank\Standards\Country\CountryAlpha2;
 class LocaleService
 {
     const array LOCALE_MAPPING = [
+        'da_DK' => 'da',
         'de_DE' => 'de',
         'en_US' => 'en',
         'en_GB' => 'en',
