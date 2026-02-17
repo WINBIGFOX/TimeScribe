@@ -77,6 +77,7 @@ return [
     'current year' => 'Indeværende år',
     'cw' => 'Uge',
     'daily overview' => 'Dagsoversigt',
+    'danish' => 'Dansk',
     'dark' => 'Mørk',
     'data export' => 'Dataeksport',
     'data import' => 'Dataimport',
@@ -152,8 +153,8 @@ return [
     'language selected' => 'Sprog valgt',
     'leave' => 'Orlov',
     'light' => 'Lys',
-    'min' => 'min',
     'merge' => 'Flet',
+    'min' => 'min',
     'minimum hours per vacation day' => 'Minimumstimer pr. feriedag',
     'minute' => 'minut',
     'minutes' => 'minutter',
@@ -362,5 +363,4 @@ return [
     'yes' => 'Ja',
     'yes track vacation' => 'Registrer ferie og fravær',
     'you can add an adjustment to change your overtime balance.' => 'Du kan tilføje en justering for at ændre din overtidssaldo.',
-    'danish' => 'Dansk',
 ];
