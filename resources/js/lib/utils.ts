@@ -60,7 +60,7 @@ export function weekdayTranslate(weekday: string) {
         return weekday
     }
 
-    const locales = ['en', 'de', 'fr', 'it', 'pt-br', 'zh-cn']
+    const locales = ['da', 'en', 'de', 'fr', 'it', 'pt-br', 'zh-cn']
 
     const currentLocale = moment.locale()
 
