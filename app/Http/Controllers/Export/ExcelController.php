@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Export;
 
 use App\Http\Controllers\Controller;
 use App\Services\Export\ExportService;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Native\Desktop\Dialog;
@@ -25,8 +26,12 @@ class ExcelController extends Controller
             return back();
         }
 
+        $startDate = $request->input('start_date') ? Carbon::parse($request->input('start_date'))->startOfDay() : null;
+        $endDate = $request->input('end_date') ? Carbon::parse($request->input('end_date'))->endOfDay() : null;
+        $projectId = $request->input('project_id') ? (int) $request->input('project_id') : null;
+
         try {
-            (new ExportService)->exportAsExcel($savePath);
+            (new ExportService($startDate, $endDate, $projectId))->exportAsExcel($savePath);
         } catch (\Throwable) {
             Alert::error(
                 __('app.export failed'),
@@ -39,9 +44,9 @@ class ExcelController extends Controller
             ->show(__('app.the data was successfully exported from timescribe.'));
 
         if (Environment::isWindows()) {
-            shell_exec('explorer "'.pathinfo($savePath, PATHINFO_DIRNAME).'"');
+            shell_exec('explorer '.escapeshellarg(pathinfo($savePath, PATHINFO_DIRNAME)));
         } else {
-            shell_exec('open "'.pathinfo($savePath, PATHINFO_DIRNAME).'"');
+            shell_exec('open '.escapeshellarg(pathinfo($savePath, PATHINFO_DIRNAME)));
         }
 
         return back();
