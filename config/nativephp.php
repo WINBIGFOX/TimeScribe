@@ -103,7 +103,7 @@ return [
          * The updater provider to use.
          * Supported: "github", "s3", "spaces"
          */
-        'default' => env('NATIVEPHP_UPDATER_PROVIDER', 'spaces'),
+        'default' => trim((string) env('NATIVEPHP_UPDATER_PROVIDER', '')) ?: 'spaces',
 
         'providers' => [
             'github' => [
