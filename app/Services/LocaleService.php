@@ -40,8 +40,16 @@ class LocaleService
     {
         if (! $this->settings->timezone) {
             $this->settings->timezone = config('app.timezone');
-            $systemTimezone = System::timezone();
-            if (in_array($systemTimezone, \DateTimeZone::listIdentifiers())) {
+            $systemTimezone = null;
+            if (! app()->runningUnitTests()) {
+                try {
+                    $systemTimezone = System::timezone();
+                } catch (\Throwable) {
+                    $systemTimezone = null;
+                }
+            }
+
+            if ($systemTimezone && in_array($systemTimezone, \DateTimeZone::listIdentifiers())) {
                 $this->settings->timezone = $systemTimezone;
             }
             $this->settings->save();
@@ -91,7 +99,7 @@ class LocaleService
     {
         if (app()->runningInConsole()) {
             // Für Console Commands, versuche die System-Locale zu ermitteln
-            $sysLocale = setlocale(LC_ALL, 0);
+            $sysLocale = setlocale(LC_ALL, '0');
             if (preg_match('/^([a-zA-Z]{2}_[A-Z]{2})/', $sysLocale, $matches)) {
                 return $matches[1];
             }
