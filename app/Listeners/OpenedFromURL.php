@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
+use App\Services\LocaleService;
 use App\Services\TimestampService;
 use Illuminate\Support\Uri;
 use Native\Desktop\Events\App\OpenedFromURL as OpenedFromURLEvent;
@@ -15,6 +16,7 @@ class OpenedFromURL
      */
     public function handle(OpenedFromURLEvent $event): void
     {
+        new LocaleService;
         $url = Uri::of($event->url);
         if ($url->host() === 'start') {
             switch ($url->path()) {
