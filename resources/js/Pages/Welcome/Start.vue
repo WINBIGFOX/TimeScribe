@@ -3,6 +3,7 @@ import BrFlag from '@/Components/flags/BrFlag.vue'
 import CaFlag from '@/Components/flags/CaFlag.vue'
 import CnFlag from '@/Components/flags/CnFlag.vue'
 import DeFlag from '@/Components/flags/DeFlag.vue'
+import DkFlag from '@/Components/flags/DkFlag.vue'
 import EnFlag from '@/Components/flags/EnFlag.vue'
 import FrFlag from '@/Components/flags/FrFlag.vue'
 import ItFlag from '@/Components/flags/ItFlag.vue'
@@ -12,14 +13,15 @@ import { router } from '@inertiajs/vue3'
 import { ArrowRight } from 'lucide-vue-next'
 
 const locales = [
+    { code: 'da_DK', component: DkFlag },
     { code: 'de_DE', component: DeFlag },
     { code: 'en_GB', component: EnFlag },
     { code: 'en_US', component: UsFlag },
     { code: 'fr_FR', component: FrFlag },
     { code: 'fr_CA', component: CaFlag },
     { code: 'it_IT', component: ItFlag },
-    { code: 'zh_CN', component: CnFlag },
-    { code: 'pt_BR', component: BrFlag }
+    { code: 'pt_BR', component: BrFlag },
+    { code: 'zh_CN', component: CnFlag }
 ]
 
 const updateLocale = (locale) => {
