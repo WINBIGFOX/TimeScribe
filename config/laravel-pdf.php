@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Spatie\LaravelPdf\Jobs\GeneratePdfJob;
+
 return [
     /*
      * The default driver to use for PDF generation.
@@ -14,7 +16,7 @@ return [
      * You can replace this with your own class that extends GeneratePdfJob
      * to customize things like $tries, $timeout, $backoff, or default queue.
      */
-    'job' => Spatie\LaravelPdf\Jobs\GeneratePdfJob::class,
+    'job' => GeneratePdfJob::class,
 
     /*
      * Browsershot driver configuration.

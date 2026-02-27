@@ -1,59 +1,11 @@
 <script lang="ts" setup>
-import DateRangePicker from '@/Components/DateRangePicker.vue'
+import Csv from '@/Components/icons/Csv.vue'
+import Pdf from '@/Components/icons/Pdf.vue'
+import Xls from '@/Components/icons/Xls.vue'
 import { PageHeader } from '@/Components/ui-custom/page-header'
 import { Button } from '@/Components/ui/button'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
-import { Project } from '@/types'
-import { Head, useForm, Link } from '@inertiajs/vue3'
-import { FileChartPie, FileText, FileType, FolderInput, FolderOutput, X } from 'lucide-vue-next'
-import { ref } from 'vue'
-
-const props = defineProps<{
-    projects: Project[]
-}>()
-
-const today = new Date()
-const formatDate = (d: Date) => d.toISOString().slice(0, 10)
-const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
-
-const dateRangeEnabled = ref(false)
-const dateRange = ref<{ start: string; end: string }>({
-    start: formatDate(firstOfMonth),
-    end: formatDate(today)
-})
-
-const form = useForm({
-    start_date: '',
-    end_date: '',
-    project_id: '0'
-})
-
-const submitCsv = () => {
-    form.transform((data) => ({
-        ...data,
-        start_date: dateRangeEnabled.value ? dateRange.value.start : undefined,
-        end_date: dateRangeEnabled.value ? dateRange.value.end : undefined,
-        project_id: data.project_id !== '0' ? data.project_id : undefined
-    })).post(route('export.csv'), { preserveScroll: true })
-}
-
-const submitExcel = () => {
-    form.transform((data) => ({
-        ...data,
-        start_date: dateRangeEnabled.value ? dateRange.value.start : undefined,
-        end_date: dateRangeEnabled.value ? dateRange.value.end : undefined,
-        project_id: data.project_id !== '0' ? data.project_id : undefined
-    })).post(route('export.excel'), { preserveScroll: true })
-}
-
-const submitPdf = () => {
-    form.transform((data) => ({
-        ...data,
-        start_date: dateRangeEnabled.value ? dateRange.value.start : undefined,
-        end_date: dateRangeEnabled.value ? dateRange.value.end : undefined,
-        project_id: data.project_id !== '0' ? data.project_id : undefined
-    })).post(route('export.pdf'), { preserveScroll: true })
-}
+import { Head, Link } from '@inertiajs/vue3'
+import { FolderInput, FolderOutput } from 'lucide-vue-next'
 </script>
 
 <template>
@@ -104,65 +56,38 @@ const submitPdf = () => {
             <p class="text-muted-foreground text-sm">
                 {{
                     $t(
-                        'app.export your data from timescribe as a csv or excel file for further processing or documentation.'
+                        'app.export your data from timescribe as a pdf, excel, or csv file for further processing or documentation.'
                     )
                 }}
             </p>
-            <div class="mt-4 space-y-3">
-                <div class="flex flex-wrap items-end gap-4">
-                    <div class="flex flex-col gap-2">
-                        <span class="text-sm leading-none font-medium">{{ $t('app.select the time period you want to export.') }}</span>
-                        <div class="flex items-center gap-2">
-                            <DateRangePicker v-if="dateRangeEnabled" v-model="dateRange" />
-                            <Button
-                                v-if="!dateRangeEnabled"
-                                variant="outline"
-                                class="min-w-[250px] justify-start font-normal"
-                                @click="dateRangeEnabled = true"
-                            >
-                                {{ $t('app.all time') }}
-                            </Button>
-                            <Button
-                                v-if="dateRangeEnabled"
-                                variant="ghost"
-                                size="icon"
-                                @click="dateRangeEnabled = false"
-                            >
-                                <X class="h-4 w-4" />
-                            </Button>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-2" v-if="props.projects.length">
-                        <span class="text-sm leading-none font-medium">{{ $t('app.project') }}</span>
-                        <Select v-model="form.project_id">
-                            <SelectTrigger class="min-w-[250px] w-fit">
-                                <SelectValue :placeholder="$t('app.all projects')" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectItem value="0">{{ $t('app.all projects') }}</SelectItem>
-                                    <SelectItem v-for="project in props.projects" :key="project.id" :value="String(project.id)">
-                                        {{ project.icon }} {{ project.name }}
-                                    </SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                </div>
-                <div class="flex gap-4">
-                    <Button class="flex-1" variant="outline" @click="submitCsv" :disabled="form.processing">
-                        <FileType />
-                        {{ $t('app.export as csv file') }}
-                    </Button>
-                    <Button class="flex-1" variant="outline" @click="submitExcel" :disabled="form.processing">
-                        <FileChartPie />
-                        {{ $t('app.export as excel file') }}
-                    </Button>
-                    <Button class="flex-1" variant="outline" @click="submitPdf" :disabled="form.processing">
-                        <FileText />
-                        {{ $t('app.export as pdf file') }}
-                    </Button>
-                </div>
+            <div class="mt-4 flex gap-4">
+                <Button
+                    :as="Link"
+                    :href="route('export.create', { exportType: 'pdf' })"
+                    class="flex-1"
+                    variant="outline"
+                >
+                    <Pdf />
+                    {{ $t('app.export as pdf file') }}
+                </Button>
+                <Button
+                    :as="Link"
+                    :href="route('export.create', { exportType: 'excel' })"
+                    class="flex-1"
+                    variant="outline"
+                >
+                    <Xls />
+                    {{ $t('app.export as excel file') }}
+                </Button>
+                <Button
+                    :as="Link"
+                    :href="route('export.create', { exportType: 'csv' })"
+                    class="flex-1"
+                    variant="outline"
+                >
+                    <Csv />
+                    {{ $t('app.export as csv file') }}
+                </Button>
             </div>
         </div>
     </div>

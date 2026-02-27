@@ -8,6 +8,7 @@ return new class extends SettingsMigration
 {
     public function up(): void
     {
+        $this->migrator->add('export.column_order');
         $this->migrator->add('export.column_type', true);
         $this->migrator->add('export.column_description', true);
         $this->migrator->add('export.column_project', true);
@@ -27,6 +28,7 @@ return new class extends SettingsMigration
 
     public function down(): void
     {
+        $this->migrator->deleteIfExists('export.column_order');
         $this->migrator->deleteIfExists('export.column_type');
         $this->migrator->deleteIfExists('export.column_description');
         $this->migrator->deleteIfExists('export.column_project');
