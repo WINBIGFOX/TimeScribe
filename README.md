@@ -143,6 +143,20 @@ php artisan native:build mac
 php artisan native:build win
 ```
 
+### Natural Language Time Logging (Developers / Codex)
+
+You can log work/break time by describing it in plain English:
+
+```bash
+php artisan timescribe:log "yesterday worked on Acme from 09:00 to 11:00"
+php artisan timescribe:log "2026-02-20 break from 09:00 to 09:30"
+php artisan timescribe:log "yesterday worked on \"New Project\" for 2h" --create-project
+php artisan timescribe:log "yesterday for 90m" --project="Acme"
+php artisan timescribe:log "yesterday worked on Acme for 2h" --dry-run
+```
+
+If the new range overlaps existing timestamps, TimeScribe shows the overlaps and asks for confirmation before trimming/splitting existing entries. Use `--force-overwrite` to skip the confirmation, or `--carve` for explicit overwrite mode.
+
 ## 🖼 Screenshots
 
 ### 🧭 Menu Bar
