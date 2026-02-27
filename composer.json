@@ -15,16 +15,16 @@
         "emargareten/inertia-modal": "^1.6",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel-lang/lang": "^15.28",
-        "laravel/framework": "^12.50",
+        "laravel/framework": "^12.53",
         "laravel/tinker": "^2.11",
         "nativephp/desktop": "^2.1",
         "nunomaduro/laravel-optimize-database": "^1.0",
         "prinsfrank/standards": "^3.16",
-        "sentry/sentry-laravel": "^4.20",
+        "sentry/sentry-laravel": "^4.21",
         "spatie/db-dumper": "^3.8",
         "spatie/laravel-pdf": "^2.2",
-        "spatie/laravel-settings": "^3.6",
-        "spatie/simple-excel": "^3.8",
+        "spatie/laravel-settings": "^3.7",
+        "spatie/simple-excel": "^3.9",
         "tightenco/ziggy": "^2.6",
         "umulmrum/holiday": "^0.11"
     },
@@ -36,12 +36,12 @@
         "laravel/breeze": "^2.3",
         "laravel/pail": "^1.2",
         "laravel/pint": "^1.27",
-        "laravel/sail": "^1.52",
+        "laravel/sail": "^1.53",
         "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.8",
-        "pestphp/pest": "^v4.3",
-        "pestphp/pest-plugin-browser": "^4.2",
-        "pestphp/pest-plugin-laravel": "^4.0"
+        "nunomaduro/collision": "^8.9",
+        "pestphp/pest": "^v4.4",
+        "pestphp/pest-plugin-browser": "^4.3",
+        "pestphp/pest-plugin-laravel": "^4.1"
     },
     "autoload": {
         "psr-4": {
