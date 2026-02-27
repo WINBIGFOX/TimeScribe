@@ -69,7 +69,7 @@ Simply put: It's a professional time tracking tool that respects your privacy an
 - 💾 Export as PDF, Excel, and CSV: Easily export your time tracking data for further analysis or reporting.
 - 🪟 Supports macOS & Windows
 - ⌨️ Custom keyboard shortcuts
-- 🔗 Deep-Link support for macOS & Windows (see [Deep-Link API](#deep-link-api))
+- 🔗 Deep-Link support for macOS & Windows (see [Deep-Link API](#-deep-link-api))
 - 🌐 Multi-language support
 - 🔒 100% Local: No cloud, no registration, no paywall
 - 🔄 Auto Updates: Always up-to-date
