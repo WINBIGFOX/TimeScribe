@@ -103,7 +103,7 @@ const amountOpen = computed(() => calcAmount(false))
                 <div class="flex shrink-0 gap-2" v-if="props.project.hourly_rate && props.project.currency">
                     <div>
                         <span class="text-xs">{{ $t('app.open') }}</span>
-                        <div class="flex items-center gap-2 rounded bg-stone-500 px-2 py-1 text-background">
+                        <div class="text-background flex items-center gap-2 rounded bg-stone-500 px-2 py-1">
                             <CircleSlash class="size-5" />
                             <span class="text-sm tabular-nums">
                                 {{
@@ -119,7 +119,7 @@ const amountOpen = computed(() => calcAmount(false))
                     </div>
                     <div>
                         <span class="text-xs">{{ $t('app.paid') }}</span>
-                        <div class="flex items-center gap-2 rounded bg-emerald-500 px-2 py-1 text-background">
+                        <div class="text-background flex items-center gap-2 rounded bg-emerald-500 px-2 py-1">
                             <CircleCheckBig class="size-5" />
                             <span class="text-sm tabular-nums">
                                 {{
@@ -135,7 +135,7 @@ const amountOpen = computed(() => calcAmount(false))
                     </div>
                     <div>
                         <span class="text-xs">{{ $t('app.total') }}</span>
-                        <div class="flex items-center gap-2 rounded bg-blue-500 px-2 py-1 text-background">
+                        <div class="text-background flex items-center gap-2 rounded bg-blue-500 px-2 py-1">
                             <CircleEqual class="size-5" />
                             <span class="text-sm tabular-nums">
                                 {{
