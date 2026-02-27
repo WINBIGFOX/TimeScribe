@@ -38,6 +38,16 @@ const hideProjectList = () => {
     openProjectList.value = false
 }
 
+const clearAutoFocus = () => {
+    window.requestAnimationFrame(() => {
+        const activeElement = document.activeElement
+
+        if (activeElement instanceof HTMLElement && activeElement !== document.body) {
+            activeElement.blur()
+        }
+    })
+}
+
 const showProjectList = () => {
     router.reload({
         only: ['projects'],
@@ -59,7 +69,8 @@ const reload = () => {
     router.flushAll()
     router.reload({
         only: ['workTime', 'breakTime', 'currentType', 'currentProject'],
-        showProgress: false
+        showProgress: false,
+        onFinish: clearAutoFocus
     })
 }
 
@@ -73,6 +84,7 @@ if (window.Native) {
 
 onMounted(() => {
     timer = setInterval(tick, 1000)
+    clearAutoFocus()
 })
 
 usePoll(
@@ -143,6 +155,9 @@ const removeProject = () => {
 
 <template>
     <Head title="Menubar" />
+
+    <!-- Prevent focus on page load -->
+    <button class="opacity-0" type="button"></button>
 
     <div class="bg-background flex h-dvh flex-col select-none">
         <div class="fixed inset-x-0 top-0 flex justify-end">
