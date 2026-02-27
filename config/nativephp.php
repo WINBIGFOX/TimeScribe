@@ -89,6 +89,12 @@ return [
     ],
 
     /**
+     * Backup driver used for creating .bak archives.
+     * Supported: "legacy", "snapshot_sql"
+     */
+    'backup_driver' => env('NATIVEPHP_BACKUP_DRIVER', 'legacy'),
+
+    /**
      * The NativePHP updater configuration.
      */
     'updater' => [

@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Events\LocaleChanged;
 use App\Jobs\CalculateWeekBalance;
 use App\Services\BackupService;
+use App\Services\BackupServiceResolver;
 use App\Services\TimestampService;
 use App\Settings\GeneralSettings;
 use Illuminate\Http\RedirectResponse;
@@ -26,6 +27,10 @@ use Throwable;
 
 class BugAndFeedbackController extends Controller
 {
+    public function __construct(
+        private readonly BackupServiceResolver $backupServiceResolver
+    ) {}
+
     public function index()
     {
         return Inertia::render('BugAndFeedback/Index');
@@ -42,7 +47,7 @@ class BugAndFeedbackController extends Controller
             return back();
         }
 
-        $backupService = new BackupService;
+        $backupService = $this->backupServiceResolver->resolve();
 
         if ($backupService->backupFileExists($savePath)) {
             $allowOverride = Alert::buttons([
@@ -85,7 +90,7 @@ class BugAndFeedbackController extends Controller
         }
 
         try {
-            (new BackupService)->restore($backupFilePath);
+            $this->backupServiceResolver->resolve()->restore($backupFilePath);
         } catch (\Throwable $e) {
             Log::error('Failed to open zip file: '.$backupFilePath);
             Alert::error(__('app.restoring'), $e->getMessage());
