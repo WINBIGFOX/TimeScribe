@@ -9,7 +9,7 @@
   <b>Smart & Private Time Tracking for macOS & Windows</b>
 </p>
 <p align="center">
-  <b>Track, analyze and own your work hours</b><br/>
+  <b>Track, analyze, and own your work hours</b><br/>
   No cloud. No registration. No paywall. Just productivity.
 </p>
 
@@ -66,9 +66,11 @@ Simply put: It's a professional time tracking tool that respects your privacy an
 - 🗓️ Plan absences like vacation, sick leave, and holidays
 - 📋 Track time on projects with descriptions, hourly rates, and billing calculations
 - ⚙️ Auto start/pause based on screen time and idle status
-- 💾 Export as CSV and Excel: Easily export your time tracking data for further analysis or reporting.
+- 💾 Export as PDF, Excel, and CSV: Easily export your time tracking data for further analysis or reporting.
 - 🪟 Supports macOS & Windows
 - ⌨️ Custom keyboard shortcuts
+- 🔗 Deep-Link support for macOS & Windows (see [Deep-Link API](#deep-link-api))
+- 🌐 Multi-language support
 - 🔒 100% Local: No cloud, no registration, no paywall
 - 🔄 Auto Updates: Always up-to-date
 
@@ -76,6 +78,7 @@ Simply put: It's a professional time tracking tool that respects your privacy an
 
 ## 🌍 Supported Languages
 
+- 🇩🇰 Danish
 - 🇬🇧 English (UK/US)
 - 🇫🇷 French (FR/CA)
 - 🇩🇪 German
@@ -199,6 +202,18 @@ php artisan native:build win
   <img alt="Automatic Start/Pause" src="https://github.com/WINBIGFOX/TimeScribe/blob/main/.github/images/start_break_en_light.webp?raw=true">
 </picture>
 </p>
+
+---
+
+## 🔗 Deep-Link API
+
+You can control the timer from other tools (for example Shortcuts, Alfred, Raycast, AutoHotkey, or custom scripts) by opening a TimeScribe link:
+
+- `timescribe://start/work` → starts work tracking
+- `timescribe://start/break` → starts break tracking
+- `timescribe://stop` → stops the current timer
+
+This works on macOS and Windows when TimeScribe is installed.
 
 ---
 
