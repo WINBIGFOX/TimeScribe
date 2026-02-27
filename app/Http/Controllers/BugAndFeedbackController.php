@@ -20,8 +20,8 @@ use Native\Desktop\Dialog;
 use Native\Desktop\Enums\SystemThemesEnum;
 use Native\Desktop\Facades\Alert;
 use Native\Desktop\Facades\App;
+use Native\Desktop\Facades\Shell;
 use Native\Desktop\Facades\System;
-use Native\Desktop\Support\Environment;
 use Throwable;
 
 class BugAndFeedbackController extends Controller
@@ -60,18 +60,14 @@ class BugAndFeedbackController extends Controller
         }
 
         try {
-            $backupService->create($savePath);
+            $backupPath = $backupService->create($savePath);
         } catch (\Throwable $e) {
             Log::error('Failed to create backup: '.$e->getMessage());
 
             return back()->withErrors(['message' => $e->getMessage()]);
         }
 
-        if (Environment::isWindows()) {
-            shell_exec('explorer "'.$savePath.'"');
-        } else {
-            shell_exec('open "'.$savePath.'"');
-        }
+        Shell::showInFolder($backupPath);
 
         return back()->withErrors(['message' => __('app.backup successfully created.')]);
     }

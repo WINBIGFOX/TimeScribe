@@ -33,7 +33,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Native\Desktop\Facades\App;
-use Native\Desktop\Support\Environment;
 
 Route::get('/', function (GeneralSettings $settings): Redirector|RedirectResponse {
     $target = $settings->default_overview ?? 'week';
@@ -165,11 +164,17 @@ Route::name('bug-and-feedback.')->prefix('bug-and-feedback')->group(function ():
 
 Route::get('open', function (Request $request): void {
     $url = $request->string('url')->toString();
-    if (Environment::isWindows()) {
-        shell_exec('explorer '.escapeshellarg($url));
-    } else {
-        shell_exec('open '.escapeshellarg($url));
+
+    if (! filter_var($url, FILTER_VALIDATE_URL)) {
+        abort(400);
     }
+
+    $scheme = parse_url($url, PHP_URL_SCHEME);
+    if (! in_array(strtolower((string) $scheme), ['http', 'https'], true)) {
+        abort(400);
+    }
+
+    Shell::openExternal($url);
 })->name('open');
 
 Route::get('/app-icon/{appIconName}', function ($appIconName) {
