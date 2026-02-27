@@ -17,7 +17,7 @@ use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use Native\Desktop\Dialog;
 use Native\Desktop\Facades\Alert;
-use Native\Desktop\Support\Environment;
+use Native\Desktop\Facades\Shell;
 
 class ExportController extends Controller
 {
@@ -97,11 +97,7 @@ class ExportController extends Controller
             ->title(__('app.export successful'))
             ->show(__('app.the data was successfully exported from timescribe.'));
 
-        if (Environment::isWindows()) {
-            shell_exec('explorer '.escapeshellarg(pathinfo($savePath, PATHINFO_DIRNAME)));
-        } else {
-            shell_exec('open '.escapeshellarg(pathinfo($savePath, PATHINFO_DIRNAME)));
-        }
+        Shell::showInFolder($savePath);
 
         return back();
     }
