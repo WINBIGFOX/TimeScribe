@@ -201,9 +201,11 @@ router.on('navigate', () => {
                 <SidebarMenuButton as-child>
                     <Link
                         :class="{
-                            'text-primary! font-bold': ['import-export.index', 'import.clockify.create'].includes(
-                                current ?? ''
-                            )
+                            'text-primary! font-bold': [
+                                'import-export.index',
+                                'import.clockify.create',
+                                'export.create'
+                            ].includes(current ?? '')
                         }"
                         :href="route('import-export.index')"
                         class="transition-[color,background-color,font-weight] duration-200"

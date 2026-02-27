@@ -69,16 +69,16 @@ watch(holidayCheck, () => {
     <div>
         <div class="flex items-center space-x-4 py-4">
             <KeyRound />
-            <div class="flex-1 space-y-1">
+            <div class="flex-1">
                 <p class="text-sm leading-none font-medium">
                     {{ $t('app.start at login') }}
                 </p>
             </div>
             <Switch v-model="form.openAtLogin" />
         </div>
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-center space-x-4 py-4">
             <Languages />
-            <div class="flex flex-1 items-center gap-4 space-y-1">
+            <div class="flex flex-1 items-center gap-4">
                 <p class="flex-1 text-sm leading-none font-medium">
                     {{ $t('app.language') }}
                 </p>
@@ -87,6 +87,9 @@ watch(holidayCheck, () => {
                         <SelectValue :placeholder="$t('app.language')" />
                     </SelectTrigger>
                     <SelectContent>
+                        <SelectItem value="da_DK">
+                            {{ $t('app.danish') }}
+                        </SelectItem>
                         <SelectItem value="de_DE">
                             {{ $t('app.german') }}
                         </SelectItem>
@@ -105,19 +108,19 @@ watch(holidayCheck, () => {
                         <SelectItem value="it_IT">
                             {{ $t('app.italian') }}
                         </SelectItem>
-                        <SelectItem value="zh_CN">
-                            {{ $t('app.chinese') }}
-                        </SelectItem>
                         <SelectItem value="pt_BR">
                             {{ $t('app.portuguese (BR)') }}
+                        </SelectItem>
+                        <SelectItem value="zh_CN">
+                            {{ $t('app.chinese') }}
                         </SelectItem>
                     </SelectContent>
                 </Select>
             </div>
         </div>
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-center space-x-4 py-4">
             <Globe />
-            <div class="flex flex-1 items-center gap-4 space-y-1">
+            <div class="flex flex-1 items-center gap-4">
                 <p class="flex-1 text-sm leading-none font-medium">
                     {{ $t('app.timezone') }}
                 </p>
@@ -163,9 +166,9 @@ watch(holidayCheck, () => {
                 </Select>
             </div>
         </div>
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-center space-x-4 py-4">
             <PanelsTopLeft />
-            <div class="flex flex-1 items-center gap-4 space-y-1">
+            <div class="flex flex-1 items-center gap-4">
                 <p class="flex-1 text-sm leading-none font-medium">
                     {{ $t('app.default overview') }}
                 </p>
