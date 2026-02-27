@@ -57,7 +57,7 @@ router.on('navigate', () => {
                                 :class="{
                                     'text-primary! font-bold': [
                                         'overview.week.show',
-                                        'overtime-adjustment.show',
+                                        'overtime-adjustment.show'
                                     ].includes(current ?? '')
                                 }"
                                 :href="route('overview.week.show', { date })"
@@ -201,9 +201,11 @@ router.on('navigate', () => {
                 <SidebarMenuButton as-child>
                     <Link
                         :class="{
-                            'text-primary! font-bold': ['import-export.index', 'import.clockify.create'].includes(
-                                current ?? ''
-                            )
+                            'text-primary! font-bold': [
+                                'import-export.index',
+                                'import.clockify.create',
+                                'export.create'
+                            ].includes(current ?? '')
                         }"
                         :href="route('import-export.index')"
                         class="transition-[color,background-color,font-weight] duration-200"
@@ -282,20 +284,6 @@ router.on('navigate', () => {
                                 prefetch
                             >
                                 {{ $t('app.shortcuts') }}
-                            </Link>
-                        </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                    <SidebarMenuSubItem>
-                        <SidebarMenuSubButton as-child>
-                            <Link
-                                :class="{
-                                    'text-primary! font-bold': current === 'settings.export.edit'
-                                }"
-                                :href="route('settings.export.edit')"
-                                class="transition-[color,background-color,font-weight] duration-200"
-                                prefetch
-                            >
-                                {{ $t('app.data export') }}
                             </Link>
                         </SidebarMenuSubButton>
                     </SidebarMenuSubItem>

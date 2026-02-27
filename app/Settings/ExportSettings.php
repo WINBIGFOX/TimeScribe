@@ -8,6 +8,8 @@ use Spatie\LaravelSettings\Settings;
 
 class ExportSettings extends Settings
 {
+    public ?array $column_order = null;
+
     public bool $column_type;
 
     public bool $column_description;
@@ -36,7 +38,7 @@ class ExportSettings extends Settings
 
     public string $pdf_paper_size = 'a4';
 
-    public string $pdf_orientation = 'portrait';
+    public string $pdf_orientation = 'Landscape';
 
     public static function group(): string
     {

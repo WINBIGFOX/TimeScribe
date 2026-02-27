@@ -4,68 +4,61 @@ declare(strict_types=1);
 
 namespace App\Services\Export;
 
+use App\Enums\ExportColumnEnum;
 use App\Models\Project;
 use App\Models\Timestamp;
+use App\Services\LocaleService;
 use App\Settings\ExportSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Str;
 use OpenSpout\Common\Entity\Style\Style;
 use Spatie\LaravelPdf\Facades\Pdf;
 use Spatie\SimpleExcel\SimpleExcelWriter;
 
 class ExportService
 {
-    private readonly Collection $exportData;
-
     private readonly ?Carbon $startDate;
 
     private readonly ?Carbon $endDate;
 
-    private readonly ?string $projectName;
-
-    private readonly string $paperSize;
-
-    private readonly string $orientation;
-
-    /** @var array<string, bool> */
-    private readonly array $columns;
-
-    public function __construct(?Carbon $startDate = null, ?Carbon $endDate = null, ?int $projectId = null)
+    public function __construct(private readonly array $timestampTypes, ?string $startDate, ?string $endDate, private readonly array $projectIds = [])
     {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->projectName = $projectId ? Project::find($projectId)?->name : null;
+        new LocaleService;
+        $this->startDate = $startDate ? Date::parse($startDate)->startOfDay() : null;
+        $this->endDate = $endDate ? Date::parse($endDate)->endOfDay() : null;
+    }
 
-        $settings = resolve(ExportSettings::class);
-        $this->paperSize = $settings->pdf_paper_size;
-        $this->orientation = $settings->pdf_orientation;
-        $this->columns = [
-            'type' => $settings->column_type,
-            'description' => $settings->column_description,
-            'project' => $settings->column_project,
-            'import_source' => $settings->column_import_source,
-            'start_date' => $settings->column_start_date,
-            'start_time' => $settings->column_start_time,
-            'end_date' => $settings->column_end_date,
-            'end_time' => $settings->column_end_time,
-            'duration' => $settings->column_duration,
-            'hourly_rate' => $settings->column_hourly_rate,
-            'billable_amount' => $settings->column_billable_amount,
-            'currency' => $settings->column_currency,
-            'paid' => $settings->column_paid,
-        ];
+    public function generateFileName(string $extension): string
+    {
+        $exportFileName = 'TimeScribe-Export';
+        if ($this->startDate && $this->endDate) {
+            $exportFileName .= ' — '.$this->startDate->format('Y-m-d').' - '.$this->endDate->format('Y-m-d');
+        }
+        if ($this->projectIds) {
+            $projectNames = Project::withTrashed()->whereIn('id', $this->projectIds)->get('name')->map(fn ($projectName) => Str::slug($projectName))->join(' # ');
+            $exportFileName .= ' — '.$projectNames;
+        }
 
+        return $exportFileName.'.'.$extension;
+    }
+
+    private function getExportData(): Collection
+    {
         $timestamps = Timestamp::query()->with(['project']);
-        if ($startDate instanceof Carbon) {
-            $timestamps->where('started_at', '>=', $startDate);
+        $timestamps->whereIn('type', $this->timestampTypes);
+        if ($this->startDate) {
+            $timestamps->where('started_at', '>=', $this->startDate);
         }
-        if ($endDate instanceof Carbon) {
-            $timestamps->where('ended_at', '<=', $endDate);
+        if ($this->endDate) {
+            $timestamps->where('ended_at', '<=', $this->endDate);
         }
-        if ($projectId !== null) {
-            $timestamps->where('project_id', $projectId);
+        if ($this->projectIds) {
+            $timestamps->whereIn('project_id', $this->projectIds);
         }
-        $this->exportData = $timestamps->latest('started_at')->get();
+
+        return $timestamps->latest('started_at')->get();
     }
 
     public function exportAsCsv(string $filePath): void
@@ -73,7 +66,7 @@ class ExportService
         $file = fopen($filePath, 'w');
         fputcsv($file, $this->headerArray(), escape: '\\');
 
-        foreach ($this->exportData as $timestamp) {
+        foreach ($this->getExportData() as $timestamp) {
             fputcsv($file, $this->timestampToRowArray($timestamp), escape: '\\');
         }
 
@@ -92,72 +85,55 @@ class ExportService
         $writer->setHeaderStyle($style);
         $writer->addHeader($this->headerArray());
 
-        foreach ($this->exportData as $timestamp) {
+        foreach ($this->getExportData() as $timestamp) {
             $writer->addRow($this->timestampToRowArray($timestamp));
         }
     }
 
     public function exportAsPdf(string $filePath): void
     {
-        $totalSeconds = $this->exportData->reduce(function (int $carry, Timestamp $ts): int {
-            if ($ts->ended_at !== null) {
-                return $carry + (int) $ts->started_at->diffInSeconds($ts->ended_at);
-            }
+        $exportData = $this->getExportData();
+        $workTime = $exportData->where('type', 'work')->sum('duration');
+        $breakTime = $exportData->where('type', 'break')->sum('duration');
 
-            return $carry;
-        }, 0);
-
-        $totalHours = floor($totalSeconds / 3600);
-        $totalMinutes = floor(($totalSeconds % 3600) / 60);
+        $totalHours = floor($workTime / 3600);
+        $totalMinutes = floor(($workTime % 3600) / 60);
         $totalFormatted = sprintf('%d:%02d', $totalHours, $totalMinutes);
 
+        $exportSettings = resolve(ExportSettings::class);
+
+        $projects = [];
+        if ($this->projectIds) {
+            $projects = Project::withTrashed()->whereIn('id', $this->projectIds)->get(['name', 'color']);
+        }
+
         Pdf::view('pdf.export', [
-            'timestamps' => $this->exportData,
-            'columns' => $this->columns,
-            'startDate' => $this->startDate?->toDateString(),
-            'endDate' => $this->endDate?->toDateString(),
-            'projectName' => $this->projectName,
+            'timestamps' => $exportData->map(fn (Timestamp $timestamp): array => $this->timestampToRowArray($timestamp, true))->all(),
+            'columns' => $this->headerArray(),
+            'startDate' => $this->startDate?->isoFormat('L'),
+            'endDate' => $this->endDate?->isoFormat('L'),
+            'projects' => $projects,
             'totalHours' => $totalFormatted,
+            'breakTime' => $breakTime,
+            'workTime' => $workTime,
         ])
-            ->format($this->paperSize)
-            ->orientation($this->orientation)
+            ->format($exportSettings->pdf_paper_size)
+            ->orientation($exportSettings->pdf_orientation)
             ->save($filePath);
     }
 
     private function headerArray(): array
     {
-        $all = [
-            'type' => 'Type',
-            'description' => 'Description',
-            'project' => 'Project',
-            'import_source' => 'Import Source',
-            'start_date' => 'Start Date',
-            'start_time' => 'Start Time',
-            'end_date' => 'End Date',
-            'end_time' => 'End Time',
-            'duration' => 'Duration (h)',
-            'hourly_rate' => 'Hourly Rate',
-            'billable_amount' => 'Billable Amount',
-            'currency' => 'Currency',
-            'paid' => 'Paid',
-        ];
-
-        return array_values(
-            array_filter($all, fn (string $key) => $this->columns[$key] ?? true, ARRAY_FILTER_USE_KEY)
-        );
+        return collect(ExportColumnEnum::toResource())->filter(fn ($column) => $column['is_visible'])->map(fn ($column) => $column['label'])->toArray();
     }
 
-    private function timestampToRowArray(Timestamp $timestamp): array
+    private function timestampToRowArray(Timestamp $timestamp, bool $isoFormat = false): array
     {
         $all = [
             'type' => $timestamp['type']->value,
             'description' => $timestamp['description'] ?? '',
             'project' => $timestamp['project'] ? implode(' ', [$timestamp['project']->icon, $timestamp['project']->name]) : '',
             'import_source' => $timestamp['source'] ?? '',
-            'start_date' => $timestamp['started_at']->format('d/m/Y'),
-            'start_time' => $timestamp['started_at']->format('H:i:s'),
-            'end_date' => $timestamp['ended_at'] ? $timestamp['ended_at']->format('d/m/Y') : '',
-            'end_time' => $timestamp['ended_at'] ? $timestamp['ended_at']->format('H:i:s') : '',
             'duration' => $timestamp['ended_at'] ? gmdate('H:i:s', (int) $timestamp['started_at']->diffInSeconds($timestamp['ended_at'])) : '',
             'hourly_rate' => $timestamp['project']?->hourly_rate ? number_format($timestamp['project']->hourly_rate, 2) : '',
             'billable_amount' => $timestamp['duration'] && $timestamp['project']?->hourly_rate ? number_format($timestamp['duration'] / 60 * $timestamp['project']?->hourly_rate / 60, 2) : '',
@@ -165,8 +141,18 @@ class ExportService
             'paid' => $timestamp['paid'] ? 'Yes' : '',
         ];
 
-        return array_values(
-            array_filter($all, fn (string $key) => $this->columns[$key] ?? true, ARRAY_FILTER_USE_KEY)
-        );
+        if ($isoFormat) {
+            $all['start_date'] = $timestamp['started_at']->isoFormat('L');
+            $all['start_time'] = $timestamp['started_at']->isoFormat('LTS');
+            $all['end_date'] = $timestamp['ended_at'] ? $timestamp['ended_at']->isoFormat('L') : '';
+            $all['end_time'] = $timestamp['ended_at'] ? $timestamp['ended_at']->isoFormat('LTS') : '';
+        } else {
+            $all['start_date'] = $timestamp['started_at']->format('d/m/Y');
+            $all['start_time'] = $timestamp['started_at']->format('H:i:s');
+            $all['end_date'] = $timestamp['ended_at'] ? $timestamp['ended_at']->format('d/m/Y') : '';
+            $all['end_time'] = $timestamp['ended_at'] ? $timestamp['ended_at']->format('H:i:s') : '';
+        }
+
+        return collect($this->headerArray())->mapWithKeys(fn ($value, $key): array => [$key => $all[$key] ?? ''])->toArray();
     }
 }

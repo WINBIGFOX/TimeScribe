@@ -164,7 +164,7 @@ watch(
                 </div>
 
                 <div
-                    class="border-border/60 mt-4 flex flex-col gap-4 rounded-lg border border-dashed p-4 flex-row items-center justify-between"
+                    class="border-border/60 mt-4 flex flex-col flex-row items-center justify-between gap-4 rounded-lg border border-dashed p-4"
                     v-if="prorateConsumption"
                 >
                     <div class="flex-1 space-y-1">
