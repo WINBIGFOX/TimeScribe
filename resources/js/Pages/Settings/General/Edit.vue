@@ -87,6 +87,9 @@ watch(holidayCheck, () => {
                         <SelectValue :placeholder="$t('app.language')" />
                     </SelectTrigger>
                     <SelectContent>
+                        <SelectItem value="da_DK">
+                            {{ $t('app.danish') }}
+                        </SelectItem>
                         <SelectItem value="de_DE">
                             {{ $t('app.german') }}
                         </SelectItem>
@@ -105,11 +108,11 @@ watch(holidayCheck, () => {
                         <SelectItem value="it_IT">
                             {{ $t('app.italian') }}
                         </SelectItem>
-                        <SelectItem value="zh_CN">
-                            {{ $t('app.chinese') }}
-                        </SelectItem>
                         <SelectItem value="pt_BR">
                             {{ $t('app.portuguese (BR)') }}
+                        </SelectItem>
+                        <SelectItem value="zh_CN">
+                            {{ $t('app.chinese') }}
                         </SelectItem>
                     </SelectContent>
                 </Select>
