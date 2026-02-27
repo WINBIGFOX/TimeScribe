@@ -37,12 +37,8 @@ class AppServiceProvider extends ServiceProvider
 
         Route::pattern('date', '\d{4}-\d{2}-\d{2}');
         Route::pattern('datetime', '\d{4}-\d{2}-\d{2}\s\d{2}\:\d{2}\:\d{2}');
-        Route::pattern('start', '\d{4}-\d{2}-\d{2}');
-        Route::pattern('end', '\d{4}-\d{2}-\d{2}');
         Route::bind('date', fn (string $value): Carbon => $this->parseCarbon($value));
         Route::bind('datetime', fn (string $value): Carbon => $this->parseCarbon($value));
-        Route::bind('start', fn (string $value): Carbon => $this->parseCarbon($value));
-        Route::bind('end', fn (string $value): Carbon => $this->parseCarbon($value));
     }
 
     public function parseCarbon(string $value): Carbon
