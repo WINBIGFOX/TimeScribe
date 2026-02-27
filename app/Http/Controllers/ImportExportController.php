@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
 use Inertia\Inertia;
 
 class ImportExportController extends Controller
@@ -14,8 +13,6 @@ class ImportExportController extends Controller
      */
     public function index()
     {
-        return Inertia::render('ImportExport/Index', [
-            'projects' => Project::orderBy('name')->get(['id', 'name', 'icon']),
-        ]);
+        return Inertia::render('ImportExport/Index');
     }
 }
