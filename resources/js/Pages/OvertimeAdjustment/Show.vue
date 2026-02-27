@@ -175,9 +175,9 @@ const closeEditModal = () => {
                                         <Clock class="size-4" v-if="weekBalance.balance === 0" />
                                         <ClockArrowDown class="size-4" v-if="weekBalance.balance < 0" />
                                     </div>
-                                    <span class="text-muted-foreground line-clamp-1 text-xs leading-none break-all">{{
-                                        $t('app.overtime')
-                                    }}</span>
+                                    <span class="text-muted-foreground line-clamp-1 text-xs leading-none break-all">
+                                        {{ $t('app.overtime') }}
+                                    </span>
                                 </div>
                                 <div class="flex flex-col items-end" v-if="weekBalance.end_balance">
                                     <div

@@ -1,8 +1,11 @@
 <script lang="ts" setup>
+import Csv from '@/Components/icons/Csv.vue'
+import Pdf from '@/Components/icons/Pdf.vue'
+import Xls from '@/Components/icons/Xls.vue'
 import { PageHeader } from '@/Components/ui-custom/page-header'
 import { Button } from '@/Components/ui/button'
 import { Head, Link } from '@inertiajs/vue3'
-import { FileChartPie, FileType, FolderInput, FolderOutput } from 'lucide-vue-next'
+import { FolderInput, FolderOutput } from 'lucide-vue-next'
 </script>
 
 <template>
@@ -53,18 +56,37 @@ import { FileChartPie, FileType, FolderInput, FolderOutput } from 'lucide-vue-ne
             <p class="text-muted-foreground text-sm">
                 {{
                     $t(
-                        'app.export your data from timescribe as a csv or excel file for further processing or documentation.'
+                        'app.export your data from timescribe as a pdf, excel, or csv file for further processing or documentation.'
                     )
                 }}
             </p>
             <div class="mt-4 flex gap-4">
-                <Button :as="Link" :href="route('export.csv')" class="flex-1" method="post" variant="outline">
-                    <FileType />
-                    {{ $t('app.export as csv file') }}
+                <Button
+                    :as="Link"
+                    :href="route('export.create', { exportType: 'pdf' })"
+                    class="flex-1"
+                    variant="outline"
+                >
+                    <Pdf />
+                    {{ $t('app.export as pdf file') }}
                 </Button>
-                <Button :as="Link" :href="route('export.excel')" class="flex-1" method="post" variant="outline">
-                    <FileChartPie />
+                <Button
+                    :as="Link"
+                    :href="route('export.create', { exportType: 'excel' })"
+                    class="flex-1"
+                    variant="outline"
+                >
+                    <Xls />
                     {{ $t('app.export as excel file') }}
+                </Button>
+                <Button
+                    :as="Link"
+                    :href="route('export.create', { exportType: 'csv' })"
+                    class="flex-1"
+                    variant="outline"
+                >
+                    <Csv />
+                    {{ $t('app.export as csv file') }}
                 </Button>
             </div>
         </div>

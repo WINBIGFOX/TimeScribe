@@ -20,7 +20,7 @@ class ClockifyController extends Controller
      */
     public function create()
     {
-        return Inertia::modal('ImportExport/Clockify/Create', [
+        return Inertia::modal('ImportExport/Import/Clockify/Create', [
             'submit_route' => route('import.clockify.store'),
         ])->baseRoute('import-export.index');
     }

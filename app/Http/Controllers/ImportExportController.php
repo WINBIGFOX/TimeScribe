@@ -13,6 +13,6 @@ class ImportExportController extends Controller
      */
     public function index()
     {
-        return Inertia::render('ImportExport/Index', []);
+        return Inertia::render('ImportExport/Index');
     }
 }
