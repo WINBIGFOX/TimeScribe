@@ -61,9 +61,12 @@ const canMerge = () => {
     )
 }
 
-watch(() => [props.timestamp.started_at.date, props.timestamp.ended_at?.date], () => {
-    duration.value = calcDuration()
-})
+watch(
+    () => [props.timestamp.started_at.date, props.timestamp.ended_at?.date],
+    () => {
+        duration.value = calcDuration()
+    }
+)
 </script>
 
 <template>
