@@ -7,6 +7,7 @@ import { secToFormat } from '@/lib/utils'
 import { Head, Link, router, usePage } from '@inertiajs/vue3'
 import { useCssVar } from '@vueuse/core'
 import { ApexOptions } from 'apexcharts'
+import da from 'apexcharts/dist/locales/da.json'
 import de from 'apexcharts/dist/locales/de.json'
 import en from 'apexcharts/dist/locales/en.json'
 import fr from 'apexcharts/dist/locales/fr.json'
@@ -39,6 +40,7 @@ const showWeek = (opts) => {
 }
 
 const localeMapping = {
+    'da-DK': 'da',
     'de-DE': 'de',
     'en-GB': 'en',
     'en-US': 'en',
@@ -89,7 +91,7 @@ const data = {
             },
             background: 'transparent',
             fontFamily: 'var(--font-sans)',
-            locales: [de, en, fr, it, ptBr, zhCn],
+            locales: [da, de, en, fr, it, ptBr, zhCn],
             defaultLocale: currentLocale,
             type: 'bar',
             stacked: true,

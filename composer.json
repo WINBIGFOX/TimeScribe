@@ -11,6 +11,7 @@
     "require": {
         "php": "^8.4",
         "ext-zip": "*",
+        "dompdf/dompdf": "^3.1",
         "emargareten/inertia-modal": "^1.6",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel-lang/lang": "^15.28",
@@ -21,6 +22,7 @@
         "prinsfrank/standards": "^3.16",
         "sentry/sentry-laravel": "^4.20",
         "spatie/db-dumper": "^3.8",
+        "spatie/laravel-pdf": "^2.2",
         "spatie/laravel-settings": "^3.6",
         "spatie/simple-excel": "^3.8",
         "tightenco/ziggy": "^2.6",
