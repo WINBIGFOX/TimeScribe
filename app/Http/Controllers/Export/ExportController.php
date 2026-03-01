@@ -25,11 +25,14 @@ class ExportController extends Controller
     {
         $exportType = $request->input('exportType');
         $projects = Project::withTrashed()->orderBy('name')->get();
+        $exportSettings = resolve(ExportSettings::class);
 
         return Inertia::modal('ImportExport/Export/Create', [
             'exportType' => $exportType ?? 'pdf',
             'exportColumns' => ExportColumnEnum::toResource(),
             'projects' => ProjectResource::collection($projects),
+            'pdfOrientation' => $exportSettings->pdf_orientation,
+            'pdfPaperSize' => $exportSettings->pdf_paper_size,
             'submit_route' => route('export.store'),
         ])->baseRoute('import-export.index');
     }

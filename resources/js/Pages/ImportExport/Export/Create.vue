@@ -41,6 +41,8 @@ const props = defineProps<{
             key: string
         }
     >
+    pdfOrientation?: string
+    pdfPaperSize?: string
     submit_route: string
 }>()
 
@@ -48,8 +50,8 @@ const form = useForm({
     export_type: props.exportType,
     export_columns: Object.values(props.exportColumns),
     projects: [],
-    pdf_paper_size: 'a4' as string | undefined,
-    pdf_orientation: 'Landscape' as string | undefined,
+    pdf_paper_size: props.pdfPaperSize ?? ('a4' as string | undefined),
+    pdf_orientation: props.pdfOrientation ?? ('Landscape' as string | undefined),
     types: ['work', 'break'],
     file_name_format: '<PROJECT>_<NOW_DATE>',
     date_range: undefined as { start: string; end: string } | undefined
