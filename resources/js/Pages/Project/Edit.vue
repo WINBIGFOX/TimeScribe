@@ -31,6 +31,7 @@ const props = defineProps<{
 const form = useForm({
     name: props.project.name,
     description: props.project.description || '',
+    metadata: props.project.metadata || '',
     color: props.project.color,
     icon: props.project.icon || '',
     hourly_rate: props.project.hourly_rate || 0,
@@ -49,6 +50,7 @@ const submit = () => {
 <template>
     <Head title="Projekt edit" />
     <SheetDialog
+        scrollable
         :close="$t('app.cancel')"
         :submit="$t('app.save')"
         :title="$t('app.edit :item', { item: $t('app.project') })"
@@ -123,6 +125,20 @@ const submit = () => {
             </div>
             <div class="text-destructive col-span-2 text-sm" v-if="form.errors.hourly_rate">
                 {{ form.errors.hourly_rate }}
+            </div>
+        </div>
+        <div class="flex flex-col gap-2 py-4">
+            <span class="text-sm leading-none font-medium">{{ $t('app.metadata') }}</span>
+            <span class="text-muted-foreground text-sm">
+                {{
+                    $t(
+                        'app.store optional metadata for external tools. the value is exported in a separate column and can be used for downstream processing.'
+                    )
+                }}
+            </span>
+            <Textarea class="min-h-24 font-mono" v-model="form.metadata" />
+            <div class="text-destructive text-sm" v-if="form.errors.metadata">
+                {{ form.errors.metadata }}
             </div>
         </div>
     </SheetDialog>

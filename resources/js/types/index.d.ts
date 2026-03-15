@@ -63,6 +63,7 @@ export interface Project {
     id: number
     name: string
     description?: string
+    metadata?: string
     color: string
     icon?: string
     hourly_rate?: number

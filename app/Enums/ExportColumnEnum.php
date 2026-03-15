@@ -12,6 +12,7 @@ enum ExportColumnEnum: string
 
     case TYPE = 'type';
     case DESCRIPTION = 'description';
+    case METADATA = 'metadata';
     case PROJECT = 'project';
     case IMPORT_SOURCE = 'import_source';
     case START_DATE = 'start_date';
@@ -29,6 +30,7 @@ enum ExportColumnEnum: string
         return match ($this) {
             self::TYPE => __('app.type'),
             self::DESCRIPTION => __('app.description'),
+            self::METADATA => __('app.metadata'),
             self::PROJECT => __('app.project'),
             self::IMPORT_SOURCE => __('app.import source'),
             self::START_DATE => __('app.start date'),
@@ -60,7 +62,7 @@ enum ExportColumnEnum: string
         $exportSettings = resolve(ExportSettings::class);
         $list = $list->map(fn ($item, $key): array => [
             'label' => $item,
-            'is_visible' => $exportSettings->{'column_'.$key},
+            'is_visible' => $exportSettings->{'column_'.$key} ?? true,
             'type' => self::from($key)->type(),
             'key' => $key,
         ]);

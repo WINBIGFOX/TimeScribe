@@ -37,7 +37,7 @@ class ExportService
             $exportFileName .= ' — '.$this->startDate->format('Y-m-d').' - '.$this->endDate->format('Y-m-d');
         }
         if ($this->projectIds) {
-            $projectNames = Project::withTrashed()->whereIn('id', $this->projectIds)->get('name')->map(fn ($projectName) => Str::slug($projectName))->join(' # ');
+            $projectNames = Project::withTrashed()->whereIn('id', $this->projectIds)->get('name')->map(fn ($projectName) => Str::slug($projectName['name']))->join(' # ');
             $exportFileName .= ' — '.$projectNames;
         }
 
@@ -132,6 +132,7 @@ class ExportService
         $all = [
             'type' => $timestamp['type']->value,
             'description' => $timestamp['description'] ?? '',
+            'metadata' => $timestamp['project']?->metadata ?? '',
             'project' => $timestamp['project'] ? implode(' ', [$timestamp['project']->icon, $timestamp['project']->name]) : '',
             'import_source' => $timestamp['source'] ?? '',
             'duration' => $timestamp['ended_at'] ? gmdate('H:i:s', (int) $timestamp['started_at']->diffInSeconds($timestamp['ended_at'])) : '',

@@ -22,6 +22,7 @@ class UpdateExportSettingsRequest extends FormRequest
         return [
             'column_type' => ['required', 'boolean'],
             'column_description' => ['required', 'boolean'],
+            'column_metadata' => ['required', 'boolean'],
             'column_project' => ['required', 'boolean'],
             'column_import_source' => ['required', 'boolean'],
             'column_start_date' => ['required', 'boolean'],

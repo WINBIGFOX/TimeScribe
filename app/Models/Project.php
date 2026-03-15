@@ -18,6 +18,7 @@ class Project extends Model
     protected $fillable = [
         'name',
         'description',
+        'metadata',
         'color',
         'icon',
         'hourly_rate',

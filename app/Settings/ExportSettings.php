@@ -14,6 +14,8 @@ class ExportSettings extends Settings
 
     public bool $column_description;
 
+    public bool $column_metadata;
+
     public bool $column_project;
 
     public bool $column_import_source;

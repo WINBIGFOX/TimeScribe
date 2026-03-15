@@ -29,6 +29,7 @@ class StoreProjectRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
+            'metadata' => ['nullable', 'string'],
             'color' => ['required', 'string', 'max:255'],
             'icon' => ['nullable', 'string'],
             'hourly_rate' => ['nullable', 'numeric', 'min:0'],
@@ -43,6 +44,7 @@ class StoreProjectRequest extends FormRequest
             'name' => __('app.project name'),
             'color' => __('app.color'),
             'description' => __('app.description'),
+            'metadata' => __('app.metadata'),
             'hourly_rate' => __('app.hourly rate'),
             'currency' => __('app.currency'),
         ];

@@ -92,6 +92,7 @@ class ProjectController extends Controller
         $project->update([
             'name' => $data['name'],
             'description' => $data['description'],
+            'metadata' => $data['metadata'] ?? null,
             'color' => $data['color'],
             'icon' => $data['icon'] ?? null,
             'hourly_rate' => $data['hourly_rate'] ?? null,
