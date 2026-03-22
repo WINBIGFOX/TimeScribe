@@ -94,6 +94,8 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             ->route('menubar.index')
             ->width(300)
             ->height(280)
+            ->minWidth(300)
+            ->minHeight(280)
             ->resizable(false)
             ->showOnAllWorkspaces()
             ->icon(TrayIconService::getIcon())
