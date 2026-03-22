@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Services\TimestampService;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Date;
 
 afterEach(function (): void {
@@ -36,7 +35,7 @@ it('summarizes timestamp durations and project details without using the databas
 
     $result = $method->invoke(
         null,
-        new Collection([$plainTimestamp, $projectTimestamp]),
+        collect([$plainTimestamp, $projectTimestamp]),
         Date::parse('2025-01-15 00:00:00'),
         Date::parse('2025-01-15 23:59:59'),
         1800,
