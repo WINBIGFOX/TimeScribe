@@ -1,12 +1,20 @@
 {
     "agents": [
         "codex",
-        "phpstorm"
+        "opencode"
     ],
-    "editors": [
-        "codex",
-        "phpstorm"
+    "guidelines": true,
+    "herd_mcp": true,
+    "mcp": true,
+    "nightwatch_mcp": false,
+    "packages": [
+        "spatie/laravel-pdf"
     ],
-    "guidelines": [],
-    "herd_mcp": true
+    "sail": false,
+    "skills": [
+        "pest-testing",
+        "inertia-vue-development",
+        "tailwindcss-development",
+        "laravel-pdf"
+    ]
 }

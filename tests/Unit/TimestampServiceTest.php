@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Facades\Date;
 use App\Services\TimestampService;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Date;
 
 afterEach(function (): void {
     Date::setTestNow();

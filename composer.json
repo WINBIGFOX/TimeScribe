@@ -32,7 +32,7 @@
         "cweagans/composer-patches": "^2.0",
         "driftingly/rector-laravel": "^2.1",
         "fakerphp/faker": "^1.24",
-        "laravel/boost": "^1.8",
+        "laravel/boost": "^2.3",
         "laravel/breeze": "^2.4",
         "laravel/pail": "^1.2",
         "laravel/pint": "^1.29",

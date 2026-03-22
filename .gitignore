@@ -27,8 +27,10 @@ yarn-error.log
 /.zed
 /.vite
 /.ai
+/.codex
 **/mcp.json
 /dist
+opencode.json
 
 # Sentry Config File
 .env.sentry-build-plugin
