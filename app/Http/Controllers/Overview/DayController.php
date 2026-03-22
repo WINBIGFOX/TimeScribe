@@ -36,7 +36,7 @@ class DayController extends Controller
 
         return Inertia::render('Overview/Day/Show', [
             'timestamps' => TimestampResource::collection(TimestampService::getTimestamps(date: $startDay, endDate: $endDay, with: ['project'])),
-            'dayWorkTime' => TimestampService::getWorkTime($startDay, $endDay),
+            'dayWorkTime' => TimestampService::getWorkTime(date: $startDay, endDate: $endDay, withDetails: true),
             'dayBreakTime' => TimestampService::getBreakTime($startDay, $endDay),
             'dayPlan' => TimestampService::getPlan($date),
             'dayFallbackPlan' => TimestampService::getFallbackPlan($startDay, $endDay),

@@ -1,5 +1,14 @@
 <script lang="ts" setup>
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger
+} from '@/Components/ui/dropdown-menu'
 import { secToFormat } from '@/lib/utils'
+import { Link } from '@inertiajs/vue3'
 import {
     BriefcaseBusiness,
     ChevronsLeftRightEllipsis,
@@ -8,13 +17,16 @@ import {
     Cross,
     Diff,
     Drama,
+    Tag,
     TreePalm
 } from 'lucide-vue-next'
 import { computed } from 'vue'
+import { GetTimeProjectDetails } from '@/types'
 
 const props = defineProps<{
     type: string
     duration?: number
+    projectDurations?: Record<string, GetTimeProjectDetails>
 }>()
 
 const badgeDetails = {
@@ -76,15 +88,61 @@ const durationLabel = computed(() => secToFormat(props.duration ?? 0, true, true
 </script>
 
 <template>
-    <div :class="badgeColor" class="flex items-center gap-2 rounded-lg px-4 py-2">
-        <component :is="badgeIcon" class="size-5" />
+    <div :class="badgeColor" class="flex rounded-lg">
+        <div class="flex items-center gap-2 px-4 py-2">
+            <component :is="badgeIcon" class="size-5" />
 
-        <div class="space-y-1">
-            <div class="text-xs leading-none">{{ $t(badgeTitle) }}</div>
-            <div class="text-sm leading-none font-bold tabular-nums" v-if="props.duration !== undefined">
-                {{ durationLabel }}
-                {{ durationLabel.includes(':') ? $t('app.h') : $t('app.min') }}
+            <div class="space-y-1">
+                <div class="text-xs leading-none">{{ $t(badgeTitle) }}</div>
+                <div class="text-sm leading-none font-bold tabular-nums" v-if="props.duration !== undefined">
+                    {{ durationLabel }}
+                    {{ durationLabel.includes(':') ? $t('app.h') : $t('app.min') }}
+                </div>
             </div>
+        </div>
+        <div
+            class="border-background/30 border-l"
+            v-if="props.projectDurations && Object.values(props.projectDurations).length > 0"
+        >
+            <DropdownMenu>
+                <DropdownMenuTrigger class="hover:bg-background/20 flex h-full items-center px-1 transition-colors">
+                    <Tag class="size-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" side="top">
+                    <DropdownMenuLabel>{{ $t('app.project times') }}</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                        :as="Link"
+                        v-for="(projectDuration, key) in props.projectDurations"
+                        :href="route('project.show', { project: key })"
+                        preserve-scroll
+                        preserve-state
+                        :key="key"
+                        :style="'--project-color: ' + projectDuration.color"
+                        class="flex max-w-60 flex-wrap items-stretch gap-x-8 gap-y-2 border-l-6 border-l-(--project-color) bg-(--project-color)/10 not-last:mb-1 hover:bg-(--project-color)/20! dark:bg-(--project-color)/20 dark:hover:bg-(--project-color)/30!"
+                    >
+                        <span class="flex items-center gap-2 text-xs font-medium">
+                            <span class="text-md flex shrink-0 items-center" v-if="projectDuration.icon">
+                                {{ projectDuration.icon }}
+                            </span>
+                            <span class="line-clamp-1">
+                                {{ projectDuration.name }}
+                            </span>
+                        </span>
+                        <span class="flex items-center flex-1 justify-end gap-1 text-xs leading-none tabular-nums">
+                            <component :is="badgeIcon" class="size-4" />
+                            <span>
+                                {{ secToFormat(projectDuration.sum, true, true, true) }}
+                                {{
+                                    secToFormat(projectDuration.sum, true, true, true).includes(':')
+                                        ? $t('app.h')
+                                        : $t('app.min')
+                                }}
+                            </span>
+                        </span>
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
         </div>
     </div>
 </template>

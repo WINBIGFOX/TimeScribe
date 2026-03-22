@@ -15,10 +15,12 @@ import ptBr from 'apexcharts/dist/locales/pt-br.json'
 import zhCn from 'apexcharts/dist/locales/zh-cn.json'
 import { trans } from 'laravel-vue-i18n'
 import moment from 'moment/min/moment-with-locales'
+import { GetTimeProjectDetails } from '@/types'
 
 const props = defineProps<{
     date: string
     workTimes: number[]
+    workTimeProjectDurations: Record<string, GetTimeProjectDetails>
     breakTimes: number[]
     plans: number[]
     overtimes: number[]

@@ -5,7 +5,7 @@ import WorktimeProgressBar from '@/Components/WorktimeProgressBar.vue'
 import { PageHeader } from '@/Components/ui-custom/page-header'
 import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
-import { WeekdayObject } from '@/types'
+import { GetTimeWithDetails, WeekdayObject } from '@/types'
 import { Head, Link, router } from '@inertiajs/vue3'
 import moment from 'moment/min/moment-with-locales'
 
@@ -14,7 +14,7 @@ const props = defineProps<{
     week: number
     startOfWeek: string
     endOfWeek: string
-    weekWorkTime: number
+    weekWorkTime: GetTimeWithDetails
     weekBreakTime: number
     weekPlan?: number
     weekFallbackPlan?: number
@@ -94,31 +94,35 @@ if (window.Native) {
                 :break-time="props.weekBreakTime"
                 :fallback-plan="props.weekFallbackPlan"
                 :plan="props.weekPlan"
-                :progress="(props.weekWorkTime / ((props.weekPlan ?? 0) * 60 * 60)) * 100"
-                :work-time="props.weekWorkTime"
-                v-if="props.weekPlan || props.weekWorkTime"
+                :progress="(props.weekWorkTime.sum / ((props.weekPlan ?? 0) * 60 * 60)) * 100"
+                :work-time="props.weekWorkTime.sum"
+                v-if="props.weekPlan || props.weekWorkTime.sum"
             />
         </div>
         <div class="border-border absolute inset-x-0 bottom-18 border-t" />
     </div>
-    <div class="flex gap-2">
-        <TimestampTypeBadge :duration="props.weekWorkTime" type="work" />
+    <div class="flex items-stretch gap-2">
+        <TimestampTypeBadge
+            :project-durations="props.weekWorkTime.projects"
+            :duration="props.weekWorkTime.sum"
+            type="work"
+        />
         <TimestampTypeBadge :duration="props.weekBreakTime" type="break" />
         <TimestampTypeBadge
             v-if="props.hasWorkSchedules"
-            :duration="Math.max(props.weekWorkTime - (props.weekPlan ?? 0) * 60 * 60, 0)"
+            :duration="Math.max(props.weekWorkTime.sum - (props.weekPlan ?? 0) * 60 * 60, 0)"
             type="overtime"
         />
         <TimestampTypeBadge v-if="props.hasWorkSchedules" :duration="(props.weekPlan ?? 0) * 60 * 60" type="plan" />
         <Link
-            class="ml-auto"
+            class="ml-auto flex items-stretch"
             preserve-state
             preserve-scroll
             :href="route('overtime-adjustment.show', { date: props.date })"
         >
             <TimestampTypeBadge
                 v-if="props.hasWorkSchedules"
-                :duration="props.start_balance + Math.max(props.weekWorkTime - (props.weekPlan ?? 0) * 60 * 60, 0)"
+                :duration="props.start_balance + Math.max(props.weekWorkTime.sum - (props.weekPlan ?? 0) * 60 * 60, 0)"
                 type="balance"
             />
         </Link>

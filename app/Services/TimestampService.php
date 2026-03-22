@@ -147,9 +147,9 @@ class TimestampService
      * @param  Carbon|null  $date  The start date for the calculation. Defaults to the current date if null.
      * @param  Carbon|null  $endDate  The end date for the calculation. Defaults to the start date if null.
      * @param  bool|null  $fallbackNow  Whether to use the current time as a fallback for ongoing timestamps. Defaults to true.
-     * @return float The total calculated time in seconds.
+     * @return array The total calculated time in seconds with project durations.
      */
-    private static function getTime(TimestampTypeEnum $type, ?Carbon $date, ?Carbon $endDate = null, ?bool $fallbackNow = true, ?Project $project = null): float
+    private static function getTime(TimestampTypeEnum $type, ?Carbon $date, ?Carbon $endDate = null, ?bool $fallbackNow = true, ?Project $project = null): array
     {
         if (! $date instanceof Carbon) {
             $date = Date::now();
@@ -158,7 +158,7 @@ class TimestampService
             $endDate = $date->copy();
         }
 
-        $timestamps = Timestamp::whereDate('started_at', '>=', $date->startOfDay())
+        $timestamps = Timestamp::with('project')->whereDate('started_at', '>=', $date->startOfDay())
             ->whereDate('started_at', '<=', $endDate->endOfDay())
             ->when($project, fn ($query) => $query->where('project_id', $project->id))
             ->where('type', $type)
@@ -185,31 +185,70 @@ class TimestampService
             }
         }
 
-        return $timestamps->sum(function (Timestamp $timestamp) use ($date, $fallbackNow, $project, $endDate): float {
-            $fallbackTime = ($date->isToday() || $project && $endDate->isToday()) && $fallbackNow ? now() : $timestamp->last_ping_at;
-            $diffTime = $timestamp->ended_at ?? $fallbackTime;
-
-            return floor($timestamp->started_at->diff($diffTime)->totalSeconds);
-        }) + $absenceTime;
+        return self::summarizeTimeResult($timestamps, $date, $endDate, $absenceTime, $fallbackNow, $project);
     }
 
-    public static function getWorkTime(?Carbon $date = null, ?Carbon $endDate = null, ?Project $project = null): float
+    /**
+     * @return array{sum:int|float,projects:array<int|string, array{sum:int|float,name:mixed,color:mixed,icon:mixed}>}
+     */
+    private static function summarizeTimeResult(
+        Collection $timestamps,
+        Carbon $date,
+        Carbon $endDate,
+        int|float $absenceTime = 0,
+        ?bool $fallbackNow = true,
+        ?Project $project = null
+    ): array {
+        $return = [
+            'sum' => $absenceTime,
+            'projects' => [],
+        ];
+
+        foreach ($timestamps as $timestamp) {
+            $fallbackTime = ($date->isToday() || $project && $endDate->isToday()) && $fallbackNow ? now() : $timestamp->last_ping_at;
+            $diffTime = $timestamp->ended_at ?? $fallbackTime;
+            $duration = floor($timestamp->started_at->diff($diffTime)->totalSeconds);
+
+            if ($timestamp->project_id) {
+                if (! isset($return['projects'][$timestamp->project_id])) {
+                    $return['projects'][$timestamp->project_id] = [
+                        'sum' => 0,
+                        'name' => $timestamp->project->name,
+                        'color' => $timestamp->project->color,
+                        'icon' => $timestamp->project->icon,
+                    ];
+                }
+
+                $return['projects'][$timestamp->project_id]['sum'] += $duration;
+            }
+
+            $return['sum'] += $duration;
+        }
+
+        return $return;
+    }
+
+    public static function getWorkTime(?Carbon $date = null, ?Carbon $endDate = null, ?Project $project = null, ?bool $withDetails = false): float|array
     {
-        return self::getTime(
+        $getTime = self::getTime(
             type: TimestampTypeEnum::WORK,
             date: $date,
             endDate: $endDate,
             project: $project
         );
+
+        return $withDetails ? $getTime : $getTime['sum'];
     }
 
-    public static function getBreakTime(?Carbon $date = null, ?Carbon $endDate = null): float
+    public static function getBreakTime(?Carbon $date = null, ?Carbon $endDate = null, ?bool $withDetails = false): float|array
     {
-        return self::getTime(
+        $getTime = self::getTime(
             type: TimestampTypeEnum::BREAK,
             date: $date,
             endDate: $endDate
         );
+
+        return $withDetails ? $getTime : $getTime['sum'];
     }
 
     public static function getNoWorkTime(?Carbon $date = null): float
@@ -230,7 +269,7 @@ class TimestampService
 
         $workTimeRange = $firstWorkTimestamp->started_at->diffInSeconds($lastWorkTimestamp->ended_at ?? $lastWorkTimestamp->last_ping_at);
 
-        $workTime = self::getTime(TimestampTypeEnum::WORK, $date, null, false);
+        $workTime = self::getTime(TimestampTypeEnum::WORK, $date, null, false)['sum'];
 
         return max($workTimeRange - $workTime, 0);
     }

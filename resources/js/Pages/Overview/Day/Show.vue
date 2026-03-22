@@ -7,13 +7,13 @@ import TimestampTypeBadge from '@/Components/TimestampTypeBadge.vue'
 import { PageHeader } from '@/Components/ui-custom/page-header'
 import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
-import { Absence, Timestamp } from '@/types'
+import { Absence, GetTimeWithDetails, Timestamp } from '@/types'
 import { Head, Link, router } from '@inertiajs/vue3'
 import moment from 'moment/min/moment-with-locales'
 
 const props = defineProps<{
     date: string
-    dayWorkTime: number
+    dayWorkTime: GetTimeWithDetails
     dayPlan?: number
     timestamps: Timestamp[]
     absences: Absence[]
@@ -63,9 +63,9 @@ if (window.Native) {
     <div class="flex grow flex-col overflow-hidden">
         <Timeline
             :date="props.date"
-            :overtime="props.hasWorkSchedules ? Math.max(props.dayWorkTime - (props.dayPlan ?? 0) * 60 * 60, 0) : 0"
+            :overtime="props.hasWorkSchedules ? Math.max(props.dayWorkTime.sum - (props.dayPlan ?? 0) * 60 * 60, 0) : 0"
             :timestamps="props.timestamps"
-            :work-time="props.dayWorkTime"
+            :work-time="props.dayWorkTime.sum"
             class="mb-6 shrink-0"
         />
         <div class="mb-6 flex gap-2">
@@ -73,15 +73,18 @@ if (window.Native) {
             <TimestampTypeBadge type="vacation" v-if="props.absences.length && props.absences[0].type === 'vacation'" />
             <TimestampTypeBadge type="sick" v-if="props.absences.length && props.absences[0].type === 'sick'" />
             <TimestampTypeBadge
-                :duration="props.dayWorkTime"
+                :duration="props.dayWorkTime.sum"
                 type="work"
-                v-if="(!props.absences.length && !props.isHoliday) || (!props.hasWorkSchedules && props.dayWorkTime)"
+                :project-durations="props.dayWorkTime.projects"
+                v-if="
+                    (!props.absences.length && !props.isHoliday) || (!props.hasWorkSchedules && props.dayWorkTime.sum)
+                "
             />
             <TimestampTypeBadge :duration="props.dayBreakTime" type="break" />
             <TimestampTypeBadge :duration="props.dayNoWorkTime" type="noWork" />
             <TimestampTypeBadge
                 v-if="props.hasWorkSchedules"
-                :duration="Math.max(props.dayWorkTime - (props.dayPlan ?? 0) * 60 * 60, 0)"
+                :duration="Math.max(props.dayWorkTime.sum - (props.dayPlan ?? 0) * 60 * 60, 0)"
                 type="overtime"
             />
             <TimestampTypeBadge v-if="props.hasWorkSchedules" :duration="(props.dayPlan ?? 0) * 60 * 60" type="plan" />

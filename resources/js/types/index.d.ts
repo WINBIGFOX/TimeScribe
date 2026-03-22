@@ -9,6 +9,18 @@ export interface Date {
 
 export type Enum = Record<string, string>
 
+export interface GetTimeWithDetails {
+    sum: number
+    projects: Record<string, GetTimeProjectDetails>
+}
+
+export interface GetTimeProjectDetails {
+    sum: number
+    name: string
+    icon?: string
+    color: string
+}
+
 export interface WeekdayObject {
     plan?: number
     fallbackPlan?: number

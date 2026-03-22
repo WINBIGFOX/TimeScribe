@@ -38,20 +38,33 @@ class MonthController extends Controller
         $plans = [];
         $xaxis = [];
         $links = [];
+        $projectDurations = [];
 
         $startDate = $date->clone()->startOfMonth();
         $endDate = $date->clone()->endOfMonth();
         $periode = CarbonPeriod::create($startDate, $endDate);
         foreach ($periode as $rangeDate) {
             $plan = TimestampService::getPlan($rangeDate);
-            $workTime = TimestampService::getWorkTime($rangeDate);
+            $workTime = TimestampService::getWorkTime($rangeDate, withDetails: true);
             $breakTime = TimestampService::getBreakTime($rangeDate);
+
+            foreach ($workTime['projects'] as $projectId => $projectDuration) {
+                if (! isset($projectDurations[$projectId])) {
+                    $projectDurations[$projectId] = [
+                        'sum' => 0,
+                        'name' => $projectDuration['name'],
+                        'color' => $projectDuration['color'],
+                        'icon' => $projectDuration['icon'],
+                    ];
+                }
+                $projectDurations[$projectId]['sum'] += $projectDuration['sum'];
+            }
 
             $plans[] = $plan;
             $breakTimes[] = $breakTime;
-            $fullWorkTimes[] = $workTime;
-            $workTimes[] = min($workTime, $plan * 3600);
-            $overtimes[] = $workTime > $plan * 3600 && $hasWorkSchedule ? $workTime - ($plan * 3600) : 0;
+            $fullWorkTimes[] = $workTime['sum'];
+            $workTimes[] = min($workTime['sum'], $plan * 3600);
+            $overtimes[] = $workTime['sum'] > $plan * 3600 && $hasWorkSchedule ? $workTime['sum'] - ($plan * 3600) : 0;
             $xaxis[] = $rangeDate->format('Y-m-d');
             $links[] = route('overview.day.show', ['date' => $rangeDate->format('Y-m-d')]);
         }
@@ -60,12 +73,14 @@ class MonthController extends Controller
             $breakTimes = [];
             $workTimes = [];
             $overtimes = [];
+            $projectDurations = [];
         }
 
         return Inertia::render('Overview/Month/Show', [
             'date' => $date->format('Y-m-d'),
             'breakTimes' => $breakTimes,
             'workTimes' => $hasWorkSchedule ? $workTimes : $fullWorkTimes,
+            'workTimeProjectDurations' => $projectDurations,
             'overtimes' => $overtimes,
             'plans' => $plans,
             'xaxis' => $xaxis,

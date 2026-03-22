@@ -77,7 +77,7 @@ class WeekController extends Controller
             'week' => $week,
             'startOfWeek' => $startOfWeek,
             'endOfWeek' => $endOfWeek,
-            'weekWorkTime' => TimestampService::getWorkTime($startOfWeek, $endOfWeek),
+            'weekWorkTime' => TimestampService::getWorkTime($startOfWeek, $endOfWeek, withDetails: true),
             'weekBreakTime' => TimestampService::getBreakTime($startOfWeek, $endOfWeek),
             'weekPlan' => $weekPlan,
             'weekFallbackPlan' => TimestampService::getFallbackPlan($startOfWeek, $endOfWeek),

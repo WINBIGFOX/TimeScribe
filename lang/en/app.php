@@ -224,6 +224,7 @@ return [
     'project' => 'Project',
     'project created from clockify import' => 'Project created from Clockify import',
     'project name' => 'Project Name',
+    'project times' => 'Project times',
     'projects' => 'Projects',
     'prorate vacation consumption' => 'Prorate vacation consumption',
     'proration step' => 'Proration step',

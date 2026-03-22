@@ -224,6 +224,7 @@ return [
     'project' => 'Projekt',
     'project created from clockify import' => 'Projekt erstellt von Clockify Import',
     'project name' => 'Projektname',
+    'project times' => 'Projektzeiten',
     'projects' => 'Projekte',
     'prorate vacation consumption' => 'Urlaubsverbrauch anteilig berechnen',
     'proration step' => 'Schrittweite',

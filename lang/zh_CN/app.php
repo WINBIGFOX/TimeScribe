@@ -224,6 +224,7 @@ return [
     'project' => '项目',
     'project created from clockify import' => '从 Clockify 导入创建的项目',
     'project name' => '项目名称',
+    'project times' => '项目时间',
     'projects' => '项目',
     'prorate vacation consumption' => '按比例计算休假消耗',
     'proration step' => '比例步长',
