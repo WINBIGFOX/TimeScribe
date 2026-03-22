@@ -4,6 +4,7 @@ import { PageHeader } from '@/Components/ui-custom/page-header'
 import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
 import { secToFormat } from '@/lib/utils'
+import { GetTimeProjectDetails } from '@/types'
 import { Head, Link, router, usePage } from '@inertiajs/vue3'
 import { useCssVar } from '@vueuse/core'
 import { ApexOptions } from 'apexcharts'
@@ -16,7 +17,6 @@ import ptBr from 'apexcharts/dist/locales/pt-br.json'
 import zhCn from 'apexcharts/dist/locales/zh-cn.json'
 import { trans } from 'laravel-vue-i18n'
 import moment from 'moment/min/moment-with-locales'
-import { GetTimeProjectDetails } from '@/types'
 
 const props = defineProps<{
     date: string
@@ -279,7 +279,11 @@ if (window.Native) {
         <apexchart :options="data.chartOptions" :series="data.series" height="100%" type="bar"></apexchart>
     </div>
     <div class="flex gap-2">
-        <TimestampTypeBadge :duration="props.sumWorkTime" type="work" :project-durations="props.workTimeProjectDurations" />
+        <TimestampTypeBadge
+            :duration="props.sumWorkTime"
+            type="work"
+            :project-durations="props.workTimeProjectDurations"
+        />
         <TimestampTypeBadge :duration="props.sumBreakTime" type="break" />
         <TimestampTypeBadge v-if="props.hasWorkSchedules" :duration="Math.max(props.sumOvertime, 0)" type="overtime" />
         <TimestampTypeBadge v-if="props.hasWorkSchedules" :duration="(props.sumPlan ?? 0) * 60 * 60" type="plan" />

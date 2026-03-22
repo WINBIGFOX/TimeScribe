@@ -8,6 +8,7 @@ import {
     DropdownMenuTrigger
 } from '@/Components/ui/dropdown-menu'
 import { secToFormat } from '@/lib/utils'
+import { GetTimeProjectDetails } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import {
     BriefcaseBusiness,
@@ -21,7 +22,6 @@ import {
     TreePalm
 } from 'lucide-vue-next'
 import { computed } from 'vue'
-import { GetTimeProjectDetails } from '@/types'
 
 const props = defineProps<{
     type: string
@@ -129,7 +129,7 @@ const durationLabel = computed(() => secToFormat(props.duration ?? 0, true, true
                                 {{ projectDuration.name }}
                             </span>
                         </span>
-                        <span class="flex items-center flex-1 justify-end gap-1 text-xs leading-none tabular-nums">
+                        <span class="flex flex-1 items-center justify-end gap-1 text-xs leading-none tabular-nums">
                             <component :is="badgeIcon" class="size-4" />
                             <span>
                                 {{ secToFormat(projectDuration.sum, true, true, true) }}

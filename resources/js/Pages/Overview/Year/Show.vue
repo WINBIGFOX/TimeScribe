@@ -3,6 +3,7 @@ import { PageHeader } from '@/Components/ui-custom/page-header'
 import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
 import { secToFormat } from '@/lib/utils'
+import { GetTimeProjectDetails } from '@/types'
 import { Head, Link, router, usePage } from '@inertiajs/vue3'
 import { useCssVar } from '@vueuse/core'
 import { ApexOptions } from 'apexcharts'
@@ -15,7 +16,6 @@ import ptBr from 'apexcharts/dist/locales/pt-br.json'
 import zhCn from 'apexcharts/dist/locales/zh-cn.json'
 import { trans } from 'laravel-vue-i18n'
 import moment from 'moment/min/moment-with-locales'
-import { GetTimeProjectDetails } from '@/types'
 
 const props = defineProps<{
     date: string

@@ -24,9 +24,9 @@
         "@vue/eslint-config-typescript": "^14.7",
         "axios": "^1.13.6",
         "concurrently": "^9.2",
-        "eslint": "^10.0",
+        "eslint": "^10.1",
         "eslint-plugin-vue": "^10.8",
-        "laravel-vite-plugin": "^2.1",
+        "laravel-vite-plugin": "^3.0",
         "playwright": "^1.58.2",
         "postcss": "^8.5",
         "prettier": "^3.8",
@@ -35,13 +35,13 @@
         "prettier-plugin-tailwindcss": "^0.7",
         "tailwindcss": "4.2",
         "typescript": "5.9",
-        "vite": "^7.3",
+        "vite": "^8.0",
         "vue": "3.5",
-        "vue-tsc": "3.2.5"
+        "vue-tsc": "3.2.6"
     },
     "dependencies": {
         "@sentry/vite-plugin": "^5.1",
-        "@sentry/vue": "^10.43",
+        "@sentry/vue": "^10.45",
         "@vueuse/core": "^14.2.1",
         "apexcharts": "^5.10",
         "class-variance-authority": "^0.7",
