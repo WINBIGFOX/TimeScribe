@@ -118,7 +118,7 @@ const closeEditModal = () => {
     <Head title="Overtime-Adjustment show" />
     <SheetDialog size="lg" :title="$t('app.overtime adjustment overview')" :close="$t('app.close')">
         <div v-if="props.weekBalances.length" class="flex grow gap-4 overflow-hidden">
-            <div class="max-w-80 shrink-0 overflow-y-auto">
+            <div class="max-w-80 shrink-0 overflow-y-auto pr-px">
                 <template v-for="yearGroup in groupWeekBalancesByYear" :key="yearGroup.year">
                     <div
                         class="bg-background sticky z-10"
@@ -175,7 +175,7 @@ const closeEditModal = () => {
                                         <Clock class="size-4" v-if="weekBalance.balance === 0" />
                                         <ClockArrowDown class="size-4" v-if="weekBalance.balance < 0" />
                                     </div>
-                                    <span class="text-muted-foreground line-clamp-1 text-xs leading-none break-all">
+                                    <span class="text-muted-foreground line-clamp-1 text-xs break-all">
                                         {{ $t('app.overtime') }}
                                     </span>
                                 </div>
@@ -187,7 +187,7 @@ const closeEditModal = () => {
                                         {{ $t('app.h') }}
                                         <Diff class="size-4" />
                                     </div>
-                                    <span class="text-muted-foreground line-clamp-1 text-xs leading-none break-all">
+                                    <span class="text-muted-foreground line-clamp-1 text-xs break-all">
                                         {{ $t('app.time balance') }}
                                     </span>
                                 </div>

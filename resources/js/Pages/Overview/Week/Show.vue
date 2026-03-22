@@ -116,6 +116,7 @@ if (window.Native) {
         <TimestampTypeBadge v-if="props.hasWorkSchedules" :duration="(props.weekPlan ?? 0) * 60 * 60" type="plan" />
         <Link
             class="ml-auto flex items-stretch"
+            prefetch
             preserve-state
             preserve-scroll
             :href="route('overtime-adjustment.show', { date: props.date })"
