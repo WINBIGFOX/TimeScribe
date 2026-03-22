@@ -61,7 +61,7 @@ class BugAndFeedbackController extends Controller
 
         try {
             $backupPath = $backupService->create($savePath);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Log::error('Failed to create backup: '.$e->getMessage());
 
             return back()->withErrors(['message' => $e->getMessage()]);
@@ -86,7 +86,7 @@ class BugAndFeedbackController extends Controller
 
         try {
             (new BackupService)->restore($backupFilePath);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Log::error('Failed to open zip file: '.$backupFilePath);
             Alert::error(__('app.restoring'), $e->getMessage());
 

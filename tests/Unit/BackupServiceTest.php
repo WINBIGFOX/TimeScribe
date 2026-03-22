@@ -15,9 +15,9 @@ uses(TestCase::class, RefreshDatabase::class);
 it('rejects backups aus einer neueren App-Version', function (): void {
     File::ensureDirectoryExists(storage_path('testing'));
 
-    $zip = new \ZipArchive;
+    $zip = new ZipArchive;
     expect(
-        $zip->open(storage_path('testing/newer-version.bak'), \ZipArchive::CREATE | \ZipArchive::OVERWRITE)
+        $zip->open(storage_path('testing/newer-version.bak'), ZipArchive::CREATE | ZipArchive::OVERWRITE)
     )->toBeTrue();
 
     $manifest = [
@@ -71,10 +71,10 @@ it('entfernt Tabellen, die nach dem Backup hinzugekommen sind', function (): voi
         json_encode($manifest, JSON_PRETTY_PRINT)
     );
 
-    $zip = new \ZipArchive;
+    $zip = new ZipArchive;
     $backupPath = storage_path('testing/dump-drop.bak');
     File::ensureDirectoryExists(storage_path('testing'));
-    expect($zip->open($backupPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE))->toBeTrue();
+    expect($zip->open($backupPath, ZipArchive::CREATE | ZipArchive::OVERWRITE))->toBeTrue();
     expect($zip->addFile(storage_path('backup/database.sql'), 'backup/database.sql'))->toBeTrue();
     expect($zip->addFile(storage_path('backup/manifest.json'), 'backup/manifest.json'))->toBeTrue();
     expect($zip->close())->toBeTrue();
@@ -83,7 +83,7 @@ it('entfernt Tabellen, die nach dem Backup hinzugekommen sind', function (): voi
 
     DB::shouldReceive('unprepared')
         ->once()
-        ->with(\Mockery::on(fn (string $content): bool => str_contains($content, 'old_table')))
+        ->with(Mockery::on(fn (string $content): bool => str_contains($content, 'old_table')))
         ->andReturn(true);
     Artisan::shouldReceive('call')->with('migrate', ['--force' => true])->once()->andReturn(0);
     Artisan::shouldReceive('call')->with('native:migrate', ['--force' => true])->once()->andReturn(0);
@@ -113,10 +113,10 @@ it('akzeptiert legacy bak ohne Manifest', function (): void {
     File::ensureDirectoryExists(storage_path('backup'));
     File::put(storage_path('backup/database.sql'), $sql);
 
-    $zip = new \ZipArchive;
+    $zip = new ZipArchive;
     $backupPath = storage_path('testing/legacy-without-manifest.bak');
     File::ensureDirectoryExists(storage_path('testing'));
-    expect($zip->open($backupPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE))->toBeTrue();
+    expect($zip->open($backupPath, ZipArchive::CREATE | ZipArchive::OVERWRITE))->toBeTrue();
     expect($zip->addFile(storage_path('backup/database.sql'), 'backup/database.sql'))->toBeTrue();
     expect($zip->close())->toBeTrue();
 
@@ -124,7 +124,7 @@ it('akzeptiert legacy bak ohne Manifest', function (): void {
 
     DB::shouldReceive('unprepared')
         ->once()
-        ->with(\Mockery::on(fn (string $content): bool => str_contains($content, 'legacy_table')))
+        ->with(Mockery::on(fn (string $content): bool => str_contains($content, 'legacy_table')))
         ->andReturn(true);
     Artisan::shouldReceive('call')->with('migrate', ['--force' => true])->once()->andReturn(0);
     Artisan::shouldReceive('call')->with('native:migrate', ['--force' => true])->once()->andReturn(0);

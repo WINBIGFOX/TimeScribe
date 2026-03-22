@@ -116,11 +116,11 @@ it('exports project metadata as a dedicated column', function (): void {
 
     $path = tempnam(sys_get_temp_dir(), 'timescribe-export-');
 
-    (new ExportService(
+    new ExportService(
         timestampTypes: [TimestampTypeEnum::WORK->value],
         startDate: '2026-03-01',
         endDate: '2026-03-03',
-    ))->exportAsCsv($path);
+    )->exportAsCsv($path);
 
     $rows = array_map(
         static fn (string $line): array => str_getcsv($line, escape: '\\'),
