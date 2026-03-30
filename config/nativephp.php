@@ -80,6 +80,7 @@ return [
         '.junie',
         '.codex',
         '.agents',
+        '.idea',
         'opencode.json',
         'content',
         'node_modules',

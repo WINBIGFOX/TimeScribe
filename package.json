@@ -22,7 +22,6 @@
         "@vitejs/plugin-vue": "^6.0",
         "@vue/eslint-config-prettier": "^10.2",
         "@vue/eslint-config-typescript": "^14.7",
-        "axios": "^1.13.6",
         "concurrently": "^9.2",
         "eslint": "^10.1",
         "eslint-plugin-vue": "^10.8",

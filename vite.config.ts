@@ -41,7 +41,7 @@ export default defineConfig({
             output: {
                 entryFileNames: '[hash].js',
                 chunkFileNames: `[hash].js`,
-                assetFileNames: `[hash].[ext]`,
+                assetFileNames: `[hash].[ext]`
             }
         },
         cssCodeSplit: true,

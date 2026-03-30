@@ -1,5 +1,3 @@
-import './bootstrap'
-
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 
 import BasicLayout from '@/Layouts/BasicLayout.vue'
