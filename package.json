@@ -15,7 +15,7 @@
         "update-playwright": "npm install playwright@latest --dev && npx playwright install"
     },
     "devDependencies": {
-        "@inertiajs/vue3": "^2.3",
+        "@inertiajs/vue3": "^3.0.0",
         "@rushstack/eslint-patch": "^1.16",
         "@tailwindcss/vite": "^4.2",
         "@types/node": "^25.5",
@@ -40,6 +40,7 @@
         "vue-tsc": "3.2.6"
     },
     "dependencies": {
+        "@inertiajs/vite": "^3.0.0",
         "@sentry/vite-plugin": "^5.1",
         "@sentry/vue": "^10.45",
         "@vueuse/core": "^14.2.1",

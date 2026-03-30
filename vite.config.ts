@@ -35,19 +35,13 @@ export default defineConfig({
     ],
     build: {
         target: 'esnext',
-        minify: 'esbuild',
+        minify: 'oxc',
         chunkSizeWarningLimit: 1000,
-        rollupOptions: {
+        rolldownOptions: {
             output: {
                 entryFileNames: '[hash].js',
                 chunkFileNames: `[hash].js`,
                 assetFileNames: `[hash].[ext]`,
-                manualChunks: {
-                    'vue-core': ['vue', '@vueuse/core'],
-                    charts: ['apexcharts', 'vue3-apexcharts'],
-                    'ui-libs': ['reka-ui', 'vaul-vue', 'lucide-vue-next'],
-                    utils: ['moment', 'clsx', 'tailwind-merge']
-                }
             }
         },
         cssCodeSplit: true,
