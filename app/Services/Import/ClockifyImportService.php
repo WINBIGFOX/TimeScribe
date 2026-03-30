@@ -19,6 +19,11 @@ class ClockifyImportService
 
     private ?string $currency = null;
 
+    /**
+     * @var array<string, int|null>
+     */
+    private array $columnIndexes = [];
+
     public function __construct(private readonly string $csvPath)
     {
         Log::info('ClockifyImportService: Importing CSV file', [
@@ -34,26 +39,47 @@ class ClockifyImportService
     private function verifyFormat(): bool
     {
         $csvFile = fopen($this->csvPath, 'r');
+        if ($csvFile === false) {
+            return false;
+        }
+
         $header = fgetcsv($csvFile, escape: '\\');
         $firstRow = fgetcsv($csvFile, escape: '\\');
         fclose($csvFile);
 
-        if (count($header) !== 17 || count($firstRow) !== 17) {
+        if (! is_array($header) || ! is_array($firstRow)) {
             return false;
         }
 
-        $dateRegex = '/\d{2}\/\d{2}\/\d{4}/';
-        $timeRegex = '/\d{2}:\d{2}:\d{2}/';
-
-        if (preg_match($dateRegex, (string) $header[9]) || preg_match($dateRegex, (string) $header[11])) {
+        $columnIndexes = $this->resolveColumnIndexes($header);
+        if ($columnIndexes === null) {
             return false;
         }
 
-        if (! preg_match($dateRegex, (string) $firstRow[9]) || ! preg_match($dateRegex, (string) $firstRow[11])) {
+        $this->columnIndexes = $columnIndexes;
+
+        try {
+            dd($this->getRowValue($firstRow, 'start_date'),
+                $this->getRowValue($firstRow, 'start_time'),
+                $this->getRowValue($firstRow, 'end_date'),
+                $this->getRowValue($firstRow, 'end_time')
+            );
+
+            $this->dateFormat(
+                $this->getRowValue($firstRow, 'start_date'),
+                $this->getRowValue($firstRow, 'start_time'),
+            );
+            $this->dateFormat(
+                $this->getRowValue($firstRow, 'end_date'),
+                $this->getRowValue($firstRow, 'end_time'),
+            );
+        } catch (\Throwable) {
+            dd('hier');
+
             return false;
         }
 
-        return preg_match($timeRegex, (string) $firstRow[10]) && preg_match($timeRegex, (string) $firstRow[12]);
+        return true;
     }
 
     private function checkCurrency(): void
@@ -62,13 +88,15 @@ class ClockifyImportService
         $header = fgetcsv($csvFile, escape: '\\');
         fclose($csvFile);
 
-        if (isset($header[15]) && ($header[15] !== '' && $header[15] !== '0')) {
-            $currencyString = preg_match('/\(([A-Z]{3})\)/', $header[15], $matches) ? $matches[1] : null;
+        if (is_array($header)) {
+            foreach ($header as $columnHeader) {
+                $currencyString = preg_match('/\(([A-Z]{3})\)/', (string) $columnHeader, $matches) ? $matches[1] : null;
 
-            if ($currencyString && CurrencyAlpha3::from($currencyString)) {
-                $this->currency = strtoupper($currencyString);
+                if ($currencyString !== null && CurrencyAlpha3::tryFrom($currencyString) instanceof CurrencyAlpha3) {
+                    $this->currency = strtoupper($currencyString);
 
-                return;
+                    return;
+                }
             }
         }
 
@@ -100,8 +128,14 @@ class ClockifyImportService
     private function readTimestamps(array $row): void
     {
         try {
-            $startAt = $this->dateFormat($row[9], $row[10]);
-            $endAt = $this->dateFormat($row[11], $row[12]);
+            $startAt = $this->dateFormat(
+                $this->getRowValue($row, 'start_date'),
+                $this->getRowValue($row, 'start_time'),
+            );
+            $endAt = $this->dateFormat(
+                $this->getRowValue($row, 'end_date'),
+                $this->getRowValue($row, 'end_time'),
+            );
 
             if ($startAt >= now() || $endAt >= now()) {
                 return;
@@ -114,15 +148,149 @@ class ClockifyImportService
                 'source' => 'Clockify',
             ];
 
-            if (! empty($row[0])) {
-                $timestamp['project_name'] = $row[0];
-                $timestamp['hourly_rate'] = $row[15];
+            $projectName = $this->getRowValue($row, 'project_name');
+            if ($projectName !== '') {
+                $timestamp['project_name'] = $projectName;
+
+                $hourlyRate = $this->parseHourlyRate($this->getRowValue($row, 'hourly_rate'));
+                if ($hourlyRate !== null) {
+                    $timestamp['hourly_rate'] = $hourlyRate;
+                }
             }
         } catch (\Throwable) {
             return;
         }
 
         $this->timestamps->push($timestamp);
+    }
+
+    /**
+     * @param  array<int, string|null>  $header
+     * @return array<string, int|null>|null
+     */
+    private function resolveColumnIndexes(array $header): ?array
+    {
+        $normalizedHeader = array_map(
+            fn (?string $column): string => $this->normalizeHeader((string) $column),
+            $header,
+        );
+
+        $columnIndexes = [
+            'project_name' => $this->findHeaderIndex($normalizedHeader, [
+                'project',
+                'projekt',
+                'proyecto',
+                'projet',
+                'projeto',
+            ]),
+            'start_date' => $this->findHeaderIndex($normalizedHeader, [
+                'start date',
+                'startdatum',
+                'fecha de inicio',
+                'date de début',
+                'data de início',
+            ]),
+            'start_time' => $this->findHeaderIndex($normalizedHeader, [
+                'start time',
+                'startzeit',
+                'hora de inicio',
+                'heure de début',
+                'hora de início',
+            ]),
+            'end_date' => $this->findHeaderIndex($normalizedHeader, [
+                'end date',
+                'enddatum',
+                'fecha de finalización',
+                'date de fin',
+                'data final',
+            ]),
+            'end_time' => $this->findHeaderIndex($normalizedHeader, [
+                'end time',
+                'endzeit',
+                'hora de finalización',
+                'heure de fin',
+                'hora de término',
+            ]),
+            'hourly_rate' => $this->findHeaderIndexByPrefix($normalizedHeader, [
+                'billable rate',
+                'abrechenbarer tarif',
+                'tarifa facturable',
+                'taux facturable',
+                'valor faturável',
+            ]),
+        ];
+
+        foreach (['start_date', 'start_time', 'end_date', 'end_time'] as $requiredColumn) {
+            if ($columnIndexes[$requiredColumn] === null) {
+                return null;
+            }
+        }
+
+        return $columnIndexes;
+    }
+
+    private function normalizeHeader(string $header): string
+    {
+        $header = str_replace("\xEF\xBB\xBF", '', $header);
+        $header = preg_replace('/\s+/', ' ', trim($header));
+
+        return mb_strtolower($header ?? '');
+    }
+
+    /**
+     * @param  array<int, string>  $normalizedHeader
+     * @param  array<int, string>  $aliases
+     */
+    private function findHeaderIndex(array $normalizedHeader, array $aliases): ?int
+    {
+        foreach ($normalizedHeader as $index => $column) {
+            if (in_array($column, $aliases, true)) {
+                return $index;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param  array<int, string>  $normalizedHeader
+     * @param  array<int, string>  $prefixes
+     */
+    private function findHeaderIndexByPrefix(array $normalizedHeader, array $prefixes): ?int
+    {
+        foreach ($normalizedHeader as $index => $column) {
+            foreach ($prefixes as $prefix) {
+                if ($column === $prefix || str_starts_with($column, $prefix.' ')) {
+                    return $index;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private function getRowValue(array $row, string $column): string
+    {
+        $index = $this->columnIndexes[$column] ?? null;
+        if ($index === null) {
+            return '';
+        }
+
+        return trim((string) ($row[$index] ?? ''));
+    }
+
+    private function parseHourlyRate(string $hourlyRate): ?float
+    {
+        if ($hourlyRate === '') {
+            return null;
+        }
+
+        $normalizedHourlyRate = str_replace(',', '.', $hourlyRate);
+        if (! is_numeric($normalizedHourlyRate)) {
+            return null;
+        }
+
+        return (float) $normalizedHourlyRate;
     }
 
     private function dateFormat(string $date, string $time): Carbon
@@ -182,6 +350,10 @@ class ClockifyImportService
 
     private function fixDatabaseTimestampCollision(): void
     {
+        if ($this->timestamps->isEmpty()) {
+            return;
+        }
+
         $firstDate = $this->timestamps->first();
         $lastDate = $this->timestamps->last();
         $existingDates = [];
@@ -286,7 +458,7 @@ class ClockifyImportService
                 [
                     'description' => __('app.project created from clockify import'),
                     'color' => '#000000',
-                    'hourly_rate' => $timestamp['hourly_rate'],
+                    'hourly_rate' => $timestamp['hourly_rate'] ?? null,
                     'currency' => $this->currency,
                 ]
             );
