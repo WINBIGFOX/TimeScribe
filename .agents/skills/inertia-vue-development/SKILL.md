@@ -8,6 +8,16 @@ metadata:
 
 # Inertia Vue Development
 
+## When to Apply
+
+Activate this skill when:
+
+- Creating or modifying Vue page components for Inertia
+- Working with forms in Vue (using `<Form>` or `useForm`)
+- Implementing client-side navigation with `<Link>` or `router`
+- Using v2 features: deferred props, prefetching, WhenVisible, InfiniteScroll, once props, flash data, or polling
+- Building Vue-specific features with the Inertia protocol
+
 ## Documentation
 
 Use `search-docs` for detailed Inertia v2 Vue patterns and documentation.
@@ -19,8 +29,6 @@ Use `search-docs` for detailed Inertia v2 Vue patterns and documentation.
 Vue page components should be placed in the `resources/js/Pages` directory.
 
 ### Page Component Structure
-
-Important: Vue components must have a single root element.
 
 <!-- Basic Vue Page Component -->
 ```vue
@@ -303,18 +311,29 @@ defineProps({
 
 ### Polling
 
-Use the `usePoll` composable to automatically refresh data at intervals. It handles cleanup on unmount and throttles polling when the tab is inactive.
+Automatically refresh data at intervals:
 
-<!-- Basic Polling -->
+<!-- Polling Example -->
 ```vue
 <script setup>
-import { usePoll } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3'
+import { onMounted, onUnmounted } from 'vue'
 
 defineProps({
     stats: Object
 })
 
-usePoll(5000)
+let interval
+
+onMounted(() => {
+    interval = setInterval(() => {
+        router.reload({ only: ['stats'] })
+    }, 5000) // Poll every 5 seconds
+})
+
+onUnmounted(() => {
+    clearInterval(interval)
+})
 </script>
 
 <template>
@@ -325,69 +344,36 @@ usePoll(5000)
 </template>
 ```
 
-<!-- Polling With Request Options and Manual Control -->
-```vue
-<script setup>
-import { usePoll } from '@inertiajs/vue3'
+### WhenVisible
 
-defineProps({
-    stats: Object
-})
+Lazy-load a prop when an element scrolls into view. Useful for deferring expensive data that sits below the fold:
 
-const { start, stop } = usePoll(5000, {
-    only: ['stats'],
-    onStart() {
-        console.log('Polling request started')
-    },
-    onFinish() {
-        console.log('Polling request finished')
-    },
-}, {
-    autoStart: false,
-    keepAlive: true,
-})
-</script>
-
-<template>
-    <div>
-        <h1>Dashboard</h1>
-        <div>Active Users: {{ stats.activeUsers }}</div>
-        <button @click="start">Start Polling</button>
-        <button @click="stop">Stop Polling</button>
-    </div>
-</template>
-```
-
-- `autoStart` (default `true`) — set to `false` to start polling manually via the returned `start()` function
-- `keepAlive` (default `false`) — set to `true` to prevent throttling when the browser tab is inactive
-
-### WhenVisible (Infinite Scroll)
-
-Load more data when user scrolls to a specific element:
-
-<!-- Infinite Scroll with WhenVisible -->
+<!-- WhenVisible Example -->
 ```vue
 <script setup>
 import { WhenVisible } from '@inertiajs/vue3'
 
 defineProps({
-    users: Object
+    stats: Object
 })
 </script>
 
 <template>
     <div>
-        <div v-for="user in users.data" :key="user.id">
-            {{ user.name }}
-        </div>
+        <h1>Dashboard</h1>
 
-        <WhenVisible
-            v-if="users.next_page_url"
-            data="users"
-            :params="{ page: users.current_page + 1 }"
-        >
+        <!-- stats prop is loaded only when this section scrolls into view -->
+        <WhenVisible data="stats" :buffer="200">
             <template #fallback>
-                <div>Loading more...</div>
+                <div class="animate-pulse">Loading stats...</div>
+            </template>
+
+            <template #default="{ fetching }">
+                <div>
+                    <p>Total Users: {{ stats.total_users }}</p>
+                    <p>Revenue: {{ stats.revenue }}</p>
+                    <span v-if="fetching">Refreshing...</span>
+                </div>
             </template>
         </WhenVisible>
     </div>
