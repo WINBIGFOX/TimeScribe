@@ -101,6 +101,28 @@ const sortModifiers = (modifiers: Modifier[]): Modifier[] => {
     return uniqueModifiers.sort((first, second) => MODIFIER_ORDER.indexOf(first) - MODIFIER_ORDER.indexOf(second))
 }
 
+const normalizeFunctionKey = (value: string | undefined): string | null => {
+    if (!value) {
+        return null
+    }
+
+    const upperValue = value.toUpperCase()
+    if (!/^F\d{1,2}$/.test(upperValue)) {
+        return null
+    }
+
+    const numberPart = Number(upperValue.slice(1))
+    if (numberPart < 1 || numberPart > 24) {
+        return null
+    }
+
+    return `F${numberPart}`
+}
+
+const isFunctionKey = (key: string | null | undefined): key is string => {
+    return normalizeFunctionKey(key ?? undefined) !== null
+}
+
 const normalizeKey = (event: KeyboardEvent): string | null => {
     const key = event.key
     const code = event.code
@@ -126,15 +148,15 @@ const normalizeKey = (event: KeyboardEvent): string | null => {
         }
     }
 
-    const upperKey = key.toUpperCase()
-    if (/^F\\d{1,2}$/.test(upperKey)) {
-        const numberPart = Number(upperKey.slice(1))
-        if (numberPart >= 1 && numberPart <= 24) {
-            return `F${numberPart}`
-        }
+    const normalizedFunctionKey = normalizeFunctionKey(key) ?? normalizeFunctionKey(code)
+    if (normalizedFunctionKey) {
+        return normalizedFunctionKey
     }
 
     const keyMap: Record<string, string> = {
+        AudioVolumeDown: 'VolumeDown',
+        AudioVolumeMute: 'VolumeMute',
+        AudioVolumeUp: 'VolumeUp',
         ArrowDown: 'Down',
         ArrowLeft: 'Left',
         ArrowRight: 'Right',
@@ -150,6 +172,8 @@ const normalizeKey = (event: KeyboardEvent): string | null => {
         Home: 'Home',
         Insert: 'Insert',
         Left: 'Left',
+        MediaTrackNext: 'MediaNextTrack',
+        MediaTrackPrevious: 'MediaPreviousTrack',
         MediaNextTrack: 'MediaNextTrack',
         MediaPlayPause: 'MediaPlayPause',
         MediaPreviousTrack: 'MediaPreviousTrack',
@@ -232,11 +256,15 @@ const formatShortcut = (modifiers: Modifier[], key: string): string | null => {
         return null
     }
 
-    if (modifiers.length === 0) {
+    if (modifiers.length === 0 && !isFunctionKey(key)) {
         return null
     }
 
     const sortedModifiers = sortModifiers(modifiers)
+
+    if (sortedModifiers.length === 0) {
+        return key
+    }
 
     return [...sortedModifiers, key].join('+')
 }
@@ -276,7 +304,7 @@ const handleKeydown = (event: KeyboardEvent) => {
         return
     }
 
-    if (modifiers.length === 0) {
+    if (modifiers.length === 0 && !isFunctionKey(normalizedKey)) {
         error.value = 'app.add at least one modifier key.'
         return
     }

@@ -135,13 +135,22 @@ class ShortcutRule implements DataAwareRule, ValidationRule
 
         $parts = explode('+', $value);
 
-        if (count($parts) < 2) {
+        if (count($parts) === 1) {
+            $key = $parts[0];
+            $parts = [];
+
+            if (! $this->isFunctionKey($key)) {
+                $fail(__('app.add at least one modifier key.'));
+
+                return;
+            }
+        } elseif (count($parts) < 2) {
             $fail(__('app.add at least one modifier key.'));
 
             return;
+        } else {
+            $key = array_pop($parts);
         }
-
-        $key = array_pop($parts);
 
         if (! in_array($key, self::ALLOWED_KEYS, true)) {
             $fail(__('app.this shortcut is not supported.'));
@@ -168,6 +177,11 @@ class ShortcutRule implements DataAwareRule, ValidationRule
         if (in_array($value, $otherShortcuts, true)) {
             $fail(__('app.this shortcut is already used for another action.'));
         }
+    }
+
+    private function isFunctionKey(string $key): bool
+    {
+        return preg_match('/^F([1-9]|1\d|2[0-4])$/', $key) === 1;
     }
 
     /**
