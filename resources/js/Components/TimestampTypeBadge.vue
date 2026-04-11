@@ -129,7 +129,9 @@ const durationLabel = computed(() => secToFormat(props.duration ?? 0, true, true
                                 {{ projectDuration.name }}
                             </span>
                         </span>
-                        <span class="flex flex-1 items-center justify-end gap-1 text-xs leading-none tabular-nums">
+                        <span
+                            class="flex flex-1 shrink-0 items-center justify-end gap-1 text-xs leading-none whitespace-nowrap tabular-nums"
+                        >
                             <component :is="badgeIcon" class="size-4" />
                             <span>
                                 {{ secToFormat(projectDuration.sum, true, true, true) }}
