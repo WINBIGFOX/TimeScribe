@@ -7,7 +7,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from '@/Components/ui/dropdown-menu'
-import { secToFormat } from '@/lib/utils'
+import { secToFormat, secToUnit } from '@/lib/utils'
 import { GetTimeProjectDetails } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import {
@@ -85,6 +85,7 @@ const badgeDetails = {
 const { title: badgeTitle, icon: badgeIcon, color: badgeColor } = badgeDetails[props.type] || badgeDetails.default
 
 const durationLabel = computed(() => secToFormat(props.duration ?? 0, true, true, true))
+const durationUnit = computed(() => secToUnit(props.duration ?? 0, true))
 </script>
 
 <template>
@@ -97,7 +98,7 @@ const durationLabel = computed(() => secToFormat(props.duration ?? 0, true, true
                 <div class="text-sm leading-none font-bold tabular-nums" v-if="props.duration !== undefined">
                     <bdi>
                         {{ durationLabel }}
-                        {{ durationLabel.includes(':') ? $t('app.h') : $t('app.min') }}
+                        {{ $t(`app.${durationUnit}`) }}
                     </bdi>
                 </div>
             </div>
@@ -138,11 +139,7 @@ const durationLabel = computed(() => secToFormat(props.duration ?? 0, true, true
                             <span>
                                 <bdi>
                                     {{ secToFormat(projectDuration.sum, true, true, true) }}
-                                    {{
-                                        secToFormat(projectDuration.sum, true, true, true).includes(':')
-                                            ? $t('app.h')
-                                            : $t('app.min')
-                                    }}
+                                    {{ $t(`app.${secToUnit(projectDuration.sum, true)}`) }}
                                 </bdi>
                             </span>
                         </span>

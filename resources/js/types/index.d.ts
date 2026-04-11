@@ -156,6 +156,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     js_locale: string
     locale: string
     timezone: string
+    time_display_format: 'clock' | 'decimal'
     app_version: string
     recording: boolean
     environment: 'Windows' | 'Darwin' | 'Linux' | 'Unknown'
