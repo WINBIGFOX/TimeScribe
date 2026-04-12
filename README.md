@@ -20,6 +20,9 @@
   <a href="https://formulae.brew.sh/cask/timescribe">
     <img src="https://img.shields.io/homebrew/cask/v/timescribe?logo=homebrew&logoColor=white&label=Homebrew" />
   </a>
+  <a href="https://winstall.app/apps/WINBIGFOX.TimeScribe">
+    <img src="https://img.shields.io/winget/v/WINBIGFOX.TimeScribe" />
+  </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/github/license/WINBIGFOX/timescribe?color=blue" />
   </a>
@@ -118,7 +121,17 @@ After installation, you can launch TimeScribe via Spotlight or from your Applica
 
 ---
 
-### Option 3: Build from Source (Developers)
+### Option 3: Install via WinGet (Windows)
+
+If you're on Windows and have [WinGet](https://learn.microsoft.com/windows/package-manager/winget/) available, you can install TimeScribe with:
+
+```powershell
+winget install WINBIGFOX.TimeScribe
+```
+
+---
+
+### Option 4: Build from Source (Developers)
 
 ```bash
 # Clone the repo
