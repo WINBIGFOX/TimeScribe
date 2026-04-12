@@ -15,7 +15,7 @@ class WindowOpening
      */
     public function handle(WindowShown $event): void
     {
-        if (Environment::isMac() && ! $event->id === 'fly-timer') {
+        if (Environment::isMac() && $event->id !== 'fly-timer') {
             Dock::show();
         }
     }
