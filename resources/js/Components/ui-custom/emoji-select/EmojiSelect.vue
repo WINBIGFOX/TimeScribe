@@ -2,7 +2,7 @@
 import { Button } from '@/Components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover'
 import { cn } from '@/lib/utils'
-import { Trash } from 'lucide-vue-next'
+import { Trash } from '@lucide/vue'
 import { HTMLAttributes, ref } from 'vue'
 import EmojiPicker from 'vue3-emoji-picker'
 

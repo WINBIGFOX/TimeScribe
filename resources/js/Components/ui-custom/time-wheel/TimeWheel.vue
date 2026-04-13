@@ -2,7 +2,7 @@
 import { cn } from '@/lib/utils'
 import { Link } from '@inertiajs/vue3'
 import { trans } from 'laravel-vue-i18n'
-import { ChevronsLeft, ChevronsRight } from 'lucide-vue-next'
+import { ChevronsLeft, ChevronsRight } from '@lucide/vue'
 import moment from 'moment/min/moment-with-locales'
 import { computed, type HTMLAttributes } from 'vue'
 
@@ -79,14 +79,19 @@ const items = computed(() => {
         "
     >
         <Link :href="items.thirdPrevious.link" class="text-foreground/15" prefetch preserve-scroll>
-            <ChevronsLeft class="size-4" />
+            <ChevronsLeft class="size-4 rtl:-scale-x-100" />
         </Link>
-        <Link :href="items.secondPrevious.link" class="text-foreground/25 pl-3" prefetch preserve-scroll>
+        <Link
+            :href="items.secondPrevious.link"
+            class="text-foreground/25 not-rtl:pl-3 rtl:pr-3"
+            prefetch
+            preserve-scroll
+        >
             {{ items.secondPrevious.label }}
         </Link>
         <Link
             :href="items.previous.link"
-            class="text-foreground/50 border-border ml-3 border-l pl-3"
+            class="text-foreground/50 border-border not-rtl:ml-3 not-rtl:border-l not-rtl:pl-3 rtl:mr-3 rtl:border-r rtl:pr-3"
             prefetch
             preserve-scroll
         >
@@ -102,17 +107,17 @@ const items = computed(() => {
         </Link>
         <Link
             :href="items.next.link"
-            class="text-foreground/50 border-border mr-3 border-r pr-3"
+            class="text-foreground/50 border-border not-rtl:mr-3 not-rtl:border-r not-rtl:pr-3 rtl:ml-3 rtl:border-l rtl:pl-3"
             prefetch
             preserve-scroll
         >
             {{ items.next.label }}
         </Link>
-        <Link :href="items.secondNext.link" class="text-foreground/25 pr-3" prefetch preserve-scroll>
+        <Link :href="items.secondNext.link" class="text-foreground/25 not-rtl:pr-3 rtl:pl-3" prefetch preserve-scroll>
             {{ items.secondNext.label }}
         </Link>
         <Link :href="items.thirdNext.link" class="text-foreground/15" prefetch preserve-scroll>
-            <ChevronsRight class="size-4" />
+            <ChevronsRight class="size-4 rtl:-scale-x-100" />
         </Link>
     </div>
 </template>

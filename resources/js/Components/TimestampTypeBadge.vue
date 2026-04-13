@@ -20,7 +20,7 @@ import {
     Drama,
     Tag,
     TreePalm
-} from 'lucide-vue-next'
+} from '@lucide/vue'
 import { computed } from 'vue'
 
 const props = defineProps<{
@@ -95,13 +95,15 @@ const durationLabel = computed(() => secToFormat(props.duration ?? 0, true, true
             <div class="space-y-1">
                 <div class="text-xs leading-none">{{ $t(badgeTitle) }}</div>
                 <div class="text-sm leading-none font-bold tabular-nums" v-if="props.duration !== undefined">
-                    {{ durationLabel }}
-                    {{ durationLabel.includes(':') ? $t('app.h') : $t('app.min') }}
+                    <bdi>
+                        {{ durationLabel }}
+                        {{ durationLabel.includes(':') ? $t('app.h') : $t('app.min') }}
+                    </bdi>
                 </div>
             </div>
         </div>
         <div
-            class="border-background/30 border-l"
+            class="border-background/30 not-rtl:border-l rtl:border-r"
             v-if="props.projectDurations && Object.values(props.projectDurations).length > 0"
         >
             <DropdownMenu>
@@ -109,7 +111,7 @@ const durationLabel = computed(() => secToFormat(props.duration ?? 0, true, true
                     <Tag class="size-4" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" side="top">
-                    <DropdownMenuLabel>{{ $t('app.project times') }}</DropdownMenuLabel>
+                    <DropdownMenuLabel class="rtl:text-right">{{ $t('app.project times') }}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         :as="Link"
@@ -119,9 +121,9 @@ const durationLabel = computed(() => secToFormat(props.duration ?? 0, true, true
                         preserve-state
                         :key="key"
                         :style="'--project-color: ' + projectDuration.color"
-                        class="flex max-w-60 flex-wrap items-stretch gap-x-8 gap-y-2 border-l-6 border-l-(--project-color) bg-(--project-color)/10 not-last:mb-1 hover:bg-(--project-color)/20! dark:bg-(--project-color)/20 dark:hover:bg-(--project-color)/30!"
+                        class="flex max-w-60 rtl:flex-row-reverse flex-wrap items-stretch gap-x-8 gap-y-2 bg-(--project-color)/10 not-last:mb-1 not-rtl:border-l-6 not-rtl:border-l-(--project-color) hover:bg-(--project-color)/20! rtl:border-r-6 rtl:border-r-(--project-color) dark:bg-(--project-color)/20 dark:hover:bg-(--project-color)/30!"
                     >
-                        <span class="flex items-center gap-2 text-xs font-medium">
+                        <span class="flex rtl:flex-row-reverse items-center gap-2 text-xs font-medium">
                             <span class="text-md flex shrink-0 items-center" v-if="projectDuration.icon">
                                 {{ projectDuration.icon }}
                             </span>
@@ -130,16 +132,18 @@ const durationLabel = computed(() => secToFormat(props.duration ?? 0, true, true
                             </span>
                         </span>
                         <span
-                            class="flex flex-1 shrink-0 items-center justify-end gap-1 text-xs leading-none whitespace-nowrap tabular-nums"
+                            class="flex flex-1 shrink-0 items-center gap-1 text-xs leading-none whitespace-nowrap tabular-nums not-rtl:justify-end"
                         >
                             <component :is="badgeIcon" class="size-4" />
                             <span>
-                                {{ secToFormat(projectDuration.sum, true, true, true) }}
-                                {{
-                                    secToFormat(projectDuration.sum, true, true, true).includes(':')
-                                        ? $t('app.h')
-                                        : $t('app.min')
-                                }}
+                                <bdi>
+                                    {{ secToFormat(projectDuration.sum, true, true, true) }}
+                                    {{
+                                        secToFormat(projectDuration.sum, true, true, true).includes(':')
+                                            ? $t('app.h')
+                                            : $t('app.min')
+                                    }}
+                                </bdi>
                             </span>
                         </span>
                     </DropdownMenuItem>

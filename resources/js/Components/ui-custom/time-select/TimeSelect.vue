@@ -197,6 +197,7 @@ watch(
         "
     >
         <div
+            dir="ltr"
             class="border-input dark:bg-input/30 flex w-fit items-center rounded-md border bg-transparent text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px]"
         >
             <div class="pl-3" v-if="props.label">{{ props.label }}</div>

@@ -3,7 +3,7 @@ import { Button } from '@/Components/ui/button'
 import { secToFormat } from '@/lib/utils'
 import { OvertimeAdjustment } from '@/types'
 import { router } from '@inertiajs/vue3'
-import { Minus, Pencil, Pin, Plus, Trash } from 'lucide-vue-next'
+import { Minus, Pencil, Pin, Plus, Trash } from '@lucide/vue'
 import moment from 'moment/min/moment-with-locales'
 
 const props = defineProps<{

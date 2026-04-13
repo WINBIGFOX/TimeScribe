@@ -25,7 +25,7 @@ import {
     SquareCheck,
     Tag,
     Type
-} from 'lucide-vue-next'
+} from '@lucide/vue'
 import { computed } from 'vue'
 import Draggable from 'vuedraggable'
 
@@ -116,7 +116,7 @@ const isDisabled = computed((): boolean => {
         :title="$t(actionLabel())"
     >
         <div class="flex grow gap-4 overflow-hidden">
-            <div class="flex flex-1 flex-col gap-4 overflow-y-auto border-r pr-4">
+            <div class="flex flex-1 flex-col gap-4 overflow-y-auto not-rtl:border-r rtl:border-l not-rtl:pr-4 rtl:pl-4">
                 <FieldGroup>
                     <FieldSet>
                         <FieldLabel>{{ $t('app.export format') }}</FieldLabel>
@@ -273,7 +273,7 @@ const isDisabled = computed((): boolean => {
                     <Draggable v-model="form.export_columns" item-key="key" :animation="200" ghost-class="ghost">
                         <template #item="{ element }">
                             <label
-                                class="[&.ghost]:ring-primary! bg-muted/40 my-1 flex items-center gap-2 rounded-md py-1 pr-2 transition-[scale,box-shadow] duration-200 [-webkit-user-drag:element]! [&.ghost]:scale-95 [&.ghost]:ring-2 [&.ghost]:ring-inset"
+                                class="[&.ghost]:ring-primary! bg-muted/40 my-1 flex items-center gap-2 rounded-md py-1 not-rtl:pr-2 rtl:pl-2 transition-[scale,box-shadow] duration-200 [-webkit-user-drag:element]! [&.ghost]:scale-95 [&.ghost]:ring-2 [&.ghost]:ring-inset"
                                 :class="{
                                     'bg-primary/10 ring-primary/60 rounded ring-1': isColumnVisible(element.key)
                                 }"
@@ -281,7 +281,7 @@ const isDisabled = computed((): boolean => {
                                 <GripVertical class="text-muted-foreground handle size-4 cursor-ns-resize" />
                                 <Component :is="typeIconMapping[element.type]" class="text-muted-foreground size-4" />
                                 {{ element.label }}
-                                <Switch class="ml-auto" v-model="element.is_visible" />
+                                <Switch class="not-rtl:ml-auto rtl:mr-auto" v-model="element.is_visible" />
                             </label>
                         </template>
                     </Draggable>

@@ -3,7 +3,7 @@ import { Badge } from '@/Components/ui/badge'
 import { Button } from '@/Components/ui/button'
 import { VacationEntry } from '@/types'
 import { router } from '@inertiajs/vue3'
-import { Check, Hourglass, Trash } from 'lucide-vue-next'
+import { Check, Hourglass, Trash } from '@lucide/vue'
 import moment from 'moment/min/moment-with-locales'
 
 const props = defineProps<{

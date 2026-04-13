@@ -14,7 +14,7 @@ import {
 } from '@/Components/ui/dropdown-menu'
 import { router, usePage } from '@inertiajs/vue3'
 import { useModal } from 'inertia-modal'
-import { Edit, Loader2, Trash } from 'lucide-vue-next'
+import { Edit, Loader2, Trash } from '@lucide/vue'
 import { ref, watch } from 'vue'
 
 const props = withDefaults(

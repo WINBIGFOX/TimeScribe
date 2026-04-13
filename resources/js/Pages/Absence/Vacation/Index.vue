@@ -9,7 +9,7 @@ import { Button } from '@/Components/ui/button'
 import type { VacationEntitlement, VacationEntry, VacationSummary } from '@/types'
 import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
-import { CalendarPlus, Palmtree, Pen } from 'lucide-vue-next'
+import { CalendarPlus, Palmtree, Pen } from '@lucide/vue'
 import moment from 'moment/min/moment-with-locales'
 import { computed, ref, watch } from 'vue'
 

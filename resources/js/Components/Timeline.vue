@@ -2,7 +2,7 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/Components/ui/tooltip'
 import { Timestamp } from '@/types'
 import { router } from '@inertiajs/vue3'
-import { BriefcaseBusiness, Coffee } from 'lucide-vue-next'
+import { BriefcaseBusiness, Coffee } from '@lucide/vue'
 import moment from 'moment/min/moment-with-locales'
 import { ref, watch } from 'vue'
 
@@ -184,6 +184,7 @@ watch(props, () => {
                     <Tooltip>
                         <TooltipTrigger class="group flex-1">
                             <div
+                                :aria-label="index"
                                 :class="{
                                     'bg-primary ring-primary': time?.type === 'work' || time?.type === 'overtime',
                                     'bg-pink-400 ring-pink-400': time?.type === 'break',
@@ -237,7 +238,9 @@ watch(props, () => {
                                     'text-muted-foreground': time === undefined
                                 }"
                             >
-                                {{ indexToTimeFormat(index, false, drag) }}
+                                <bdi>
+                                    {{ indexToTimeFormat(index, false, drag) }}
+                                </bdi>
                             </div>
                             <div class="flex justify-center">
                                 <BriefcaseBusiness
@@ -259,7 +262,7 @@ watch(props, () => {
                         'border-gray-200 dark:border-gray-700': index % 2 === 1 && index % 4 !== 1
                     }"
                     :key="index"
-                    class="h-20 flex-1 border-l"
+                    class="h-20 flex-1 not-rtl:border-l rtl:border-r"
                     v-for="index in 49"
                 ></div>
             </div>
@@ -267,13 +270,15 @@ watch(props, () => {
                 <div
                     :class="{
                         'flex-none': index === 13,
-                        'pl-1': index !== 13
+                        'not-rtl:pl-1 rtl:pr-1': index !== 13
                     }"
                     :key="index"
-                    class="text-muted-foreground flex h-4 flex-1 items-end border-l border-gray-300 text-xs leading-none dark:border-gray-600"
+                    class="text-muted-foreground flex h-4 flex-1 items-end border-gray-300 text-xs leading-none not-rtl:border-l rtl:border-r dark:border-gray-600"
                     v-for="index in 13"
                 >
-                    {{ index < 13 ? indexToTimeFormat(((index - 1) * 2 * 100).toString(), true) : '' }}
+                    <bdi>
+                        {{ index < 13 ? indexToTimeFormat(((index - 1) * 2 * 100).toString(), true) : '' }}
+                    </bdi>
                 </div>
             </div>
         </div>

@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/Components/ui/switch'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
-import { CalendarSync, CircleDivide, RedoDot, Timer } from 'lucide-vue-next'
+import { CalendarSync, CircleDivide, RedoDot, Timer } from '@lucide/vue'
 import { ref, watch } from 'vue'
 
 const props = defineProps<{
@@ -136,7 +136,7 @@ watch(
         </div>
 
         <div class="flex items-start space-x-4 py-4">
-            <RedoDot />
+            <RedoDot class="rtl:-scale-x-100" />
             <div class="flex-1 space-y-1">
                 <p class="text-sm leading-none font-medium">
                     {{ $t('app.carry remaining days over automatically') }}

@@ -4,7 +4,7 @@ import WorkdayTimeInput from '@/Components/WorkdayTimeInput.vue'
 import { weekdayTranslate } from '@/lib/utils'
 import { router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
-import { ArrowRight, CalendarClock } from 'lucide-vue-next'
+import { ArrowRight, CalendarClock } from '@lucide/vue'
 import moment from 'moment/min/moment-with-locales'
 import { computed, watch } from 'vue'
 

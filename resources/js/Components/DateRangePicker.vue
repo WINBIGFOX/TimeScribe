@@ -15,7 +15,7 @@ import {
 } from '@/Components/ui/range-calendar'
 import { usePage } from '@inertiajs/vue3'
 import { type DateValue, getLocalTimeZone, isEqualMonth, parseDate, today } from '@internationalized/date'
-import { Calendar, ChevronLeft, ChevronRight, X } from 'lucide-vue-next'
+import { Calendar, ChevronLeft, ChevronRight, X } from '@lucide/vue'
 import { type DateRange, RangeCalendarRoot, useDateFormatter } from 'reka-ui'
 import { createMonth, type Grid, toDate } from 'reka-ui/date'
 import { computed, type HTMLAttributes, type Ref, ref, watch } from 'vue'

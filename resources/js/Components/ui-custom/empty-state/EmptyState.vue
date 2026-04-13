@@ -2,7 +2,7 @@
 import { Button } from '@/Components/ui/button'
 import { cn } from '@/lib/utils'
 import { Link } from '@inertiajs/vue3'
-import { CircleAlert } from 'lucide-vue-next'
+import { CircleAlert } from '@lucide/vue'
 import type { Component, HTMLAttributes } from 'vue'
 
 const props = defineProps<{

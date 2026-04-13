@@ -9,7 +9,7 @@ import { EmptyState } from '@/Components/ui-custom/empty-state'
 import BasicLayout from '@/Layouts/BasicLayout.vue'
 import { secToFormat } from '@/lib/utils'
 import { Enum, Project, Timestamp } from '@/types'
-import { BriefcaseBusiness, CircleCheckBig, CircleEqual, CircleSlash, Timer } from 'lucide-vue-next'
+import { BriefcaseBusiness, CircleCheckBig, CircleEqual, CircleSlash, Timer } from '@lucide/vue'
 
 defineOptions({
     layout: BasicLayout
@@ -88,10 +88,10 @@ const amountOpen = computed(() => calcAmount(false))
     <Head title="Project show" />
     <SheetDialog size="lg" :close="$t('app.close')" scrollable>
         <template #title>
-            <div class="flex items-end justify-between gap-4 pr-10">
+            <div class="flex items-end justify-between gap-4 not-rtl:pr-10 rtl:pl-10">
                 <div
                     :style="'--project-color: ' + (props.project.color ?? '#000000')"
-                    class="inline-flex h-9 items-center justify-center gap-2 rounded-md border-l-6 border-l-(--project-color) bg-(--project-color)/10 p-4 text-sm font-medium dark:bg-(--project-color)/20"
+                    class="inline-flex h-9 items-center justify-center gap-2 rounded-md bg-(--project-color)/10 p-4 text-sm font-medium not-rtl:border-l-6 not-rtl:border-l-(--project-color) rtl:border-r-6 rtl:border-r-(--project-color) dark:bg-(--project-color)/20"
                 >
                     <div class="flex shrink-0 items-center text-xl" v-if="props.project.icon">
                         {{ props.project.icon }}
@@ -103,49 +103,55 @@ const amountOpen = computed(() => calcAmount(false))
                 <div class="flex shrink-0 gap-2" v-if="props.project.hourly_rate && props.project.currency">
                     <div>
                         <span class="text-xs">{{ $t('app.open') }}</span>
-                        <div class="text-background flex items-center gap-2 rounded bg-stone-500 px-2 py-1">
+                        <div class="text-background flex items-center gap-2 rounded bg-stone-500 px-2 py-1" dir="ltr">
                             <CircleSlash class="size-5" />
                             <span class="text-sm tabular-nums">
-                                {{
-                                    amountOpen?.toLocaleString($page.props.js_locale, {
-                                        style: 'currency',
-                                        currency: props.project.currency,
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    })
-                                }}
+                                <bdi>
+                                    {{
+                                        amountOpen?.toLocaleString($page.props.js_locale, {
+                                            style: 'currency',
+                                            currency: props.project.currency,
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        })
+                                    }}
+                                </bdi>
                             </span>
                         </div>
                     </div>
                     <div>
                         <span class="text-xs">{{ $t('app.paid') }}</span>
-                        <div class="text-background flex items-center gap-2 rounded bg-emerald-500 px-2 py-1">
+                        <div class="text-background flex items-center gap-2 rounded bg-emerald-500 px-2 py-1" dir="ltr">
                             <CircleCheckBig class="size-5" />
                             <span class="text-sm tabular-nums">
-                                {{
-                                    amountPaid?.toLocaleString($page.props.js_locale, {
-                                        style: 'currency',
-                                        currency: props.project.currency,
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    })
-                                }}
+                                <bdi>
+                                    {{
+                                        amountPaid?.toLocaleString($page.props.js_locale, {
+                                            style: 'currency',
+                                            currency: props.project.currency,
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        })
+                                    }}
+                                </bdi>
                             </span>
                         </div>
                     </div>
                     <div>
                         <span class="text-xs">{{ $t('app.total') }}</span>
-                        <div class="text-background flex items-center gap-2 rounded bg-blue-500 px-2 py-1">
+                        <div class="text-background flex items-center gap-2 rounded bg-blue-500 px-2 py-1" dir="ltr">
                             <CircleEqual class="size-5" />
                             <span class="text-sm tabular-nums">
-                                {{
-                                    props.project.billable_amount?.toLocaleString($page.props.js_locale, {
-                                        style: 'currency',
-                                        currency: props.project.currency,
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    })
-                                }}
+                                <bdi>
+                                    {{
+                                        props.project.billable_amount?.toLocaleString($page.props.js_locale, {
+                                            style: 'currency',
+                                            currency: props.project.currency,
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        })
+                                    }}
+                                </bdi>
                             </span>
                         </div>
                     </div>
@@ -160,55 +166,63 @@ const amountOpen = computed(() => calcAmount(false))
                 </span>
                 <div class="flex gap-4">
                     <template v-if="props.project.hourly_rate && props.project.currency">
-                        <div class="flex items-center gap-2 text-stone-500">
+                        <div class="flex items-center gap-2 text-stone-500" dir="ltr">
                             <CircleSlash class="size-4" />
                             <span class="text-xs tabular-nums">
-                                {{
-                                    group.billable.open.toLocaleString($page.props.js_locale, {
-                                        style: 'currency',
-                                        currency: props.project.currency,
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    })
-                                }}
+                                <bdi>
+                                    {{
+                                        group.billable.open.toLocaleString($page.props.js_locale, {
+                                            style: 'currency',
+                                            currency: props.project.currency,
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        })
+                                    }}
+                                </bdi>
                             </span>
                         </div>
-                        <div class="flex items-center gap-2 text-emerald-500">
+                        <div class="flex items-center gap-2 text-emerald-500" dir="ltr">
                             <CircleCheckBig class="size-4" />
                             <span class="text-xs tabular-nums">
-                                {{
-                                    group.billable.paid.toLocaleString($page.props.js_locale, {
-                                        style: 'currency',
-                                        currency: props.project.currency,
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    })
-                                }}
+                                <bdi>
+                                    {{
+                                        group.billable.paid.toLocaleString($page.props.js_locale, {
+                                            style: 'currency',
+                                            currency: props.project.currency,
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        })
+                                    }}
+                                </bdi>
                             </span>
                         </div>
-                        <div class="flex items-center gap-2 text-blue-500">
+                        <div class="flex items-center gap-2 text-blue-500" dir="ltr">
                             <CircleEqual class="size-4" />
                             <span class="text-xs tabular-nums">
-                                {{
-                                    group.billable.total.toLocaleString($page.props.js_locale, {
-                                        style: 'currency',
-                                        currency: props.project.currency,
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    })
-                                }}
+                                <bdi>
+                                    {{
+                                        group.billable.total.toLocaleString($page.props.js_locale, {
+                                            style: 'currency',
+                                            currency: props.project.currency,
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+                                        })
+                                    }}
+                                </bdi>
                             </span>
                         </div>
                     </template>
-                    <div class="text-muted-foreground flex items-center gap-2">
+                    <div class="text-muted-foreground flex items-center gap-2" dir="ltr">
                         <Timer class="size-4" />
                         <span class="text-xs tabular-nums">
-                            {{
-                                group.duration > 59
-                                    ? secToFormat(group.duration, false, true, true)
-                                    : group.duration.toFixed(0)
-                            }}
-                            {{ group.duration > 59 ? $t('app.h') : $t('app.s') }}
+                            <bdi>
+                                {{
+                                    group.duration > 59
+                                        ? secToFormat(group.duration, false, true, true)
+                                        : group.duration.toFixed(0)
+                                }}
+                                {{ group.duration > 59 ? $t('app.h') : $t('app.s') }}
+                            </bdi>
                         </span>
                     </div>
                 </div>

@@ -4,7 +4,7 @@ import { Switch } from '@/Components/ui/switch'
 import { getCurrencySymbol, secToFormat } from '@/lib/utils'
 import { Project, Timestamp } from '@/types'
 import { Link, useForm } from '@inertiajs/vue3'
-import { BriefcaseBusiness, CircleCheckBig, ExternalLink, Timer } from 'lucide-vue-next'
+import { BriefcaseBusiness, CircleCheckBig, ExternalLink, Timer } from '@lucide/vue'
 import moment from 'moment/min/moment-with-locales'
 import { watch } from 'vue'
 
@@ -34,7 +34,9 @@ watch(() => form.paid, submit)
         </div>
 
         <div class="ml-2 flex min-w-16 flex-1 shrink-0 items-center gap-2 leading-none font-medium tabular-nums">
-            {{ moment(props.timestamp.started_at.date, 'YYYY-MM-DD').format('L') }}
+            <bdi>
+                {{ moment(props.timestamp.started_at.date, 'YYYY-MM-DD').format('L') }}
+            </bdi>
             <Button
                 variant="ghost"
                 size="sm"
@@ -54,6 +56,7 @@ watch(() => form.paid, submit)
             v-if="props.timestamp.billable_amount && props.project.currency"
         >
             <span
+                dir="ltr"
                 class="*:text-muted-foreground flex items-center gap-1 leading-none font-medium *:text-xs"
                 v-html="
                     props.timestamp.billable_amount
@@ -72,7 +75,7 @@ watch(() => form.paid, submit)
             >
             </span>
         </div>
-        <div class="flex shrink-0 items-center gap-1 tabular-nums">
+        <div class="flex shrink-0 items-center gap-1 tabular-nums" dir="ltr">
             <Timer class="text-muted-foreground size-4" />
             <span class="font-medium">
                 {{

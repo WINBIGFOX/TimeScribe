@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { cn } from '@/lib/utils'
-import { Check } from 'lucide-vue-next'
+import { Check } from '@lucide/vue'
 import {
     DropdownMenuCheckboxItem,
     type DropdownMenuCheckboxItemEmits,

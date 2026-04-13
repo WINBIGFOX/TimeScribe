@@ -4,7 +4,7 @@ import { Switch } from '@/Components/ui/switch'
 import { Date } from '@/types'
 import { Head, Link, useForm, usePoll } from '@inertiajs/vue3'
 import { useColorMode } from '@vueuse/core'
-import { ArrowRight, RefreshCcw } from 'lucide-vue-next'
+import { ArrowRight, RefreshCcw } from '@lucide/vue'
 import { watch } from 'vue'
 
 const props = defineProps<{

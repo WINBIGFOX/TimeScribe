@@ -6,7 +6,7 @@ import { Button } from '@/Components/ui/button'
 import { weekdayTranslate } from '@/lib/utils'
 import { WorkSchedule } from '@/types'
 import { Head, Link } from '@inertiajs/vue3'
-import { CalendarPlus, Pen } from 'lucide-vue-next'
+import { CalendarPlus, Pen } from '@lucide/vue'
 import moment from 'moment/min/moment-with-locales'
 
 const props = defineProps<{
@@ -64,7 +64,9 @@ const weekTotal = (workSchedule: WorkSchedule): number => {
                                 {{ $t('app.valid from') }}
                             </div>
                             <div class="text-foreground text-sm font-medium">
-                                {{ moment(workSchedule.valid_from.formatted, 'DD.MM.YYYY').format('L') }}
+                                <bdi>
+                                    {{ moment(workSchedule.valid_from.formatted, 'DD.MM.YYYY').format('L') }}
+                                </bdi>
                             </div>
                         </div>
                         <Badge v-if="workSchedule.is_current" class="border-primary/40 text-primary" variant="outline">
@@ -76,8 +78,10 @@ const weekTotal = (workSchedule: WorkSchedule): number => {
                                     {{ $t('app.weekly work hours') }}
                                 </div>
                                 <div class="text-foreground text-sm font-semibold tabular-nums">
-                                    {{ weekTotal(workSchedule).toLocaleString($page.props.js_locale) }}
-                                    <span class="text-muted-foreground text-xs">{{ $t('app.h') }}</span>
+                                    <bdi>
+                                        {{ weekTotal(workSchedule).toLocaleString($page.props.js_locale) }}
+                                        <span class="text-muted-foreground text-xs">{{ $t('app.h') }}</span>
+                                    </bdi>
                                 </div>
                             </div>
                             <Button
@@ -101,12 +105,14 @@ const weekTotal = (workSchedule: WorkSchedule): number => {
                             </div>
                             <div class="font-medium tabular-nums">
                                 <template v-if="workSchedule[weekdayTranslate(weekday).toLowerCase()] > 0">
-                                    {{
-                                        workSchedule[weekdayTranslate(weekday).toLowerCase()].toLocaleString(
-                                            $page.props.js_locale
-                                        )
-                                    }}
-                                    <span class="text-muted-foreground text-xs">{{ $t('app.h') }}</span>
+                                    <bdi>
+                                        {{
+                                            workSchedule[weekdayTranslate(weekday).toLowerCase()].toLocaleString(
+                                                $page.props.js_locale
+                                            )
+                                        }}
+                                        <span class="text-muted-foreground text-xs">{{ $t('app.h') }}</span>
+                                    </bdi>
                                 </template>
                                 <span v-else>-</span>
                             </div>

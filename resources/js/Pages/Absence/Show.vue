@@ -4,7 +4,7 @@ import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
 import { Absence, Date } from '@/types'
 import { Head, Link, router } from '@inertiajs/vue3'
-import { Cross, Drama, Trash, TreePalm, X } from 'lucide-vue-next'
+import { Cross, Drama, Trash, TreePalm, X } from '@lucide/vue'
 import moment from 'moment/min/moment-with-locales'
 import { computed } from 'vue'
 

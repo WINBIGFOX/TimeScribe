@@ -9,7 +9,7 @@ import {
 } from '@/Components/ui/dropdown-menu'
 import { Timestamp } from '@/types'
 import { Link } from '@inertiajs/vue3'
-import { BetweenHorizontalEnd, BriefcaseBusiness, Coffee, Plus } from 'lucide-vue-next'
+import { BetweenHorizontalEnd, BriefcaseBusiness, Coffee, Plus } from '@lucide/vue'
 
 const props = defineProps<{
     duration?: number
@@ -23,14 +23,16 @@ const props = defineProps<{
     <div
         v-if="(props.duration ?? 0) > 0 || !props.timestampAfter || !props.timestampBefore"
         :class="{
-            'py-1 pl-4': props.duration,
-            'py-1 pl-2': !props.duration
+            'py-1 not-rtl:pl-4 rtl:pr-4': props.duration,
+            'py-1 not-rtl:pl-2 rtl:pr-2': !props.duration
         }"
-        class="border-muted-foreground text-muted-foreground mx-6 flex items-center gap-2 border-l-3 border-dotted text-sm"
+        class="border-muted-foreground text-muted-foreground mx-6 flex items-center gap-2 border-dotted text-sm not-rtl:border-l-3 rtl:border-r-3"
     >
         <div v-if="props.duration">
-            {{ props.duration }}
-            {{ $t('app.minutes') }}
+            <bdi>
+                {{ props.duration }}
+                {{ $t('app.minutes') }}
+            </bdi>
         </div>
         <Link
             :href="route('timestamp.create', { datetime: props.timestampBefore?.ended_at?.date ?? props.startOfDay })"

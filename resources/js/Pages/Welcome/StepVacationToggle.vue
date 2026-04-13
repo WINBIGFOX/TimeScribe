@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Button } from '@/Components/ui/button'
-import { CheckCircle2, Circle } from 'lucide-vue-next'
+import { CheckCircle2, Circle } from '@lucide/vue'
 
 const props = defineProps<{
     trackVacation: boolean

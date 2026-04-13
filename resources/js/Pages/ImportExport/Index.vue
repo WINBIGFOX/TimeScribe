@@ -5,7 +5,7 @@ import Xls from '@/Components/icons/Xls.vue'
 import { PageHeader } from '@/Components/ui-custom/page-header'
 import { Button } from '@/Components/ui/button'
 import { Head, Link } from '@inertiajs/vue3'
-import { FolderInput, FolderOutput } from 'lucide-vue-next'
+import { FolderInput, FolderOutput } from '@lucide/vue'
 </script>
 
 <template>

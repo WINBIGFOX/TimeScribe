@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import WorkdayTimeInput from '@/Components/WorkdayTimeInput.vue'
 import { Head, router, useForm, usePage } from '@inertiajs/vue3'
-import { CalendarClock } from 'lucide-vue-next'
+import { CalendarClock } from '@lucide/vue'
 import { computed } from 'vue'
 
 import { Button } from '@/Components/ui/button'
@@ -13,7 +13,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover
 import BasicLayout from '@/Layouts/BasicLayout.vue'
 import { WorkSchedule } from '@/types'
 import { DateFormatter, getLocalTimeZone, parseDate, type DateValue } from '@internationalized/date'
-import { CalendarIcon } from 'lucide-vue-next'
+import { CalendarIcon } from '@lucide/vue'
 import moment from 'moment/min/moment-with-locales'
 import { ref } from 'vue'
 

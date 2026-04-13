@@ -12,7 +12,7 @@ import {
     type SidebarProps
 } from '@/Components/ui/sidebar'
 import { Link } from '@inertiajs/vue3'
-import { Bug, Power } from 'lucide-vue-next'
+import { Bug, Power } from '@lucide/vue'
 
 const props = withDefaults(defineProps<SidebarProps>(), {
     variant: 'inset'
@@ -31,7 +31,9 @@ const props = withDefaults(defineProps<SidebarProps>(), {
                         TS
                     </div>
 
-                    <div class="font-lobster-two ml-2 grid flex-1 text-left text-2xl leading-tight font-bold italic">
+                    <div
+                        class="font-lobster-two grid flex-1 text-2xl leading-tight font-bold italic not-rtl:ml-2 rtl:mr-2"
+                    >
                         TimeScribe
                     </div>
                 </SidebarMenuItem>
@@ -62,7 +64,7 @@ const props = withDefaults(defineProps<SidebarProps>(), {
                             </SidebarMenuButton>
                             <Link
                                 :href="route('updater.check')"
-                                class="ml-auto space-x-1 text-left text-sm leading-tight"
+                                class="space-x-1 flex items-center text-sm leading-tight not-rtl:ml-auto rtl:mr-auto"
                                 method="post"
                                 preserve-scroll
                                 preserve-state

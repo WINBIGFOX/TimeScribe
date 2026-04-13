@@ -25,7 +25,7 @@ import { cn } from '@/lib/utils'
 import { OvertimeAdjustment } from '@/types'
 import { Head, useForm, usePage } from '@inertiajs/vue3'
 import { DateFormatter, getLocalTimeZone, parseDate, type DateValue } from '@internationalized/date'
-import { CalendarIcon } from 'lucide-vue-next'
+import { CalendarIcon } from '@lucide/vue'
 import { ref } from 'vue'
 const modalOpen = defineModel('open', { default: false })
 

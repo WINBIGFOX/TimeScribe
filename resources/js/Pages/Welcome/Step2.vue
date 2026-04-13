@@ -10,7 +10,7 @@ import {
 import { Switch } from '@/Components/ui/switch'
 import { router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
-import { ArrowRight, CheckCircle2 } from 'lucide-vue-next'
+import { ArrowRight, CheckCircle2 } from '@lucide/vue'
 import { computed, watch } from 'vue'
 
 const props = defineProps<{

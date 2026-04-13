@@ -6,7 +6,7 @@ import { PageHeader } from '@/Components/ui-custom/page-header'
 import { Button } from '@/Components/ui/button'
 import { Project } from '@/types'
 import { Head, Link, usePage, usePoll } from '@inertiajs/vue3'
-import { Archive, ChevronDown, ChevronUp, Plus, Tag } from 'lucide-vue-next'
+import { Archive, ChevronDown, ChevronUp, Plus, Tag } from '@lucide/vue'
 import { computed, ref, watch } from 'vue'
 
 const props = defineProps<{

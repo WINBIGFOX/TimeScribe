@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { secToFormat } from '@/lib/utils'
 import { Absence } from '@/types'
-import { BriefcaseBusiness, ClockArrowDown, ClockArrowUp, Coffee, Cross, Drama, TreePalm } from 'lucide-vue-next'
+import { BriefcaseBusiness, ClockArrowDown, ClockArrowUp, Coffee, Cross, Drama, TreePalm } from '@lucide/vue'
 import { computed } from 'vue'
 
 const props = withDefaults(
@@ -49,8 +49,10 @@ const percentageOverTime = computed(() => {
         v-if="props.plan || props.workTime || (!props.hasWorkSchedule && (props.absences.length || props.isHoliday))"
     >
         <div class="text-foreground/80 mb-2 text-center text-sm" v-if="props.hasWorkSchedule">
-            {{ props.plan.toLocaleString($page.props.js_locale) }}
-            {{ $t('app.h') }}
+            <bdi>
+                {{ props.plan.toLocaleString($page.props.js_locale) }}
+                {{ $t('app.h') }}
+            </bdi>
         </div>
         <div class="bg-muted relative grow overflow-hidden rounded-t-lg">
             <div
@@ -107,9 +109,21 @@ const percentageOverTime = computed(() => {
             <div
                 class="text-muted-foreground flex items-center justify-between gap-1 text-xs"
                 v-if="props.workTime && ((!props.absences.length && !props.isHoliday) || !props.hasWorkSchedule)"
+                dir="ltr"
             >
                 <BriefcaseBusiness class="size-4 shrink-0" />
-                {{ secToFormat(props.workTime ?? 0, false, true) }}
+                <bdi>
+                    {{ secToFormat(props.workTime ?? 0, false, true) }}
+                </bdi>
+            </div>
+            <div
+                class="text-muted-foreground flex items-center justify-between gap-1 text-xs"
+                v-if="props.breakTime && !props.absences.length"
+                dir="ltr"
+            >
+                <Coffee class="size-4 shrink-0" />
+                <bdi> </bdi>
+                {{ secToFormat(props.breakTime ?? 0, false, true) }}
             </div>
             <div
                 :class="{
@@ -118,17 +132,13 @@ const percentageOverTime = computed(() => {
                 }"
                 class="flex items-center justify-between gap-1 text-xs"
                 v-if="timePlanDifference !== 0 && props.workTime && props.hasWorkSchedule"
+                dir="ltr"
             >
                 <ClockArrowUp class="size-4 shrink-0" v-if="timePlanDifference > 0" />
                 <ClockArrowDown class="size-4 shrink-0" v-if="timePlanDifference < 0" />
-                {{ secToFormat(timePlanDifference, false, true, true, true) }}
-            </div>
-            <div
-                class="text-muted-foreground flex items-center justify-between gap-1 text-xs"
-                v-if="props.breakTime && !props.absences.length"
-            >
-                <Coffee class="size-4 shrink-0" />
-                {{ secToFormat(props.breakTime ?? 0, false, true) }}
+                <bdi>
+                    {{ secToFormat(timePlanDifference, false, true, true, true) }}
+                </bdi>
             </div>
         </div>
     </div>

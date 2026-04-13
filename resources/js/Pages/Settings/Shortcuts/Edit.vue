@@ -3,7 +3,7 @@ import { PageHeader } from '@/Components/ui-custom/page-header'
 import { ShortcutInput } from '@/Components/ui-custom/shortcut-input'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
-import { ChartColumnBig, Coffee, Play, Square, Tag } from 'lucide-vue-next'
+import { ChartColumnBig, Coffee, Play, Square, Tag } from '@lucide/vue'
 import { watch } from 'vue'
 
 const props = defineProps<{

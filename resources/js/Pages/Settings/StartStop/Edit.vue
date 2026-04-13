@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/Components/ui/switch'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
-import { AlarmClockCheck, LockKeyhole, TimerReset } from 'lucide-vue-next'
+import { AlarmClockCheck, LockKeyhole, TimerReset } from '@lucide/vue'
 import moment from 'moment/min/moment-with-locales'
 import { ref, watch } from 'vue'
 
@@ -144,7 +144,7 @@ watch(stopTimeResetCheck, () => {
             </div>
         </div>
         <div class="mt-4 flex items-start space-x-4 border-t py-4 pt-8">
-            <TimerReset />
+            <TimerReset class="rtl:-scale-x-100" />
             <div class="flex-1 space-y-1">
                 <div class="flex items-center gap-10">
                     <div class="flex-1 space-y-1">

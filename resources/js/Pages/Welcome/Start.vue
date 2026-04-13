@@ -10,7 +10,7 @@ import ItFlag from '@/Components/flags/ItFlag.vue'
 import UsFlag from '@/Components/flags/UsFlag.vue'
 import { Button } from '@/Components/ui/button'
 import { router } from '@inertiajs/vue3'
-import { ArrowRight } from 'lucide-vue-next'
+import { ArrowRight } from '@lucide/vue'
 
 const locales = [
     { code: 'da_DK', component: DkFlag },

@@ -13,7 +13,7 @@ import {
 import { Button } from '@/Components/ui/button'
 import { Input } from '@/Components/ui/input'
 import { Head, Link, useForm } from '@inertiajs/vue3'
-import { Bug, DatabaseBackup, FolderOpen, Heart, Loader2, Save, Shredder, TriangleAlert } from 'lucide-vue-next'
+import { Bug, DatabaseBackup, FolderOpen, Heart, Loader2, Save, Shredder, TriangleAlert } from '@lucide/vue'
 import { ref } from 'vue'
 
 const confirmDeleteInput = ref('')

@@ -5,7 +5,7 @@ import { Switch } from '@/Components/ui/switch'
 import { Enum } from '@/types'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { useDebounceFn } from '@vueuse/core'
-import { AppWindowMac, CalendarMinus, Eye, Globe, KeyRound, Languages, PanelsTopLeft, SunMoon } from 'lucide-vue-next'
+import { AppWindowMac, CalendarMinus, Eye, Globe, KeyRound, Languages, PanelsTopLeft, SunMoon } from '@lucide/vue'
 import { ref, watch } from 'vue'
 
 const props = defineProps<{
@@ -137,7 +137,7 @@ watch(holidayCheck, () => {
             </div>
         </div>
         <div class="flex items-start space-x-4 py-4">
-            <SunMoon />
+            <SunMoon class="rtl:-scale-x-100" />
             <div class="flex flex-1 gap-4">
                 <div class="flex-1 space-y-1">
                     <p class="text-sm leading-none font-medium">
@@ -167,7 +167,7 @@ watch(holidayCheck, () => {
             </div>
         </div>
         <div class="flex items-center space-x-4 py-4">
-            <PanelsTopLeft />
+            <PanelsTopLeft class="rtl:-scale-x-100" />
             <div class="flex flex-1 items-center gap-4">
                 <p class="flex-1 text-sm leading-none font-medium">
                     {{ $t('app.default overview') }}

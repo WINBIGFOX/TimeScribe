@@ -14,7 +14,7 @@ import {
     FolderOpen,
     MoreHorizontal,
     Timer
-} from 'lucide-vue-next'
+} from '@lucide/vue'
 import { computed } from 'vue'
 
 const props = defineProps<{
@@ -53,13 +53,14 @@ const amountOpen = computed(() => calcAmount(false))
         <!-- Project -->
         <div
             :style="'--project-color: ' + (props.project.color ?? '#000000')"
-            class="b-2 rounded-md border-l-6 border-l-(--project-color) bg-(--project-color)/10 p-4 dark:bg-(--project-color)/20"
+            class="b-2 rounded-md bg-(--project-color)/10 p-4 not-rtl:border-l-6 not-rtl:border-l-(--project-color) rtl:border-r-6 rtl:border-r-(--project-color) dark:bg-(--project-color)/20"
         >
             <div class="flex items-center justify-between tabular-nums">
                 <div class="flex flex-1 items-center gap-2">
                     <span class="text-2xl" v-if="props.project.icon">{{ props.project.icon }}</span>
                     <div class="flex-1 pr-2 font-medium">{{ props.project.name }}</div>
                     <div
+                        dir="ltr"
                         class="flex shrink-0 items-center gap-1"
                         v-if="props.project.work_time && (!props.project.hourly_rate || !props.project.currency)"
                     >
@@ -127,65 +128,75 @@ const amountOpen = computed(() => calcAmount(false))
             </div>
             <div class="flex items-center justify-between" v-if="props.project.hourly_rate && props.project.currency">
                 <div class="text-muted-foreground mt-1 text-sm">
-                    {{ $t('app.hourly rate') }}:
-                    {{
-                        props.project.hourly_rate.toLocaleString($page.props.js_locale, {
-                            style: 'currency',
-                            currency: props.project.currency,
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 2
-                        })
-                    }}
+                    <bdi>
+                        {{ $t('app.hourly rate') }}:
+                        {{
+                            props.project.hourly_rate.toLocaleString($page.props.js_locale, {
+                                style: 'currency',
+                                currency: props.project.currency,
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 2
+                            })
+                        }}
+                    </bdi>
                 </div>
                 <div class="flex gap-4">
-                    <div class="flex items-center gap-2 text-stone-500">
+                    <div class="flex items-center gap-2 text-stone-500" dir="ltr">
                         <CircleSlash class="size-4" />
                         <span class="text-sm tabular-nums">
-                            {{
-                                amountOpen?.toLocaleString($page.props.js_locale, {
-                                    style: 'currency',
-                                    currency: props.project.currency,
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                })
-                            }}
+                            <bdi>
+                                {{
+                                    amountOpen?.toLocaleString($page.props.js_locale, {
+                                        style: 'currency',
+                                        currency: props.project.currency,
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    })
+                                }}
+                            </bdi>
                         </span>
                     </div>
-                    <div class="flex items-center gap-2 text-emerald-500">
+                    <div class="flex items-center gap-2 text-emerald-500" dir="ltr">
                         <CircleCheckBig class="size-4" />
                         <span class="text-sm tabular-nums">
-                            {{
-                                amountPaid?.toLocaleString($page.props.js_locale, {
-                                    style: 'currency',
-                                    currency: props.project.currency,
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                })
-                            }}
+                            <bdi>
+                                {{
+                                    amountPaid?.toLocaleString($page.props.js_locale, {
+                                        style: 'currency',
+                                        currency: props.project.currency,
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    })
+                                }}
+                            </bdi>
                         </span>
                     </div>
-                    <div class="flex items-center gap-2 text-blue-500">
+                    <div class="flex items-center gap-2 text-blue-500" dir="ltr">
                         <CircleEqual class="size-4" />
                         <span class="text-sm tabular-nums">
-                            {{
-                                props.project.billable_amount?.toLocaleString($page.props.js_locale, {
-                                    style: 'currency',
-                                    currency: props.project.currency,
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                })
-                            }}
+                            <bdi>
+                                {{
+                                    props.project.billable_amount?.toLocaleString($page.props.js_locale, {
+                                        style: 'currency',
+                                        currency: props.project.currency,
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    })
+                                }}
+                            </bdi>
                         </span>
                     </div>
-                    <div class="text-muted-foreground flex items-center gap-2">
+                    <div class="text-muted-foreground flex items-center gap-2" dir="ltr">
                         <Timer class="size-4" />
                         <span class="text-sm tabular-nums">
-                            {{
-                                (props.project.work_time ?? 0) > 59
-                                    ? secToFormat(props.project.work_time ?? 0, false, true, true)
-                                    : (props.project.work_time ?? 0).toFixed(0)
-                            }}
-                            {{ (props.project.work_time ?? 0) > 59 ? $t('app.h') : $t('app.s') }}
+                            <bdi>
+                                {{
+                                    (props.project.work_time ?? 0) > 59
+                                        ? secToFormat(props.project.work_time ?? 0, false, true, true)
+                                        : (props.project.work_time ?? 0).toFixed(0)
+                                }}
+                                {{ (props.project.work_time ?? 0) > 59 ? $t('app.h') : $t('app.s') }}
+                            </bdi>
                         </span>
                     </div>
                 </div>

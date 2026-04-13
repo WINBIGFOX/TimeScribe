@@ -2,7 +2,7 @@
 import { Button } from '@/Components/ui/button'
 import { Switch } from '@/Components/ui/switch'
 import { Link, router, useForm } from '@inertiajs/vue3'
-import { ArrowRight, CheckCircle2, Circle, Cog, KeyRound } from 'lucide-vue-next'
+import { ArrowRight, CheckCircle2, Circle, Cog, KeyRound } from '@lucide/vue'
 import { computed, onMounted, ref, watch } from 'vue'
 
 const props = defineProps<{

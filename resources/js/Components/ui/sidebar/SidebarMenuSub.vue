@@ -11,7 +11,7 @@ const props = defineProps<{
     <ul
         :class="
             cn(
-                'border-sidebar-border ml-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l py-0.5 pl-2.5',
+                'border-sidebar-border flex min-w-0 translate-x-px flex-col gap-1 py-0.5 not-rtl:ml-3.5 rtl:mr-3.5 not-rtl:border-l not-rtl:pl-2.5 rtl:border-r rtl:pr-2.5',
                 'group-data-[collapsible=icon]:hidden',
                 props.class
             )

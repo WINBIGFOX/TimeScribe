@@ -9,7 +9,7 @@ import {
     SidebarMenuSubItem
 } from '@/Components/ui/sidebar'
 import { Link, router, usePage } from '@inertiajs/vue3'
-import { AppWindowMac, ChartColumnBig, Cog, FileChartColumn, FileClock, Tag, TentTree } from 'lucide-vue-next'
+import { AppWindowMac, ChartColumnBig, Cog, FileChartColumn, FileClock, Tag, TentTree } from '@lucide/vue'
 import moment from 'moment/min/moment-with-locales'
 import { ref } from 'vue'
 

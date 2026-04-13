@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Textarea } from '@/Components/ui/textarea'
 import { Project, Timestamp } from '@/types'
 import { Head, router, useForm } from '@inertiajs/vue3'
-import { BriefcaseBusiness, Coffee, MoveRight } from 'lucide-vue-next'
+import { BriefcaseBusiness, Coffee, MoveRight } from '@lucide/vue'
 import moment from 'moment/min/moment-with-locales'
 
 const props = defineProps<{
@@ -106,7 +106,7 @@ const destroy = () => {
                     :twelve-hour-format="['en_US'].includes($page.props.locale)"
                     v-model="form.started_at"
                 />
-                <MoveRight class="text-muted-foreground size-4" />
+                <MoveRight class="text-muted-foreground size-4 rtl:-scale-x-100" />
                 <TimeSelect
                     :label="$t('app.end at:')"
                     :max="max_time"

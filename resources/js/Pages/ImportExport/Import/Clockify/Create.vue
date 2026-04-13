@@ -3,7 +3,7 @@ import SheetDialog from '@/Components/dialogs/SheetDialog.vue'
 import { Badge } from '@/Components/ui/badge'
 import { Button } from '@/Components/ui/button'
 import { Head, Link, router, useForm } from '@inertiajs/vue3'
-import { ExternalLink } from 'lucide-vue-next'
+import { ExternalLink } from '@lucide/vue'
 
 const props = defineProps<{
     submit_route: string

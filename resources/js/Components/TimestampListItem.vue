@@ -4,8 +4,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/Comp
 import { secToFormat } from '@/lib/utils'
 import { Timestamp } from '@/types'
 import { Link, router } from '@inertiajs/vue3'
+import { BriefcaseBusiness, Coffee, FolderInput, FoldVertical, MoveRight, Pencil, Timer, Trash } from '@lucide/vue'
 import { useIntervalFn } from '@vueuse/core'
-import { BriefcaseBusiness, Coffee, FolderInput, FoldVertical, MoveRight, Pencil, Timer, Trash } from 'lucide-vue-next'
 import moment from 'moment/min/moment-with-locales'
 import { ref, watch } from 'vue'
 
@@ -104,7 +104,7 @@ watch(
                 class="text-primary-foreground group/merge-button ring-offset-background z-10 -mt-2.5 flex h-5 scale-0 items-center justify-center rounded-full px-1.25 py-0.5 text-xs leading-none ring-offset-2 transition-all duration-300 ease-in-out group-hover:scale-100 group-hover:ease-[cubic-bezier(0.17,0.89,0.32,1.10)] hover:px-2 hover:ring-2"
             >
                 <FoldVertical
-                    class="size-3 transition-[height,width,margin] duration-500 ease-[cubic-bezier(0.17,0.89,0.32,1.10)] group-hover/merge-button:mr-1 group-hover/merge-button:size-3.5"
+                    class="size-3 transition-[height,width,margin] duration-500 ease-[cubic-bezier(0.17,0.89,0.32,1.10)] group-hover/merge-button:size-3.5 not-rtl:group-hover/merge-button:mr-1 rtl:group-hover/merge-button:ml-1"
                 />
                 <span
                     class="max-w-0 overflow-clip transition-[max-width] duration-500 ease-[cubic-bezier(0.17,0.89,0.32,1.10)] group-hover/merge-button:max-w-28"
@@ -123,13 +123,17 @@ watch(
             <BriefcaseBusiness class="size-5" v-if="props.timestamp.type === 'work'" />
             <Coffee class="size-5" v-if="props.timestamp.type === 'break'" />
         </div>
-        <div class="flex w-24 shrink-0 items-center gap-1">
+        <div dir="ltr" class="flex w-24 shrink-0 items-center gap-1 rtl:justify-end">
             <Timer class="text-muted-foreground size-4" />
             <span class="font-medium">
-                {{ duration > 59 ? secToFormat(duration, false, true, true) : duration }}
+                <bdi>
+                    {{ duration > 59 ? secToFormat(duration, false, true, true) : duration }}
+                </bdi>
             </span>
             <span class="text-muted-foreground text-xs">
-                {{ duration > 59 ? $t('app.h') : $t('app.s') }}
+                <bdi>
+                    {{ duration > 59 ? $t('app.h') : $t('app.s') }}
+                </bdi>
             </span>
         </div>
 
@@ -139,20 +143,24 @@ watch(
                     {{ $t('app.start') }}
                 </span>
                 <span class="leading-none font-medium">
-                    {{ moment(props.timestamp.started_at.formatted, 'Hmm').format('LT') }}
+                    <bdi>
+                        {{ moment(props.timestamp.started_at.formatted, 'Hmm').format('LT') }}
+                    </bdi>
                 </span>
             </div>
-            <MoveRight class="text-muted-foreground size-4" />
+            <MoveRight class="text-muted-foreground size-4 rtl:-scale-x-100" />
             <div class="flex min-w-16 flex-col items-center gap-1" v-if="props.timestamp.ended_at">
                 <span class="text-muted-foreground text-xs leading-none">
                     {{ $t('app.end') }}
                 </span>
                 <span class="leading-none font-medium">
-                    {{
-                        moment((props.timestamp.ended_at ?? props.timestamp.last_ping_at)?.formatted, 'Hmm').format(
-                            'LT'
-                        )
-                    }}
+                    <bdi>
+                        {{
+                            moment((props.timestamp.ended_at ?? props.timestamp.last_ping_at)?.formatted, 'Hmm').format(
+                                'LT'
+                            )
+                        }}
+                    </bdi>
                 </span>
             </div>
             <div class="bg-muted text-muted-foreground mx-1 flex items-center gap-2 rounded-lg px-3 py-1" v-else>
@@ -166,7 +174,7 @@ watch(
                 preserve-state
                 :href="route('project.show', { project: props.timestamp.project.id })"
                 :style="'--project-color: ' + (props.timestamp.project.color ?? '#000000')"
-                class="mx-2 flex h-9 items-center gap-2 rounded-md border-l-6 border-l-(--project-color) bg-(--project-color)/10 px-2 text-sm font-medium hover:bg-(--project-color)/20 dark:bg-(--project-color)/20 dark:hover:bg-(--project-color)/30"
+                class="mx-2 flex h-9 items-center gap-2 rounded-md bg-(--project-color)/10 px-2 text-sm font-medium not-rtl:border-l-6 not-rtl:border-l-(--project-color) hover:bg-(--project-color)/20 rtl:border-r-6 rtl:border-r-(--project-color) dark:bg-(--project-color)/20 dark:hover:bg-(--project-color)/30"
             >
                 <div class="flex h-9 shrink-0 items-center text-xl" v-if="props.timestamp.project.icon">
                     {{ props.timestamp.project.icon }}
@@ -184,7 +192,7 @@ watch(
                 {{ props.timestamp.description }}
             </span>
         </div>
-        <div class="ml-auto flex items-center justify-end">
+        <div class="flex items-center justify-end not-rtl:ml-auto rtl:mr-auto">
             <TooltipProvider v-if="props.timestamp.source">
                 <Tooltip>
                     <TooltipTrigger as-child>

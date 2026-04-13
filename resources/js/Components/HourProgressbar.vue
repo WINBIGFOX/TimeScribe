@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/Components/ui/tooltip'
 import { secToFormat } from '@/lib/utils'
-import { BriefcaseBusiness, ChevronsLeftRightEllipsis, ClockArrowUp, Coffee } from 'lucide-vue-next'
+import { BriefcaseBusiness, ChevronsLeftRightEllipsis, ClockArrowUp, Coffee } from '@lucide/vue'
 import { computed } from 'vue'
 
 const props = withDefaults(
