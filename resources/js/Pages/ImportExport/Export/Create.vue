@@ -116,7 +116,7 @@ const isDisabled = computed((): boolean => {
         :title="$t(actionLabel())"
     >
         <div class="flex grow gap-4 overflow-hidden">
-            <div class="flex flex-1 flex-col gap-4 overflow-y-auto not-rtl:border-r rtl:border-l not-rtl:pr-4 rtl:pl-4">
+            <div class="flex flex-1 flex-col gap-4 overflow-y-auto not-rtl:border-r not-rtl:pr-4 rtl:border-l rtl:pl-4">
                 <FieldGroup>
                     <FieldSet>
                         <FieldLabel>{{ $t('app.export format') }}</FieldLabel>
@@ -273,7 +273,7 @@ const isDisabled = computed((): boolean => {
                     <Draggable v-model="form.export_columns" item-key="key" :animation="200" ghost-class="ghost">
                         <template #item="{ element }">
                             <label
-                                class="[&.ghost]:ring-primary! bg-muted/40 my-1 flex items-center gap-2 rounded-md py-1 not-rtl:pr-2 rtl:pl-2 transition-[scale,box-shadow] duration-200 [-webkit-user-drag:element]! [&.ghost]:scale-95 [&.ghost]:ring-2 [&.ghost]:ring-inset"
+                                class="[&.ghost]:ring-primary! bg-muted/40 my-1 flex items-center gap-2 rounded-md py-1 transition-[scale,box-shadow] duration-200 [-webkit-user-drag:element]! not-rtl:pr-2 rtl:pl-2 [&.ghost]:scale-95 [&.ghost]:ring-2 [&.ghost]:ring-inset"
                                 :class="{
                                     'bg-primary/10 ring-primary/60 rounded ring-1': isColumnVisible(element.key)
                                 }"

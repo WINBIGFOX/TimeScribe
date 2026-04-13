@@ -9,8 +9,8 @@ import {
 } from '@/Components/ui/number-field'
 import { Switch } from '@/Components/ui/switch'
 import { router, useForm } from '@inertiajs/vue3'
-import { useDebounceFn } from '@vueuse/core'
 import { ArrowRight, CheckCircle2 } from '@lucide/vue'
+import { useDebounceFn } from '@vueuse/core'
 import { computed, watch } from 'vue'
 
 const props = defineProps<{

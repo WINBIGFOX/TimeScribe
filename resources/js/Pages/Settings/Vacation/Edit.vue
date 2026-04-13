@@ -10,8 +10,8 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { Switch } from '@/Components/ui/switch'
 import { Head, router, useForm } from '@inertiajs/vue3'
-import { useDebounceFn } from '@vueuse/core'
 import { CalendarSync, CircleDivide, RedoDot, Timer } from '@lucide/vue'
+import { useDebounceFn } from '@vueuse/core'
 import { ref, watch } from 'vue'
 
 const props = defineProps<{

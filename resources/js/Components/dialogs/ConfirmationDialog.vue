@@ -10,8 +10,8 @@ import {
 import { Button } from '@/Components/ui/button'
 import { Method, RequestPayload } from '@inertiajs/core'
 import { router, usePage } from '@inertiajs/vue3'
-import { useMediaQuery } from '@vueuse/core'
 import { Loader2 } from '@lucide/vue'
+import { useMediaQuery } from '@vueuse/core'
 import { ref, watch } from 'vue'
 
 const page = usePage()

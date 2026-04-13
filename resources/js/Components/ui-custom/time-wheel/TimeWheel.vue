@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { cn } from '@/lib/utils'
 import { Link } from '@inertiajs/vue3'
-import { trans } from 'laravel-vue-i18n'
 import { ChevronsLeft, ChevronsRight } from '@lucide/vue'
+import { trans } from 'laravel-vue-i18n'
 import moment from 'moment/min/moment-with-locales'
 import { computed, type HTMLAttributes } from 'vue'
 

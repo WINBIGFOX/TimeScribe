@@ -10,17 +10,7 @@ import BasicLayout from '@/Layouts/BasicLayout.vue'
 import { secToFormat } from '@/lib/utils'
 import Edit from '@/Pages/OvertimeAdjustment/Edit.vue'
 import { OvertimeAdjustment, WeekBalance, WeekdayObject } from '@/types'
-import {
-    ArrowRight,
-    ClipboardClock,
-    Clock,
-    ClockArrowDown,
-    ClockArrowUp,
-    Diff,
-    Dot,
-    Equal,
-    Plus
-} from '@lucide/vue'
+import { ArrowRight, ClipboardClock, Clock, ClockArrowDown, ClockArrowUp, Diff, Dot, Equal, Plus } from '@lucide/vue'
 import { computed, ref } from 'vue'
 
 defineOptions({

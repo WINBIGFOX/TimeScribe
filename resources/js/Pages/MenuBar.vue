@@ -5,8 +5,8 @@ import BasicLayout from '@/Layouts/BasicLayout.vue'
 import { secToFormat } from '@/lib/utils'
 import { ActivityHistory, Project } from '@/types'
 import { Head, Link, router, usePoll } from '@inertiajs/vue3'
-import { useColorMode } from '@vueuse/core'
 import { ChartColumnBig, Coffee, Cog, PictureInPicture, Play, Plus, Sparkles, Square, Tag, X } from '@lucide/vue'
+import { useColorMode } from '@vueuse/core'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 defineOptions({

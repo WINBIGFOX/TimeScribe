@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { cn } from '@/lib/utils'
-import { reactiveOmit } from '@vueuse/core'
 import { ChevronRight } from '@lucide/vue'
+import { reactiveOmit } from '@vueuse/core'
 import { DropdownMenuSubTrigger, type DropdownMenuSubTriggerProps, useForwardProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
 

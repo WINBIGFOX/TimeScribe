@@ -64,7 +64,7 @@ const props = withDefaults(defineProps<SidebarProps>(), {
                             </SidebarMenuButton>
                             <Link
                                 :href="route('updater.check')"
-                                class="space-x-1 flex items-center text-sm leading-tight not-rtl:ml-auto rtl:mr-auto"
+                                class="flex items-center space-x-1 text-sm leading-tight not-rtl:ml-auto rtl:mr-auto"
                                 method="post"
                                 preserve-scroll
                                 preserve-state

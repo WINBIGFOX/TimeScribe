@@ -396,7 +396,7 @@ const hasClearButton = computed(() => Boolean(modelValue.value) && !props.requir
                 :class="
                     cn(
                         'border-input dark:bg-input/30 flex h-9 w-full items-center justify-between rounded-md border bg-transparent px-3 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px]',
-                        hasClearButton ? 'rtl:pl-11 not-rtl:pr-11' : undefined,
+                        hasClearButton ? 'not-rtl:pr-11 rtl:pl-11' : undefined,
                         recording
                             ? 'border-ring ring-ring/50 focus-visible:border-ring focus-visible:ring-ring/50'
                             : 'focus-visible:border-ring focus-visible:ring-ring/50',
@@ -420,7 +420,7 @@ const hasClearButton = computed(() => Boolean(modelValue.value) && !props.requir
             </div>
             <Button
                 v-if="hasClearButton"
-                class="absolute top-1 rtl:left-1 not-rtl:right-1 h-7 w-7"
+                class="absolute top-1 h-7 w-7 not-rtl:right-1 rtl:left-1"
                 size="icon"
                 variant="ghost"
                 :disabled="props.disabled"

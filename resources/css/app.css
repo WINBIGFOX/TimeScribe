@@ -20,8 +20,9 @@
     font-weight: 400;
     font-display: swap;
     src: url('fonts/LobsterTwo-Italic.woff2') format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
-    U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+        U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* latin */
@@ -31,8 +32,9 @@
     font-weight: 700;
     font-display: swap;
     src: url('fonts/LobsterTwo-BoldItalic.woff2') format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
-    U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+        U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* latin */
@@ -42,8 +44,9 @@
     font-weight: 400;
     font-display: swap;
     src: url('fonts/LobsterTwo-Regular.woff2') format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
-    U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+        U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* latin */
@@ -53,8 +56,9 @@
     font-weight: 700;
     font-display: swap;
     src: url('fonts/LobsterTwo-Bold.woff2') format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
-    U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+        U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 #app {
@@ -226,8 +230,10 @@ html {
         @apply cursor-default;
     }
 
-    .apexcharts-canvas, .apexcharts-svg {
-        &:focus, &:focus-visible {
+    .apexcharts-canvas,
+    .apexcharts-svg {
+        &:focus,
+        &:focus-visible {
             @apply outline-none;
         }
     }
@@ -255,12 +261,14 @@ html {
             box-shadow: rgba(0, 0, 0, 0.08) -12px 0 12px -10px inset;
         }
         15% {
-            box-shadow: rgba(0, 0, 0, 0.08) 12px 0 12px -10px inset,
-            rgba(0, 0, 0, 0.08) -12px 0 12px -10px inset;
+            box-shadow:
+                rgba(0, 0, 0, 0.08) 12px 0 12px -10px inset,
+                rgba(0, 0, 0, 0.08) -12px 0 12px -10px inset;
         }
         85% {
-            box-shadow: rgba(0, 0, 0, 0.08) 12px 0 12px -10px inset,
-            rgba(0, 0, 0, 0.08) -12px 0 12px -10px inset;
+            box-shadow:
+                rgba(0, 0, 0, 0.08) 12px 0 12px -10px inset,
+                rgba(0, 0, 0, 0.08) -12px 0 12px -10px inset;
         }
         100% {
             box-shadow: rgba(0, 0, 0, 0.08) 12px 0 12px -10px inset;
@@ -272,12 +280,14 @@ html {
             box-shadow: rgba(0, 0, 0, 0.08) 0 -12px 12px -10px inset;
         }
         15% {
-            box-shadow: rgba(0, 0, 0, 0.08) 0 12px 12px -10px inset,
-            rgba(0, 0, 0, 0.08) 0 -12px 12px -10px inset;
+            box-shadow:
+                rgba(0, 0, 0, 0.08) 0 12px 12px -10px inset,
+                rgba(0, 0, 0, 0.08) 0 -12px 12px -10px inset;
         }
         85% {
-            box-shadow: rgba(0, 0, 0, 0.08) 0 12px 12px -10px inset,
-            rgba(0, 0, 0, 0.08) 0 -12px 12px -10px inset;
+            box-shadow:
+                rgba(0, 0, 0, 0.08) 0 12px 12px -10px inset,
+                rgba(0, 0, 0, 0.08) 0 -12px 12px -10px inset;
         }
         100% {
             box-shadow: rgba(0, 0, 0, 0.08) 0 12px 12px -10px inset;

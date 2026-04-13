@@ -4,8 +4,8 @@ import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, Sele
 import { Switch } from '@/Components/ui/switch'
 import { Enum } from '@/types'
 import { Head, router, useForm } from '@inertiajs/vue3'
-import { useDebounceFn } from '@vueuse/core'
 import { AppWindowMac, CalendarMinus, Eye, Globe, KeyRound, Languages, PanelsTopLeft, SunMoon } from '@lucide/vue'
+import { useDebounceFn } from '@vueuse/core'
 import { ref, watch } from 'vue'
 
 const props = defineProps<{
