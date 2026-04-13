@@ -1,0 +1,205 @@
+name: Make Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release-Tag, z. B. v1.12.0"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  GITHUB_OWNER: ${{ github.repository_owner }}
+  GITHUB_REPO: ${{ github.event.repository.name }}
+
+  NATIVEPHP_APP_ID: "de.amplussoftware.timescribe"
+  NATIVEPHP_UPDATER_PROVIDER: "github"
+  NATIVEPHP_UPDATER_ENABLED: "true"
+  NATIVEPHP_APP_AUTHOR: "WINBIGFOX"
+  NATIVEPHP_APP_DESCRIPTION: "TimeScribe"
+  NATIVEPHP_APP_WEBSITE: "https://timescribe.app"
+  NATIVEPHP_APP_COPYRIGHT: "Copyright (c) 2026 TimeScribe"
+
+jobs:
+  create_draft_release:
+    runs-on: ubuntu-24.04
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
+      app_version: ${{ steps.version.outputs.app_version }}
+      can_publish: ${{ steps.release_state.outputs.can_publish }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Derive app version from tag
+        id: version
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+
+          case "$TAG" in
+            v*) ;;
+            *)
+              echo "Expected a tag starting with 'v', got '$TAG'." >&2
+              exit 1
+              ;;
+          esac
+
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "app_version=${TAG#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Create tag if missing
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          set -euo pipefail
+
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" -m "$TAG"
+          git push origin "refs/tags/$TAG"
+
+      - name: Ensure draft release can be published
+        id: release_state
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          set -euo pipefail
+
+          if gh release view "$TAG" --repo "$GITHUB_OWNER/$GITHUB_REPO" >/dev/null 2>&1; then
+            if [ "$(gh release view "$TAG" --repo "$GITHUB_OWNER/$GITHUB_REPO" --json isDraft --jq '.isDraft')" != "true" ]; then
+              echo "can_publish=false" >> "$GITHUB_OUTPUT"
+              echo "Release $TAG is already published. Skipping publish jobs."
+              exit 0
+            fi
+
+            echo "can_publish=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          gh release create "$TAG" \
+            --repo "$GITHUB_OWNER/$GITHUB_REPO" \
+            --draft \
+            --title "$TAG" \
+            --notes "Automatisch erstelltes Release für Tag $TAG."
+
+          echo "can_publish=true" >> "$GITHUB_OUTPUT"
+
+      - name: Delete existing draft assets
+        if: steps.release_state.outputs.can_publish == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          set -euo pipefail
+
+          asset_names="$(gh release view "$TAG" --repo "$GITHUB_OWNER/$GITHUB_REPO" --json assets --jq '.assets[].name' || true)"
+
+          if [ -z "$asset_names" ]; then
+            exit 0
+          fi
+
+          while IFS= read -r asset_name; do
+            [ -n "$asset_name" ] || continue
+            gh release delete-asset "$TAG" "$asset_name" \
+              --repo "$GITHUB_OWNER/$GITHUB_REPO" \
+              --yes
+          done <<< "$asset_names"
+
+  publish:
+    name: Publish (${{ matrix.platform }})
+    needs: create_draft_release
+    if: needs.create_draft_release.outputs.can_publish == 'true'
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - platform: macos
+            runs_on: macos-26
+          - platform: windows
+            runs_on: windows-2022
+    runs-on: ${{ matrix.runs_on }}
+    env:
+      NATIVEPHP_APP_VERSION: ${{ needs.create_draft_release.outputs.app_version }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.create_draft_release.outputs.tag }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: zip, fileinfo, intl, sockets
+          tools: composer
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          composer install --no-interaction --prefer-dist
+          npm ci
+
+      - name: Prepare release environment file
+        env:
+          APP_KEY: ${{ secrets.APP_KEY }}
+          APP_ENV: local
+          APP_DEBUG: false
+          NATIVEPHP_APP_VERSION: ${{ needs.create_draft_release.outputs.app_version }}
+          NATIVEPHP_APP_ID: ${{ env.NATIVEPHP_APP_ID }}
+          NATIVEPHP_APP_AUTHOR: ${{ env.NATIVEPHP_APP_AUTHOR }}
+          NATIVEPHP_APP_DESCRIPTION: ${{ env.NATIVEPHP_APP_DESCRIPTION }}
+          NATIVEPHP_APP_COPYRIGHT: ${{ env.NATIVEPHP_APP_COPYRIGHT }}
+          NATIVEPHP_APP_WEBSITE: ${{ env.NATIVEPHP_APP_WEBSITE }}
+          NATIVEPHP_UPDATER_PROVIDER: ${{ env.NATIVEPHP_UPDATER_PROVIDER }}
+          NATIVEPHP_UPDATER_ENABLED: ${{ env.NATIVEPHP_UPDATER_ENABLED }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
+          VITE_APP_SENTRY_VUE_DSN: ${{ secrets.VITE_APP_SENTRY_VUE_DSN }}
+          SENTRY_LARAVEL_DSN: ${{ secrets.SENTRY_LARAVEL_DSN }}
+          SENTRY_RELEASE: ${{ needs.create_draft_release.outputs.app_version }}
+        run: php .github/scripts/prepare-release-env.php
+
+      - name: Import Apple Developer ID certificate (.p12)
+        if: matrix.platform == 'macos'
+        uses: apple-actions/import-codesign-certs@v6
+        with:
+          p12-file-base64: ${{ secrets.MACOS_CERTIFICATE_P12_BASE64 }}
+          p12-password: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+
+      - name: Publish (macOS) via NativePHP
+        if: matrix.platform == 'macos'
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          NATIVEPHP_APPLE_ID: ${{ secrets.APPLE_ID }}
+          NATIVEPHP_APPLE_ID_PASS: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          NATIVEPHP_APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          php artisan native:publish mac
+
+      - name: Publish (Windows) via NativePHP (UNSIGNED)
+        if: matrix.platform == 'windows'
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+        shell: pwsh
+        run: |
+          php artisan native:publish win

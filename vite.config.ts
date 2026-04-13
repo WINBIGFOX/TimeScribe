@@ -45,7 +45,7 @@ export default defineConfig({
             }
         },
         cssCodeSplit: true,
-        sourcemap: true,
+        sourcemap: false,
         assetsInlineLimit: 4096
     },
     server: {
