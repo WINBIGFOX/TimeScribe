@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from 'clsx'
+import { trans } from 'laravel-vue-i18n'
 import moment from 'moment/min/moment-with-locales'
 import { twMerge } from 'tailwind-merge'
 
@@ -91,6 +92,13 @@ export function secToUnit(
     }
 
     return 'h'
+}
+
+export function formatDurationWithUnit(
+    seconds: number,
+    timeDisplayFormat: TimeDisplayFormat = currentTimeDisplayFormat
+) {
+    return `${secToFormat(seconds, true, true, true, false, timeDisplayFormat)} ${trans(`app.${secToUnit(seconds, true, timeDisplayFormat)}`)}`
 }
 
 export function weekdayTranslate(weekday: string) {

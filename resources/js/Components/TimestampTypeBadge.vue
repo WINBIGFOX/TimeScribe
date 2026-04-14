@@ -7,7 +7,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from '@/Components/ui/dropdown-menu'
-import { secToFormat, secToUnit } from '@/lib/utils'
+import { formatDurationWithUnit } from '@/lib/utils'
 import { GetTimeProjectDetails } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import {
@@ -84,8 +84,7 @@ const badgeDetails = {
 
 const { title: badgeTitle, icon: badgeIcon, color: badgeColor } = badgeDetails[props.type] || badgeDetails.default
 
-const durationLabel = computed(() => secToFormat(props.duration ?? 0, true, true, true))
-const durationUnit = computed(() => secToUnit(props.duration ?? 0, true))
+const durationLabel = computed(() => formatDurationWithUnit(props.duration ?? 0))
 </script>
 
 <template>
@@ -96,10 +95,7 @@ const durationUnit = computed(() => secToUnit(props.duration ?? 0, true))
             <div class="space-y-1">
                 <div class="text-xs leading-none">{{ $t(badgeTitle) }}</div>
                 <div class="text-sm leading-none font-bold tabular-nums" v-if="props.duration !== undefined">
-                    <bdi>
-                        {{ durationLabel }}
-                        {{ $t(`app.${durationUnit}`) }}
-                    </bdi>
+                    <bdi>{{ durationLabel }}</bdi>
                 </div>
             </div>
         </div>
@@ -136,12 +132,7 @@ const durationUnit = computed(() => secToUnit(props.duration ?? 0, true))
                             class="flex flex-1 shrink-0 items-center gap-1 text-xs leading-none whitespace-nowrap tabular-nums not-rtl:justify-end"
                         >
                             <component :is="badgeIcon" class="size-4" />
-                            <span>
-                                <bdi>
-                                    {{ secToFormat(projectDuration.sum, true, true, true) }}
-                                    {{ $t(`app.${secToUnit(projectDuration.sum, true)}`) }}
-                                </bdi>
-                            </span>
+                            <span><bdi>{{ formatDurationWithUnit(projectDuration.sum) }}</bdi></span>
                         </span>
                     </DropdownMenuItem>
                 </DropdownMenuContent>
