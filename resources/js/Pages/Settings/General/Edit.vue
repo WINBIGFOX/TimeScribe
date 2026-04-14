@@ -204,7 +204,7 @@ watch(holidayCheck, () => {
                         {{ $t('app.time display') }}
                     </p>
                     <p class="text-muted-foreground text-sm text-balance">
-                        {{ $t('app.choose how durations are shown throughout the app. decimal hours are useful for copying time into external systems.') }}
+                        {{ $t('app.choose how durations are shown') }}
                     </p>
                 </div>
 

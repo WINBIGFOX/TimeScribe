@@ -54,7 +54,7 @@ return [
     'chinese' => 'Kinesisk',
     'choose how fractional days are rounded.' => 'Vælg, hvordan brøkdelsdage rundes.',
     'choose the appearance of the application.' => 'Vælg applikationens udseende.',
-    'choose how durations are shown throughout the app. decimal hours are useful for copying time into external systems.' => 'Vælg, hvordan varigheder vises i appen. Decimaltimer er nyttige, når tid skal kopieres til eksterne systemer.',
+    'choose how durations are shown' => 'Vælg, hvordan varigheder vises.',
     'choose whether to show vacation steps' => 'Vælg, om ferietrin skal vises.',
     'choose your mode' => 'Vælg din tilstand.',
     'click "export" at the top of the table and choose "save as csv".' => 'Klik på "Eksporter" øverst i tabellen og vælg "Gem som CSV".',

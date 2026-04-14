@@ -54,7 +54,7 @@ return [
     'chinese' => '中文',
     'choose how fractional days are rounded.' => '控制休假日的小数步长。',
     'choose the appearance of the application.' => '选择应用程序的外观。',
-    'choose how durations are shown throughout the app. decimal hours are useful for copying time into external systems.' => '选择应用中时长的显示方式。十进制小时便于将时间复制到外部系统中。',
+    'choose how durations are shown' => '选择时长的显示方式。',
     'choose whether to show vacation steps' => '选择是否显示休假步骤。',
     'choose your mode' => '选择你的模式。',
     'click "export" at the top of the table and choose "save as csv".' => '点击表格上方的“导出”，然后选择“另存为 CSV”。',

@@ -54,7 +54,7 @@ return [
     'chinese' => 'Chinese',
     'choose how fractional days are rounded.' => 'Choose how fractional days are rounded.',
     'choose the appearance of the application.' => 'Choose the appearance of the application.',
-    'choose how durations are shown throughout the app. decimal hours are useful for copying time into external systems.' => 'Choose how durations are shown throughout the app. Decimal hours are useful for copying time into external systems.',
+    'choose how durations are shown' => 'Choose how durations are shown.',
     'choose whether to show vacation steps' => 'Choose whether to show vacation steps.',
     'choose your mode' => 'Choose your mode.',
     'click "export" at the top of the table and choose "save as csv".' => 'Click "Export" at the top of the table and choose "Save as CSV".',

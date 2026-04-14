@@ -54,7 +54,7 @@ return [
     'chinese' => 'Chinesisch',
     'choose how fractional days are rounded.' => 'Legt fest, in welchen Abstufungen Urlaubstage gerundet werden.',
     'choose the appearance of the application.' => 'Wähle das Erscheinungsbild der Anwendung.',
-    'choose how durations are shown throughout the app. decimal hours are useful for copying time into external systems.' => 'Lege fest, wie Zeitdauern in der App angezeigt werden. Dezimalstunden sind hilfreich, wenn du Zeiten in externe Systeme überträgst.',
+    'choose how durations are shown' => 'Wähle, wie Zeitdauern angezeigt werden.',
     'choose whether to show vacation steps' => 'Wähle, ob wir Urlaubsschritte zeigen sollen.',
     'choose your mode' => 'Wähle deinen Modus.',
     'click "export" at the top of the table and choose "save as csv".' => 'Klicken Sie oben in der Tabelle auf „Export“ und wählen Sie „Als CSV speichern“.',
