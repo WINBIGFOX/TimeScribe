@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { usePage } from '@inertiajs/vue3'
 import { setTimeDisplayFormat } from '@/lib/utils'
+import { usePage } from '@inertiajs/vue3'
 import moment from 'moment/min/moment-with-locales'
 import { watch } from 'vue'
 

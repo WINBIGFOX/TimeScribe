@@ -40,7 +40,7 @@ class TimeFormatService
 
         if ($format === self::CLOCK && abs($seconds) < 3600) {
             $minutes = (int) floor(abs($seconds) / 60);
-            $formattedDuration = ($seconds < 0 ? '-' : '').(string) $minutes;
+            $formattedDuration = ($seconds < 0 ? '-' : '').$minutes;
         }
 
         return sprintf(

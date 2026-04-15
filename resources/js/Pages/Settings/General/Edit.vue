@@ -4,7 +4,17 @@ import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, Sele
 import { Switch } from '@/Components/ui/switch'
 import { Enum } from '@/types'
 import { Head, router, useForm } from '@inertiajs/vue3'
-import { AppWindowMac, CalendarMinus, Eye, Globe, KeyRound, Languages, PanelsTopLeft, SunMoon, Timer } from '@lucide/vue'
+import {
+    AppWindowMac,
+    CalendarMinus,
+    Eye,
+    Globe,
+    KeyRound,
+    Languages,
+    PanelsTopLeft,
+    SunMoon,
+    Timer
+} from '@lucide/vue'
 import { useDebounceFn } from '@vueuse/core'
 import { ref, watch } from 'vue'
 

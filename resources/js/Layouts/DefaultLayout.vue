@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import AppSidebar from '@/Components/AppSidebar.vue'
 import { SidebarInset, SidebarProvider } from '@/Components/ui/sidebar'
-import { setTimeDisplayFormat } from '@/lib/utils'
 import BasicLayout from '@/Layouts/BasicLayout.vue'
+import { setTimeDisplayFormat } from '@/lib/utils'
 import { usePage } from '@inertiajs/vue3'
 import { useColorMode } from '@vueuse/core'
 import { Modal } from 'inertia-modal'

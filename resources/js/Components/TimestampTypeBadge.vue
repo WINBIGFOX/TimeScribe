@@ -132,7 +132,9 @@ const durationLabel = computed(() => formatDurationWithUnit(props.duration ?? 0)
                             class="flex flex-1 shrink-0 items-center gap-1 text-xs leading-none whitespace-nowrap tabular-nums not-rtl:justify-end"
                         >
                             <component :is="badgeIcon" class="size-4" />
-                            <span><bdi>{{ formatDurationWithUnit(projectDuration.sum) }}</bdi></span>
+                            <span
+                                ><bdi>{{ formatDurationWithUnit(projectDuration.sum) }}</bdi></span
+                            >
                         </span>
                     </DropdownMenuItem>
                 </DropdownMenuContent>
