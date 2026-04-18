@@ -42,7 +42,7 @@
         "@inertiajs/vite": "^3.0.3",
         "@lucide/vue": "latest",
         "@sentry/vite-plugin": "^5.2",
-        "@sentry/vue": "^10.48",
+        "@sentry/vue": "^10.49",
         "@vueuse/core": "^14.2.1",
         "apexcharts": "^5.10",
         "class-variance-authority": "^0.7",
