@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { Button } from '@/Components/ui/button'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/Components/ui/hover-card'
 import { Switch } from '@/Components/ui/switch'
 import { getCurrencySymbol, secToFormat } from '@/lib/utils'
 import { Project, Timestamp } from '@/types'
 import { Link, useForm } from '@inertiajs/vue3'
-import { BriefcaseBusiness, CircleCheckBig, ExternalLink, Timer } from '@lucide/vue'
+import { BriefcaseBusiness, CircleCheckBig, ExternalLink, MoveRight, NotepadText, Timer } from '@lucide/vue'
 import moment from 'moment/min/moment-with-locales'
 import { watch } from 'vue'
 
@@ -33,7 +34,7 @@ watch(() => form.paid, submit)
             <BriefcaseBusiness class="size-5" />
         </div>
 
-        <div class="ml-2 flex min-w-16 flex-1 shrink-0 items-center gap-2 leading-none font-medium tabular-nums">
+        <div class="flex min-w-16 shrink-0 items-center gap-2 leading-none font-medium tabular-nums">
             <bdi>
                 {{ moment(props.timestamp.started_at.date, 'YYYY-MM-DD').format('L') }}
             </bdi>
@@ -50,7 +51,62 @@ watch(() => form.paid, submit)
                 <ExternalLink />
             </Button>
         </div>
-        <div></div>
+        <div class="flex shrink-0 items-center gap-2">
+            <div class="flex min-w-16 flex-col items-center gap-1">
+                <span class="text-muted-foreground text-xs leading-none">
+                    {{ $t('app.start') }}
+                </span>
+                <span class="leading-none font-medium">
+                    <bdi>
+                        {{ moment(props.timestamp.started_at.formatted, 'Hmm').format('LT') }}
+                    </bdi>
+                </span>
+            </div>
+            <MoveRight class="text-muted-foreground size-4 rtl:-scale-x-100" />
+            <div class="flex min-w-16 flex-col items-center gap-1" v-if="props.timestamp.ended_at">
+                <span class="text-muted-foreground text-xs leading-none">
+                    {{ $t('app.end') }}
+                </span>
+                <span class="leading-none font-medium">
+                    <bdi>
+                        {{
+                            moment((props.timestamp.ended_at ?? props.timestamp.last_ping_at)?.formatted, 'Hmm').format(
+                                'LT'
+                            )
+                        }}
+                    </bdi>
+                </span>
+            </div>
+            <div class="bg-muted text-muted-foreground mx-1 flex items-center gap-2 rounded-lg px-3 py-1" v-else>
+                <div class="size-3 shrink-0 animate-pulse rounded-full bg-red-500" />
+                {{ $t('app.now') }}
+            </div>
+        </div>
+        <div v-if="props.timestamp.description">
+            <HoverCard :open-delay="0" :close-delay="0">
+                <HoverCardTrigger as-child>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        :as="Link"
+                        :href="route('project.show', { project: props.project.id })"
+                    >
+                        <NotepadText class="size-4" />
+                    </Button>
+                </HoverCardTrigger>
+                <HoverCardContent class="max-h-60 w-auto max-w-md min-w-64 overflow-y-auto">
+                    <div class="flex grow flex-col gap-1" v-if="props.timestamp.description">
+                        <span class="text-muted-foreground text-xs leading-none">
+                            {{ $t('app.notes') }}
+                        </span>
+                        <span class="whitespace-pre-wrap">
+                            {{ props.timestamp.description }}
+                        </span>
+                    </div>
+                </HoverCardContent>
+            </HoverCard>
+        </div>
+        <div class="flex-1"></div>
         <div
             class="flex w-24 shrink-0 items-center justify-end gap-1 tabular-nums"
             v-if="props.timestamp.billable_amount && props.project.currency"
