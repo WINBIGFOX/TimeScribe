@@ -52,7 +52,7 @@ watch(() => form.paid, submit)
             </Button>
         </div>
         <div class="flex shrink-0 items-center gap-2">
-            <div class="flex min-w-16 flex-col items-center gap-1">
+            <div class="flex min-w-18 flex-col items-center gap-1">
                 <span class="text-muted-foreground text-xs leading-none">
                     {{ $t('app.start') }}
                 </span>
