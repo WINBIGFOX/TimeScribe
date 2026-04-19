@@ -1,5 +1,3 @@
-declare module 'vue3-emoji-picker'
-
 export interface Date {
     diff: string
     formatted: string
