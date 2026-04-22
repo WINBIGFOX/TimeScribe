@@ -23,6 +23,6 @@ jobs:
         uses: macauley/action-homebrew-bump-cask@v1
         with:
           token: ${{ secrets.PAT_TOKEN }}
-          tap: Homebrew/homebrew-cask
+          tap: ${{ github.repository_owner }}/homebrew-cask
           cask: timescribe
           tag: ${{ inputs.release-tag || github.event.release.tag_name }}
