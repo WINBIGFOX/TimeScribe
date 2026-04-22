@@ -4,7 +4,17 @@ import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, Sele
 import { Switch } from '@/Components/ui/switch'
 import { Enum } from '@/types'
 import { Head, router, useForm } from '@inertiajs/vue3'
-import { AppWindowMac, CalendarMinus, Eye, Globe, KeyRound, Languages, PanelsTopLeft, SunMoon } from '@lucide/vue'
+import {
+    AppWindowMac,
+    CalendarMinus,
+    Eye,
+    Globe,
+    KeyRound,
+    Languages,
+    PanelsTopLeft,
+    SunMoon,
+    Timer
+} from '@lucide/vue'
 import { useDebounceFn } from '@vueuse/core'
 import { ref, watch } from 'vue'
 
@@ -19,6 +29,7 @@ const props = defineProps<{
     timezones?: string[]
     timezone: string
     defaultOverview: string
+    timeDisplayFormat: 'clock' | 'decimal'
 }>()
 
 const form = useForm({
@@ -29,7 +40,8 @@ const form = useForm({
     locale: props.locale,
     appActivityTracking: props.appActivityTracking ?? false,
     timezone: props.timezone,
-    default_overview: props.defaultOverview ?? 'week'
+    default_overview: props.defaultOverview ?? 'week',
+    time_display_format: props.timeDisplayFormat ?? 'clock'
 })
 
 const submit = () => {
@@ -51,7 +63,8 @@ watch(
         form.holidayRegion,
         form.appActivityTracking,
         form.timezone,
-        form.default_overview
+        form.default_overview,
+        form.time_display_format
     ],
     debouncedSubmit,
     { deep: true }
@@ -188,6 +201,33 @@ watch(holidayCheck, () => {
                         </SelectItem>
                         <SelectItem value="year">
                             {{ $t('app.yearly overview') }}
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
+        </div>
+        <div class="flex items-start space-x-4 py-4">
+            <Timer />
+            <div class="flex flex-1 gap-4">
+                <div class="flex-1 space-y-1">
+                    <p class="text-sm leading-none font-medium">
+                        {{ $t('app.time display') }}
+                    </p>
+                    <p class="text-muted-foreground text-sm text-balance">
+                        {{ $t('app.choose how durations are shown') }}
+                    </p>
+                </div>
+
+                <Select size="5" v-model="form.time_display_format">
+                    <SelectTrigger class="w-1/2">
+                        <SelectValue :placeholder="$t('app.time display')" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="clock">
+                            {{ $t('app.clock (7:30)') }}
+                        </SelectItem>
+                        <SelectItem value="decimal">
+                            {{ $t('app.decimal hours (7.50)') }}
                         </SelectItem>
                     </SelectContent>
                 </Select>

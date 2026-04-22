@@ -2,12 +2,24 @@
 import AppSidebar from '@/Components/AppSidebar.vue'
 import { SidebarInset, SidebarProvider } from '@/Components/ui/sidebar'
 import BasicLayout from '@/Layouts/BasicLayout.vue'
+import { setTimeDisplayFormat } from '@/lib/utils'
 import { usePage } from '@inertiajs/vue3'
 import { useColorMode } from '@vueuse/core'
 import { Modal } from 'inertia-modal'
 import moment from 'moment/min/moment-with-locales'
+import { watch } from 'vue'
 
-moment.locale(usePage().props.js_locale)
+const page = usePage()
+
+moment.locale(page.props.js_locale)
+watch(
+    () => page.props.time_display_format,
+    (format) => {
+        setTimeDisplayFormat(format)
+    },
+    { immediate: true }
+)
+
 if (window.Native) {
     window.Native.on('App\\Events\\LocaleChanged', () => {
         window.location.reload()

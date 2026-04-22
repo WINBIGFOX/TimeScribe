@@ -7,7 +7,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from '@/Components/ui/dropdown-menu'
-import { secToFormat } from '@/lib/utils'
+import { formatDurationWithUnit } from '@/lib/utils'
 import { GetTimeProjectDetails } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import {
@@ -84,7 +84,7 @@ const badgeDetails = {
 
 const { title: badgeTitle, icon: badgeIcon, color: badgeColor } = badgeDetails[props.type] || badgeDetails.default
 
-const durationLabel = computed(() => secToFormat(props.duration ?? 0, true, true, true))
+const durationLabel = computed(() => formatDurationWithUnit(props.duration ?? 0))
 </script>
 
 <template>
@@ -95,10 +95,7 @@ const durationLabel = computed(() => secToFormat(props.duration ?? 0, true, true
             <div class="space-y-1">
                 <div class="text-xs leading-none">{{ $t(badgeTitle) }}</div>
                 <div class="text-sm leading-none font-bold tabular-nums" v-if="props.duration !== undefined">
-                    <bdi>
-                        {{ durationLabel }}
-                        {{ durationLabel.includes(':') ? $t('app.h') : $t('app.min') }}
-                    </bdi>
+                    <bdi>{{ durationLabel }}</bdi>
                 </div>
             </div>
         </div>
@@ -135,16 +132,9 @@ const durationLabel = computed(() => secToFormat(props.duration ?? 0, true, true
                             class="flex flex-1 shrink-0 items-center gap-1 text-xs leading-none whitespace-nowrap tabular-nums not-rtl:justify-end"
                         >
                             <component :is="badgeIcon" class="size-4" />
-                            <span>
-                                <bdi>
-                                    {{ secToFormat(projectDuration.sum, true, true, true) }}
-                                    {{
-                                        secToFormat(projectDuration.sum, true, true, true).includes(':')
-                                            ? $t('app.h')
-                                            : $t('app.min')
-                                    }}
-                                </bdi>
-                            </span>
+                            <span
+                                ><bdi>{{ formatDurationWithUnit(projectDuration.sum) }}</bdi></span
+                            >
                         </span>
                     </DropdownMenuItem>
                 </DropdownMenuContent>
