@@ -1,6 +1,6 @@
 ---
 name: inertia-vue-development
-description: "Develops Inertia.js v2 Vue client-side applications. Activates when creating Vue pages, forms, or navigation; using <Link>, <Form>, useForm, or router; working with deferred props, prefetching, or polling; or when user mentions Vue with Inertia, Vue pages, Vue forms, or Vue navigation."
+description: "Develops Inertia.js v3 Vue client-side applications. Activates when creating Vue pages, forms, or navigation; using <Link>, <Form>, useForm, useHttp, setLayoutProps, or router; working with deferred props, prefetching, optimistic updates, instant visits, or polling; or when user mentions Vue with Inertia, Vue pages, Vue forms, or Vue navigation."
 license: MIT
 metadata:
   author: laravel
@@ -13,14 +13,14 @@ metadata:
 Activate this skill when:
 
 - Creating or modifying Vue page components for Inertia
-- Working with forms in Vue (using `<Form>` or `useForm`)
+- Working with forms in Vue (using `<Form>`, `useForm`, or `useHttp`)
 - Implementing client-side navigation with `<Link>` or `router`
-- Using v2 features: deferred props, prefetching, WhenVisible, InfiniteScroll, once props, flash data, or polling
+- Using v3 features: deferred props, prefetching, optimistic updates, instant visits, layout props, HTTP requests, WhenVisible, InfiniteScroll, once props, flash data, or polling
 - Building Vue-specific features with the Inertia protocol
 
 ## Documentation
 
-Use `search-docs` for detailed Inertia v2 Vue patterns and documentation.
+Use `search-docs` for detailed Inertia v3 Vue patterns and documentation.
 
 ## Basic Usage
 
@@ -279,7 +279,137 @@ function submit() {
 </template>
 ```
 
-## Inertia v2 Features
+## Inertia v3 Features
+
+### HTTP Requests
+
+Use the `useHttp` hook for standalone HTTP requests that do not trigger Inertia page visits. It provides the same developer experience as `useForm`, but for plain JSON endpoints.
+
+<!-- useHttp Example -->
+```vue
+<script setup>
+import { useHttp } from '@inertiajs/vue3'
+
+const http = useHttp({
+    query: '',
+})
+
+function search() {
+    http.get('/api/search', {
+        onSuccess: (response) => {
+            console.log(response)
+        },
+    })
+}
+</script>
+
+<template>
+    <input v-model="http.query" @input="search" />
+    <div v-if="http.processing">Searching...</div>
+</template>
+```
+
+### Optimistic Updates
+
+Apply data changes instantly before the server responds, with automatic rollback on failure:
+
+<!-- Optimistic Update with Router -->
+```vue
+<script setup>
+import { router } from '@inertiajs/vue3'
+
+function like(post) {
+    router.optimistic((props) => ({
+        post: {
+            ...props.post,
+            likes: props.post.likes + 1,
+        },
+    })).post(`/posts/${post.id}/like`)
+}
+</script>
+```
+
+Optimistic updates also work with `useForm` and the `<Form>` component:
+
+<!-- Optimistic Update with Form Component -->
+```vue
+<template>
+    <Form
+        action="/todos"
+        method="post"
+        :optimistic="(props, data) => ({
+            todos: [...props.todos, { id: Date.now(), name: data.name, done: false }],
+        })"
+    >
+        <input type="text" name="name" />
+        <button type="submit">Add Todo</button>
+    </Form>
+</template>
+```
+
+### Instant Visits
+
+Navigate to a new page immediately without waiting for the server response. The target component renders right away with shared props, while page-specific props load in the background.
+
+<!-- Instant Visit with Link -->
+```vue
+<script setup>
+import { Link } from '@inertiajs/vue3'
+</script>
+
+<template>
+    <Link href="/dashboard" component="Dashboard">Dashboard</Link>
+
+    <Link
+        href="/posts/1"
+        component="Posts/Show"
+        :page-props="{ post: { id: 1, title: 'My Post' } }"
+    >
+        View Post
+    </Link>
+</template>
+```
+
+### Layout Props
+
+Share dynamic data between pages and persistent layouts:
+
+<!-- Layout Props in Layout -->
+```vue
+<script setup>
+withDefaults(defineProps({
+    title: String,
+    showSidebar: Boolean,
+}), {
+    title: 'My App',
+    showSidebar: true,
+})
+</script>
+
+<template>
+    <header>{{ title }}</header>
+    <aside v-if="showSidebar">Sidebar</aside>
+    <main>
+        <slot />
+    </main>
+</template>
+```
+
+<!-- Setting Layout Props from Page -->
+```vue
+<script setup>
+import { setLayoutProps } from '@inertiajs/vue3'
+
+setLayoutProps({
+    title: 'Dashboard',
+    showSidebar: false,
+})
+</script>
+
+<template>
+    <h1>Dashboard</h1>
+</template>
+```
 
 ### Deferred Props
 
@@ -311,29 +441,18 @@ defineProps({
 
 ### Polling
 
-Automatically refresh data at intervals:
+Use the `usePoll` composable to automatically refresh data at intervals. It handles cleanup on unmount and throttles polling when the tab is inactive.
 
-<!-- Polling Example -->
+<!-- Basic Polling -->
 ```vue
 <script setup>
-import { router } from '@inertiajs/vue3'
-import { onMounted, onUnmounted } from 'vue'
+import { usePoll } from '@inertiajs/vue3'
 
 defineProps({
     stats: Object
 })
 
-let interval
-
-onMounted(() => {
-    interval = setInterval(() => {
-        router.reload({ only: ['stats'] })
-    }, 5000) // Poll every 5 seconds
-})
-
-onUnmounted(() => {
-    clearInterval(interval)
-})
+usePoll(5000)
 </script>
 
 <template>
@@ -343,6 +462,42 @@ onUnmounted(() => {
     </div>
 </template>
 ```
+
+<!-- Polling With Request Options and Manual Control -->
+```vue
+<script setup>
+import { usePoll } from '@inertiajs/vue3'
+
+defineProps({
+    stats: Object
+})
+
+const { start, stop } = usePoll(5000, {
+    only: ['stats'],
+    onStart() {
+        console.log('Polling request started')
+    },
+    onFinish() {
+        console.log('Polling request finished')
+    },
+}, {
+    autoStart: false,
+    keepAlive: true,
+})
+</script>
+
+<template>
+    <div>
+        <h1>Dashboard</h1>
+        <div>Active Users: {{ stats.activeUsers }}</div>
+        <button @click="start">Start Polling</button>
+        <button @click="stop">Stop Polling</button>
+    </div>
+</template>
+```
+
+- `autoStart` (default `true`) - set to `false` to start polling manually via the returned `start()` function
+- `keepAlive` (default `false`) - set to `true` to prevent throttling when the browser tab is inactive
 
 ### WhenVisible
 
@@ -362,7 +517,6 @@ defineProps({
     <div>
         <h1>Dashboard</h1>
 
-        <!-- stats prop is loaded only when this section scrolls into view -->
         <WhenVisible data="stats" :buffer="200">
             <template #fallback>
                 <div class="animate-pulse">Loading stats...</div>
@@ -380,6 +534,31 @@ defineProps({
 </template>
 ```
 
+### InfiniteScroll
+
+Automatically load additional pages of paginated data as users scroll:
+
+<!-- InfiniteScroll Example -->
+```vue
+<script setup>
+import { InfiniteScroll } from '@inertiajs/vue3'
+
+defineProps({
+    users: Object
+})
+</script>
+
+<template>
+    <InfiniteScroll data="users">
+        <div v-for="user in users.data" :key="user.id">
+            {{ user.name }}
+        </div>
+    </InfiniteScroll>
+</template>
+```
+
+The server must use `Inertia::scroll()` to configure the paginated data. Use the `search-docs` tool with a query of `infinite scroll` for detailed guidance on buffers, manual loading, reverse mode, and custom trigger elements.
+
 ## Server-Side Patterns
 
 Server-side patterns (Inertia::render, props, middleware) are covered in inertia-laravel guidelines.
@@ -392,3 +571,5 @@ Server-side patterns (Inertia::render, props, middleware) are covered in inertia
 - Not handling the `undefined` state of deferred props before data loads
 - Using `<form>` without preventing default submission (use `<Form>` component or `@submit.prevent`)
 - Forgetting to check if `<Form>` component is available in your Inertia version
+- Using `router.cancel()` instead of `router.cancelAll()` (v3 breaking change)
+- Using `router.on('invalid', ...)` or `router.on('exception', ...)` instead of the renamed `httpException` and `networkError` events
