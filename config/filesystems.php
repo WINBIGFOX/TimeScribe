@@ -35,7 +35,6 @@ return [
         'app-icon' => [
             'driver' => 'local',
             'root' => storage_path('app_icons'),
-            'serve' => true,
             'throw' => false,
         ],
 
@@ -49,7 +48,8 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'serve' => true,
+            'url' => rtrim((string) env('APP_URL'), '/').'/storage',
+            'visibility' => 'public',
             'throw' => false,
         ],
 
@@ -78,6 +78,8 @@ return [
     |
     */
 
-    'links' => [],
+    'links' => [
+        public_path('storage') => storage_path('app/public'),
+    ],
 
 ];
