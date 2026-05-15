@@ -8,4 +8,7 @@ enum TimestampTypeEnum: string
 {
     case WORK = 'work';
     case BREAK = 'break';
+    case SICK = 'sick';
+    case VACATION = 'vacation';
+    case HOLIDAY = 'holiday';
 }

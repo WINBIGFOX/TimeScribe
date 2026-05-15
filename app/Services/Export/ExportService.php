@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Services\Export;
 
 use App\Enums\ExportColumnEnum;
+use App\Enums\TimestampTypeEnum;
 use App\Models\Project;
 use App\Models\Timestamp;
+use App\Services\HolidayService;
 use App\Services\LocaleService;
+use App\Services\TimestampService;
 use App\Settings\ExportSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -58,7 +61,59 @@ class ExportService
             $timestamps->whereIn('project_id', $this->projectIds);
         }
 
-        return $timestamps->latest('started_at')->get();
+        $timestamps = $timestamps->latest('started_at')->get();
+        $additionalTimestamps = $this->getSickLeaveHolidayData($timestamps->last()?->started_at);
+
+        return collect([...$timestamps, ...$additionalTimestamps])->sortByDesc('started_at')->values();
+    }
+
+    private function getSickLeaveHolidayData(?Carbon $firstDate = null): Collection
+    {
+        $dateList = collect();
+        $startDate = $this->startDate ?? $firstDate;
+        $endDate = $this->endDate ?? now()->endOfDay();
+
+        $absences = TimestampService::getAbsence($startDate, $endDate);
+        if (in_array(TimestampTypeEnum::SICK->value, $this->timestampTypes)) {
+            $dateList = $dateList->merge($absences->where('type', 'sick')->map(fn ($item): array => [
+                'date' => $item->date,
+                'type' => 'sick',
+                'duration' => 0,
+            ]));
+        }
+
+        if (in_array(TimestampTypeEnum::HOLIDAY->value, $this->timestampTypes)) {
+            $yearRange = range($startDate->year, $endDate->year);
+            $holidays = HolidayService::getHoliday($yearRange)->filter(fn ($date): bool => $date <= $endDate && $date >= $startDate);
+
+            $dateList = $dateList->merge($holidays->map(fn ($item): array => [
+                'date' => $item,
+                'type' => 'holiday',
+                'duration' => 0,
+            ]));
+        }
+
+        if (in_array(TimestampTypeEnum::VACATION->value, $this->timestampTypes)) {
+            $dateList = $dateList->merge($absences->where('type', 'vacation')->map(fn ($item): array => [
+                'date' => $item->date,
+                'type' => 'vacation',
+                'duration' => 0,
+            ]));
+        }
+
+        return $dateList->unique('date')->map(function (array $item) {
+            $timestampStartedAt = $item['date'];
+            $timestampEndedAt = $item['date']->clone()->addSeconds(TimestampService::getPlan($item['date']) * 3600);
+
+            return Timestamp::make([
+                'started_at' => $timestampStartedAt,
+                'created_at' => $timestampStartedAt,
+                'ended_at' => $timestampEndedAt,
+                'updated_at' => $timestampEndedAt,
+                'last_ping_at' => $timestampEndedAt,
+                'type' => $item['type'],
+            ]);
+        })->sortBy('started_at')->values();
     }
 
     public function exportAsCsv(string $filePath): void
@@ -95,6 +150,9 @@ class ExportService
         $exportData = $this->getExportData();
         $workTime = $exportData->where('type', 'work')->sum('duration');
         $breakTime = $exportData->where('type', 'break')->sum('duration');
+        $sickTime = $exportData->where('type', 'sick')->sum('duration');
+        $vacationTime = $exportData->where('type', 'vacation')->sum('duration');
+        $holidayTime = $exportData->where('type', 'holiday')->sum('duration');
 
         $totalHours = floor($workTime / 3600);
         $totalMinutes = floor(($workTime % 3600) / 60);
@@ -116,6 +174,9 @@ class ExportService
             'totalHours' => $totalFormatted,
             'breakTime' => $breakTime,
             'workTime' => $workTime,
+            'sickTime' => $sickTime,
+            'vacationTime' => $vacationTime,
+            'holidayTime' => $holidayTime,
         ])
             ->format($exportSettings->pdf_paper_size)
             ->orientation($exportSettings->pdf_orientation)

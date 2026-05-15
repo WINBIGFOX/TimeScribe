@@ -87,7 +87,7 @@
         }
 
         .meta-cell-right {
-            width: 42%;
+            width: 100%;
             text-align: right;
             white-space: nowrap;
             padding-top: 6px;
@@ -310,7 +310,7 @@
             @endif
         </tr>
     </table>
-    @if ($workTime > 0 ||$breakTime > 0 || count($projects) > 0)
+    @if ($workTime > 0 ||$breakTime > 0 || $sickTime > 0 || $holidayTime > 0 || $vacationTime > 0 || count($projects) > 0)
         <div class="meta">
             <table class="meta-layout">
                 <tr>
@@ -373,6 +373,69 @@
                                     <td class="metric-value"
                                         style="border: none; vertical-align: middle; padding: 0; font-size: 12px; line-height: 12px; font-weight: bold;">
                                         {{ $secToTime($breakTime) }} {{ __('app.h') }}
+                                    </td>
+                                </tr>
+                            </table>
+                        @endif
+                        @if($sickTime > 0)
+                            <table class="metric-inline" style="display: inline-table; width: auto; margin-left: 10px">
+                                <tr>
+                                    <td style="border: none; padding: 0;">
+                                        <div class="metric-icon-box"
+                                             style="margin-right: 4px; display:inline-block; width:22px; height:22px; line-height:0; border-radius:4px; background:#ff637e; vertical-align:middle;">
+                                            <img
+                                                    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNyb3NzLWljb24gbHVjaWRlLWNyb3NzIj48cGF0aCBkPSJNNCA5YTIgMiAwIDAgMC0yIDJ2MmEyIDIgMCAwIDAgMiAyaDRhMSAxIDAgMCAxIDEgMXY0YTIgMiAwIDAgMCAyIDJoMmEyIDIgMCAwIDAgMi0ydi00YTEgMSAwIDAgMSAxLTFoNGEyIDIgMCAwIDAgMi0ydi0yYTIgMiAwIDAgMC0yLTJoLTRhMSAxIDAgMCAxLTEtMVY0YTIgMiAwIDAgMC0yLTJoLTJhMiAyIDAgMCAwLTIgMnY0YTEgMSAwIDAgMS0xIDF6Ii8+PC9zdmc+"
+                                                    alt=""
+                                                    class="metric-icon"
+                                                    style="display:block; width:14px; height:14px; margin:4px; color: black;"
+                                            />
+                                        </div>
+                                    </td>
+                                    <td class="metric-value"
+                                        style="border: none; vertical-align: middle; padding: 0; font-size: 12px; line-height: 12px; font-weight: bold;">
+                                        {{ $secToTime($sickTime) }} {{ __('app.h') }}
+                                    </td>
+                                </tr>
+                            </table>
+                        @endif
+                        @if($vacationTime > 0)
+                            <table class="metric-inline" style="display: inline-table; width: auto; margin-left: 10px">
+                                <tr>
+                                    <td style="border: none; padding: 0;">
+                                        <div class="metric-icon-box"
+                                             style="margin-right: 4px; display:inline-block; width:22px; height:22px; line-height:0; border-radius:4px; background:#00bc7d; vertical-align:middle;">
+                                            <img
+                                                    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXRyZWUtcGFsbS1pY29uIGx1Y2lkZS10cmVlLXBhbG0iPjxwYXRoIGQ9Ik0xMyA4YzAtMi43Ni0yLjQ2LTUtNS41LTVTMiA1LjI0IDIgOGgybDEtMSAxIDFoNCIvPjxwYXRoIGQ9Ik0xMyA3LjE0QTUuODIgNS44MiAwIDAgMSAxNi41IDZjMy4wNCAwIDUuNSAyLjI0IDUuNSA1aC0zbC0xLTEtMSAxaC0zIi8+PHBhdGggZD0iTTUuODkgOS43MWMtMi4xNSAyLjE1LTIuMyA1LjQ3LS4zNSA3LjQzbDQuMjQtNC4yNS43LS43LjcxLS43MSAyLjEyLTIuMTJjLTEuOTUtMS45Ni01LjI3LTEuOC03LjQyLjM1Ii8+PHBhdGggZD0iTTExIDE1LjVjLjUgMi41LS4xNyA0LjUtMSA2LjVoNGMyLTUuNS0uNS0xMi0xLTE0Ii8+PC9zdmc+"
+                                                    alt=""
+                                                    class="metric-icon"
+                                                    style="display:block; width:14px; height:14px; margin:4px; color: black;"
+                                            />
+                                        </div>
+                                    </td>
+                                    <td class="metric-value"
+                                        style="border: none; vertical-align: middle; padding: 0; font-size: 12px; line-height: 12px; font-weight: bold;">
+                                        {{ $secToTime($vacationTime) }} {{ __('app.h') }}
+                                    </td>
+                                </tr>
+                            </table>
+                        @endif
+                        @if($holidayTime > 0)
+                            <table class="metric-inline" style="display: inline-table; width: auto; margin-left: 10px">
+                                <tr>
+                                    <td style="border: none; padding: 0;">
+                                        <div class="metric-icon-box"
+                                             style="margin-right: 4px; display:inline-block; width:22px; height:22px; line-height:0; border-radius:4px; background:#c27aff; vertical-align:middle;">
+                                            <img
+                                                    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWRyYW1hLWljb24gbHVjaWRlLWRyYW1hIj48cGF0aCBkPSJNMTAgMTFoLjAxIi8+PHBhdGggZD0iTTE0IDZoLjAxIi8+PHBhdGggZD0iTTE4IDZoLjAxIi8+PHBhdGggZD0iTTYuNSAxMy4xaC4wMSIvPjxwYXRoIGQ9Ik0yMiA1YzAgOS00IDEyLTYgMTJzLTYtMy02LTEyYzAtMiAyLTMgNi0zczYgMSA2IDMiLz48cGF0aCBkPSJNMTcuNCA5LjljLS44LjgtMiAuOC0yLjggMCIvPjxwYXRoIGQ9Ik0xMC4xIDcuMUM5IDcuMiA3LjcgNy43IDYgOC42Yy0zLjUgMi00LjcgMy45LTMuNyA1LjYgNC41IDcuOCA5LjUgOC40IDExLjIgNy40LjktLjUgMS45LTIuMSAxLjktNC43Ii8+PHBhdGggZD0iTTkuMSAxNi41Yy4zLTEuMSAxLjQtMS43IDIuNC0xLjQiLz48L3N2Zz4="
+                                                    alt=""
+                                                    class="metric-icon"
+                                                    style="display:block; width:14px; height:14px; margin:4px; color: black;"
+                                            />
+                                        </div>
+                                    </td>
+                                    <td class="metric-value"
+                                        style="border: none; vertical-align: middle; padding: 0; font-size: 12px; line-height: 12px; font-weight: bold;">
+                                        {{ $secToTime($holidayTime) }} {{ __('app.h') }}
                                     </td>
                                 </tr>
                             </table>

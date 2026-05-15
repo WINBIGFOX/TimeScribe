@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace App\Settings;
 
+use App\Enums\TimestampTypeEnum;
 use Spatie\LaravelSettings\Settings;
 
 class ExportSettings extends Settings
 {
     public ?array $column_order = null;
+
+    public array $types = [
+        TimestampTypeEnum::WORK->value,
+        TimestampTypeEnum::BREAK->value,
+    ];
 
     public bool $column_type;
 

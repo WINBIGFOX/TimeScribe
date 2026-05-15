@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import DateRangePicker from '@/Components/DateRangePicker.vue'
 import SheetDialog from '@/Components/dialogs/SheetDialog.vue'
 import Csv from '@/Components/icons/Csv.vue'
@@ -24,7 +24,10 @@ import {
     Ratio,
     SquareCheck,
     Tag,
-    Type
+    Type,
+    Cross,
+    TreePalm,
+    Drama
 } from '@lucide/vue'
 import { computed } from 'vue'
 import Draggable from 'vuedraggable'
@@ -43,6 +46,7 @@ const props = defineProps<{
     >
     pdfOrientation?: string
     pdfPaperSize?: string
+    types?: string[]
     submit_route: string
 }>()
 
@@ -52,7 +56,7 @@ const form = useForm({
     projects: [],
     pdf_paper_size: props.pdfPaperSize ?? ('a4' as string | undefined),
     pdf_orientation: props.pdfOrientation ?? ('Landscape' as string | undefined),
-    types: ['work', 'break'],
+    types: props.types ?? ['work', 'break'],
     file_name_format: '<PROJECT>_<NOW_DATE>',
     date_range: undefined as { start: string; end: string } | undefined
 })
@@ -107,22 +111,22 @@ const isDisabled = computed((): boolean => {
 <template>
     <Head :title="`Export Create ${props.exportType.toUpperCase()}`" />
     <SheetDialog
-        size="lg"
         :close="$t('app.cancel')"
-        @submit="submit"
         :disabled="isDisabled"
         :loading="form.processing"
         :submit="$t(actionLabel())"
         :title="$t(actionLabel())"
+        @submit="submit"
+        size="lg"
     >
         <div class="flex grow gap-4 overflow-hidden">
             <div class="flex flex-1 flex-col gap-4 overflow-y-auto not-rtl:border-r not-rtl:pr-4 rtl:border-l rtl:pl-4">
                 <FieldGroup>
                     <FieldSet>
                         <FieldLabel>{{ $t('app.export format') }}</FieldLabel>
-                        <RadioGroup v-model="form.export_type" class="flex flex-row gap-2">
+                        <RadioGroup class="flex flex-row gap-2" v-model="form.export_type">
                             <FieldLabel for="type_pdf">
-                                <Field orientation="horizontal" class="p-3!">
+                                <Field class="p-3!" orientation="horizontal">
                                     <FieldContent class="flex flex-row items-center gap-2">
                                         <Pdf class="size-6" stroke-width="1.5" />
                                         PDF
@@ -131,7 +135,7 @@ const isDisabled = computed((): boolean => {
                                 </Field>
                             </FieldLabel>
                             <FieldLabel for="type_excel">
-                                <Field orientation="horizontal" class="p-3!">
+                                <Field class="p-3!" orientation="horizontal">
                                     <FieldContent class="flex flex-row items-center gap-2">
                                         <Xls class="size-6" stroke-width="1.5" />
                                         Excel
@@ -140,7 +144,7 @@ const isDisabled = computed((): boolean => {
                                 </Field>
                             </FieldLabel>
                             <FieldLabel for="type_csv">
-                                <Field orientation="horizontal" class="p-3!">
+                                <Field class="p-3!" orientation="horizontal">
                                     <FieldContent class="flex flex-row items-center gap-2">
                                         <Csv class="size-6" stroke-width="1.5" />
                                         CSV
@@ -161,8 +165,8 @@ const isDisabled = computed((): boolean => {
                         </p>
                         <DateRangePicker
                             :placeholder="$t('app.all time')"
-                            clearable
                             class="w-2/3"
+                            clearable
                             v-model="form.date_range"
                         />
                     </div>
@@ -229,19 +233,19 @@ const isDisabled = computed((): boolean => {
                                 <SelectTrigger
                                     class="min-h-9 w-2/3 py-1.5 whitespace-normal data-[size=default]:h-auto"
                                 >
-                                    <SelectValue class="py-px text-left" :placeholder="$t('app.all projects')" />
+                                    <SelectValue :placeholder="$t('app.all projects')" class="py-px text-left" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem v-for="project in props.projects" :key="project.id" :value="project.id">
+                                    <SelectItem :key="project.id" :value="project.id" v-for="project in props.projects">
                                         {{ project.icon }}&nbsp;{{ project.name }}
                                     </SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <Clock />
-                        <div class="flex flex-1 items-center gap-4">
+                    <div class="flex items-center gap-4 overflow-hidden">
+                        <Clock class="shrink-0" />
+                        <div class="flex flex-1 items-center gap-4 overflow-hidden">
                             <p class="flex-1 text-sm leading-none font-medium">
                                 {{ $t('app.type') }}
                             </p>
@@ -258,6 +262,18 @@ const isDisabled = computed((): boolean => {
                                         <Coffee />
                                         {{ $t('app.break time') }}
                                     </SelectItem>
+                                    <SelectItem value="sick">
+                                        <Cross />
+                                        {{ $t('app.sick days') }}
+                                    </SelectItem>
+                                    <SelectItem value="vacation">
+                                        <TreePalm />
+                                        {{ $t('app.leave days') }}
+                                    </SelectItem>
+                                    <SelectItem value="holiday">
+                                        <Drama />
+                                        {{ $t('app.holidays') }}
+                                    </SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -270,13 +286,13 @@ const isDisabled = computed((): boolean => {
                     {{ $t('app.export columns') }}
                 </div>
                 <div class="flex flex-col gap-1 overflow-y-auto p-px select-auto">
-                    <Draggable v-model="form.export_columns" item-key="key" :animation="200" ghost-class="ghost">
+                    <Draggable :animation="200" ghost-class="ghost" item-key="key" v-model="form.export_columns">
                         <template #item="{ element }">
                             <label
-                                class="[&.ghost]:ring-primary! bg-muted/40 my-1 flex items-center gap-2 rounded-md py-1 transition-[scale,box-shadow] duration-200 [-webkit-user-drag:element]! not-rtl:pr-2 rtl:pl-2 [&.ghost]:scale-95 [&.ghost]:ring-2 [&.ghost]:ring-inset"
                                 :class="{
                                     'bg-primary/10 ring-primary/60 rounded ring-1': isColumnVisible(element.key)
                                 }"
+                                class="[&.ghost]:ring-primary! bg-muted/40 my-1 flex items-center gap-2 rounded-md py-1 transition-[scale,box-shadow] duration-200 [-webkit-user-drag:element]! not-rtl:pr-2 rtl:pl-2 [&.ghost]:scale-95 [&.ghost]:ring-2 [&.ghost]:ring-inset"
                             >
                                 <GripVertical class="text-muted-foreground handle size-4 cursor-ns-resize" />
                                 <Component :is="typeIconMapping[element.type]" class="text-muted-foreground size-4" />

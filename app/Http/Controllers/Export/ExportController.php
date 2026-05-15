@@ -33,6 +33,7 @@ class ExportController extends Controller
             'projects' => ProjectResource::collection($projects),
             'pdfOrientation' => $exportSettings->pdf_orientation,
             'pdfPaperSize' => $exportSettings->pdf_paper_size,
+            'types' => $exportSettings->types,
             'submit_route' => route('export.store'),
         ])->baseRoute('import-export.index');
     }
@@ -46,6 +47,7 @@ class ExportController extends Controller
             $exportSettings->{'column_'.$column['key']} = $column['is_visible'];
         }
         $exportSettings->column_order = Arr::pluck($data['export_columns'], 'key');
+        $exportSettings->types = array_values($data['types']);
         if ($data['export_type'] === 'pdf') {
             $exportSettings->pdf_orientation = $data['pdf_orientation'];
             $exportSettings->pdf_paper_size = $data['pdf_paper_size'];
