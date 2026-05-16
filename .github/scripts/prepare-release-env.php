@@ -93,6 +93,7 @@ function runPrepareReleaseEnvironmentFile(): void
             'GITHUB_REPO',
             'GITHUB_TOKEN',
             'GOOGLE_ANALYTICS_ID',
+            'NIGHTWATCH_TOKEN',
             'VITE_APP_SENTRY_VUE_DSN',
             'SENTRY_LARAVEL_DSN',
             'SENTRY_RELEASE',
