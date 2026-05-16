@@ -6,7 +6,7 @@ import { categoryIcon } from '@/lib/utils'
 import { AppActivityHistory } from '@/types'
 import { Head, router, usePage, usePoll } from '@inertiajs/vue3'
 import { trans } from 'laravel-vue-i18n'
-import { computed, ref, watch } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 
 const props = defineProps<{
     historyApp: {
@@ -34,28 +34,15 @@ const props = defineProps<{
     active: boolean
 }>()
 
-const appBar = computed(() => {
-    const sum = props.historyApp.reduce((acc, app) => {
-        return acc + app.sum
-    }, 0)
-    return props.historyApp.map((app) => {
-        return {
-            item: app,
-            percentage: ((app.sum / sum) * 100).toFixed(2)
-        }
+const startAnimation = ref(false)
+
+onMounted(() => {
+    nextTick(() => {
+        startAnimation.value = true
     })
 })
-
-const categoryBar = computed(() => {
-    const sum = props.historyCategory.reduce((acc, category) => {
-        return acc + category.sum
-    }, 0)
-    return props.historyCategory.map((category) => {
-        return {
-            item: category,
-            percentage: ((category.sum / sum) * 100).toFixed(2)
-        }
-    })
+onUnmounted(() => {
+    startAnimation.value = false
 })
 
 const secToFormat = (seconds: number) => {
@@ -122,82 +109,49 @@ if (window.Native) {
     </PageHeader>
     <div
         :class="{ 'opacity-50': loading }"
-        class="mb-4 flex h-10 shrink-0 gap-10 transition-opacity duration-500"
-        v-if="props.historyApp.length"
-    >
-        <div class="flex-1">
-            <div class="flex gap-[1px]">
-                <template :key="item.item.identifier" v-for="item in appBar">
-                    <div
-                        :style="{
-                            width: item.percentage + '%',
-                            background: item.item.color
-                        }"
-                        class="flex h-10 items-center justify-center rounded transition-[scale] hover:z-10 hover:scale-110"
-                    >
-                        <img
-                            :alt="item.item.name"
-                            :src="item.item.icon"
-                            class="size-6"
-                            onerror="this.style.opacity = '0'"
-                            v-if="parseInt(item.percentage) > 10"
-                        />
-                    </div>
-                </template>
-            </div>
-        </div>
-        <div class="flex-1">
-            <div class="flex gap-[1px]">
-                <template :key="item.item.identifier" v-for="item in categoryBar">
-                    <div
-                        :style="{
-                            width: item.percentage + '%',
-                            background: item.item.color
-                        }"
-                        class="flex h-10 items-center justify-center rounded transition-[scale] hover:z-10 hover:scale-110"
-                    >
-                        <span v-if="parseInt(item.percentage) > 10">
-                            {{ categoryIcon(item.item.identifier) }}
-                        </span>
-                    </div>
-                </template>
-            </div>
-        </div>
-    </div>
-    <div
-        :class="{ 'opacity-50': loading }"
         class="flex grow gap-10 overflow-hidden transition-opacity duration-500"
         v-if="props.historyApp.length"
     >
         <div class="flex flex-1 flex-col gap-1.5 overflow-y-auto pb-4 text-sm">
-            <div
-                :key="app.identifier"
-                :style="{ 'border-color': app.color }"
-                class="flex items-center gap-1 border-r-4 pr-2"
-                v-for="app in props.historyApp"
-            >
-                <img :alt="app.name" :src="app.icon" class="size-5" onerror="this.style.opacity = '0'" />
-
-                {{ app.name }}
-                <div class="text-muted-foreground ml-auto tabular-nums" v-if="app.sum >= 60">
-                    {{ secToFormat(app.sum) }}
+            <div :key="app.identifier" class="flex items-center gap-1.5" v-for="app in props.historyApp">
+                <img :alt="app.name" :src="app.icon" class="size-10" onerror="this.style.opacity = '0'" />
+                <div class="flex flex-1 flex-col gap-1.5">
+                    <div class="flex justify-between gap-2 leading-none">
+                        <span>{{ app.name }}</span>
+                        <div class="text-muted-foreground ml-auto tabular-nums" v-if="app.sum >= 60">
+                            {{ secToFormat(app.sum) }}
+                        </div>
+                        <div class="text-muted-foreground ml-auto tabular-nums" v-else>> 1 {{ $t('app.min') }}</div>
+                    </div>
+                    <div class="bg-muted h-1.75 shrink-0 overflow-hidden rounded-full">
+                        <div
+                            :style="`width: ${startAnimation ? (app.sum / props.historyApp[0].sum) * 100 : 0}%`"
+                            class="bg-primary h-full w-0 rounded-full transition-[width] duration-1500"
+                        />
+                    </div>
                 </div>
-                <div class="text-muted-foreground ml-auto tabular-nums" v-else>> 1 {{ $t('app.min') }}</div>
             </div>
         </div>
         <div class="flex flex-1 flex-col gap-1.5 overflow-y-auto pb-4 text-sm">
-            <div
-                :key="category.name"
-                :style="{ 'border-color': category.color }"
-                class="flex items-center gap-1 border-r-4 pr-2"
-                v-for="category in props.historyCategory"
-            >
-                {{ categoryIcon(category.identifier) }}
-                {{ category.name }}
-                <div class="text-muted-foreground ml-auto tabular-nums" v-if="category.sum >= 60">
-                    {{ secToFormat(category.sum) }}
+            <div :key="category.name" class="flex items-center gap-1" v-for="category in props.historyCategory">
+                <span class="flex size-10 items-center justify-center text-2xl leading-none">
+                    {{ categoryIcon(category.identifier) }}
+                </span>
+                <div class="flex flex-1 flex-col gap-1.5">
+                    <div class="flex justify-between gap-2 leading-none">
+                        <span>{{ category.name }}</span>
+                        <div class="text-muted-foreground ml-auto tabular-nums" v-if="category.sum >= 60">
+                            {{ secToFormat(category.sum) }}
+                        </div>
+                        <div class="text-muted-foreground ml-auto tabular-nums" v-else>> 1 {{ $t('app.min') }}</div>
+                    </div>
+                    <div class="bg-muted h-1.75 shrink-0 overflow-hidden rounded-full">
+                        <div
+                            :style="`width: ${startAnimation ? (category.sum / props.historyCategory[0].sum) * 100 : 0}%`"
+                            class="h-full w-0 rounded-full bg-pink-400 transition-[width] duration-1500"
+                        />
+                    </div>
                 </div>
-                <div class="text-muted-foreground ml-auto tabular-nums" v-else>> 1 {{ $t('app.min') }}</div>
             </div>
             <div class="flex justify-center pt-10">
                 <span
