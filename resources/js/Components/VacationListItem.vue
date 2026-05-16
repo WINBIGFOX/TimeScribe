@@ -44,10 +44,10 @@ const destroy = () => {
         </div>
         <div>
             <Badge
-                :variant="props.vacationEntry.status === 'taken' ? 'default' : 'outline'"
                 :class="{
                     'text-background! bg-emerald-500!': props.vacationEntry.status === 'taken'
                 }"
+                :variant="props.vacationEntry.status === 'taken' ? 'default' : 'outline'"
                 class="w-fit"
             >
                 {{ props.vacationEntry.status === 'taken' ? $t('app.taken') : $t('app.planned') }}

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { cn } from '@/lib/utils'
 import type { HTMLAttributes } from 'vue'
 import { computed } from 'vue'
@@ -30,10 +30,10 @@ const content = computed(() => {
 
 <template>
     <div
-        v-if="$slots.default || content"
-        role="alert"
-        data-slot="field-error"
         :class="cn('text-destructive text-sm font-normal', props.class)"
+        role="alert"
+        v-if="$slots.default || content"
+        data-slot="field-error"
     >
         <slot v-if="$slots.default" />
 
@@ -41,8 +41,8 @@ const content = computed(() => {
             {{ content }}
         </template>
 
-        <ul v-else-if="Array.isArray(content)" class="ml-4 flex list-disc flex-col gap-1">
-            <li v-for="(error, index) in content" :key="index">
+        <ul class="ml-4 flex list-disc flex-col gap-1" v-else-if="Array.isArray(content)">
+            <li :key="index" v-for="(error, index) in content">
                 {{ error }}
             </li>
         </ul>

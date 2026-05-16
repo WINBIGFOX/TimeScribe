@@ -224,10 +224,10 @@ watch(secondMonthPlaceholder, (_secondMonthPlaceholder) => {
                     </Button>
                 </PopoverTrigger>
                 <Button
-                    v-if="props.clearable && (value.start || value.end)"
                     @click.stop.prevent="clearDateRange"
                     class="absolute top-1/2 right-1 z-10 h-7 w-7 -translate-y-1/2"
                     size="icon"
+                    v-if="props.clearable && (value.start || value.end)"
                     variant="ghost"
                 >
                     <X class="size-4" />

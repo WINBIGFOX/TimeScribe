@@ -86,7 +86,7 @@ const amountOpen = computed(() => calcAmount(false))
 
 <template>
     <Head title="Project show" />
-    <SheetDialog size="lg" :close="$t('app.close')" scrollable>
+    <SheetDialog :close="$t('app.close')" scrollable size="lg">
         <template #title>
             <div class="flex items-end justify-between gap-4 not-rtl:pr-10 rtl:pl-10">
                 <div
@@ -159,7 +159,7 @@ const amountOpen = computed(() => calcAmount(false))
             </div>
         </template>
 
-        <template v-for="group in timestampGroups" :key="group.key">
+        <template :key="group.key" v-for="group in timestampGroups">
             <div class="bg-background sticky top-0 z-10 flex items-end justify-between pb-2">
                 <span class="text-lg">
                     {{ group.label }}
@@ -229,18 +229,18 @@ const amountOpen = computed(() => calcAmount(false))
             </div>
             <div class="space-y-1 *:last:mb-10 last:*:last:mb-0">
                 <ProjectTimestampListItem
-                    v-for="timestamp in group.timestamps"
                     :key="timestamp.id"
                     :project="props.project"
                     :timestamp="timestamp"
+                    v-for="timestamp in group.timestamps"
                 />
             </div>
         </template>
         <EmptyState
-            v-if="timestampGroups.length === 0"
+            :description="$t('app.no work hours recorded for this project yet')"
             :icon="BriefcaseBusiness"
             :title="$t('app.no hours recorded yet')"
-            :description="$t('app.no work hours recorded for this project yet')"
+            v-if="timestampGroups.length === 0"
         />
     </SheetDialog>
 </template>

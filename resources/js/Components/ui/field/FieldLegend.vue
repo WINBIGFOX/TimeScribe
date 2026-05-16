@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { cn } from '@/lib/utils'
 import type { HTMLAttributes } from 'vue'
 
@@ -10,9 +10,9 @@ const props = defineProps<{
 
 <template>
     <legend
-        data-slot="field-legend"
-        :data-variant="variant"
         :class="cn('mb-3 font-medium', 'data-[variant=legend]:text-base', 'data-[variant=label]:text-sm', props.class)"
+        :data-variant="variant"
+        data-slot="field-legend"
     >
         <slot />
     </legend>

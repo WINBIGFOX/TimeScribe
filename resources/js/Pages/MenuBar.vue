@@ -279,7 +279,7 @@ const removeProject = () => {
                 leave-from-class="opacity-100 max-h-14"
                 leave-to-class="opacity-80 max-h-0"
             >
-                <div v-if="props.currentProject && showProject" class="px-2">
+                <div class="px-2" v-if="props.currentProject && showProject">
                     <div
                         :style="'--project-color: ' + (props.currentProject.color ?? '#000000')"
                         class="transition-color mt-2 flex h-9 shrink-0 items-center gap-2 rounded-md border-l-6 border-l-(--project-color) bg-(--project-color)/10 pl-2 text-sm font-medium duration-1000 dark:bg-(--project-color)/20"
@@ -309,12 +309,12 @@ const removeProject = () => {
                 leave-to-class="opacity-80 translate-y-full"
             >
                 <div
-                    v-if="props.projects && openProjectList"
                     class="bg-background absolute inset-0 flex grow flex-col overflow-hidden"
+                    v-if="props.projects && openProjectList"
                 >
                     <div class="flex items-center justify-between px-2 py-2">
                         <div class="text-muted-foreground text-sm">{{ $t('app.projects') }}</div>
-                        <Button variant="outline" size="sm" class="px-2!" @click="openProjectList = false">
+                        <Button @click="openProjectList = false" class="px-2!" size="sm" variant="outline">
                             <X />
                         </Button>
                     </div>
@@ -368,10 +368,10 @@ const removeProject = () => {
                                     })
                                 "
                                 :action-label="$t('app.create new project')"
-                                :icon="Tag"
-                                class="h-auto grow p-4 text-sm!"
-                                :title="$t('app.no projects created')"
                                 :description="$t('app.create a new project to track project times.')"
+                                :icon="Tag"
+                                :title="$t('app.no projects created')"
+                                class="h-auto grow p-4 text-sm!"
                             />
                         </div>
                     </div>

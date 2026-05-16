@@ -69,7 +69,7 @@ const weekTotal = (workSchedule: WorkSchedule): number => {
                                 </bdi>
                             </div>
                         </div>
-                        <Badge v-if="workSchedule.is_current" class="border-primary/40 text-primary" variant="outline">
+                        <Badge class="border-primary/40 text-primary" v-if="workSchedule.is_current" variant="outline">
                             {{ $t('app.current work schedule') }}
                         </Badge>
                         <div class="flex items-center gap-3">
@@ -125,9 +125,9 @@ const weekTotal = (workSchedule: WorkSchedule): number => {
             <EmptyState
                 :action-href="route('work-schedule.create')"
                 :action-label="$t('app.create new work schedule')"
+                :description="$t('app.create a work schedule to start tracking hours and vacation correctly.')"
                 :icon="CalendarPlus"
                 :title="$t('app.no work schedules yet')"
-                :description="$t('app.create a work schedule to start tracking hours and vacation correctly.')"
             />
         </div>
     </div>

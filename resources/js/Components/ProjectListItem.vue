@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { Button } from '@/Components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/Components/ui/dropdown-menu'
 import { secToFormat } from '@/lib/utils'
@@ -60,8 +60,8 @@ const amountOpen = computed(() => calcAmount(false))
                     <span class="text-2xl" v-if="props.project.icon">{{ props.project.icon }}</span>
                     <div class="flex-1 pr-2 font-medium">{{ props.project.name }}</div>
                     <div
-                        dir="ltr"
                         class="flex shrink-0 items-center gap-1"
+                        dir="ltr"
                         v-if="props.project.work_time && (!props.project.hourly_rate || !props.project.currency)"
                     >
                         <Timer class="text-muted-foreground size-4" />
@@ -80,10 +80,10 @@ const amountOpen = computed(() => calcAmount(false))
                 <Button
                     :as="Link"
                     :href="route('project.show', { project: props.project.id })"
-                    size="sm"
-                    variant="ghost"
                     preserve-scroll
                     preserve-state
+                    size="sm"
+                    variant="ghost"
                 >
                     <FolderOpen />
                 </Button>
@@ -113,12 +113,12 @@ const amountOpen = computed(() => calcAmount(false))
                 <Button
                     :as="Link"
                     :href="route('project.restore', { project: props.project.id })"
-                    size="sm"
                     method="patch"
-                    variant="ghost"
                     preserve-scroll
                     preserve-state
+                    size="sm"
                     v-else
+                    variant="ghost"
                 >
                     <ArchiveRestore />
                 </Button>

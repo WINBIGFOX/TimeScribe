@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { cn } from '@/lib/utils'
 import type { HTMLAttributes } from 'vue'
 
@@ -9,7 +9,6 @@ const props = defineProps<{
 
 <template>
     <fieldset
-        data-slot="field-set"
         :class="
             cn(
                 'flex flex-col gap-6',
@@ -17,6 +16,7 @@ const props = defineProps<{
                 props.class
             )
         "
+        data-slot="field-set"
     >
         <slot />
     </fieldset>

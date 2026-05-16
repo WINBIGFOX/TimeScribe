@@ -85,9 +85,9 @@ const totalEntitlementPreview = computed(() => form.vacation.default_entitlement
                         :locale="$page.props.js_locale"
                         :min="0"
                         :step="0.25"
+                        @update:model-value="debouncedSubmit"
                         class="w-24"
                         v-model.lazy="form.vacation.default_entitlement_days"
-                        @update:model-value="debouncedSubmit"
                     >
                         <NumberFieldContent>
                             <NumberFieldDecrement />
@@ -109,9 +109,9 @@ const totalEntitlementPreview = computed(() => form.vacation.default_entitlement
                     </p>
                 </div>
                 <Switch
+                    @update:model-value="debouncedSubmit"
                     class="self-center"
                     v-model="form.vacation.auto_carryover"
-                    @update:model-value="debouncedSubmit"
                 />
             </div>
 
@@ -144,11 +144,11 @@ const totalEntitlementPreview = computed(() => form.vacation.default_entitlement
             <Button @click="$emit('prevStep')" class="dark:text-foreground" size="lg" variant="ghost">
                 {{ $t('app.back') }}
             </Button>
-            <Button class="dark:hidden" size="lg" variant="secondary" @click="$emit('nextStep')">
+            <Button @click="$emit('nextStep')" class="dark:hidden" size="lg" variant="secondary">
                 {{ $t('app.next') }}
                 <ArrowRight />
             </Button>
-            <Button class="hidden dark:flex" size="lg" @click="$emit('nextStep')">
+            <Button @click="$emit('nextStep')" class="hidden dark:flex" size="lg">
                 {{ $t('app.next') }}
                 <ArrowRight />
             </Button>

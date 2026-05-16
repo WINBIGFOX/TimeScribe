@@ -114,8 +114,8 @@ const hasEntries = computed(() => entries.value.length > 0)
                 :description="
                     $t('app.vacation needs a work schedule to calculate days. create one now to enable tracking.')
                 "
-                :title="$t('app.work schedule required')"
                 :icon="CalendarPlus"
+                :title="$t('app.work schedule required')"
                 class="h-full"
             />
         </div>
@@ -201,8 +201,8 @@ const hasEntries = computed(() => entries.value.length > 0)
                         {{ $t('app.empty') }}
                     </Badge>
                 </div>
-                <div v-if="hasEntries" class="flex flex-col gap-1">
-                    <VacationListItem :vacation-entry="entry" :key="entry.id" v-for="entry in entries">
+                <div class="flex flex-col gap-1" v-if="hasEntries">
+                    <VacationListItem :key="entry.id" :vacation-entry="entry" v-for="entry in entries">
                         <span
                             :class="[
                                 'absolute inset-y-0 left-0 w-1 bg-gradient-to-b',
@@ -234,10 +234,10 @@ const hasEntries = computed(() => entries.value.length > 0)
                                         {{ entry.date.formatted }}
                                     </span>
                                     <Badge
-                                        :variant="entry.status === 'taken' ? 'default' : 'outline'"
                                         :class="{
                                             'text-background! bg-emerald-500!': entry.status === 'taken'
                                         }"
+                                        :variant="entry.status === 'taken' ? 'default' : 'outline'"
                                         class="w-fit"
                                     >
                                         {{ entry.status === 'taken' ? $t('app.taken') : $t('app.planned') }}
@@ -274,8 +274,8 @@ const hasEntries = computed(() => entries.value.length > 0)
                         :action-href="route('absence.show', { date: props.date })"
                         :action-label="$t('app.create vacation entry')"
                         :description="$t('app.no vacation days recorded for this year yet.')"
-                        :title="$t('app.vacation entries')"
                         :icon="Palmtree"
+                        :title="$t('app.vacation entries')"
                         class="h-full"
                     />
                 </div>

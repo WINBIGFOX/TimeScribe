@@ -35,8 +35,8 @@ const select = (value: boolean) => emit('update:trackVacation', value)
                         ? 'bg-background text-foreground border-primary/50 shadow-md'
                         : 'bg-background/80 text-foreground/80 hover:bg-background'
                 ]"
-                type="button"
                 @click="select(true)"
+                type="button"
             >
                 <div class="mt-0.5">
                     <component :is="props.trackVacation ? CheckCircle2 : Circle" class="h-5 w-5 text-emerald-500" />
@@ -58,8 +58,8 @@ const select = (value: boolean) => emit('update:trackVacation', value)
                         ? 'bg-background text-foreground border-primary/50 shadow-md'
                         : 'bg-background/80 text-foreground/80 hover:bg-background'
                 ]"
-                type="button"
                 @click="select(false)"
+                type="button"
             >
                 <div class="mt-0.5">
                     <component :is="!props.trackVacation ? CheckCircle2 : Circle" class="h-5 w-5 text-emerald-500" />
@@ -79,10 +79,10 @@ const select = (value: boolean) => emit('update:trackVacation', value)
             <Button @click="$emit('prevStep')" class="dark:text-foreground" size="lg" variant="ghost">
                 {{ $t('app.back') }}
             </Button>
-            <Button class="dark:hidden" size="lg" variant="secondary" @click="$emit('nextStep')">
+            <Button @click="$emit('nextStep')" class="dark:hidden" size="lg" variant="secondary">
                 {{ $t('app.next') }}
             </Button>
-            <Button class="hidden dark:flex" size="lg" @click="$emit('nextStep')">
+            <Button @click="$emit('nextStep')" class="hidden dark:flex" size="lg">
                 {{ $t('app.next') }}
             </Button>
         </div>

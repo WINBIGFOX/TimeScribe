@@ -103,13 +103,13 @@ const percentageOverTime = computed(() => {
                     {{ $t('app.sick') }}
                 </div>
             </div>
-            <div v-else-if="props.isHoliday" class="flex items-center justify-center text-purple-400">
+            <div class="flex items-center justify-center text-purple-400" v-else-if="props.isHoliday">
                 <Drama class="size-4 shrink-0" />
             </div>
             <div
                 class="text-muted-foreground flex items-center justify-between gap-1 text-xs"
-                v-if="props.workTime && ((!props.absences.length && !props.isHoliday) || !props.hasWorkSchedule)"
                 dir="ltr"
+                v-if="props.workTime && ((!props.absences.length && !props.isHoliday) || !props.hasWorkSchedule)"
             >
                 <BriefcaseBusiness class="size-4 shrink-0" />
                 <bdi>
@@ -118,8 +118,8 @@ const percentageOverTime = computed(() => {
             </div>
             <div
                 class="text-muted-foreground flex items-center justify-between gap-1 text-xs"
-                v-if="props.breakTime && !props.absences.length"
                 dir="ltr"
+                v-if="props.breakTime && !props.absences.length"
             >
                 <Coffee class="size-4 shrink-0" />
                 <bdi> </bdi>
@@ -131,8 +131,8 @@ const percentageOverTime = computed(() => {
                     'text-amber-400': timePlanDifference > 0
                 }"
                 class="flex items-center justify-between gap-1 text-xs"
-                v-if="timePlanDifference !== 0 && props.workTime && props.hasWorkSchedule"
                 dir="ltr"
+                v-if="timePlanDifference !== 0 && props.workTime && props.hasWorkSchedule"
             >
                 <ClockArrowUp class="size-4 shrink-0" v-if="timePlanDifference > 0" />
                 <ClockArrowDown class="size-4 shrink-0" v-if="timePlanDifference < 0" />

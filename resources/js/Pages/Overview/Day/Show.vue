@@ -74,8 +74,8 @@ if (window.Native) {
             <TimestampTypeBadge type="sick" v-if="props.absences.length && props.absences[0].type === 'sick'" />
             <TimestampTypeBadge
                 :duration="props.dayWorkTime.sum"
-                type="work"
                 :project-durations="props.dayWorkTime.projects"
+                type="work"
                 v-if="
                     (!props.absences.length && !props.isHoliday) || (!props.hasWorkSchedules && props.dayWorkTime.sum)
                 "
@@ -83,11 +83,11 @@ if (window.Native) {
             <TimestampTypeBadge :duration="props.dayBreakTime" type="break" />
             <TimestampTypeBadge :duration="props.dayNoWorkTime" type="noWork" />
             <TimestampTypeBadge
-                v-if="props.hasWorkSchedules"
                 :duration="Math.max(props.dayWorkTime.sum - (props.dayPlan ?? 0) * 60 * 60, 0)"
                 type="overtime"
+                v-if="props.hasWorkSchedules"
             />
-            <TimestampTypeBadge v-if="props.hasWorkSchedules" :duration="(props.dayPlan ?? 0) * 60 * 60" type="plan" />
+            <TimestampTypeBadge :duration="(props.dayPlan ?? 0) * 60 * 60" type="plan" v-if="props.hasWorkSchedules" />
         </div>
         <div class="grow space-y-1 overflow-y-auto" scroll-region v-if="!isFuture">
             <TimestampListPlaceholderItem

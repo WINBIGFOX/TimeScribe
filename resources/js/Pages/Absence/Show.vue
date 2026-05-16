@@ -167,24 +167,24 @@ const removeHoliday = (date: string) => {
                             class="group/drama hover:bg-muted-foreground/20 flex rounded-lg transition-all duration-500 hover:-mr-1 hover:px-1 hover:py-1"
                         >
                             <div
+                                :class="{
+                                    'bg-background! text-foreground! line-through opacity-50':
+                                        absences[day.format('YYYY-MM-DD')]
+                                }"
                                 @click="
                                     !absences[day.format('YYYY-MM-DD')]
                                         ? addHoliday(day.format('YYYY-MM-DD'))
                                         : undefined
                                 "
-                                :class="{
-                                    'bg-background! text-foreground! line-through opacity-50':
-                                        absences[day.format('YYYY-MM-DD')]
-                                }"
                                 class="bg-primary text-primary-foreground rounded px-1.5 text-xs transition-all duration-500 group-hover/drama:bg-transparent group-hover/drama:text-purple-400 group-hover/drama:line-through"
                                 v-if="props.plans[day.format('YYYY-MM-DD')] && !holidays[day.format('YYYY-MM-DD')]"
                             >
                                 {{ props.plans[day.format('YYYY-MM-DD')] }} {{ $t('app.h') }}
                             </div>
                             <div
+                                @click="removeHoliday(day.format('YYYY-MM-DD'))"
                                 class="flex items-center text-purple-400"
                                 v-if="holidays[day.format('YYYY-MM-DD')]"
-                                @click="removeHoliday(day.format('YYYY-MM-DD'))"
                             >
                                 <X
                                     class="hidden size-4 transition-all duration-500 group-hover/drama:block starting:w-0"

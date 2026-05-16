@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import SheetDialog from '@/Components/dialogs/SheetDialog.vue'
 import {
     NumberField,
@@ -186,7 +186,7 @@ const submit = () => {
                 </div>
             </div>
 
-            <div v-if="props.entitlement.autoCarryover" class="space-y-4">
+            <div class="space-y-4" v-if="props.entitlement.autoCarryover">
                 <div class="flex items-start justify-between gap-4">
                     <div class="space-y-1">
                         <span class="text-sm leading-none font-medium">

@@ -52,14 +52,14 @@ const select = (value: 'fixed' | 'flexible') => {
                         : 'bg-background/80 text-foreground/80 hover:bg-background'
                 ]"
                 :key="option.value"
+                @click="select(option.value)"
                 type="button"
                 v-for="option in options"
-                @click="select(option.value)"
             >
                 <div class="mt-0.5">
                     <component
-                        :is="props.mode === option.value ? CheckCircle2 : Circle"
                         :class="props.mode === option.value ? 'text-emerald-500' : 'text-muted-foreground'"
+                        :is="props.mode === option.value ? CheckCircle2 : Circle"
                         class="h-5 w-5"
                     />
                 </div>
@@ -78,10 +78,10 @@ const select = (value: 'fixed' | 'flexible') => {
             <Button @click="$emit('prevStep')" class="dark:text-foreground" size="lg" variant="ghost">
                 {{ $t('app.back') }}
             </Button>
-            <Button class="dark:hidden" size="lg" variant="secondary" @click="$emit('nextStep')">
+            <Button @click="$emit('nextStep')" class="dark:hidden" size="lg" variant="secondary">
                 {{ $t('app.next') }}
             </Button>
-            <Button class="hidden dark:flex" size="lg" @click="$emit('nextStep')">
+            <Button @click="$emit('nextStep')" class="hidden dark:flex" size="lg">
                 {{ $t('app.next') }}
             </Button>
         </div>

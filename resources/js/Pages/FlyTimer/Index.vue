@@ -76,12 +76,12 @@ const useShowMenu = refThrottled(showMenu, 5000)
 <template>
     <Head title="FlyTimer" />
     <div
-        :style="'--project-color: ' + (props.currentProject?.color ?? '#000000')"
         :class="{
             'opacity-10': !props.currentType && !useShowMenu,
             'opacity-50': props.currentType === 'break' && !useShowMenu,
             'ring-3 hover:ring-1': props.currentProject?.color
         }"
+        :style="'--project-color: ' + (props.currentProject?.color ?? '#000000')"
         class="bg-background ring-offset-background group relative flex h-full items-center justify-center overflow-clip rounded-full border ring-(--project-color) ring-offset-1 transition-all duration-500 ring-inset hover:opacity-100!"
     >
         <transition
@@ -91,7 +91,7 @@ const useShowMenu = refThrottled(showMenu, 5000)
             leave-from-class="opacity-100 scale-100 max-w-7"
             leave-to-class="opacity-0 scale-0 max-w-0"
         >
-            <div v-if="props.currentProject?.icon" class="text-2xl">
+            <div class="text-2xl" v-if="props.currentProject?.icon">
                 {{ props.currentProject.icon }}
             </div>
         </transition>
@@ -138,41 +138,41 @@ const useShowMenu = refThrottled(showMenu, 5000)
             class="bg-background absolute inset-2 left-6 flex scale-105 transform-gpu items-stretch rounded-full opacity-0 transition-all duration-500 group-hover:scale-100 group-hover:opacity-100"
         >
             <Button
-                v-if="props.currentType"
                 :as="Link"
-                method="post"
                 :href="route('fly-timer.storeStop')"
+                class="h-full flex-1 rounded-l-full rounded-r-none pl-5! transition-colors"
+                method="post"
                 preserve-state
                 size="lg"
+                v-if="props.currentType"
                 variant="destructive"
-                class="h-full flex-1 rounded-l-full rounded-r-none pl-5! transition-colors"
             >
                 <Square />
             </Button>
             <Button
-                v-if="props.currentType !== 'work'"
                 :as="Link"
-                method="post"
-                :href="route('fly-timer.storeWork')"
-                preserve-state
-                size="lg"
                 :class="{
                     'rounded-full': !props.currentType,
                     'rounded-l-none rounded-r-full pr-5!': props.currentType
                 }"
+                :href="route('fly-timer.storeWork')"
                 class="h-full flex-1 border border-transparent transition-colors"
+                method="post"
+                preserve-state
+                size="lg"
+                v-if="props.currentType !== 'work'"
             >
                 <Play />
             </Button>
             <Button
-                v-if="props.currentType === 'work'"
                 :as="Link"
-                method="post"
                 :href="route('fly-timer.storeBreak')"
+                class="h-full flex-1 rounded-l-none rounded-r-full pr-5!"
+                method="post"
                 preserve-state
                 size="lg"
+                v-if="props.currentType === 'work'"
                 variant="outline"
-                class="h-full flex-1 rounded-l-none rounded-r-full pr-5!"
             >
                 <Coffee />
             </Button>
@@ -186,16 +186,16 @@ const useShowMenu = refThrottled(showMenu, 5000)
             />
         </Link>
         <div
+            :class="{
+                'translate-x-0 opacity-100 [app-region:drag]': useShowMenu || showMenu
+            }"
+            @mouseleave="showMenu = false"
             @mouseover="
                 () => {
                     showMenu = true
                     useShowMenu = true
                 }
             "
-            @mouseleave="showMenu = false"
-            :class="{
-                'translate-x-0 opacity-100 [app-region:drag]': useShowMenu || showMenu
-            }"
             class="text-muted-foreground fixed left-0 flex h-full w-6 -translate-x-6 transform-gpu items-center justify-end overflow-clip rounded-l-full rounded-r-none opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100 focus-visible:[app-region:drag]"
         >
             <Tally2 class="translate-x-2" />

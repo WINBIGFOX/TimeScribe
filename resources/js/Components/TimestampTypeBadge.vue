@@ -115,13 +115,13 @@ const durationLabel = computed(() => secToFormat(props.duration ?? 0, true, true
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         :as="Link"
-                        v-for="(projectDuration, key) in props.projectDurations"
                         :href="route('project.show', { project: key })"
-                        preserve-scroll
-                        preserve-state
                         :key="key"
                         :style="'--project-color: ' + projectDuration.color"
                         class="flex max-w-60 flex-wrap items-stretch gap-x-8 gap-y-2 bg-(--project-color)/10 not-last:mb-1 not-rtl:border-l-6 not-rtl:border-l-(--project-color) hover:bg-(--project-color)/20! rtl:flex-row-reverse rtl:border-r-6 rtl:border-r-(--project-color) dark:bg-(--project-color)/20 dark:hover:bg-(--project-color)/30!"
+                        preserve-scroll
+                        preserve-state
+                        v-for="(projectDuration, key) in props.projectDurations"
                     >
                         <span class="flex items-center gap-2 text-xs font-medium rtl:flex-row-reverse">
                             <span class="text-md flex shrink-0 items-center" v-if="projectDuration.icon">

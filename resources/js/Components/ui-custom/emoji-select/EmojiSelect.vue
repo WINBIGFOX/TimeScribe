@@ -23,14 +23,14 @@ const setEmoji = (emoji: { i: string }) => {
         <Popover :open="open">
             <PopoverTrigger as-child>
                 <Button
-                    @click="open = true"
                     :class="cn('flex-1', modelValue ? 'p-0 text-xl' : undefined, props.class)"
+                    @click="open = true"
                     variant="outline"
                 >
                     {{ !modelValue ? $t('app.select emoji') : modelValue }}
                 </Button>
             </PopoverTrigger>
-            <PopoverContent class="w-auto p-0" side="left" @focus-outside="open = false">
+            <PopoverContent @focus-outside="open = false" class="w-auto p-0" side="left">
                 <EmojiPicker @select="setEmoji" class="shadow-none!" hide-group-names hide-search native theme="auto" />
             </PopoverContent>
         </Popover>

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { cn } from '@/lib/utils'
 import type { HTMLAttributes } from 'vue'
 
@@ -9,7 +9,6 @@ const props = defineProps<{
 
 <template>
     <p
-        data-slot="field-description"
         :class="
             cn(
                 'text-muted-foreground text-sm leading-normal font-normal group-has-[[data-orientation=horizontal]]/field:text-balance',
@@ -18,6 +17,7 @@ const props = defineProps<{
                 props.class
             )
         "
+        data-slot="field-description"
     >
         <slot />
     </p>

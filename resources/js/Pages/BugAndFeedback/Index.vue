@@ -138,7 +138,7 @@ const handleDelete = () =>
                     {{ $t('app.delete all data permanently') }}
                 </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent class="sm:max-w-lg" disable-outside-pointer-events @escape-key-down.prevent.stop>
+            <AlertDialogContent @escape-key-down.prevent.stop class="sm:max-w-lg" disable-outside-pointer-events>
                 <AlertDialogHeader>
                     <AlertDialogTitle>
                         {{ $t('app.warning') }}
@@ -159,10 +159,10 @@ const handleDelete = () =>
                         {{ $t('app.cancel') }}
                     </AlertDialogCancel>
                     <Button
-                        variant="destructive"
                         :disabled="confirmDeleteInput !== 'DELETE' || deleteForm.processing"
                         @click="handleDelete"
                         type="button"
+                        variant="destructive"
                     >
                         <Loader2 v-if="deleteForm.processing" />
                         {{ $t('app.delete all data permanently') }}

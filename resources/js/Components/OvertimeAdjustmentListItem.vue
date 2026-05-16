@@ -84,10 +84,10 @@ const destroy = () => {
             </div>
             <div class="ml-auto flex items-center justify-end">
                 <Button
+                    @click="$emit('edit', props.overtimeAdjustment)"
                     class="text-muted-foreground size-8"
                     size="icon"
                     variant="ghost"
-                    @click="$emit('edit', props.overtimeAdjustment)"
                 >
                     <Pencil />
                 </Button>
@@ -102,8 +102,8 @@ const destroy = () => {
             </div>
         </div>
         <div
-            v-if="props.overtimeAdjustment.note"
             class="text-muted-foreground mx-2 border-t py-2 text-sm whitespace-pre-wrap"
+            v-if="props.overtimeAdjustment.note"
         >
             {{ props.overtimeAdjustment.note }}
         </div>

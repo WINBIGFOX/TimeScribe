@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { Label } from '@/Components/ui/label'
 import { cn } from '@/lib/utils'
 import type { HTMLAttributes } from 'vue'
@@ -10,7 +10,6 @@ const props = defineProps<{
 
 <template>
     <Label
-        data-slot="field-label"
         :class="
             cn(
                 'group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50',
@@ -19,6 +18,7 @@ const props = defineProps<{
                 props.class
             )
         "
+        data-slot="field-label"
     >
         <slot />
     </Label>

@@ -389,9 +389,6 @@ const hasClearButton = computed(() => Boolean(modelValue.value) && !props.requir
     <div :class="cn('flex w-full flex-col gap-1', props.class)">
         <div class="relative">
             <div
-                ref="fieldRef"
-                role="button"
-                tabindex="0"
                 :aria-disabled="props.disabled"
                 :class="
                     cn(
@@ -406,6 +403,9 @@ const hasClearButton = computed(() => Boolean(modelValue.value) && !props.requir
                 @blur="stopRecording"
                 @click="startRecording"
                 @focus="startRecording"
+                ref="fieldRef"
+                role="button"
+                tabindex="0"
             >
                 <span :class="cn('truncate', !modelValue && !recording ? 'text-muted-foreground' : undefined)">
                     {{
@@ -413,23 +413,23 @@ const hasClearButton = computed(() => Boolean(modelValue.value) && !props.requir
                         (recording ? $t('app.press a shortcut...') : (props.placeholder ?? $t('app.select shortcut')))
                     }}
                 </span>
-                <span v-if="recording" class="text-muted-foreground flex items-center gap-1 text-xs">
+                <span class="text-muted-foreground flex items-center gap-1 text-xs" v-if="recording">
                     <Keyboard class="size-4" />
                     <span>{{ $t('app.recording') }}</span>
                 </span>
             </div>
             <Button
-                v-if="hasClearButton"
-                class="absolute top-1 h-7 w-7 not-rtl:right-1 rtl:left-1"
-                size="icon"
-                variant="ghost"
                 :disabled="props.disabled"
                 @click.stop="clearShortcut"
+                class="absolute top-1 h-7 w-7 not-rtl:right-1 rtl:left-1"
+                size="icon"
+                v-if="hasClearButton"
+                variant="ghost"
             >
                 <X class="size-4" />
             </Button>
         </div>
-        <p v-if="error" class="text-destructive text-xs">
+        <p class="text-destructive text-xs" v-if="error">
             {{ $t(error) }}
         </p>
     </div>

@@ -72,12 +72,12 @@ watch(
 <template>
     <div class="bg-sidebar relative flex items-center gap-4 rounded-lg p-2.5">
         <div
-            v-if="canMerge() && props.timestampBefore"
             :class="{
                 'via-primary': props.timestamp.type === 'work',
                 'via-pink-400': props.timestamp.type === 'break'
             }"
             class="group absolute inset-x-0 z-10 -mt-3.25 flex h-0 justify-center self-start bg-gradient-to-r from-transparent to-transparent transition-all duration-300 ease-out after:absolute after:inset-x-44 after:-mt-2 after:h-4 after:content-[''] hover:h-0.5 hover:opacity-100"
+            v-if="canMerge() && props.timestampBefore"
         >
             <div
                 :class="{
@@ -87,21 +87,21 @@ watch(
                 class="absolute -mt-0 w-5 border-b-2 border-dashed"
             ></div>
             <Link
-                :href="route('timestamp.merge')"
-                method="patch"
-                :data="{
-                    timestamp_before: props.timestampBefore.id,
-                    timestamp: props.timestamp.id
-                }"
-                preserve-scroll
-                preserve-state
                 :class="{
                     'bg-primary': props.timestamp.type === 'work',
                     'bg-pink-400': props.timestamp.type === 'break',
                     'ring-primary': props.timestamp.type === 'work',
                     'ring-pink-400': props.timestamp.type === 'break'
                 }"
+                :data="{
+                    timestamp_before: props.timestampBefore.id,
+                    timestamp: props.timestamp.id
+                }"
+                :href="route('timestamp.merge')"
                 class="text-primary-foreground group/merge-button ring-offset-background z-10 -mt-2.5 flex h-5 scale-0 items-center justify-center rounded-full px-1.25 py-0.5 text-xs leading-none ring-offset-2 transition-all duration-300 ease-in-out group-hover:scale-100 group-hover:ease-[cubic-bezier(0.17,0.89,0.32,1.10)] hover:px-2 hover:ring-2"
+                method="patch"
+                preserve-scroll
+                preserve-state
             >
                 <FoldVertical
                     class="size-3 transition-[height,width,margin] duration-500 ease-[cubic-bezier(0.17,0.89,0.32,1.10)] group-hover/merge-button:size-3.5 not-rtl:group-hover/merge-button:mr-1 rtl:group-hover/merge-button:ml-1"
@@ -123,7 +123,7 @@ watch(
             <BriefcaseBusiness class="size-5" v-if="props.timestamp.type === 'work'" />
             <Coffee class="size-5" v-if="props.timestamp.type === 'break'" />
         </div>
-        <div dir="ltr" class="flex w-24 shrink-0 items-center gap-1 rtl:justify-end">
+        <div class="flex w-24 shrink-0 items-center gap-1 rtl:justify-end" dir="ltr">
             <Timer class="text-muted-foreground size-4" />
             <span class="font-medium">
                 <bdi>
@@ -170,11 +170,11 @@ watch(
         </div>
         <div class="flex flex-1 grow flex-col gap-1" v-if="props.timestamp.project">
             <Link
-                preserve-scroll
-                preserve-state
                 :href="route('project.show', { project: props.timestamp.project.id })"
                 :style="'--project-color: ' + (props.timestamp.project.color ?? '#000000')"
                 class="mx-2 flex h-9 items-center gap-2 rounded-md bg-(--project-color)/10 px-2 text-sm font-medium not-rtl:border-l-6 not-rtl:border-l-(--project-color) hover:bg-(--project-color)/20 rtl:border-r-6 rtl:border-r-(--project-color) dark:bg-(--project-color)/20 dark:hover:bg-(--project-color)/30"
+                preserve-scroll
+                preserve-state
             >
                 <div class="flex h-9 shrink-0 items-center text-xl" v-if="props.timestamp.project.icon">
                     {{ props.timestamp.project.icon }}

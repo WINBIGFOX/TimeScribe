@@ -281,11 +281,11 @@ if (window.Native) {
     <div class="flex gap-2">
         <TimestampTypeBadge
             :duration="props.sumWorkTime"
-            type="work"
             :project-durations="props.workTimeProjectDurations"
+            type="work"
         />
         <TimestampTypeBadge :duration="props.sumBreakTime" type="break" />
-        <TimestampTypeBadge v-if="props.hasWorkSchedules" :duration="Math.max(props.sumOvertime, 0)" type="overtime" />
-        <TimestampTypeBadge v-if="props.hasWorkSchedules" :duration="(props.sumPlan ?? 0) * 60 * 60" type="plan" />
+        <TimestampTypeBadge :duration="Math.max(props.sumOvertime, 0)" type="overtime" v-if="props.hasWorkSchedules" />
+        <TimestampTypeBadge :duration="(props.sumPlan ?? 0) * 60 * 60" type="plan" v-if="props.hasWorkSchedules" />
     </div>
 </template>

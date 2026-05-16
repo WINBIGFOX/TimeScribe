@@ -211,24 +211,24 @@ if (window.Native) {
     </div>
     <div class="flex grow items-center justify-center" v-else>
         <EmptyState
-            v-if="props.active"
-            :title="$t('app.no app activity recorded')"
             :description="
                 $t(
                     'app.no app activity has been recorded yet. start the working time timer to record the app activity.'
                 )
             "
+            :title="$t('app.no app activity recorded')"
+            v-if="props.active"
         />
         <EmptyState
-            v-else
-            :title="$t('app.app activity is deactivated')"
+            :action-href="route('settings.general.edit')"
+            :action-label="$t('app.go to settings')"
             :description="
                 $t(
                     'app.activity recording is deactivated. Activate \'record app activity\' in the settings, to record future app activities.'
                 )
             "
-            :action-href="route('settings.general.edit')"
-            :action-label="$t('app.go to settings')"
+            :title="$t('app.app activity is deactivated')"
+            v-else
         />
     </div>
 </template>

@@ -61,11 +61,11 @@ const archivedProjects = computed(() => props.projects.filter((project) => proje
 
     <div class="flex grow flex-col gap-4">
         <div class="flex grow flex-col gap-2" v-if="activeProjects.length">
-            <template v-for="project in activeProjects" :key="project.id">
+            <template :key="project.id" v-for="project in activeProjects">
                 <ProjectListItem
-                    v-if="!project.archived_at"
                     :is-current="project.id === props.current_project_id"
                     :project="project"
+                    v-if="!project.archived_at"
                 />
             </template>
         </div>
@@ -74,20 +74,20 @@ const archivedProjects = computed(() => props.projects.filter((project) => proje
             <EmptyState
                 :action-href="route('project.create')"
                 :action-label="$t('app.create new project')"
+                :description="$t('app.organize tasks track time and keep costs in view')"
                 :icon="Tag"
                 :title="$t('app.start with your first project')"
-                :description="$t('app.organize tasks track time and keep costs in view')"
             />
         </div>
         <div v-if="archivedProjects.length">
-            <Button @click="showArchived = !showArchived" variant="ghost" size="sm">
+            <Button @click="showArchived = !showArchived" size="sm" variant="ghost">
                 <Archive />
                 <ChevronDown v-if="!showArchived" />
                 <ChevronUp v-else />
             </Button>
         </div>
         <div class="flex flex-col gap-2" v-if="archivedProjects.length && showArchived">
-            <template v-for="project in archivedProjects" :key="project.id">
+            <template :key="project.id" v-for="project in archivedProjects">
                 <ProjectListItem :is-current="project.id === props.current_project_id" :project="project" />
             </template>
         </div>

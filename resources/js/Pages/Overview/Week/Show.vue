@@ -89,10 +89,10 @@ if (window.Native) {
                 </span>
             </div>
             <WorktimeProgressBar
-                :has-work-schedule="props.hasWorkSchedules"
                 :absences="[]"
                 :break-time="props.weekBreakTime"
                 :fallback-plan="props.weekFallbackPlan"
+                :has-work-schedule="props.hasWorkSchedules"
                 :plan="props.weekPlan"
                 :progress="(props.weekWorkTime.sum / ((props.weekPlan ?? 0) * 60 * 60)) * 100"
                 :work-time="props.weekWorkTime.sum"
@@ -103,28 +103,28 @@ if (window.Native) {
     </div>
     <div class="flex items-stretch gap-2">
         <TimestampTypeBadge
-            :project-durations="props.weekWorkTime.projects"
             :duration="props.weekWorkTime.sum"
+            :project-durations="props.weekWorkTime.projects"
             type="work"
         />
         <TimestampTypeBadge :duration="props.weekBreakTime" type="break" />
         <TimestampTypeBadge
-            v-if="props.hasWorkSchedules"
             :duration="Math.max(props.weekWorkTime.sum - (props.weekPlan ?? 0) * 60 * 60, 0)"
             type="overtime"
+            v-if="props.hasWorkSchedules"
         />
-        <TimestampTypeBadge v-if="props.hasWorkSchedules" :duration="(props.weekPlan ?? 0) * 60 * 60" type="plan" />
+        <TimestampTypeBadge :duration="(props.weekPlan ?? 0) * 60 * 60" type="plan" v-if="props.hasWorkSchedules" />
         <Link
+            :href="route('overtime-adjustment.show', { date: props.date })"
             class="ml-auto flex items-stretch"
             prefetch
-            preserve-state
             preserve-scroll
-            :href="route('overtime-adjustment.show', { date: props.date })"
+            preserve-state
         >
             <TimestampTypeBadge
-                v-if="props.hasWorkSchedules"
                 :duration="props.start_balance + Math.max(props.weekWorkTime.sum - (props.weekPlan ?? 0) * 60 * 60, 0)"
                 type="balance"
+                v-if="props.hasWorkSchedules"
             />
         </Link>
     </div>

@@ -39,14 +39,14 @@ watch(() => form.paid, submit)
                 {{ moment(props.timestamp.started_at.date, 'YYYY-MM-DD').format('L') }}
             </bdi>
             <Button
-                variant="ghost"
-                size="sm"
                 :as="Link"
                 :href="
                     route('overview.day.show', {
                         date: moment(props.timestamp.started_at.date, 'YYYY-MM-DD').format('YYYY-MM-DD')
                     })
                 "
+                size="sm"
+                variant="ghost"
             >
                 <ExternalLink />
             </Button>
@@ -83,13 +83,13 @@ watch(() => form.paid, submit)
             </div>
         </div>
         <div v-if="props.timestamp.description">
-            <HoverCard :open-delay="0" :close-delay="0">
+            <HoverCard :close-delay="0" :open-delay="0">
                 <HoverCardTrigger as-child>
                     <Button
-                        variant="outline"
-                        size="sm"
                         :as="Link"
                         :href="route('project.show', { project: props.project.id })"
+                        size="sm"
+                        variant="outline"
                     >
                         <NotepadText class="size-4" />
                     </Button>
@@ -112,8 +112,8 @@ watch(() => form.paid, submit)
             v-if="props.timestamp.billable_amount && props.project.currency"
         >
             <span
-                dir="ltr"
                 class="*:text-muted-foreground flex items-center gap-1 leading-none font-medium *:text-xs"
+                dir="ltr"
                 v-html="
                     props.timestamp.billable_amount
                         .toLocaleString($page.props.js_locale, {
@@ -159,9 +159,9 @@ watch(() => form.paid, submit)
             </Button>-->
             <Switch
                 :disabled="!props.timestamp.ended_at"
-                v-model="form.paid"
                 style="--primary: var(--color-emerald-500)"
                 v-if="props.project.hourly_rate && props.project.currency"
+                v-model="form.paid"
             >
                 <template #thumb>
                     <CircleCheckBig

@@ -136,18 +136,18 @@ const destroy = () => {
             <Select v-model="form.project_id">
                 <SelectTrigger class="w-full whitespace-normal">
                     <div>
-                        <SelectValue class="line-clamp-1" :placeholder="$t('app.project')" />
+                        <SelectValue :placeholder="$t('app.project')" class="line-clamp-1" />
                     </div>
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="0">-</SelectItem>
                     <SelectItem
-                        v-if="props.timestamp.project && props.timestamp.project.archived_at"
                         :value="props.timestamp.project.id"
+                        v-if="props.timestamp.project && props.timestamp.project.archived_at"
                     >
                         {{ props.timestamp.project.icon }} {{ props.timestamp.project.name }}
                     </SelectItem>
-                    <SelectItem v-for="project in props.projects" :key="project.id" :value="project.id">
+                    <SelectItem :key="project.id" :value="project.id" v-for="project in props.projects">
                         {{ project.icon }} {{ project.name }}
                     </SelectItem>
                 </SelectContent>

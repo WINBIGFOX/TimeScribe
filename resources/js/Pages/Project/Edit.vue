@@ -50,11 +50,11 @@ const submit = () => {
 <template>
     <Head title="Projekt edit" />
     <SheetDialog
-        scrollable
         :close="$t('app.cancel')"
         :submit="$t('app.save')"
         :title="$t('app.edit :item', { item: $t('app.project') })"
         @submit="submit"
+        scrollable
     >
         <div class="flex flex-col gap-2 py-4">
             <span class="text-sm leading-none font-medium">{{ $t('app.project name') }}</span>
@@ -94,7 +94,7 @@ const submit = () => {
                         <SelectValue :placeholder="$t('app.select currency')" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem v-for="(value, key) in props.currencies" :key="key" :value="key">
+                        <SelectItem :key="key" :value="key" v-for="(value, key) in props.currencies">
                             {{ value }}
                         </SelectItem>
                     </SelectContent>

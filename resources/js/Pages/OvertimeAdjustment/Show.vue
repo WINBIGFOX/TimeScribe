@@ -106,41 +106,41 @@ const closeEditModal = () => {
 
 <template>
     <Head title="Overtime-Adjustment show" />
-    <SheetDialog size="lg" :title="$t('app.overtime adjustment overview')" :close="$t('app.close')">
-        <div v-if="props.weekBalances.length" class="flex grow gap-4 overflow-hidden">
+    <SheetDialog :close="$t('app.close')" :title="$t('app.overtime adjustment overview')" size="lg">
+        <div class="flex grow gap-4 overflow-hidden" v-if="props.weekBalances.length">
             <div class="max-w-80 shrink-0 overflow-y-auto pr-px">
-                <template v-for="yearGroup in groupWeekBalancesByYear" :key="yearGroup.year">
+                <template :key="yearGroup.year" v-for="yearGroup in groupWeekBalancesByYear">
                     <div
-                        class="bg-background sticky z-10"
                         :class="{
                             'top-0 bottom-14': yearGroup.year >= Number(props.year),
                             'top-22 pt-4': yearGroup.year < Number(props.year)
                         }"
+                        class="bg-background sticky z-10"
                     >
                         <div class="bg-muted flex h-8 items-center rounded-t-lg px-4">
                             {{ yearGroup.year }}
                         </div>
                     </div>
                     <Link
-                        as="div"
-                        preserve-scroll
-                        preserve-state
-                        :href="route('overtime-adjustment.show', { date: weekBalance.start_date.date })"
-                        v-for="weekBalance in yearGroup.weekBalances"
-                        :key="weekBalance.id"
-                        :data-adjustment-type="hasWeekAdjustment(weekBalance.year + '-' + weekBalance.week_number)"
-                        class="bg-background border-border/50 border-x border-b data-[adjustment-type]:[background-image:repeating-linear-gradient(45deg,transparent_0_.75rem,color-mix(in_srgb,var(--linear-color)_15%,transparent)_.75rem_1.5rem)] data-[adjustment-type=absolute]:[--linear-color:var(--color-lime-400)] data-[adjustment-type=relative-negative]:[--linear-color:var(--color-green-500)] data-[adjustment-type=relative-positive]:[--linear-color:var(--color-amber-400)]"
                         :class="{
                             'sticky top-8 bottom-2 z-10':
                                 weekBalance.year + '-' + weekBalance.week_number === weekYearString
                         }"
+                        :data-adjustment-type="hasWeekAdjustment(weekBalance.year + '-' + weekBalance.week_number)"
+                        :href="route('overtime-adjustment.show', { date: weekBalance.start_date.date })"
+                        :key="weekBalance.id"
+                        as="div"
+                        class="bg-background border-border/50 border-x border-b data-[adjustment-type]:[background-image:repeating-linear-gradient(45deg,transparent_0_.75rem,color-mix(in_srgb,var(--linear-color)_15%,transparent)_.75rem_1.5rem)] data-[adjustment-type=absolute]:[--linear-color:var(--color-lime-400)] data-[adjustment-type=relative-negative]:[--linear-color:var(--color-green-500)] data-[adjustment-type=relative-positive]:[--linear-color:var(--color-amber-400)]"
+                        preserve-scroll
+                        preserve-state
+                        v-for="weekBalance in yearGroup.weekBalances"
                     >
                         <div
-                            class="flex h-12 items-center gap-4 px-4 py-2"
                             :class="{
                                 'bg-primary/10 ring-primary/60 rounded ring-1':
                                     weekBalance.year + '-' + weekBalance.week_number === weekYearString
                             }"
+                            class="flex h-12 items-center gap-4 px-4 py-2"
                         >
                             <div class="flex flex-col items-center">
                                 <span class="text-lg leading-none font-semibold">
@@ -151,12 +151,12 @@ const closeEditModal = () => {
                             <div class="grid flex-1 grid-cols-2 gap-4">
                                 <div class="flex flex-col items-end">
                                     <div
-                                        class="flex items-center gap-2 text-sm text-nowrap tabular-nums"
                                         :class="{
                                             'text-amber-400': weekBalance.balance > 0,
                                             'text-green-500': weekBalance.balance < 0,
                                             'text-muted-foreground': weekBalance.balance === 0
                                         }"
+                                        class="flex items-center gap-2 text-sm text-nowrap tabular-nums"
                                     >
                                         {{ weekBalance.balance > 0 ? '+' : ''
                                         }}{{ secToFormat(weekBalance.balance, false, true, true) }}
@@ -185,12 +185,12 @@ const closeEditModal = () => {
                         </div>
                     </Link>
                     <div
-                        class="bg-background"
                         :class="{
                             'sticky top-20 bottom-0': yearGroup.year === Number(props.year),
                             'sticky bottom-0': yearGroup.year !== Number(props.year),
                             'pb-4 not-last:sticky not-last:bottom-22': yearGroup.year > Number(props.year)
                         }"
+                        class="bg-background"
                     >
                         <div class="bg-muted h-2 rounded-b-lg"></div>
                     </div>
@@ -227,12 +227,12 @@ const closeEditModal = () => {
                         <span class="w-full truncate text-center font-medium">{{ $t('app.overtime') }}</span>
                         <div class="bg-background border-muted rounded border px-2 py-1">
                             <div
-                                class="flex items-center gap-2 text-sm tabular-nums"
                                 :class="{
                                     'text-amber-400': currentWeekBalance.balance > 0,
                                     'text-green-500': currentWeekBalance.balance < 0,
                                     'text-muted-foreground': currentWeekBalance.balance === 0
                                 }"
+                                class="flex items-center gap-2 text-sm tabular-nums"
                             >
                                 {{ secToFormat(currentWeekBalance.balance, false, true, true) }}
                                 {{ $t('app.h') }}
@@ -259,13 +259,13 @@ const closeEditModal = () => {
 
                 <div class="flex gap-2">
                     <div
-                        v-for="weekday in props.weekdays"
-                        :key="weekday.date.formatted"
-                        :data-adjustment-type="hasDateAdjustment(weekday.date.date)"
                         :class="{
                             'ring-primary ring-2 ring-inset': weekday.date.date === moment().format('YYYY-MM-DD')
                         }"
+                        :data-adjustment-type="hasDateAdjustment(weekday.date.date)"
+                        :key="weekday.date.formatted"
                         class="group bg-sidebar border-muted text-muted-foreground relative flex flex-1 flex-col overflow-clip rounded-lg border text-center data-[adjustment-type]:[background-image:repeating-linear-gradient(45deg,transparent_0_.75rem,color-mix(in_srgb,var(--linear-color)_15%,transparent)_.75rem_1.5rem)] data-[adjustment-type=absolute]:[--linear-color:var(--color-lime-400)] data-[adjustment-type=relative-negative]:[--linear-color:var(--color-green-500)] data-[adjustment-type=relative-positive]:[--linear-color:var(--color-amber-400)]"
+                        v-for="weekday in props.weekdays"
                     >
                         <div
                             @click="openCreateModal(weekday.date.date)"
@@ -282,12 +282,12 @@ const closeEditModal = () => {
                             </span>
                         </div>
                         <div
-                            class="border-t py-1 text-xs"
                             :class="{
                                 'text-amber-400': weekday.workTime - (weekday.plan ?? 0) * 3600 > 0,
                                 'text-green-500': weekday.workTime - (weekday.plan ?? 0) * 3600 < 0,
                                 'text-muted-foreground': weekday.workTime - (weekday.plan ?? 0) * 3600 === 0
                             }"
+                            class="border-t py-1 text-xs"
                         >
                             {{ secToFormat(weekday.workTime - (weekday.plan ?? 0) * 3600, false, true, true) }}
                         </div>
@@ -295,45 +295,45 @@ const closeEditModal = () => {
                 </div>
 
                 <EmptyState
-                    v-if="!props.overtimeAdjustments.length"
-                    :icon="ClipboardClock"
-                    class="py-2 text-sm"
                     :action-click="() => openCreateModal(props.date)"
                     :action-label="$t('app.add an adjustment')"
-                    :title="$t('app.add an adjustment')"
                     :description="$t('app.you can add an adjustment to change your overtime balance.')"
+                    :icon="ClipboardClock"
+                    :title="$t('app.add an adjustment')"
+                    class="py-2 text-sm"
+                    v-if="!props.overtimeAdjustments.length"
                 />
                 <div class="flex grow flex-col gap-2 overflow-y-auto" v-else>
                     <div class="text-foreground/80 text-sm font-medium">{{ $t('app.adjustments') }}</div>
                     <div class="flex flex-col gap-2">
                         <OvertimeAdjustmentListItem
-                            v-for="overtimeAdjustment in props.overtimeAdjustments"
                             :key="overtimeAdjustment.id"
                             :overtime-adjustment="overtimeAdjustment"
                             @edit="openEditModal"
+                            v-for="overtimeAdjustment in props.overtimeAdjustments"
                         />
                     </div>
                 </div>
 
                 <Create
                     :date="createModalDate"
-                    v-model:open="createModal"
                     :key="createModalDate"
                     @close="createModal = false"
+                    v-model:open="createModal"
                 />
                 <Edit
-                    v-if="editModalOvertimeAdjustment"
-                    :overtime-adjustment="editModalOvertimeAdjustment"
-                    v-model:open="editModal"
                     :key="editModalOvertimeAdjustment.id"
+                    :overtime-adjustment="editModalOvertimeAdjustment"
                     @close="closeEditModal"
+                    v-if="editModalOvertimeAdjustment"
+                    v-model:open="editModal"
                 />
             </div>
         </div>
         <EmptyState
+            :description="$t('app.no working time recorded yet')"
             :icon="ClipboardClock"
             :title="$t('app.no time balance available')"
-            :description="$t('app.no working time recorded yet')"
             v-else
         />
     </SheetDialog>

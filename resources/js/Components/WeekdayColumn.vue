@@ -17,14 +17,14 @@ const props = defineProps<{
             <WeekdayHeader :date="props.weekday.date.date" />
         </div>
         <WorktimeProgressBar
-            :has-work-schedule="props.hasWorkSchedule"
             :absences="props.weekday.absences"
             :active-work="props.weekday.activeWork"
             :break-time="props.weekday.breakTime"
             :fallback-plan="props.weekday.fallbackPlan"
+            :has-work-schedule="props.hasWorkSchedule"
+            :is-holiday="props.weekday.isHoliday"
             :plan="props.weekday.plan"
             :work-time="props.weekday.workTime"
-            :is-holiday="props.weekday.isHoliday"
         />
     </div>
 </template>

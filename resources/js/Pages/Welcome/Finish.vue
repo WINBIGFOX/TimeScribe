@@ -136,8 +136,8 @@ const indicatorIcon = (done: boolean) => (done ? CheckCircle2 : Circle)
             <div class="space-y-2">
                 <div :key="item.labelKey" class="flex items-center gap-3" v-for="item in checklist">
                     <component
-                        :is="indicatorIcon(item.done)"
                         :class="item.done ? 'text-emerald-500' : 'text-muted-foreground'"
+                        :is="indicatorIcon(item.done)"
                         class="h-5 w-5"
                     />
                     <span :class="item.done ? 'text-foreground' : 'text-muted-foreground'">

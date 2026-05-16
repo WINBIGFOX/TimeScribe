@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import SheetDialog from '@/Components/dialogs/SheetDialog.vue'
 import { Button } from '@/Components/ui/button'
 import { Calendar } from '@/Components/ui/calendar'
@@ -76,12 +76,12 @@ const submit = () => {
 
 <template>
     <SheetDialog
-        :title="$t('app.edit adjustment')"
-        :global="false"
-        v-model:open="modalOpen"
         :close="$t('app.cancel')"
+        :global="false"
         :submit="$t('app.save')"
+        :title="$t('app.edit adjustment')"
         @submit="submit"
+        v-model:open="modalOpen"
     >
         <Head title="Overtime-Adjustment create" />
         <div class="flex items-center justify-between">
@@ -117,7 +117,7 @@ const submit = () => {
         <FieldGroup class="mt-4">
             <FieldSet>
                 <FieldLabel>{{ $t('app.adjustment mode') }}</FieldLabel>
-                <RadioGroup v-model="form.type" class="flex flex-row gap-2">
+                <RadioGroup class="flex flex-row gap-2" v-model="form.type">
                     <FieldLabel for="type_absolute">
                         <Field orientation="horizontal">
                             <FieldContent>
