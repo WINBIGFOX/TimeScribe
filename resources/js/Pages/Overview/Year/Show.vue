@@ -2,7 +2,7 @@
 import { PageHeader } from '@/Components/ui-custom/page-header'
 import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
-import { secToFormat } from '@/lib/utils'
+import { formatDurationWithUnit, secToFormat } from '@/lib/utils'
 import { GetTimeProjectDetails } from '@/types'
 import { Head, Link, router, usePage } from '@inertiajs/vue3'
 import { useCssVar } from '@vueuse/core'
@@ -219,11 +219,7 @@ const data = {
             },
             y: {
                 formatter: (value) => {
-                    const time = secToFormat(value, true, true, true)
-                    if (value >= 3600) {
-                        return `${time} ${trans('app.h')}`
-                    }
-                    return `${time} ${trans('app.min')}`
+                    return formatDurationWithUnit(value)
                 }
             }
         },

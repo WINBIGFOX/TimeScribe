@@ -34,6 +34,8 @@ class GeneralSettings extends Settings
 
     public string $default_overview = 'week';
 
+    public string $time_display_format = 'clock';
+
     public static function group(): string
     {
         return 'general';

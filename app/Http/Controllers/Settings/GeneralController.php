@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateGeneralSettingsRequest;
 use App\Http\Requests\UpdateLocaleRequest;
 use App\Jobs\CalculateWeekBalance;
+use App\Services\TimeFormatService;
 use App\Settings\GeneralSettings;
 use App\Settings\ProjectSettings;
 use DateTimeZone;
@@ -38,6 +39,7 @@ class GeneralController extends Controller
             'timezones' => DateTimeZone::listIdentifiers(),
             'timezone' => $settings->timezone,
             'defaultOverview' => $settings->default_overview,
+            'timeDisplayFormat' => $settings->time_display_format ?? TimeFormatService::CLOCK,
         ]);
     }
 
@@ -53,6 +55,7 @@ class GeneralController extends Controller
         $settings->appActivityTracking = $data['appActivityTracking'];
         $settings->timezone = $data['timezone'];
         $settings->default_overview = $data['default_overview'] ?? 'week';
+        $settings->time_display_format = $data['time_display_format'] ?? TimeFormatService::CLOCK;
 
         if ($data['theme'] !== $settings->theme ?? SystemThemesEnum::SYSTEM->value) {
             $settings->theme = $data['theme'];

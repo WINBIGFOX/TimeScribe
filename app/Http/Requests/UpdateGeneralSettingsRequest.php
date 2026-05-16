@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Services\TimeFormatService;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -35,6 +36,7 @@ class UpdateGeneralSettingsRequest extends FormRequest
             'appActivityTracking' => ['required', 'boolean'],
             'timezone' => ['required', 'string', 'timezone'],
             'default_overview' => ['required', Rule::in(['day', 'week', 'month', 'year'])],
+            'time_display_format' => ['required', Rule::in([TimeFormatService::CLOCK, TimeFormatService::DECIMAL])],
         ];
     }
 }
