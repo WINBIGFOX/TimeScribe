@@ -23,7 +23,20 @@ class Project extends Model
         'icon',
         'hourly_rate',
         'currency',
+        'billable_rounding_minutes',
     ];
+
+    /**
+     * @return array<string, string>
+     */
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'hourly_rate' => 'float',
+            'billable_rounding_minutes' => 'integer',
+        ];
+    }
 
     #[Scope]
     protected function sortedByLatestTimestamp($query): Builder
@@ -61,6 +74,36 @@ class Project extends Model
 
     protected function getBillableAmountAttribute(): float
     {
-        return round($this->work_time / 60 / 60 * ($this->hourly_rate ?? 0.0), 2);
+        return $this->billableAmountForDuration($this->work_time, true);
+    }
+
+    public function billableAmountForDuration(int|float $durationSeconds, bool $roundBillableTime = false): float
+    {
+        if (! $this->hourly_rate) {
+            return 0.0;
+        }
+
+        $billableSeconds = $roundBillableTime
+            ? $this->billableSecondsForDuration($durationSeconds)
+            : max(0, (int) ceil($durationSeconds));
+
+        return round($billableSeconds / 3600 * $this->hourly_rate, 2);
+    }
+
+    public function billableSecondsForDuration(int|float $durationSeconds): int
+    {
+        $durationSeconds = (int) ceil($durationSeconds);
+
+        if ($durationSeconds <= 0) {
+            return 0;
+        }
+
+        if (! $this->billable_rounding_minutes) {
+            return $durationSeconds;
+        }
+
+        $roundingSeconds = $this->billable_rounding_minutes * 60;
+
+        return (int) (ceil($durationSeconds / $roundingSeconds) * $roundingSeconds);
     }
 }

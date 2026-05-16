@@ -198,7 +198,7 @@ class ExportService
             'import_source' => $timestamp['source'] ?? '',
             'duration' => $timestamp['ended_at'] ? gmdate('H:i:s', (int) $timestamp['started_at']->diffInSeconds($timestamp['ended_at'])) : '',
             'hourly_rate' => $timestamp['project']?->hourly_rate ? number_format($timestamp['project']->hourly_rate, 2) : '',
-            'billable_amount' => $timestamp['duration'] && $timestamp['project']?->hourly_rate ? number_format($timestamp['duration'] / 60 * $timestamp['project']?->hourly_rate / 60, 2) : '',
+            'billable_amount' => $timestamp['duration'] && $timestamp['project']?->hourly_rate ? number_format($timestamp['project']->billableAmountForDuration($timestamp['duration']), 2) : '',
             'currency' => $timestamp['project']?->hourly_rate ? $timestamp['project']?->currency ?? '' : '',
             'paid' => $timestamp['paid'] ? 'Yes' : '',
         ];

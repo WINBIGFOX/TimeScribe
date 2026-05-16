@@ -34,6 +34,7 @@ class StoreProjectRequest extends FormRequest
             'icon' => ['nullable', 'string'],
             'hourly_rate' => ['nullable', 'numeric', 'min:0'],
             'currency' => ['required_with:hourly_rate', Rule::enum(CurrencyAlpha3::class)],
+            'billable_rounding_minutes' => ['nullable', 'integer', Rule::in([0, 15, 30, 60])],
         ];
     }
 
@@ -47,6 +48,7 @@ class StoreProjectRequest extends FormRequest
             'metadata' => __('app.metadata'),
             'hourly_rate' => __('app.hourly rate'),
             'currency' => __('app.currency'),
+            'billable_rounding_minutes' => __('app.billing increment'),
         ];
     }
 }

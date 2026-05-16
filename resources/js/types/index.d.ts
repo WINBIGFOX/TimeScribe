@@ -78,6 +78,7 @@ export interface Project {
     icon?: string
     hourly_rate?: number
     currency?: string
+    billable_rounding_minutes?: number
     timestamps?: Timestamp[]
     work_time?: number
     billable_amount?: number

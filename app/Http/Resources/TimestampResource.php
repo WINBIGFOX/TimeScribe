@@ -28,7 +28,7 @@ class TimestampResource extends JsonResource
             'duration' => $this->duration,
             'billable_amount' => $this->whenLoaded(
                 'project',
-                fn (): int|float => $this->duration / 60 * $this->project->hourly_rate / 60,
+                fn (): float => $this->project?->billableAmountForDuration($this->duration) ?? 0.0,
                 null
             ),
             'description' => $this->description,

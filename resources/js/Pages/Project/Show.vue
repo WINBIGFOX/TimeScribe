@@ -24,12 +24,32 @@ type TimestampGroup = {
     key: string
     label: string
     duration: number
+    paidDuration: number
+    openDuration: number
     billable: {
         paid: number
         open: number
         total: number
     }
     timestamps: Timestamp[]
+}
+
+const billableDuration = (duration: number) => {
+    if (!props.project.billable_rounding_minutes) {
+        return duration
+    }
+
+    const roundingSeconds = props.project.billable_rounding_minutes * 60
+
+    return Math.ceil(duration / roundingSeconds) * roundingSeconds
+}
+
+const calcAmountForDuration = (duration: number) => {
+    if (!props.project.hourly_rate) {
+        return 0
+    }
+
+    return (billableDuration(duration) * props.project.hourly_rate) / 3600
 }
 
 const timestampGroups = computed<TimestampGroup[]>(() => {
@@ -45,6 +65,8 @@ const timestampGroups = computed<TimestampGroup[]>(() => {
             group = {
                 key,
                 duration: 0,
+                paidDuration: 0,
+                openDuration: 0,
                 billable: {
                     paid: 0,
                     open: 0,
@@ -57,16 +79,22 @@ const timestampGroups = computed<TimestampGroup[]>(() => {
         }
 
         if (timestamp.paid) {
-            group.billable.paid += timestamp.billable_amount ?? 0
+            group.paidDuration += timestamp.duration
         } else {
-            group.billable.open += timestamp.billable_amount ?? 0
+            group.openDuration += timestamp.duration
         }
         group.duration += timestamp.duration
-        group.billable.total += timestamp.billable_amount ?? 0
         group.timestamps.push(timestamp)
     })
 
-    return Array.from(groups.values())
+    return Array.from(groups.values()).map((group) => ({
+        ...group,
+        billable: {
+            paid: calcAmountForDuration(group.paidDuration),
+            open: calcAmountForDuration(group.openDuration),
+            total: calcAmountForDuration(group.duration)
+        }
+    }))
 })
 
 const calcAmount = (paid: boolean) => {
@@ -76,8 +104,8 @@ const calcAmount = (paid: boolean) => {
     const duration =
         props.project.timestamps
             ?.filter((t) => t.paid === paid)
-            .reduce((partialSum, a) => partialSum + a.duration, 0) ?? 0
-    return ((duration / 60) * props.project.hourly_rate) / 60
+            .reduce((partialSum, timestamp) => partialSum + timestamp.duration, 0) ?? 0
+    return calcAmountForDuration(duration)
 }
 
 const amountPaid = computed(() => calcAmount(true))

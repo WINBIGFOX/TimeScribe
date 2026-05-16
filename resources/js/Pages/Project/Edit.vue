@@ -28,6 +28,8 @@ const props = defineProps<{
     currencies: Enum
 }>()
 
+const billableRoundingOptions = ['15', '30', '60']
+
 const form = useForm({
     name: props.project.name,
     description: props.project.description || '',
@@ -35,7 +37,8 @@ const form = useForm({
     color: props.project.color,
     icon: props.project.icon || '',
     hourly_rate: props.project.hourly_rate || 0,
-    currency: props.project.currency || undefined
+    currency: props.project.currency || undefined,
+    billable_rounding_minutes: String(props.project.billable_rounding_minutes || 0)
 })
 
 const submit = () => {
@@ -125,6 +128,26 @@ const submit = () => {
             </div>
             <div class="text-destructive col-span-2 text-sm" v-if="form.errors.hourly_rate">
                 {{ form.errors.hourly_rate }}
+            </div>
+            <div class="flex flex-col gap-2 pt-2">
+                <span class="text-sm leading-none font-medium">{{ $t('app.billing increment') }}</span>
+                <Select v-model="form.billable_rounding_minutes">
+                    <SelectTrigger class="w-full">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="0">{{ $t('app.exact time') }}</SelectItem>
+                        <SelectItem :key="minutes" :value="minutes" v-for="minutes in billableRoundingOptions">
+                            {{ $t('app.per started :minutes min.', { minutes }) }}
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
+                <span class="text-muted-foreground text-sm">
+                    {{ $t('app.project times are added together first. only billable amounts are rounded up.') }}
+                </span>
+            </div>
+            <div class="text-destructive col-span-2 text-sm" v-if="form.errors.billable_rounding_minutes">
+                {{ form.errors.billable_rounding_minutes }}
             </div>
         </div>
         <div class="flex flex-col gap-2 py-4">

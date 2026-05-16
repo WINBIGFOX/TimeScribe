@@ -25,7 +25,7 @@ class ProjectController extends Controller
      */
     public function index(ProjectSettings $projectSettings)
     {
-        $projects = Project::with('timestampItems')->withTrashed()->scopes('sortedByLatestTimestamp')->get()->append(['work_time', 'billable_amount']);
+        $projects = Project::with('timestampItems.project')->withTrashed()->scopes('sortedByLatestTimestamp')->get()->append(['work_time', 'billable_amount']);
 
         return Inertia::render('Project/Index', [
             'projects' => fn () => ProjectResource::collection($projects),
@@ -97,6 +97,7 @@ class ProjectController extends Controller
             'icon' => $data['icon'] ?? null,
             'hourly_rate' => $data['hourly_rate'] ?? null,
             'currency' => $data['currency'] ?? null,
+            'billable_rounding_minutes' => $data['billable_rounding_minutes'] ?? null,
         ]);
 
         if ($request->has('currency')) {

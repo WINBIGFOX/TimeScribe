@@ -33,6 +33,16 @@ const deleteProject = (project: Project) => {
     })
 }
 
+const billableDuration = (duration: number) => {
+    if (!props.project.billable_rounding_minutes) {
+        return duration
+    }
+
+    const roundingSeconds = props.project.billable_rounding_minutes * 60
+
+    return Math.ceil(duration / roundingSeconds) * roundingSeconds
+}
+
 const calcAmount = (paid: boolean) => {
     if (!props.project.hourly_rate) {
         return undefined
@@ -40,8 +50,8 @@ const calcAmount = (paid: boolean) => {
     const duration =
         props.project.timestamps
             ?.filter((t) => t.paid === paid)
-            .reduce((partialSum, a) => partialSum + a.duration, 0) ?? 0
-    return ((duration / 60) * props.project.hourly_rate) / 60
+            .reduce((partialSum, timestamp) => partialSum + timestamp.duration, 0) ?? 0
+    return (billableDuration(duration) * props.project.hourly_rate) / 3600
 }
 
 const amountPaid = computed(() => calcAmount(true))
