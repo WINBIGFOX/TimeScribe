@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Services\TimeFormatService;
 use App\Services\TimestampService;
 use App\Settings\GeneralSettings;
 use Illuminate\Http\Request;
@@ -42,6 +43,7 @@ class HandleInertiaRequests extends Middleware
             'js_locale' => str_replace('_', '-', $settings->locale ?? config('app.fallback_locale')),
             'locale' => $settings->locale ?? config('app.fallback_locale'),
             'timezone' => $settings->timezone ?? config('app.timezone'),
+            'time_display_format' => $settings->time_display_format ?? TimeFormatService::CLOCK,
             'app_version' => config('nativephp.version'),
             'date' => now()->format('Y-m-d'),
             'recording' => (bool) TimestampService::getCurrentType(),

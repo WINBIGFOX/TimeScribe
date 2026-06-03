@@ -1,6 +1,11 @@
 import { type ClassValue, clsx } from 'clsx'
+import { trans } from 'laravel-vue-i18n'
 import moment from 'moment/min/moment-with-locales'
 import { twMerge } from 'tailwind-merge'
+
+export type TimeDisplayFormat = 'clock' | 'decimal'
+
+let currentTimeDisplayFormat: TimeDisplayFormat = 'clock'
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -18,16 +23,35 @@ export function getCurrencySymbol(locale, currency) {
         .trim()
 }
 
+export function setTimeDisplayFormat(format: TimeDisplayFormat) {
+    currentTimeDisplayFormat = format
+}
+
+export function getTimeDisplayFormat() {
+    return currentTimeDisplayFormat
+}
+
 export function secToFormat(
     seconds: number,
     withoutHours?: boolean,
     withoutSeconds?: boolean,
     noLeadingZero?: boolean,
-    withAbs?: boolean
+    withAbs?: boolean,
+    timeDisplayFormat: TimeDisplayFormat = currentTimeDisplayFormat
 ) {
     const positive = seconds >= 0
 
     seconds = Math.abs(seconds)
+
+    if (timeDisplayFormat === 'decimal') {
+        let output = (seconds / 3600).toFixed(2)
+
+        if (withAbs || !positive) {
+            output = `${positive ? '+' : '-'}${output}`
+        }
+
+        return output
+    }
 
     const hours = Math.floor(seconds / 3600)
     const minutes = Math.floor((seconds % 3600) / 60)
@@ -52,6 +76,29 @@ export function secToFormat(
     }
 
     return output
+}
+
+export function secToUnit(
+    seconds: number,
+    withoutHours?: boolean,
+    timeDisplayFormat: TimeDisplayFormat = currentTimeDisplayFormat
+) {
+    if (timeDisplayFormat === 'decimal') {
+        return 'h'
+    }
+
+    if (withoutHours && Math.abs(seconds) < 3600) {
+        return 'min'
+    }
+
+    return 'h'
+}
+
+export function formatDurationWithUnit(
+    seconds: number,
+    timeDisplayFormat: TimeDisplayFormat = currentTimeDisplayFormat
+) {
+    return `${secToFormat(seconds, true, true, true, false, timeDisplayFormat)} ${trans(`app.${secToUnit(seconds, true, timeDisplayFormat)}`)}`
 }
 
 export function weekdayTranslate(weekday: string) {

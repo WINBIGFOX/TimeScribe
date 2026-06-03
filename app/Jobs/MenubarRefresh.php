@@ -6,8 +6,10 @@ namespace App\Jobs;
 
 use App\Enums\TimestampTypeEnum;
 use App\Services\LocaleService;
+use App\Services\TimeFormatService;
 use App\Services\TimestampService;
 use App\Services\TrayIconService;
+use App\Settings\GeneralSettings;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Native\Desktop\Facades\MenuBar;
@@ -23,6 +25,7 @@ class MenubarRefresh implements ShouldQueue
     {
         try {
             new LocaleService;
+            $settings = resolve(GeneralSettings::class);
             $currentType = TimestampService::getCurrentType();
 
             if ($currentType === TimestampTypeEnum::WORK) {
@@ -39,8 +42,10 @@ class MenubarRefresh implements ShouldQueue
                 return;
             }
 
-            MenuBar::tooltip(gmdate('G:i', (int) $time));
-            MenuBar::label(gmdate('G:i', (int) $time));
+            $formattedTime = TimeFormatService::formatDuration($time, $settings->time_display_format ?? TimeFormatService::CLOCK);
+
+            MenuBar::tooltip($formattedTime);
+            MenuBar::label($formattedTime);
         } catch (\Throwable) {
             return;
         }
