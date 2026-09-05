@@ -34,9 +34,9 @@ class ActivityHistory extends Model
     ];
 
     #[Scope]
-    protected function active($query)
+    protected function active($query): void
     {
-        return $query->where('ended_at', '>', Date::now()->subSeconds(7));
+        $query->where('ended_at', '>', Date::now()->subSeconds(7));
     }
 
     protected function getColorAttribute(): string

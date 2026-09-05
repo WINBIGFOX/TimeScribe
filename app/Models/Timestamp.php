@@ -42,9 +42,9 @@ class Timestamp extends Model
     ];
 
     #[Scope]
-    protected function paid($query): Builder
+    protected function paid($query): void
     {
-        return $query->where('paid', true);
+        $query->where('paid', true);
     }
 
     protected function duration(): Attribute
