@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use Exception;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -86,7 +87,7 @@ class BackupService
         $out = fopen($tempFile, 'w');
 
         if (! $in || ! $out) {
-            throw new \Exception(__('app.backup could not be created.'));
+            throw new Exception(__('app.backup could not be created.'));
         }
 
         $tables = DB::select("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'");
@@ -112,7 +113,7 @@ class BackupService
         fclose($out);
 
         if (! rename($tempFile, $inputFile)) {
-            throw new \Exception(__('app.backup could not be created.'));
+            throw new Exception(__('app.backup could not be created.'));
         }
     }
 
@@ -188,7 +189,7 @@ class BackupService
         $backupFilePath = $destination.'/'.$this->backupFileName.'.'.self::BACKUP_FILE_EXTENSION;
 
         if ($zip->open($backupFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
-            throw new \Exception(__('app.backup could not be created.'));
+            throw new Exception(__('app.backup could not be created.'));
         }
 
         foreach ($this->filesToBackup() as $relativePath) {
@@ -197,12 +198,12 @@ class BackupService
             if (! $zip->addFile($absolutePath, $relativePath)) {
                 $zip->close();
 
-                throw new \Exception(__('app.backup could not be created.'));
+                throw new Exception(__('app.backup could not be created.'));
             }
         }
 
         if (! $zip->close()) {
-            throw new \Exception(__('app.backup could not be created.'));
+            throw new Exception(__('app.backup could not be created.'));
         }
 
         return $backupFilePath;
@@ -211,7 +212,7 @@ class BackupService
     public function restore(string $path): void
     {
         if (! is_file($path) || pathinfo($path, PATHINFO_EXTENSION) !== self::BACKUP_FILE_EXTENSION) {
-            throw new \Exception(__('app.restore failed.'));
+            throw new Exception(__('app.restore failed.'));
         }
 
         $manifest = $this->readManifest($path);
@@ -239,7 +240,7 @@ class BackupService
             $zip->extractTo(storage_path());
             $zip->close();
         } else {
-            throw new \Exception(__('app.restore failed.'));
+            throw new Exception(__('app.restore failed.'));
         }
     }
 
@@ -248,7 +249,7 @@ class BackupService
         $databaseSqlPath = storage_path(self::TEMP_BACKUP_PATH.'/'.self::SQL_FILENAME);
 
         if (! file_exists($databaseSqlPath)) {
-            throw new \Exception(__('app.restore failed.'));
+            throw new Exception(__('app.restore failed.'));
         }
 
         static::dropExistingTablesAndViews();
@@ -294,7 +295,7 @@ class BackupService
         $out = fopen($tempFile, 'w');
 
         if (! $in || ! $out) {
-            throw new \Exception(__('app.restore failed.'));
+            throw new Exception(__('app.restore failed.'));
         }
 
         while (($line = fgets($in)) !== false) {
@@ -309,7 +310,7 @@ class BackupService
         fclose($out);
 
         if (! rename($tempFile, $inputFile)) {
-            throw new \Exception(__('app.restore failed.'));
+            throw new Exception(__('app.restore failed.'));
         }
     }
 
@@ -318,7 +319,7 @@ class BackupService
         $handle = fopen($path, 'r');
 
         if (! $handle) {
-            throw new \Exception(__('app.restore failed.'));
+            throw new Exception(__('app.restore failed.'));
         }
 
         $buffer = '';
@@ -340,7 +341,7 @@ class BackupService
 
                 try {
                     DB::unprepared($statement);
-                } catch (\Exception) {
+                } catch (Exception) {
                     //
                 }
             }
@@ -354,7 +355,7 @@ class BackupService
         $zip = new ZipArchive;
 
         if ($zip->open($path) !== true) {
-            throw new \Exception(__('app.restore failed.'));
+            throw new Exception(__('app.restore failed.'));
         }
 
         $manifestContent = $zip->getFromName(self::TEMP_BACKUP_PATH.'/'.self::MANIFEST_FILENAME);
@@ -367,7 +368,7 @@ class BackupService
         $manifest = json_decode($manifestContent, true);
 
         if (! is_array($manifest)) {
-            throw new \Exception(__('app.restore failed.'));
+            throw new Exception(__('app.restore failed.'));
         }
 
         if (! array_key_exists('app_version', $manifest)) {
@@ -383,11 +384,11 @@ class BackupService
         $currentAppVersion = (string) config('nativephp.version');
 
         if (! is_string($backupAppVersion)) {
-            throw new \Exception(__('app.restore failed.'));
+            throw new Exception(__('app.restore failed.'));
         }
 
         if (version_compare($backupAppVersion, $currentAppVersion, '>')) {
-            throw new \Exception(__('app.restore failed.'));
+            throw new Exception(__('app.restore failed.'));
         }
     }
 
@@ -401,7 +402,7 @@ class BackupService
             $absolutePath = storage_path($relativePath);
 
             if (! File::isFile($absolutePath)) {
-                throw new \Exception(__('app.restore failed.'));
+                throw new Exception(__('app.restore failed.'));
             }
 
             if (! isset($metadata['sha256'])) {
@@ -411,7 +412,7 @@ class BackupService
             $hash = hash_file('sha256', $absolutePath);
 
             if ($hash !== $metadata['sha256']) {
-                throw new \Exception(__('app.restore failed.'));
+                throw new Exception(__('app.restore failed.'));
             }
         }
     }
