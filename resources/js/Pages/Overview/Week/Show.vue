@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { formatMachineDate } from '@/lib/utils'
 import TimestampTypeBadge from '@/Components/TimestampTypeBadge.vue'
 import WeekdayColumn from '@/Components/WeekdayColumn.vue'
 import WorktimeProgressBar from '@/Components/WorktimeProgressBar.vue'
@@ -58,7 +59,7 @@ if (window.Native) {
         </div>
         <Button
             :as="Link"
-            :href="route('overview.week.show', { date: moment().format('YYYY-MM-DD') })"
+            :href="route('overview.week.show', { date: formatMachineDate(moment()) })"
             prefetch
             size="sm"
             variant="outline"
@@ -116,7 +117,7 @@ if (window.Native) {
         <TimestampTypeBadge :duration="(props.weekPlan ?? 0) * 60 * 60" type="plan" v-if="props.hasWorkSchedules" />
         <Link
             :href="route('overtime-adjustment.show', { date: props.date })"
-            class="ml-auto flex items-stretch"
+            class="ms-auto flex items-stretch"
             prefetch
             preserve-scroll
             preserve-state

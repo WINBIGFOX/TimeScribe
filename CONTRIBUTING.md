@@ -155,7 +155,11 @@ npm run typecheck
 TimeScribe supports multiple languages. If you're adding new text strings:
 
 1. Add them to the appropriate language files in the `lang` directory
-2. Ensure they're properly translated in all supported languages (English, German, Chinese)
+2. Keep translation keys and replacement placeholders identical across all supported languages
+
+For right-to-left languages (Arabic and Hebrew), use logical spacing and alignment utilities such as `ms-*`, `pe-*`, and `text-start`. Shared interactive components inherit direction from Reka's `ConfigProvider`. Mirror navigation arrows, but keep clocks, keyboard shortcuts, and machine-readable date values in their expected order. Check both RTL languages and switch back to English to catch regressions.
+
+The locale and translation tests can be run with `php artisan test --compact tests/Feature/LocaleTest.php tests/Unit/TranslationTest.php`. After building the frontend and installing Playwright's Chromium browser, run `php artisan test --compact tests/Browser/RtlTest.php` to check language switching, date navigation, sheets, and calendar keyboard navigation.
 
 ## Reporting Bugs
 

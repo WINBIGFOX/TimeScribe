@@ -17,7 +17,7 @@ import { usePage } from '@inertiajs/vue3'
 import { type DateValue, getLocalTimeZone, isEqualMonth, parseDate, today } from '@internationalized/date'
 import { Calendar, ChevronLeft, ChevronRight, X } from '@lucide/vue'
 import { type DateRange, RangeCalendarRoot, useDateFormatter } from 'reka-ui'
-import { createMonth, getWeekStartsOn, type Grid, toDate } from 'reka-ui/date'
+import { createMonth, type Grid, toDate } from 'reka-ui/date'
 import { computed, type HTMLAttributes, type Ref, ref, watch } from 'vue'
 
 type ExternalDateRange = {
@@ -104,8 +104,8 @@ watch(open, () => {
 })
 
 const page = usePage()
-const locale = computed(() => page.props.js_locale)
-const weekStartsOn = computed(() => getWeekStartsOn(locale.value))
+const locale = computed(() => `${page.props.js_locale}-u-ca-gregory`)
+const weekStartsOn = computed(() => page.props.week_starts_on)
 const formatter = useDateFormatter(locale.value)
 
 watch(locale, (nextLocale) => {
@@ -179,14 +179,14 @@ watch([secondMonthPlaceholder, weekStartsOn], ([_secondMonthPlaceholder]) => {
                     <Button
                         :class="
                             cn(
-                                'w-full min-w-[250px] justify-start text-left font-normal',
+                                'w-full min-w-[250px] justify-start text-start font-normal',
                                 !value.start && 'text-muted-foreground',
-                                props.clearable && (value.start || value.end) && 'pr-10'
+                                props.clearable && (value.start || value.end) && 'pe-10'
                             )
                         "
                         variant="outline"
                     >
-                        <Calendar class="mr-2 h-4 w-4" />
+                        <Calendar class="me-2 h-4 w-4" />
                         <span class="min-w-0 flex-1 truncate">
                             <template v-if="value.start">
                                 <template v-if="value.end">
@@ -211,13 +211,13 @@ watch([secondMonthPlaceholder, weekStartsOn], ([_secondMonthPlaceholder]) => {
                                     }}
                                 </template>
                             </template>
-                            <template v-else>{{ props.placeholder ?? 'Pick a date' }}</template>
+                            <template v-else>{{ props.placeholder ?? $t('app.pick a date') }}</template>
                         </span>
                     </Button>
                 </PopoverTrigger>
                 <Button
                     @click.stop.prevent="clearDateRange"
-                    class="absolute top-1/2 right-1 z-10 h-7 w-7 -translate-y-1/2"
+                    class="absolute end-1 top-1/2 z-10 h-7 w-7 -translate-y-1/2"
                     size="icon"
                     v-if="props.clearable && (value.start || value.end)"
                     variant="ghost"
@@ -249,7 +249,7 @@ watch([secondMonthPlaceholder, weekStartsOn], ([_secondMonthPlaceholder]) => {
                                 "
                                 @click="updateMonth('first', -1)"
                             >
-                                <ChevronLeft class="h-4 w-4" />
+                                <ChevronLeft class="h-4 w-4 rtl:-scale-x-100" />
                             </button>
                             <div :class="cn('text-sm font-medium')">
                                 {{ formatter.fullMonthAndYear(toDate(firstMonth.value)) }}
@@ -263,7 +263,7 @@ watch([secondMonthPlaceholder, weekStartsOn], ([_secondMonthPlaceholder]) => {
                                 "
                                 @click="updateMonth('first', 1)"
                             >
-                                <ChevronRight class="h-4 w-4" />
+                                <ChevronRight class="h-4 w-4 rtl:-scale-x-100" />
                             </button>
                         </div>
                         <RangeCalendarGrid>
@@ -302,7 +302,7 @@ watch([secondMonthPlaceholder, weekStartsOn], ([_secondMonthPlaceholder]) => {
                                 "
                                 @click="updateMonth('second', -1)"
                             >
-                                <ChevronLeft class="h-4 w-4" />
+                                <ChevronLeft class="h-4 w-4 rtl:-scale-x-100" />
                             </button>
                             <div :class="cn('text-sm font-medium')">
                                 {{ formatter.fullMonthAndYear(toDate(secondMonth.value)) }}
@@ -317,7 +317,7 @@ watch([secondMonthPlaceholder, weekStartsOn], ([_secondMonthPlaceholder]) => {
                                 "
                                 @click="updateMonth('second', 1)"
                             >
-                                <ChevronRight class="h-4 w-4" />
+                                <ChevronRight class="h-4 w-4 rtl:-scale-x-100" />
                             </button>
                         </div>
                         <RangeCalendarGrid>

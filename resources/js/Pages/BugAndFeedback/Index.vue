@@ -31,7 +31,7 @@ const handleDelete = () =>
 <template>
     <Head title="Bug and Feedback" />
     <PageHeader :title="$t('app.bugs and feedback')" />
-    <div class="flex items-start space-x-4 py-4">
+    <div class="flex items-start gap-x-4 py-4">
         <Bug />
         <div class="flex-1 space-y-1">
             <p class="text-sm leading-none font-medium">
@@ -57,7 +57,7 @@ const handleDelete = () =>
         </Button>
     </div>
 
-    <div class="flex items-start space-x-4 py-4">
+    <div class="flex items-start gap-x-4 py-4">
         <Heart />
         <div class="flex-1 space-y-1">
             <p class="text-sm leading-none font-medium">
@@ -89,7 +89,7 @@ const handleDelete = () =>
 
     <hr class="my-4" />
 
-    <div class="flex items-start space-x-4 py-4">
+    <div class="flex items-start gap-x-4 py-4">
         <DatabaseBackup />
         <div class="flex-1 space-y-1">
             <p class="text-sm leading-none font-medium">
@@ -120,7 +120,7 @@ const handleDelete = () =>
 
     <hr class="my-4" />
     <div
-        class="border-destructive/30 bg-destructive/5 text-destructive/80 dark:bg-destructive/10 mt-4 flex items-start space-x-4 rounded-xl border-1 p-4"
+        class="border-destructive/30 bg-destructive/5 text-destructive/80 dark:bg-destructive/10 mt-4 flex items-start gap-x-4 rounded-xl border-1 p-4"
     >
         <Shredder />
         <div class="flex-1 space-y-1">

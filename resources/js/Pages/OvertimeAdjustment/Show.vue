@@ -7,7 +7,7 @@ import SheetDialog from '@/Components/dialogs/SheetDialog.vue'
 import OvertimeAdjustmentListItem from '@/Components/OvertimeAdjustmentListItem.vue'
 import { EmptyState } from '@/Components/ui-custom/empty-state'
 import BasicLayout from '@/Layouts/BasicLayout.vue'
-import { secToFormat } from '@/lib/utils'
+import { formatMachineDate, secToFormat } from '@/lib/utils'
 import Edit from '@/Pages/OvertimeAdjustment/Edit.vue'
 import { OvertimeAdjustment, WeekBalance, WeekdayObject } from '@/types'
 import { ArrowRight, ClipboardClock, Clock, ClockArrowDown, ClockArrowUp, Diff, Dot, Equal, Plus } from '@lucide/vue'
@@ -108,7 +108,7 @@ const closeEditModal = () => {
     <Head title="Overtime-Adjustment show" />
     <SheetDialog :close="$t('app.close')" :title="$t('app.overtime adjustment overview')" size="lg">
         <div class="flex grow gap-4 overflow-hidden" v-if="props.weekBalances.length">
-            <div class="max-w-80 shrink-0 overflow-y-auto pr-px">
+            <div class="max-w-80 shrink-0 overflow-y-auto pe-px">
                 <template :key="yearGroup.year" v-for="yearGroup in groupWeekBalancesByYear">
                     <div
                         :class="{
@@ -171,7 +171,7 @@ const closeEditModal = () => {
                                 </div>
                                 <div class="flex flex-col items-end" v-if="weekBalance.end_balance">
                                     <div
-                                        class="flex items-center justify-end gap-2 text-right text-sm text-lime-500 tabular-nums"
+                                        class="flex items-center justify-end gap-2 text-end text-sm text-lime-500 tabular-nums"
                                     >
                                         {{ secToFormat(weekBalance.end_balance, false, true, true) }}
                                         {{ $t('app.h') }}
@@ -196,7 +196,7 @@ const closeEditModal = () => {
                     </div>
                 </template>
             </div>
-            <div class="flex flex-1 flex-col gap-4 overflow-hidden border-l pl-4">
+            <div class="flex flex-1 flex-col gap-4 overflow-hidden border-s ps-4">
                 <div class="text-muted-foreground z-10 -mb-2 flex h-4 items-center gap-1.5 text-sm">
                     <div class="shrink-0">{{ $t('app.week') }} {{ props.week }}</div>
                     <Dot class="size-4" />
@@ -260,7 +260,7 @@ const closeEditModal = () => {
                 <div class="flex gap-2">
                     <div
                         :class="{
-                            'ring-primary ring-2 ring-inset': weekday.date.date === moment().format('YYYY-MM-DD')
+                            'ring-primary ring-2 ring-inset': weekday.date.date === formatMachineDate(moment())
                         }"
                         :data-adjustment-type="hasDateAdjustment(weekday.date.date)"
                         :key="weekday.date.formatted"

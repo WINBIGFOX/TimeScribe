@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { formatMachineDate } from '@/lib/utils'
 import VacationListItem from '@/Components/VacationListItem.vue'
 import ConfirmationDialog from '@/Components/dialogs/ConfirmationDialog.vue'
 import { EmptyState } from '@/Components/ui-custom/empty-state'
@@ -93,7 +94,7 @@ const hasEntries = computed(() => entries.value.length > 0)
         <div class="flex items-center gap-2">
             <Button
                 :as="Link"
-                :href="route('absence.vacation.index', { date: moment().format('YYYY-MM-DD') })"
+                :href="route('absence.vacation.index', { date: formatMachineDate(moment()) })"
                 prefetch
                 size="sm"
                 variant="outline"

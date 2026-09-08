@@ -137,7 +137,7 @@ watch(
             </span>
         </div>
 
-        <div class="ml-2 flex shrink-0 items-center gap-2">
+        <div class="ms-2 flex shrink-0 items-center gap-2">
             <div class="flex min-w-16 flex-col items-center gap-1">
                 <span class="text-muted-foreground text-xs leading-none">
                     {{ $t('app.start') }}
@@ -196,7 +196,7 @@ watch(
             <TooltipProvider v-if="props.timestamp.source">
                 <Tooltip>
                     <TooltipTrigger as-child>
-                        <FolderInput class="text-muted-foreground mr-2 size-4" />
+                        <FolderInput class="text-muted-foreground me-2 size-4" />
                     </TooltipTrigger>
                     <TooltipContent>
                         <p>{{ $t('app.imported from :name', { name: props.timestamp.source }) }}</p>

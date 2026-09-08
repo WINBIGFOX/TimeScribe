@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { formatMachineDate } from '@/lib/utils'
 import SheetDialog from '@/Components/dialogs/SheetDialog.vue'
 import { TimeSelect } from '@/Components/ui-custom/time-select'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
@@ -17,9 +18,9 @@ const props = defineProps<{
 }>()
 
 const form = useForm({
-    started_at: moment(props.timestamp.started_at.date, 'YYYY-MM-DD HH:mm:ss').format('HH:mm'),
+    started_at: formatMachineDate(moment(props.timestamp.started_at.date, 'YYYY-MM-DD HH:mm:ss'), 'HH:mm'),
     ended_at: props.timestamp.ended_at
-        ? moment(props.timestamp.ended_at.date, 'YYYY-MM-DD HH:mm:ss').format('HH:mm')
+        ? formatMachineDate(moment(props.timestamp.ended_at.date, 'YYYY-MM-DD HH:mm:ss'), 'HH:mm')
         : undefined,
     type: props.timestamp.type,
     description: props.timestamp.description,

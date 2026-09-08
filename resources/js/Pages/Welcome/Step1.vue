@@ -71,7 +71,7 @@ const weekWorkTime = computed(() => {
             </span>
         </div>
         <div
-            class="bg-background text-foreground mx-auto mb-0 flex w-96 items-center space-x-4 rounded-xl rounded-b-none border-b p-4 py-2"
+            class="bg-background text-foreground mx-auto mb-0 flex w-96 items-center gap-x-4 rounded-xl rounded-b-none border-b p-4 py-2"
         >
             <CalendarClock />
             <div class="flex-1 space-y-1">
@@ -102,11 +102,11 @@ const weekWorkTime = computed(() => {
                 variant="secondary"
             >
                 {{ $t('app.next') }}
-                <ArrowRight />
+                <ArrowRight class="rtl:-scale-x-100" />
             </Button>
             <Button @click="$emit('nextStep')" class="hidden dark:flex" size="lg" v-if="weekWorkTime > 0">
                 {{ $t('app.next') }}
-                <ArrowRight />
+                <ArrowRight class="rtl:-scale-x-100" />
             </Button>
         </div>
     </div>

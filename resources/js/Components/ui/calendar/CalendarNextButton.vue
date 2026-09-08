@@ -18,10 +18,11 @@ const forwardedProps = useForwardProps(delegatedProps)
 
 <template>
     <CalendarNext
+        :aria-label="$t('app.next')"
         :class="
             cn(
                 buttonVariants({ variant: 'outline' }),
-                'absolute right-1',
+                'absolute end-1',
                 'size-7 bg-transparent p-0 opacity-50 hover:opacity-100',
                 props.class
             )
@@ -30,7 +31,7 @@ const forwardedProps = useForwardProps(delegatedProps)
         data-slot="calendar-next-button"
     >
         <slot>
-            <ChevronRight class="size-4" />
+            <ChevronRight class="size-4 rtl:-scale-x-100" />
         </slot>
     </CalendarNext>
 </template>

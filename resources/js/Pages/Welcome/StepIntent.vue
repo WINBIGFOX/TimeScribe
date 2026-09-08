@@ -46,7 +46,7 @@ const select = (value: 'fixed' | 'flexible') => {
             <button
                 :aria-pressed="props.mode === option.value"
                 :class="[
-                    'border-border/60 flex items-start gap-3 rounded-lg border p-4 text-left transition',
+                    'border-border/60 flex items-start gap-3 rounded-lg border p-4 text-start transition',
                     props.mode === option.value
                         ? 'bg-background text-foreground border-primary/50 shadow-md'
                         : 'bg-background/80 text-foreground/80 hover:bg-background'
