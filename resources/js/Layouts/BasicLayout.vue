@@ -8,11 +8,12 @@ import { ref, watch } from 'vue'
 const page = usePage()
 const renderedLocale = ref(page.props.js_locale)
 watch(
-    () => [page.props.language, page.props.js_locale, page.props.direction],
+    () => [page.props.language, page.props.js_locale, page.props.direction, page.props.week_starts_on],
     () => {
         document.documentElement.lang = page.props.language.replace('_', '-')
         document.documentElement.dir = page.props.direction
-        moment.locale(page.props.js_locale)
+        const locale = moment.locale(page.props.js_locale)
+        moment.updateLocale(locale, { week: { dow: page.props.week_starts_on } })
     },
     { immediate: true }
 )

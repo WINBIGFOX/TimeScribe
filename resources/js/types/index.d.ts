@@ -155,6 +155,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     locale: string
     language: string
     direction: 'ltr' | 'rtl'
+    week_starts_on: 0 | 1 | 2 | 3 | 4 | 5 | 6
     timezone: string
     app_version: string
     recording: boolean

@@ -5,7 +5,9 @@ declare(strict_types=1);
 use App\Events\LocaleChanged;
 use App\Models\Project;
 use App\Settings\GeneralSettings;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Event;
+use Inertia\Testing\AssertableInertia as Assert;
 use Native\Desktop\Facades\App as NativeApp;
 
 beforeEach(function (): void {
@@ -43,23 +45,29 @@ it('switches languages without duplicating the app or leaving stale select label
     ['ar_SA', 'العربية', 'الإعدادات العامة', 'النظام'],
 ]);
 
-it('keeps dates in navigation machine readable in Arabic', function (): void {
+it('keeps Arabic week labels consistent with the data and dates machine readable', function (string $locale): void {
     $settings = resolve(GeneralSettings::class);
-    $settings->locale = 'ar_EG';
+    $settings->locale = $locale;
     $settings->save();
 
     visit('/settings/general/edit')->assertSee('العربية');
 
+    $this->get('/overview/week/2026-09-08')->assertInertia(fn (Assert $page): Assert => $page
+        ->where('weekdays.0.date.date', '2026-09-05')
+        ->where('weekdays.6.date.date', '2026-09-11')
+    );
+
     visit('/overview/week/2026-09-08')
         ->resize(1280, 800)
         ->assertSee('نظرة عامة أسبوعية')
+        ->assertScript('document.querySelector("[data-slot=page-header] a[href$=\"/overview/week/2026-09-08\"]").textContent.trim().startsWith("٥ – ١١")')
         ->assertScript('Array.from(document.querySelectorAll("a[href]")).every(a => !/[٠-٩۰-۹]/.test(decodeURI(a.href)))')
         ->click('a[href$="/overview/week/2026-09-15"]')
         ->assertPathIs('/overview/week/2026-09-15')
         ->assertSee('نظرة عامة أسبوعية')
         ->assertSee('سبتمبر')
         ->assertNoJavaScriptErrors();
-});
+})->with(['ar_EG', 'ar_SA']);
 
 it('opens sheets on the trailing side and mirrors calendar keyboard navigation', function (string $locale): void {
     $settings = resolve(GeneralSettings::class);
@@ -74,6 +82,7 @@ it('opens sheets on the trailing side and mirrors calendar keyboard navigation',
         ->assertAttribute('[data-slot="calendar"]', 'dir', 'rtl')
         ->assertScript('document.querySelector("[data-slot=calendar-prev-button]").getBoundingClientRect().x > document.querySelector("[data-slot=calendar-next-button]").getBoundingClientRect().x');
     $page->script('async () => await Promise.all(document.querySelector("[data-slot=popover-content]").getAnimations().map(animation => animation.finished))');
+    $page->assertScript('new Date(document.querySelector("[data-slot=calendar-cell-trigger]").dataset.value + "T12:00:00Z").getUTCDay()', Date::now()->locale($locale)->firstWeekDay);
 
     $focusedDay = '[data-slot="calendar-cell-trigger"][tabindex="0"]';
     $date = new DateTimeImmutable($page->attribute($focusedDay, 'data-value'));

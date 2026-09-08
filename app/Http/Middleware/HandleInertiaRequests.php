@@ -44,6 +44,7 @@ class HandleInertiaRequests extends Middleware
             'locale' => $settings->locale ?? config('app.fallback_locale'),
             'language' => app()->getLocale(),
             'direction' => LocaleService::direction(app()->getLocale()),
+            'week_starts_on' => now()->firstWeekDay,
             'timezone' => $settings->timezone ?? config('app.timezone'),
             'app_version' => config('nativephp.version'),
             'date' => now()->format('Y-m-d'),

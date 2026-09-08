@@ -100,7 +100,12 @@ const weekWorkTime = computed(() => {
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent class="w-auto p-0">
-                    <Calendar :locale="$page.props.js_locale" fixed-weeks v-model="value" />
+                    <Calendar
+                        :locale="$page.props.js_locale"
+                        :week-starts-on="$page.props.week_starts_on"
+                        fixed-weeks
+                        v-model="value"
+                    />
                 </PopoverContent>
             </Popover>
         </div>

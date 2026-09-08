@@ -38,6 +38,7 @@ it('uses the same effective locale for the document and application', function (
             ->where('js_locale', str_replace('_', '-', $regional))
             ->where('language', $language)
             ->where('direction', $direction)
+            ->where('week_starts_on', Date::now()->firstWeekDay)
         );
 
     expect(app()->getLocale())->toBe($language)

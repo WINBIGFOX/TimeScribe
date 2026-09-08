@@ -17,7 +17,7 @@ import { usePage } from '@inertiajs/vue3'
 import { type DateValue, getLocalTimeZone, isEqualMonth, parseDate, today } from '@internationalized/date'
 import { Calendar, ChevronLeft, ChevronRight, X } from '@lucide/vue'
 import { type DateRange, RangeCalendarRoot, useDateFormatter } from 'reka-ui'
-import { createMonth, getWeekStartsOn, type Grid, toDate } from 'reka-ui/date'
+import { createMonth, type Grid, toDate } from 'reka-ui/date'
 import { computed, type HTMLAttributes, type Ref, ref, watch } from 'vue'
 
 type ExternalDateRange = {
@@ -105,7 +105,7 @@ watch(open, () => {
 
 const page = usePage()
 const locale = computed(() => `${page.props.js_locale}-u-ca-gregory`)
-const weekStartsOn = computed(() => getWeekStartsOn(locale.value))
+const weekStartsOn = computed(() => page.props.week_starts_on)
 const formatter = useDateFormatter(locale.value)
 
 watch(locale, (nextLocale) => {
