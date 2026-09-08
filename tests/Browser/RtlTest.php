@@ -72,9 +72,14 @@ it('opens sheets on the trailing side and mirrors calendar keyboard navigation',
         ->assertAttribute('[data-slot="calendar"]', 'dir', 'rtl')
         ->assertScript('document.querySelector("[data-slot=calendar-prev-button]").getBoundingClientRect().x > document.querySelector("[data-slot=calendar-next-button]").getBoundingClientRect().x');
 
-    $day = (int) $page->text('[data-slot="calendar-cell-trigger"][tabindex="0"]');
-    $page->keys('[data-slot="calendar-cell-trigger"][tabindex="0"]', 'ArrowLeft');
-    expect((int) $page->text('[data-slot="calendar-cell-trigger"][tabindex="0"]'))->toBe($day + 1);
+    $focusedDay = '[data-slot="calendar-cell-trigger"][tabindex="0"]';
+    $date = new DateTimeImmutable($page->attribute($focusedDay, 'data-value'));
+    $lastDay = $date->modify('last day of this month');
+    $page->click('[data-slot="calendar-cell-trigger"][data-value="'.$lastDay->format('Y-m-d').'"]')
+        ->keys($focusedDay, 'ArrowLeft')
+        ->assertAttribute($focusedDay, 'data-value', $lastDay->modify('+1 day')->format('Y-m-d'))
+        ->keys($focusedDay, 'ArrowRight')
+        ->assertAttribute($focusedDay, 'data-value', $lastDay->format('Y-m-d'));
     $page->assertNoJavaScriptErrors();
 })->with(['he_IL', 'ar_SA']);
 
