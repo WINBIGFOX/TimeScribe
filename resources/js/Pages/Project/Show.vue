@@ -7,7 +7,7 @@ import SheetDialog from '@/Components/dialogs/SheetDialog.vue'
 import ProjectTimestampListItem from '@/Components/ProjectTimestampListItem.vue'
 import { EmptyState } from '@/Components/ui-custom/empty-state'
 import BasicLayout from '@/Layouts/BasicLayout.vue'
-import { secToFormat } from '@/lib/utils'
+import { formatMachineDate, secToFormat } from '@/lib/utils'
 import { Enum, Project, Timestamp } from '@/types'
 import { BriefcaseBusiness, CircleCheckBig, CircleEqual, CircleSlash, Timer } from '@lucide/vue'
 
@@ -37,7 +37,7 @@ const timestampGroups = computed<TimestampGroup[]>(() => {
     const timestamps = props.project.timestamps ?? []
 
     timestamps.forEach((timestamp) => {
-        const key = moment(timestamp.started_at.date).clone().locale('en').format('YYYY-MM')
+        const key = formatMachineDate(moment(timestamp.started_at.date), 'YYYY-MM')
 
         let group = groups.get(key)
 

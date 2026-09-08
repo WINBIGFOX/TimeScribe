@@ -6,6 +6,11 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }
 
+// Keep route parameters, form values, and lookup keys independent of display locale.
+export function formatMachineDate(date: moment.Moment, format = 'YYYY-MM-DD'): string {
+    return date.clone().locale('en').format(format)
+}
+
 export function getCurrencySymbol(locale, currency) {
     return (
         new Intl.NumberFormat(locale, {

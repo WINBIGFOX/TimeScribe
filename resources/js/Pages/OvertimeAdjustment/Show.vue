@@ -7,7 +7,7 @@ import SheetDialog from '@/Components/dialogs/SheetDialog.vue'
 import OvertimeAdjustmentListItem from '@/Components/OvertimeAdjustmentListItem.vue'
 import { EmptyState } from '@/Components/ui-custom/empty-state'
 import BasicLayout from '@/Layouts/BasicLayout.vue'
-import { secToFormat } from '@/lib/utils'
+import { formatMachineDate, secToFormat } from '@/lib/utils'
 import Edit from '@/Pages/OvertimeAdjustment/Edit.vue'
 import { OvertimeAdjustment, WeekBalance, WeekdayObject } from '@/types'
 import { ArrowRight, ClipboardClock, Clock, ClockArrowDown, ClockArrowUp, Diff, Dot, Equal, Plus } from '@lucide/vue'
@@ -260,8 +260,7 @@ const closeEditModal = () => {
                 <div class="flex gap-2">
                     <div
                         :class="{
-                            'ring-primary ring-2 ring-inset':
-                                weekday.date.date === moment().clone().locale('en').format('YYYY-MM-DD')
+                            'ring-primary ring-2 ring-inset': weekday.date.date === formatMachineDate(moment())
                         }"
                         :data-adjustment-type="hasDateAdjustment(weekday.date.date)"
                         :key="weekday.date.formatted"

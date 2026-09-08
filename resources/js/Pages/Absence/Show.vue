@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { formatMachineDate } from '@/lib/utils'
 import { PageHeader } from '@/Components/ui-custom/page-header'
 import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
@@ -115,7 +116,7 @@ const removeHoliday = (date: string) => {
         </div>
         <Button
             :as="Link"
-            :href="route('absence.show', { date: moment().clone().locale('en').format('YYYY-MM-DD') })"
+            :href="route('absence.show', { date: formatMachineDate(moment()) })"
             prefetch
             size="sm"
             variant="outline"
@@ -151,15 +152,11 @@ const removeHoliday = (date: string) => {
                     :class="{
                         'py-0.75': day.day() === 0 || day.day() === 6,
                         'bg-muted text-muted-foreground dark:bg-muted/30':
-                            day.day() !== 0 &&
-                            day.day() !== 6 &&
-                            holidays[day.clone().locale('en').format('YYYY-MM-DD')],
+                            day.day() !== 0 && day.day() !== 6 && holidays[formatMachineDate(day)],
                         'opacity-40': !day.isSame(momentSelectedDate, 'month'),
                         'ring-primary ring-2': day.isSame(moment(), 'day'),
-                        'text-background! bg-rose-400!':
-                            absences[day.clone().locale('en').format('YYYY-MM-DD')]?.type === 'sick',
-                        'text-background! bg-emerald-500!':
-                            absences[day.clone().locale('en').format('YYYY-MM-DD')]?.type === 'vacation'
+                        'text-background! bg-rose-400!': absences[formatMachineDate(day)]?.type === 'sick',
+                        'text-background! bg-emerald-500!': absences[formatMachineDate(day)]?.type === 'vacation'
                     }"
                     class="border-muted group dark:border-muted/50 relative m-0.75 flex grow flex-col rounded-lg pr-1 pl-2 transition-all duration-500"
                 >
@@ -173,25 +170,20 @@ const removeHoliday = (date: string) => {
                             <div
                                 :class="{
                                     'bg-background! text-foreground! line-through opacity-50':
-                                        absences[day.clone().locale('en').format('YYYY-MM-DD')]
+                                        absences[formatMachineDate(day)]
                                 }"
                                 @click="
-                                    !absences[day.clone().locale('en').format('YYYY-MM-DD')]
-                                        ? addHoliday(day.clone().locale('en').format('YYYY-MM-DD'))
-                                        : undefined
+                                    !absences[formatMachineDate(day)] ? addHoliday(formatMachineDate(day)) : undefined
                                 "
                                 class="bg-primary text-primary-foreground rounded px-1.5 text-xs transition-all duration-500 group-hover/drama:bg-transparent group-hover/drama:text-purple-400 group-hover/drama:line-through"
-                                v-if="
-                                    props.plans[day.clone().locale('en').format('YYYY-MM-DD')] &&
-                                    !holidays[day.clone().locale('en').format('YYYY-MM-DD')]
-                                "
+                                v-if="props.plans[formatMachineDate(day)] && !holidays[formatMachineDate(day)]"
                             >
-                                {{ props.plans[day.clone().locale('en').format('YYYY-MM-DD')] }} {{ $t('app.h') }}
+                                {{ props.plans[formatMachineDate(day)] }} {{ $t('app.h') }}
                             </div>
                             <div
-                                @click="removeHoliday(day.clone().locale('en').format('YYYY-MM-DD'))"
+                                @click="removeHoliday(formatMachineDate(day))"
                                 class="flex items-center text-purple-400"
-                                v-if="holidays[day.clone().locale('en').format('YYYY-MM-DD')]"
+                                v-if="holidays[formatMachineDate(day)]"
                             >
                                 <X
                                     class="hidden size-4 transition-all duration-500 group-hover/drama:block starting:w-0"
@@ -202,22 +194,22 @@ const removeHoliday = (date: string) => {
                     </div>
                     <div
                         class="text-foreground hidden grow items-center justify-center gap-2 group-hover:flex"
-                        v-if="!absences[day.clone().locale('en').format('YYYY-MM-DD')]"
+                        v-if="!absences[formatMachineDate(day)]"
                     >
                         <Button
-                            @click="createAbsence('vacation', day.clone().locale('en').format('YYYY-MM-DD'))"
+                            @click="createAbsence('vacation', formatMachineDate(day))"
                             class="rounded-full"
                             size="icon"
                             v-if="
-                                !holidays[day.clone().locale('en').format('YYYY-MM-DD')] &&
-                                (props.plans[day.clone().locale('en').format('YYYY-MM-DD')] || !props.hasWorkSchedules)
+                                !holidays[formatMachineDate(day)] &&
+                                (props.plans[formatMachineDate(day)] || !props.hasWorkSchedules)
                             "
                             variant="outline"
                         >
                             <TreePalm />
                         </Button>
                         <Button
-                            @click="createAbsence('sick', day.clone().locale('en').format('YYYY-MM-DD'))"
+                            @click="createAbsence('sick', formatMachineDate(day))"
                             class="rounded-full"
                             size="icon"
                             variant="outline"
@@ -227,14 +219,14 @@ const removeHoliday = (date: string) => {
                     </div>
                     <div class="relative flex grow items-center justify-center pb-2 text-xs" v-else>
                         <div
-                            @click.prevent="removeAbsence(absences[day.clone().locale('en').format('YYYY-MM-DD')].id)"
+                            @click.prevent="removeAbsence(absences[formatMachineDate(day)].id)"
                             class="text-background/80 absolute inset-0 z-10 flex items-center justify-center gap-1.5 rounded-full pb-2 opacity-0 transition-all duration-500 group-hover:opacity-100"
                         >
                             <Trash class="pointer-events-none size-4" />
                         </div>
                         <div
                             class="text-background/80 flex items-center gap-1.5 rounded-full bg-emerald-500 transition-all duration-500 group-hover:opacity-0"
-                            v-if="absences[day.clone().locale('en').format('YYYY-MM-DD')].type === 'vacation'"
+                            v-if="absences[formatMachineDate(day)].type === 'vacation'"
                         >
                             <TreePalm class="size-4" />
                             {{ $t('app.leave') }}
@@ -242,7 +234,7 @@ const removeHoliday = (date: string) => {
 
                         <div
                             class="text-background/80 flex items-center gap-1.5 rounded-full bg-rose-400 transition-all duration-500 group-hover:opacity-0"
-                            v-if="absences[day.clone().locale('en').format('YYYY-MM-DD')].type === 'sick'"
+                            v-if="absences[formatMachineDate(day)].type === 'sick'"
                         >
                             <Cross class="size-4" />
                             {{ $t('app.sick') }}

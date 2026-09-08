@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { formatMachineDate } from '@/lib/utils'
 import TimestampTypeBadge from '@/Components/TimestampTypeBadge.vue'
 import WeekdayColumn from '@/Components/WeekdayColumn.vue'
 import WorktimeProgressBar from '@/Components/WorktimeProgressBar.vue'
@@ -58,7 +59,7 @@ if (window.Native) {
         </div>
         <Button
             :as="Link"
-            :href="route('overview.week.show', { date: moment().clone().locale('en').format('YYYY-MM-DD') })"
+            :href="route('overview.week.show', { date: formatMachineDate(moment()) })"
             prefetch
             size="sm"
             variant="outline"

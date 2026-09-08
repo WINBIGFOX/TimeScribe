@@ -2,7 +2,7 @@
 import { PageHeader } from '@/Components/ui-custom/page-header'
 import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
-import { secToFormat } from '@/lib/utils'
+import { formatMachineDate, secToFormat } from '@/lib/utils'
 import { GetTimeProjectDetails } from '@/types'
 import { Head, Link, router, usePage } from '@inertiajs/vue3'
 import { useCssVar } from '@vueuse/core'
@@ -278,7 +278,7 @@ if (window.Native) {
         </div>
         <Button
             :as="Link"
-            :href="route('overview.year.show', { date: moment().clone().locale('en').format('YYYY-MM-DD') })"
+            :href="route('overview.year.show', { date: formatMachineDate(moment()) })"
             prefetch
             size="sm"
             variant="outline"

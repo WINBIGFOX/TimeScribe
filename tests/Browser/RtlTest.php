@@ -57,6 +57,7 @@ it('keeps dates in navigation machine readable in Arabic', function (): void {
         ->click('a[href$="/overview/week/2026-09-15"]')
         ->assertPathIs('/overview/week/2026-09-15')
         ->assertSee('نظرة عامة أسبوعية')
+        ->assertSee('سبتمبر')
         ->assertNoJavaScriptErrors();
 });
 
@@ -67,10 +68,12 @@ it('opens sheets on the trailing side and mirrors calendar keyboard navigation',
 
     $page = visit('/work-schedule/create')->resize(1280, 800);
     $page->assertScript('document.documentElement.dir', 'rtl')
-        ->assertScript('document.querySelector("[data-slot=sheet-content]").getBoundingClientRect().left < 20')
-        ->click('[data-slot="popover-trigger"]')
+        ->assertScript('document.querySelector("[data-slot=sheet-content]").getBoundingClientRect().left < 20');
+    $page->script('async () => await Promise.all(document.querySelector("[data-slot=sheet-content]").getAnimations().map(animation => animation.finished))');
+    $page->click('[data-slot="popover-trigger"]')
         ->assertAttribute('[data-slot="calendar"]', 'dir', 'rtl')
         ->assertScript('document.querySelector("[data-slot=calendar-prev-button]").getBoundingClientRect().x > document.querySelector("[data-slot=calendar-next-button]").getBoundingClientRect().x');
+    $page->script('async () => await Promise.all(document.querySelector("[data-slot=popover-content]").getAnimations().map(animation => animation.finished))');
 
     $focusedDay = '[data-slot="calendar-cell-trigger"][tabindex="0"]';
     $date = new DateTimeImmutable($page->attribute($focusedDay, 'data-value'));
