@@ -58,7 +58,9 @@ const amountOpen = computed(() => calcAmount(false))
             <div class="flex items-center justify-between tabular-nums">
                 <div class="flex flex-1 items-center gap-2">
                     <span class="text-2xl" v-if="props.project.icon">{{ props.project.icon }}</span>
-                    <div class="flex-1 pr-2 font-medium">{{ props.project.name }}</div>
+                    <div class="flex-1 pe-2 font-medium">
+                        <bdi>{{ props.project.name }}</bdi>
+                    </div>
                     <div
                         class="flex shrink-0 items-center gap-1"
                         dir="ltr"
@@ -101,11 +103,11 @@ const amountOpen = computed(() => calcAmount(false))
                             preserve-scroll
                             preserve-state
                         >
-                            <Edit class="mr-2 h-4 w-4" />
+                            <Edit class="me-2 h-4 w-4" />
                             {{ $t('app.edit :item', { item: $t('app.project') }) }}
                         </DropdownMenuItem>
                         <DropdownMenuItem @click="deleteProject(project)">
-                            <Archive class="mr-2 h-4 w-4" />
+                            <Archive class="me-2 h-4 w-4" />
                             {{ $t('app.archive') }}
                         </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -124,7 +126,7 @@ const amountOpen = computed(() => calcAmount(false))
                 </Button>
             </div>
             <div class="text-muted-foreground mt-2 text-sm" v-if="props.project.description">
-                {{ props.project.description }}
+                <bdi>{{ props.project.description }}</bdi>
             </div>
             <div class="flex items-center justify-between" v-if="props.project.hourly_rate && props.project.currency">
                 <div class="text-muted-foreground mt-1 text-sm">

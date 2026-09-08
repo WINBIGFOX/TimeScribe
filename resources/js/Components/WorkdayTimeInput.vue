@@ -30,7 +30,7 @@ watch(active, (newVal) => {
 </script>
 
 <template>
-    <div class="flex h-10 items-center justify-between space-x-4">
+    <div class="flex h-10 items-center justify-between gap-x-4">
         <p class="text-sm leading-none font-medium">{{ props.workday }}</p>
         <div class="flex items-center gap-4">
             <NumberField

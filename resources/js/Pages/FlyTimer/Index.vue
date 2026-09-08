@@ -106,7 +106,7 @@ const useShowMenu = refThrottled(showMenu, 5000)
             >
                 <div class="text-center" v-if="props.currentType !== 'break'">
                     <div class="text-2xl leading-none font-bold tracking-tighter tabular-nums">
-                        {{ workTimeFormatted }}
+                        <bdi dir="ltr">{{ workTimeFormatted }}</bdi>
                     </div>
                     <div class="text-muted-foreground clear-none text-[0.70rem] uppercase">
                         {{ $t('app.work hours') }}
@@ -122,7 +122,7 @@ const useShowMenu = refThrottled(showMenu, 5000)
             >
                 <div class="text-center" v-if="props.currentType === 'break'">
                     <div class="text-2xl leading-none font-bold tracking-tighter tabular-nums">
-                        {{ breakTimeFormatted }}
+                        <bdi dir="ltr">{{ breakTimeFormatted }}</bdi>
                     </div>
                     <div class="text-muted-foreground clear-none text-[0.70rem] uppercase">
                         {{ $t('app.break') }}
@@ -135,12 +135,12 @@ const useShowMenu = refThrottled(showMenu, 5000)
             :class="{
                 'scale-100! opacity-100!': showMenu
             }"
-            class="bg-background absolute inset-2 left-6 flex scale-105 transform-gpu items-stretch rounded-full opacity-0 transition-all duration-500 group-hover:scale-100 group-hover:opacity-100"
+            class="bg-background absolute inset-2 start-6 flex scale-105 transform-gpu items-stretch rounded-full opacity-0 transition-all duration-500 group-hover:scale-100 group-hover:opacity-100"
         >
             <Button
                 :as="Link"
                 :href="route('fly-timer.storeStop')"
-                class="h-full flex-1 rounded-l-full rounded-r-none pl-5! transition-colors"
+                class="h-full flex-1 rounded-s-full rounded-e-none ps-5! transition-colors"
                 method="post"
                 preserve-state
                 size="lg"
@@ -153,7 +153,7 @@ const useShowMenu = refThrottled(showMenu, 5000)
                 :as="Link"
                 :class="{
                     'rounded-full': !props.currentType,
-                    'rounded-l-none rounded-r-full pr-5!': props.currentType
+                    'rounded-s-none rounded-e-full pe-5!': props.currentType
                 }"
                 :href="route('fly-timer.storeWork')"
                 class="h-full flex-1 border border-transparent transition-colors"
@@ -167,7 +167,7 @@ const useShowMenu = refThrottled(showMenu, 5000)
             <Button
                 :as="Link"
                 :href="route('fly-timer.storeBreak')"
-                class="h-full flex-1 rounded-l-none rounded-r-full pr-5!"
+                class="h-full flex-1 rounded-s-none rounded-e-full pe-5!"
                 method="post"
                 preserve-state
                 size="lg"
@@ -179,7 +179,7 @@ const useShowMenu = refThrottled(showMenu, 5000)
         </div>
         <Link
             :href="route('window.fly-timer.close')"
-            class="bg-background fixed top-0 right-0 flex size-4 items-center justify-center overflow-clip rounded-full opacity-0 transition-opacity delay-1000 duration-500 group-hover:opacity-100"
+            class="bg-background fixed end-0 top-0 flex size-4 items-center justify-center overflow-clip rounded-full opacity-0 transition-opacity delay-1000 duration-500 group-hover:opacity-100"
         >
             <X
                 class="bg-destructive hover:bg-destructive/90 dark:bg-destructive/60 text-destructive-foreground size-4 p-0.5"
@@ -187,7 +187,7 @@ const useShowMenu = refThrottled(showMenu, 5000)
         </Link>
         <div
             :class="{
-                'translate-x-0 opacity-100 [app-region:drag]': useShowMenu || showMenu
+                'opacity-100 [app-region:drag] ltr:translate-x-0 rtl:translate-x-0': useShowMenu || showMenu
             }"
             @mouseleave="showMenu = false"
             @mouseover="
@@ -196,9 +196,9 @@ const useShowMenu = refThrottled(showMenu, 5000)
                     useShowMenu = true
                 }
             "
-            class="text-muted-foreground fixed left-0 flex h-full w-6 -translate-x-6 transform-gpu items-center justify-end overflow-clip rounded-l-full rounded-r-none opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100 focus-visible:[app-region:drag]"
+            class="text-muted-foreground fixed start-0 flex h-full w-6 transform-gpu items-center justify-end overflow-clip rounded-s-full rounded-e-none opacity-0 transition-all duration-500 group-hover:opacity-100 focus-visible:[app-region:drag] ltr:-translate-x-6 ltr:group-hover:translate-x-0 rtl:translate-x-6 rtl:group-hover:translate-x-0"
         >
-            <Tally2 class="translate-x-2" />
+            <Tally2 class="ltr:translate-x-2 rtl:-translate-x-2" />
         </div>
     </div>
 </template>

@@ -42,31 +42,31 @@ const items = computed(() => {
     return {
         current: {
             label: currentMoment.format(longDateFormat),
-            link: route(props.route, { date: currentMoment.format('YYYY-MM-DD') })
+            link: route(props.route, { date: currentMoment.clone().locale('en').format('YYYY-MM-DD') })
         },
         previous: {
             label: previousMoment.format(shortDateFormat),
-            link: route(props.route, { date: previousMoment.format('YYYY-MM-DD') })
+            link: route(props.route, { date: previousMoment.clone().locale('en').format('YYYY-MM-DD') })
         },
         secondPrevious: {
             label: secondPreviousMoment.format(shortDateFormat),
-            link: route(props.route, { date: secondPreviousMoment.format('YYYY-MM-DD') })
+            link: route(props.route, { date: secondPreviousMoment.clone().locale('en').format('YYYY-MM-DD') })
         },
         thirdPrevious: {
             label: thirdPreviousMoment.format(shortDateFormat),
-            link: route(props.route, { date: thirdPreviousMoment.format('YYYY-MM-DD') })
+            link: route(props.route, { date: thirdPreviousMoment.clone().locale('en').format('YYYY-MM-DD') })
         },
         next: {
             label: nextMoment.format(shortDateFormat),
-            link: route(props.route, { date: nextMoment.format('YYYY-MM-DD') })
+            link: route(props.route, { date: nextMoment.clone().locale('en').format('YYYY-MM-DD') })
         },
         secondNext: {
             label: secondNextMoment.format(shortDateFormat),
-            link: route(props.route, { date: secondNextMoment.format('YYYY-MM-DD') })
+            link: route(props.route, { date: secondNextMoment.clone().locale('en').format('YYYY-MM-DD') })
         },
         thirdNext: {
             label: thirdNextMoment.format(shortDateFormat),
-            link: route(props.route, { date: thirdNextMoment.format('YYYY-MM-DD') })
+            link: route(props.route, { date: thirdNextMoment.clone().locale('en').format('YYYY-MM-DD') })
         }
     }
 })

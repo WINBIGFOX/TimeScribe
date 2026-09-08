@@ -7,15 +7,16 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getCurrencySymbol(locale, currency) {
-    return (0)
-        .toLocaleString(locale, {
+    return (
+        new Intl.NumberFormat(locale, {
             style: 'currency',
             currency,
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         })
-        .replace(/\d/g, '')
-        .trim()
+            .formatToParts(0)
+            .find((part) => part.type === 'currency')?.value ?? currency
+    )
 }
 
 export function secToFormat(
@@ -60,7 +61,7 @@ export function weekdayTranslate(weekday: string) {
         return weekday
     }
 
-    const locales = ['da', 'en', 'de', 'fr', 'it', 'pl', 'pt-br', 'zh-cn']
+    const locales = ['ar', 'ar-sa', 'he', 'da', 'en', 'de', 'fr', 'it', 'pl', 'pt-br', 'zh-cn']
 
     const currentLocale = moment.locale()
 

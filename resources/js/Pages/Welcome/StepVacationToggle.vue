@@ -30,7 +30,7 @@ const select = (value: boolean) => emit('update:trackVacation', value)
             <button
                 :aria-pressed="props.trackVacation"
                 :class="[
-                    'border-border/60 flex items-start gap-3 rounded-lg border p-4 text-left transition',
+                    'border-border/60 flex items-start gap-3 rounded-lg border p-4 text-start transition',
                     props.trackVacation
                         ? 'bg-background text-foreground border-primary/50 shadow-md'
                         : 'bg-background/80 text-foreground/80 hover:bg-background'
@@ -53,7 +53,7 @@ const select = (value: boolean) => emit('update:trackVacation', value)
             <button
                 :aria-pressed="!props.trackVacation"
                 :class="[
-                    'border-border/60 flex items-start gap-3 rounded-lg border p-4 text-left transition',
+                    'border-border/60 flex items-start gap-3 rounded-lg border p-4 text-start transition',
                     !props.trackVacation
                         ? 'bg-background text-foreground border-primary/50 shadow-md'
                         : 'bg-background/80 text-foreground/80 hover:bg-background'

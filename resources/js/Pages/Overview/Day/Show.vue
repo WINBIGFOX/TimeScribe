@@ -51,7 +51,7 @@ if (window.Native) {
         </div>
         <Button
             :as="Link"
-            :href="route('overview.day.show', { date: moment().format('YYYY-MM-DD') })"
+            :href="route('overview.day.show', { date: moment().clone().locale('en').format('YYYY-MM-DD') })"
             class="z-20"
             prefetch
             size="sm"
@@ -114,7 +114,10 @@ if (window.Native) {
                 v-if="
                     props.timestamps.length > 0 &&
                     props.timestamps[props.timestamps.length - 1].ended_at &&
-                    moment(props.timestamps[props.timestamps.length - 1].ended_at?.date).format('HH:mm') !== '23:59'
+                    moment(props.timestamps[props.timestamps.length - 1].ended_at?.date)
+                        .clone()
+                        .locale('en')
+                        .format('HH:mm') !== '23:59'
                 "
             />
         </div>

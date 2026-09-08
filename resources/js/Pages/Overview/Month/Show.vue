@@ -8,6 +8,8 @@ import { GetTimeProjectDetails } from '@/types'
 import { Head, Link, router, usePage } from '@inertiajs/vue3'
 import { useCssVar } from '@vueuse/core'
 import { ApexOptions } from 'apexcharts'
+import ar from 'apexcharts/dist/locales/ar.json'
+import he from 'apexcharts/dist/locales/he.json'
 import da from 'apexcharts/dist/locales/da.json'
 import de from 'apexcharts/dist/locales/de.json'
 import en from 'apexcharts/dist/locales/en.json'
@@ -43,6 +45,8 @@ const showWeek = (opts) => {
 }
 
 const localeMapping = {
+    'ar-SA': 'ar',
+    'he-IL': 'he',
     'da-DK': 'da',
     'de-DE': 'de',
     'en-GB': 'en',
@@ -54,7 +58,7 @@ const localeMapping = {
     'pt-BR': 'pt-br',
     'zh-CN': 'zh-cn'
 }
-const currentLocale = localeMapping[usePage().props.js_locale]
+const currentLocale = localeMapping[usePage().props.js_locale] ?? usePage().props.language
 
 const buildSeries = () => {
     const series = [] as Record<string, string | number[]>[]
@@ -95,7 +99,7 @@ const data = {
             },
             background: 'transparent',
             fontFamily: 'var(--font-sans)',
-            locales: [da, de, en, fr, it, pl, ptBr, zhCn],
+            locales: [ar, he, da, de, en, fr, it, pl, ptBr, zhCn],
             defaultLocale: currentLocale,
             type: 'bar',
             stacked: true,
@@ -269,7 +273,7 @@ if (window.Native) {
         </div>
         <Button
             :as="Link"
-            :href="route('overview.month.show', { date: moment().format('YYYY-MM-DD') })"
+            :href="route('overview.month.show', { date: moment().clone().locale('en').format('YYYY-MM-DD') })"
             prefetch
             size="sm"
             variant="outline"

@@ -67,7 +67,7 @@ watch(holidayCheck, () => {
     <Head title="Settings - General" />
     <PageHeader :title="$t('app.general settings')" />
     <div>
-        <div class="flex items-center space-x-4 py-4">
+        <div class="flex items-center gap-x-4 py-4">
             <KeyRound />
             <div class="flex-1">
                 <p class="text-sm leading-none font-medium">
@@ -76,7 +76,7 @@ watch(holidayCheck, () => {
             </div>
             <Switch v-model="form.openAtLogin" />
         </div>
-        <div class="flex items-center space-x-4 py-4">
+        <div class="flex items-center gap-x-4 py-4">
             <Languages />
             <div class="flex flex-1 items-center gap-4">
                 <p class="flex-1 text-sm leading-none font-medium">
@@ -87,6 +87,12 @@ watch(holidayCheck, () => {
                         <SelectValue :placeholder="$t('app.language')" />
                     </SelectTrigger>
                     <SelectContent>
+                        <SelectItem :value="$page.props.language === 'ar' ? $page.props.locale : 'ar_SA'"
+                            ><bdi lang="ar">العربية</bdi></SelectItem
+                        >
+                        <SelectItem :value="$page.props.language === 'he' ? $page.props.locale : 'he_IL'"
+                            ><bdi lang="he">עברית</bdi></SelectItem
+                        >
                         <SelectItem value="da_DK">
                             {{ $t('app.danish') }}
                         </SelectItem>
@@ -121,7 +127,7 @@ watch(holidayCheck, () => {
                 </Select>
             </div>
         </div>
-        <div class="flex items-center space-x-4 py-4">
+        <div class="flex items-center gap-x-4 py-4">
             <Globe />
             <div class="flex flex-1 items-center gap-4">
                 <p class="flex-1 text-sm leading-none font-medium">
@@ -139,7 +145,7 @@ watch(holidayCheck, () => {
                 </Select>
             </div>
         </div>
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-start gap-x-4 py-4">
             <SunMoon class="rtl:-scale-x-100" />
             <div class="flex flex-1 gap-4">
                 <div class="flex-1 space-y-1">
@@ -169,7 +175,7 @@ watch(holidayCheck, () => {
                 </Select>
             </div>
         </div>
-        <div class="flex items-center space-x-4 py-4">
+        <div class="flex items-center gap-x-4 py-4">
             <PanelsTopLeft class="rtl:-scale-x-100" />
             <div class="flex flex-1 items-center gap-4">
                 <p class="flex-1 text-sm leading-none font-medium">
@@ -196,7 +202,7 @@ watch(holidayCheck, () => {
                 </Select>
             </div>
         </div>
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-start gap-x-4 py-4">
             <Eye />
             <div class="flex-1 space-y-1">
                 <p class="text-sm leading-none font-medium">
@@ -209,7 +215,7 @@ watch(holidayCheck, () => {
             <Switch class="self-center" v-model="form.showTimerOnUnlock" />
         </div>
 
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-start gap-x-4 py-4">
             <AppWindowMac />
             <div class="flex-1 space-y-1">
                 <p class="text-sm leading-none font-medium">
@@ -222,7 +228,7 @@ watch(holidayCheck, () => {
             <Switch class="self-center" v-model="form.appActivityTracking" />
         </div>
 
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-start gap-x-4 py-4">
             <CalendarMinus />
             <div class="flex-1 space-y-1">
                 <div class="flex items-center gap-10">
@@ -237,7 +243,7 @@ watch(holidayCheck, () => {
                     <Switch v-model="holidayCheck" />
                 </div>
                 <Select size="5" v-if="holidayCheck && props.holidayRegions" v-model="form.holidayRegion">
-                    <SelectTrigger class="mt-2 ml-auto w-1/2">
+                    <SelectTrigger class="ms-auto mt-2 w-1/2">
                         <SelectValue placeholder="Region" />
                     </SelectTrigger>
                     <SelectContent>

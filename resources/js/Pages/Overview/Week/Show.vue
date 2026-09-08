@@ -58,7 +58,7 @@ if (window.Native) {
         </div>
         <Button
             :as="Link"
-            :href="route('overview.week.show', { date: moment().format('YYYY-MM-DD') })"
+            :href="route('overview.week.show', { date: moment().clone().locale('en').format('YYYY-MM-DD') })"
             prefetch
             size="sm"
             variant="outline"
@@ -116,7 +116,7 @@ if (window.Native) {
         <TimestampTypeBadge :duration="(props.weekPlan ?? 0) * 60 * 60" type="plan" v-if="props.hasWorkSchedules" />
         <Link
             :href="route('overtime-adjustment.show', { date: props.date })"
-            class="ml-auto flex items-stretch"
+            class="ms-auto flex items-stretch"
             prefetch
             preserve-scroll
             preserve-state

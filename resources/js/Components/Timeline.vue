@@ -94,7 +94,10 @@ const dragStart = (index: string, type?: 'work' | 'break') => {
 }
 const dragOver = (index: string, type?: 'work' | 'break') => {
     if (drag.value && startDragIndex.value !== undefined) {
-        if (dragType.value !== type || (isToday && parseInt(moment().format('HHmm')) < parseInt(index.toString()))) {
+        if (
+            dragType.value !== type ||
+            (isToday && parseInt(moment().clone().locale('en').format('HHmm')) < parseInt(index.toString()))
+        ) {
             dragStop()
             return
         }
@@ -104,11 +107,23 @@ const dragOver = (index: string, type?: 'work' | 'break') => {
 
 const dragStop = () => {
     if (startDragIndex.value !== undefined && currentDragIndex.value !== undefined && drag.value === true) {
-        let startDatetime = createDateTimeFromIndex(startDragIndex.value).format('YYYY-MM-DD HH:mm:ss')
-        let endDatetime = createDateTimeFromIndex(currentDragIndex.value, 10).format('YYYY-MM-DD HH:mm:ss')
+        let startDatetime = createDateTimeFromIndex(startDragIndex.value)
+            .clone()
+            .locale('en')
+            .format('YYYY-MM-DD HH:mm:ss')
+        let endDatetime = createDateTimeFromIndex(currentDragIndex.value, 10)
+            .clone()
+            .locale('en')
+            .format('YYYY-MM-DD HH:mm:ss')
         if (startDragIndex.value > currentDragIndex.value) {
-            startDatetime = createDateTimeFromIndex(currentDragIndex.value).format('YYYY-MM-DD HH:mm:ss')
-            endDatetime = createDateTimeFromIndex(startDragIndex.value, 10).format('YYYY-MM-DD HH:mm:ss')
+            startDatetime = createDateTimeFromIndex(currentDragIndex.value)
+                .clone()
+                .locale('en')
+                .format('YYYY-MM-DD HH:mm:ss')
+            endDatetime = createDateTimeFromIndex(startDragIndex.value, 10)
+                .clone()
+                .locale('en')
+                .format('YYYY-MM-DD HH:mm:ss')
         }
         router.visit(
             route('timestamp.create', {

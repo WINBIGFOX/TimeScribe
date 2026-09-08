@@ -93,7 +93,7 @@ const hasEntries = computed(() => entries.value.length > 0)
         <div class="flex items-center gap-2">
             <Button
                 :as="Link"
-                :href="route('absence.vacation.index', { date: moment().format('YYYY-MM-DD') })"
+                :href="route('absence.vacation.index', { date: moment().clone().locale('en').format('YYYY-MM-DD') })"
                 prefetch
                 size="sm"
                 variant="outline"

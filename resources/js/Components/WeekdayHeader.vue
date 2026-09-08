@@ -11,7 +11,7 @@ const momentDate = moment(props.date, 'YYYY-MM-DD')
 <template>
     <div
         :class="{
-            'ring-primary ring-2 ring-inset': props.date === moment().format('YYYY-MM-DD')
+            'ring-primary ring-2 ring-inset': props.date === moment().clone().locale('en').format('YYYY-MM-DD')
         }"
         class="bg-sidebar border-muted text-muted-foreground flex size-14 flex-col items-center justify-center rounded-lg border text-center"
     >

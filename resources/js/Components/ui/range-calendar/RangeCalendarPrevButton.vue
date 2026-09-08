@@ -18,10 +18,11 @@ const forwardedProps = useForwardProps(delegatedProps)
 
 <template>
     <RangeCalendarPrev
+        :aria-label="$t('app.back')"
         :class="
             cn(
                 buttonVariants({ variant: 'outline' }),
-                'absolute left-1',
+                'absolute start-1',
                 'size-7 bg-transparent p-0 opacity-50 hover:opacity-100',
                 props.class
             )
@@ -30,7 +31,7 @@ const forwardedProps = useForwardProps(delegatedProps)
         data-slot="range-calendar-prev-button"
     >
         <slot>
-            <ChevronLeft class="size-4" />
+            <ChevronLeft class="size-4 rtl:-scale-x-100" />
         </slot>
     </RangeCalendarPrev>
 </template>

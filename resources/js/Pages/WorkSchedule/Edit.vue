@@ -25,7 +25,8 @@ const page = usePage()
 const value = ref<DateValue>()
 
 const df = new DateFormatter(page.props.js_locale, {
-    dateStyle: 'long'
+    dateStyle: 'long',
+    calendar: 'gregory'
 })
 
 const props = defineProps<{
@@ -85,7 +86,7 @@ const destroy = () => {
         @destroy="destroy"
         @submit="submit"
     >
-        <div class="flex items-center space-x-4 rounded-t-md border border-b-0 p-4">
+        <div class="flex items-center gap-x-4 rounded-t-md border border-b-0 p-4">
             <CalendarClock />
             <div class="flex-1 space-y-1">
                 <p class="text-sm leading-none font-medium">
@@ -108,10 +109,10 @@ const destroy = () => {
             <Popover>
                 <PopoverTrigger as-child>
                     <Button
-                        :class="cn('w-[250px] justify-start text-left font-normal', !value && 'text-muted-foreground')"
+                        :class="cn('w-[250px] justify-start text-start font-normal', !value && 'text-muted-foreground')"
                         variant="outline"
                     >
-                        <CalendarIcon class="mr-2 h-4 w-4" />
+                        <CalendarIcon class="me-2 h-4 w-4" />
                         {{ value ? df.format(value.toDate(getLocalTimeZone())) : $t('app.pick a date') }}
                     </Button>
                 </PopoverTrigger>

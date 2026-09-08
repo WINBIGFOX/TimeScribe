@@ -11,7 +11,7 @@ import { FolderInput, FolderOutput } from '@lucide/vue'
 <template>
     <Head title="Import/Export" />
     <PageHeader :title="$t('app.import / export')" />
-    <div class="mt-4 flex items-start space-x-4">
+    <div class="mt-4 flex items-start gap-x-4">
         <FolderInput />
         <div class="flex-1 space-y-1">
             <p class="text-sm leading-none font-medium">{{ $t('app.data import') }}</p>
@@ -47,7 +47,7 @@ import { FolderInput, FolderOutput } from '@lucide/vue'
             </div>
         </div>
     </div>
-    <div class="mt-4 flex items-start space-x-4 border-t py-4 pt-8">
+    <div class="mt-4 flex items-start gap-x-4 border-t py-4 pt-8">
         <FolderOutput />
         <div class="flex-1 space-y-1">
             <p class="text-sm leading-none font-medium">

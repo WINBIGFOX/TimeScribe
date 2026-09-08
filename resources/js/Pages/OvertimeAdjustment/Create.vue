@@ -38,7 +38,8 @@ const effective_date = ref<DateValue | undefined>()
 const page = usePage()
 
 const df = new DateFormatter(page.props.js_locale, {
-    dateStyle: 'long'
+    dateStyle: 'long',
+    calendar: 'gregory'
 })
 
 const form = useForm({
@@ -83,13 +84,13 @@ const submit = () => {
                     <Button
                         :class="
                             cn(
-                                'w-[250px] justify-start text-left font-normal',
+                                'w-[250px] justify-start text-start font-normal',
                                 !effective_date && 'text-muted-foreground'
                             )
                         "
                         variant="outline"
                     >
-                        <CalendarIcon class="mr-2 h-4 w-4" />
+                        <CalendarIcon class="me-2 h-4 w-4" />
                         {{
                             effective_date
                                 ? df.format(effective_date.toDate(getLocalTimeZone()))

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Services\LocaleService;
 use App\Services\TimestampService;
 use App\Settings\GeneralSettings;
 use Illuminate\Http\Request;
@@ -41,6 +42,8 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'js_locale' => str_replace('_', '-', $settings->locale ?? config('app.fallback_locale')),
             'locale' => $settings->locale ?? config('app.fallback_locale'),
+            'language' => app()->getLocale(),
+            'direction' => LocaleService::direction(app()->getLocale()),
             'timezone' => $settings->timezone ?? config('app.timezone'),
             'app_version' => config('nativephp.version'),
             'date' => now()->format('Y-m-d'),

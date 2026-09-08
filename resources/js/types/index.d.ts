@@ -153,6 +153,8 @@ export interface OvertimeAdjustment {
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     js_locale: string
     locale: string
+    language: string
+    direction: 'ltr' | 'rtl'
     timezone: string
     app_version: string
     recording: boolean

@@ -17,9 +17,9 @@ const props = defineProps<{
 }>()
 
 const form = useForm({
-    started_at: moment(props.timestamp.started_at.date, 'YYYY-MM-DD HH:mm:ss').format('HH:mm'),
+    started_at: moment(props.timestamp.started_at.date, 'YYYY-MM-DD HH:mm:ss').clone().locale('en').format('HH:mm'),
     ended_at: props.timestamp.ended_at
-        ? moment(props.timestamp.ended_at.date, 'YYYY-MM-DD HH:mm:ss').format('HH:mm')
+        ? moment(props.timestamp.ended_at.date, 'YYYY-MM-DD HH:mm:ss').clone().locale('en').format('HH:mm')
         : undefined,
     type: props.timestamp.type,
     description: props.timestamp.description,

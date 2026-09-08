@@ -37,7 +37,7 @@ const timestampGroups = computed<TimestampGroup[]>(() => {
     const timestamps = props.project.timestamps ?? []
 
     timestamps.forEach((timestamp) => {
-        const key = moment(timestamp.started_at.date).format('YYYY-MM')
+        const key = moment(timestamp.started_at.date).clone().locale('en').format('YYYY-MM')
 
         let group = groups.get(key)
 

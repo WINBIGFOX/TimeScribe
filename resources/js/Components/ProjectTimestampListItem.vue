@@ -42,7 +42,10 @@ watch(() => form.paid, submit)
                 :as="Link"
                 :href="
                     route('overview.day.show', {
-                        date: moment(props.timestamp.started_at.date, 'YYYY-MM-DD').format('YYYY-MM-DD')
+                        date: moment(props.timestamp.started_at.date, 'YYYY-MM-DD')
+                            .clone()
+                            .locale('en')
+                            .format('YYYY-MM-DD')
                     })
                 "
                 size="sm"
