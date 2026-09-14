@@ -94,6 +94,7 @@ if (window.Native) {
         <div class="grow space-y-1 overflow-y-auto" scroll-region v-if="!isFuture">
             <TimestampListPlaceholderItem
                 :start-of-day="startOfDay"
+                :view-mode="props.timelineDisplay"
                 v-if="props.timestamps.length === 0 || props.timestamps[0].started_at.date !== startOfDay"
             />
             <template :key="timestamp.id" v-for="(timestamp, index) in props.timestamps">
@@ -102,6 +103,7 @@ if (window.Native) {
                     :start-of-day="startOfDay"
                     :timestamp-after="timestamp"
                     :timestamp-before="props.timestamps[index - 1]"
+                    :view-mode="props.timelineDisplay"
                     v-if="
                         index > 0 && timestamp.started_at.formatted !== props.timestamps[index - 1].ended_at?.formatted
                     "
@@ -120,6 +122,7 @@ if (window.Native) {
             </template>
             <TimestampListPlaceholderItem
                 :timestamp-before="props.timestamps[props.timestamps.length - 1]"
+                :view-mode="props.timelineDisplay"
                 v-if="
                     props.timestamps.length > 0 &&
                     props.timestamps[props.timestamps.length - 1].ended_at &&
