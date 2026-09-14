@@ -26,9 +26,9 @@ class Project extends Model
     ];
 
     #[Scope]
-    protected function sortedByLatestTimestamp($query): Builder
+    protected function sortedByLatestTimestamp($query): void
     {
-        return $query
+        $query
             ->leftJoin('timestamps', 'projects.id', '=', 'timestamps.project_id')
             ->select('projects.*')
             ->selectRaw('MAX(timestamps.started_at) as last_started_at')
