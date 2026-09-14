@@ -2,24 +2,15 @@
 import AppSidebar from '@/Components/AppSidebar.vue'
 import { SidebarInset, SidebarProvider } from '@/Components/ui/sidebar'
 import BasicLayout from '@/Layouts/BasicLayout.vue'
-import { usePage } from '@inertiajs/vue3'
 import { useColorMode } from '@vueuse/core'
 import { Modal } from 'inertia-modal'
-import moment from 'moment/min/moment-with-locales'
-
-moment.locale(usePage().props.js_locale)
-if (window.Native) {
-    window.Native.on('App\\Events\\LocaleChanged', () => {
-        window.location.reload()
-    })
-}
 useColorMode()
 </script>
 
 <template>
     <BasicLayout>
         <SidebarProvider>
-            <AppSidebar />
+            <AppSidebar :side="$page.props.direction === 'rtl' ? 'right' : 'left'" />
             <SidebarInset
                 class="overflow-clip not-rtl:md:peer-data-[variant=inset]:rounded-r-lg rtl:md:peer-data-[variant=inset]:rounded-l-lg"
             >

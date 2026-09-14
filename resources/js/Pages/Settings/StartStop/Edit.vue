@@ -68,7 +68,7 @@ watch(stopTimeResetCheck, () => {
     <Head title="Settings - Start/Stop" />
     <PageHeader :title="$t('app.auto start/break')" />
     <div>
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-start gap-x-4 py-4">
             <LockKeyhole />
             <div class="flex-1 space-y-1">
                 <div class="flex items-center gap-10">
@@ -88,7 +88,7 @@ watch(stopTimeResetCheck, () => {
                 </div>
 
                 <Select v-if="stopBreakAutomatikCheck" v-model="form.stopBreakAutomatic">
-                    <SelectTrigger class="mt-4 ml-auto w-1/2">
+                    <SelectTrigger class="ms-auto mt-4 w-1/2">
                         <SelectValue :placeholder="$t('app.action')" />
                     </SelectTrigger>
                     <SelectContent>
@@ -102,7 +102,7 @@ watch(stopTimeResetCheck, () => {
                 </Select>
             </div>
         </div>
-        <div class="flex items-start space-x-4 py-4" v-if="stopBreakAutomatikCheck">
+        <div class="flex items-start gap-x-4 py-4" v-if="stopBreakAutomatikCheck">
             <AlarmClockCheck />
             <div class="flex-1 space-y-1">
                 <div class="flex items-center gap-10">
@@ -118,7 +118,7 @@ watch(stopTimeResetCheck, () => {
                 </div>
 
                 <Select v-model="form.stopBreakAutomaticActivationTime">
-                    <SelectTrigger class="mt-4 ml-auto w-1/2" v-if="stopBreakAutomatikActivationCheck">
+                    <SelectTrigger class="ms-auto mt-4 w-1/2" v-if="stopBreakAutomatikActivationCheck">
                         <SelectValue :placeholder="$t('app.time')" />
                     </SelectTrigger>
                     <SelectContent>
@@ -132,7 +132,7 @@ watch(stopTimeResetCheck, () => {
                     </SelectContent>
                 </Select>
                 <div
-                    class="text-muted-foreground ml-auto w-1/2 text-xs italic"
+                    class="text-muted-foreground ms-auto w-1/2 text-xs italic"
                     v-if="stopBreakAutomatikActivationCheck && form.stopBreakAutomaticActivationTime"
                 >
                     {{
@@ -143,7 +143,7 @@ watch(stopTimeResetCheck, () => {
                 </div>
             </div>
         </div>
-        <div class="mt-4 flex items-start space-x-4 border-t py-4 pt-8">
+        <div class="mt-4 flex items-start gap-x-4 border-t py-4 pt-8">
             <TimerReset class="rtl:-scale-x-100" />
             <div class="flex-1 space-y-1">
                 <div class="flex items-center gap-10">

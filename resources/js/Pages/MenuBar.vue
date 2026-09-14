@@ -282,7 +282,7 @@ const removeProject = () => {
                 <div class="px-2" v-if="props.currentProject && showProject">
                     <div
                         :style="'--project-color: ' + (props.currentProject.color ?? '#000000')"
-                        class="transition-color mt-2 flex h-9 shrink-0 items-center gap-2 rounded-md border-l-6 border-l-(--project-color) bg-(--project-color)/10 pl-2 text-sm font-medium duration-1000 dark:bg-(--project-color)/20"
+                        class="transition-color mt-2 flex h-9 shrink-0 items-center gap-2 rounded-md border-s-6 border-s-(--project-color) bg-(--project-color)/10 ps-2 text-sm font-medium duration-1000 dark:bg-(--project-color)/20"
                     >
                         <div class="flex h-9 shrink-0 items-center text-xl" v-if="props.currentProject.icon">
                             {{ props.currentProject.icon }}
@@ -292,7 +292,7 @@ const removeProject = () => {
                         </div>
                         <Button
                             @click="removeProject"
-                            class="mr-0.5 ml-auto px-2! shadow-none"
+                            class="ms-auto me-0.5 px-2! shadow-none"
                             size="sm"
                             variant="outline"
                         >
@@ -322,7 +322,7 @@ const removeProject = () => {
                         <template :key="project.id" v-for="project in props.projects">
                             <div
                                 :style="'--project-color: ' + (project.color ?? '#000000')"
-                                class="mx-2 flex h-9 items-center gap-2 rounded-md border-l-6 border-l-(--project-color) bg-(--project-color)/10 py-1 pl-2 text-sm font-medium dark:bg-(--project-color)/20"
+                                class="mx-2 flex h-9 items-center gap-2 rounded-md border-s-6 border-s-(--project-color) bg-(--project-color)/10 py-1 ps-2 text-sm font-medium dark:bg-(--project-color)/20"
                                 v-if="project.id !== props.currentProject?.id"
                             >
                                 <div class="flex h-9 shrink-0 items-center text-xl" v-if="project.icon">
@@ -333,7 +333,7 @@ const removeProject = () => {
                                 </div>
                                 <Button
                                     @click="setProject(project)"
-                                    class="mr-0.5 ml-auto px-2! shadow-none"
+                                    class="ms-auto me-0.5 px-2! shadow-none"
                                     size="sm"
                                     variant="outline"
                                 >

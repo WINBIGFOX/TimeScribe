@@ -59,9 +59,9 @@ class GeneralController extends Controller
             System::theme(SystemThemesEnum::tryFrom($data['theme']));
         }
 
-        if ($data['locale'] !== $settings->locale) {
+        $localeChanged = $data['locale'] !== $settings->locale;
+        if ($localeChanged) {
             $settings->locale = $data['locale'];
-            LocaleChanged::broadcast();
         }
 
         if ($data['openAtLogin'] !== App::openAtLogin()) {
@@ -70,12 +70,16 @@ class GeneralController extends Controller
 
         $settings->save();
 
+        if ($localeChanged) {
+            LocaleChanged::broadcast();
+        }
+
         dispatch(new CalculateWeekBalance);
 
         return to_route('settings.general.edit');
     }
 
-    public function updateLocale(UpdateLocaleRequest $request, GeneralSettings $settings, ProjectSettings $projectSettings): void
+    public function updateLocale(UpdateLocaleRequest $request, GeneralSettings $settings, ProjectSettings $projectSettings): RedirectResponse
     {
         $data = $request->validated();
         if ($data['locale'] !== $settings->locale) {
@@ -86,5 +90,7 @@ class GeneralController extends Controller
             $projectSettings->save();
             LocaleChanged::broadcast();
         }
+
+        return back();
     }
 }

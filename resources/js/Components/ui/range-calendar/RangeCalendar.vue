@@ -28,7 +28,10 @@ const emits = defineEmits<RangeCalendarRootEmits>()
 const delegatedProps = computed(() => {
     const { class: _, ...delegated } = props
 
-    return delegated
+    return {
+        ...delegated,
+        locale: props.locale ? new Intl.Locale(props.locale, { calendar: 'gregory' }).toString() : undefined
+    }
 })
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits)

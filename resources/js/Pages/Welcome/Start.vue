@@ -50,14 +50,28 @@ const updateLocale = (locale) => {
 
         <Button @click="$emit('nextStep')" class="dark:hidden" size="lg" variant="secondary">
             {{ $t('app.get started') }}
-            <ArrowRight />
+            <ArrowRight class="rtl:-scale-x-100" />
         </Button>
         <Button @click="$emit('nextStep')" class="hidden dark:flex" size="lg">
             {{ $t('app.get started') }}
-            <ArrowRight />
+            <ArrowRight class="rtl:-scale-x-100" />
         </Button>
 
         <div class="grid grid-cols-3 items-center justify-center gap-6">
+            <button
+                :aria-pressed="$page.props.locale === locale.code"
+                :class="{ 'border-white!': $page.props.locale === locale.code }"
+                :key="locale.code"
+                @click="updateLocale(locale.code)"
+                class="hover:text-primary rounded-lg border border-transparent p-1 transition-colors hover:bg-white"
+                type="button"
+                v-for="locale in [
+                    { code: 'ar_SA', name: 'العربية', lang: 'ar' },
+                    { code: 'he_IL', name: 'עברית', lang: 'he' }
+                ]"
+            >
+                <bdi :lang="locale.lang">{{ locale.name }}</bdi>
+            </button>
             <div :key="locale.code" class="flex items-center justify-center" v-for="locale in locales">
                 <div
                     :class="{

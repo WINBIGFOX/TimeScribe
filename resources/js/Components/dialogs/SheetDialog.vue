@@ -81,7 +81,8 @@ const internalSubmit = () => {
                 'sm:max-w-[425px]': props.size === 'md',
                 'sm:max-w-none': props.size === 'lg'
             }"
-            class="inset-y-2 right-2 h-auto rounded-lg border"
+            :side="page.props.direction === 'rtl' ? 'left' : 'right'"
+            class="inset-y-2 h-auto rounded-lg border ltr:right-2 rtl:left-2"
         >
             <form @submit.prevent="internalSubmit" class="flex h-full flex-col gap-4 pb-4 outline-none">
                 <SheetHeader class="pb-0">
@@ -113,11 +114,11 @@ const internalSubmit = () => {
                             <DropdownMenuTrigger as-child>
                                 <Button
                                     :disabled="props.loading || props.disabled"
-                                    class="mr-auto"
+                                    class="me-auto"
                                     type="button"
                                     variant="link"
                                 >
-                                    <Loader2 class="mr-2 h-4 w-4 animate-spin" v-if="props.loading" />
+                                    <Loader2 class="me-2 h-4 w-4 animate-spin" v-if="props.loading" />
                                     {{ $t('app.actions') }}
                                 </Button>
                             </DropdownMenuTrigger>
@@ -125,11 +126,11 @@ const internalSubmit = () => {
                                 <DropdownMenuLabel>{{ $t('app.actions') }}</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem @click="$emit('edit')">
-                                    <Edit class="mr-2 h-4 w-4" />
+                                    <Edit class="me-2 h-4 w-4" />
                                     <span>{{ props.edit }}</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem @click="$emit('destroy')" class="text-destructive">
-                                    <Trash class="mr-2 h-4 w-4" />
+                                    <Trash class="me-2 h-4 w-4" />
                                     <span>{{ props.destroy }}</span>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
@@ -139,12 +140,12 @@ const internalSubmit = () => {
                         <Button
                             :disabled="props.loading || props.disabled"
                             @click="$emit('destroy')"
-                            class="text-destructive mr-auto"
+                            class="text-destructive me-auto"
                             type="button"
                             v-if="props.destroy"
                             variant="link"
                         >
-                            <Loader2 class="mr-2 h-4 w-4 animate-spin" v-if="props.loading" />
+                            <Loader2 class="me-2 h-4 w-4 animate-spin" v-if="props.loading" />
                             {{ props.destroy }}
                         </Button>
                     </slot>
@@ -152,12 +153,12 @@ const internalSubmit = () => {
                         <Button
                             :disabled="props.loading || props.disabled"
                             @click="$emit('edit')"
-                            class="mr-auto"
+                            class="me-auto"
                             type="button"
                             v-if="props.edit"
                             variant="link"
                         >
-                            <Loader2 class="mr-2 h-4 w-4 animate-spin" v-if="props.loading" />
+                            <Loader2 class="me-2 h-4 w-4 animate-spin" v-if="props.loading" />
                             {{ props.edit }}
                         </Button>
                     </slot>
@@ -170,7 +171,7 @@ const internalSubmit = () => {
                     </DialogClose>
                     <slot name="submit">
                         <Button :disabled="props.loading || props.disabled" type="submit" v-if="props.submit">
-                            <Loader2 class="mr-2 h-4 w-4 animate-spin" v-if="props.loading" />
+                            <Loader2 class="me-2 h-4 w-4 animate-spin" v-if="props.loading" />
                             {{ props.submit }}
                         </Button>
                     </slot>

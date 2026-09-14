@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { cn } from '@/lib/utils'
+import { formatMachineDate, cn } from '@/lib/utils'
 import { Link } from '@inertiajs/vue3'
 import { ChevronsLeft, ChevronsRight } from '@lucide/vue'
 import { trans } from 'laravel-vue-i18n'
@@ -42,31 +42,31 @@ const items = computed(() => {
     return {
         current: {
             label: currentMoment.format(longDateFormat),
-            link: route(props.route, { date: currentMoment.format('YYYY-MM-DD') })
+            link: route(props.route, { date: formatMachineDate(currentMoment) })
         },
         previous: {
             label: previousMoment.format(shortDateFormat),
-            link: route(props.route, { date: previousMoment.format('YYYY-MM-DD') })
+            link: route(props.route, { date: formatMachineDate(previousMoment) })
         },
         secondPrevious: {
             label: secondPreviousMoment.format(shortDateFormat),
-            link: route(props.route, { date: secondPreviousMoment.format('YYYY-MM-DD') })
+            link: route(props.route, { date: formatMachineDate(secondPreviousMoment) })
         },
         thirdPrevious: {
             label: thirdPreviousMoment.format(shortDateFormat),
-            link: route(props.route, { date: thirdPreviousMoment.format('YYYY-MM-DD') })
+            link: route(props.route, { date: formatMachineDate(thirdPreviousMoment) })
         },
         next: {
             label: nextMoment.format(shortDateFormat),
-            link: route(props.route, { date: nextMoment.format('YYYY-MM-DD') })
+            link: route(props.route, { date: formatMachineDate(nextMoment) })
         },
         secondNext: {
             label: secondNextMoment.format(shortDateFormat),
-            link: route(props.route, { date: secondNextMoment.format('YYYY-MM-DD') })
+            link: route(props.route, { date: formatMachineDate(secondNextMoment) })
         },
         thirdNext: {
             label: thirdNextMoment.format(shortDateFormat),
-            link: route(props.route, { date: thirdNextMoment.format('YYYY-MM-DD') })
+            link: route(props.route, { date: formatMachineDate(thirdNextMoment) })
         }
     }
 })

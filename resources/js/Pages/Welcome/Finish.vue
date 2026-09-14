@@ -120,7 +120,7 @@ const indicatorIcon = (done: boolean) => (done ? CheckCircle2 : Circle)
             </span>
         </div>
 
-        <div class="bg-background text-foreground flex w-96 items-center space-x-4 rounded-xl border p-4">
+        <div class="bg-background text-foreground flex w-96 items-center gap-x-4 rounded-xl border p-4">
             <KeyRound />
             <div class="flex-1 space-y-1">
                 <p class="text-sm leading-none font-medium">
@@ -161,7 +161,7 @@ const indicatorIcon = (done: boolean) => (done ? CheckCircle2 : Circle)
                 variant="secondary"
             >
                 {{ $t('app.start') }}
-                <ArrowRight />
+                <ArrowRight class="rtl:-scale-x-100" />
             </Button>
             <Button
                 :as="Link"
@@ -171,7 +171,7 @@ const indicatorIcon = (done: boolean) => (done ? CheckCircle2 : Circle)
                 size="lg"
             >
                 {{ $t('app.start') }}
-                <ArrowRight />
+                <ArrowRight class="rtl:-scale-x-100" />
             </Button>
         </div>
         <div

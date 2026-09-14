@@ -233,7 +233,7 @@ const isDisabled = computed((): boolean => {
                                 <SelectTrigger
                                     class="min-h-9 w-2/3 py-1.5 whitespace-normal data-[size=default]:h-auto"
                                 >
-                                    <SelectValue :placeholder="$t('app.all projects')" class="py-px text-left" />
+                                    <SelectValue :placeholder="$t('app.all projects')" class="py-px text-start" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem :key="project.id" :value="project.id" v-for="project in props.projects">
