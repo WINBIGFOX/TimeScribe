@@ -205,19 +205,17 @@ class TimestampService
         ];
 
         foreach ($timestamps as $timestamp) {
-            $fallbackTime = ($date->isToday() || $project && $endDate->isToday()) && $fallbackNow ? now() : $timestamp->last_ping_at;
+            $fallbackTime = ($date->isToday() || $project instanceof Project && $endDate->isToday()) && $fallbackNow ? now() : $timestamp->last_ping_at;
             $diffTime = $timestamp->ended_at ?? $fallbackTime;
             $duration = floor($timestamp->started_at->diff($diffTime)->totalSeconds);
 
             if ($timestamp->project_id) {
-                if (! isset($return['projects'][$timestamp->project_id])) {
-                    $return['projects'][$timestamp->project_id] = [
-                        'sum' => 0,
-                        'name' => $timestamp->project->name,
-                        'color' => $timestamp->project->color,
-                        'icon' => $timestamp->project->icon,
-                    ];
-                }
+                $return['projects'][$timestamp->project_id] ??= [
+                    'sum' => 0,
+                    'name' => $timestamp->project->name,
+                    'color' => $timestamp->project->color,
+                    'icon' => $timestamp->project->icon,
+                ];
 
                 $return['projects'][$timestamp->project_id]['sum'] += $duration;
             }
@@ -279,7 +277,7 @@ class TimestampService
         return Timestamp::whereNull('ended_at')->first()?->type;
     }
 
-    public static function getTimestamps(Carbon $date, ?Carbon $endDate = null, ?Project $project = null, array $with = []): Collection
+    public static function getTimestamps(Carbon $date, ?Carbon $endDate = null, ?Project $project = null, array $with = [], array $append = []): Collection
     {
         if (! $endDate instanceof Carbon) {
             $endDate = $date->copy();
@@ -290,7 +288,8 @@ class TimestampService
             ->whereDate('started_at', '<=', $endDate->endOfDay())
             ->when($project, fn ($query) => $query->where('project_id', $project->id))
             ->oldest('started_at')
-            ->get();
+            ->get()
+            ->when($append, fn ($query) => $query->append($append));
     }
 
     public static function getAbsence(Carbon $date, ?Carbon $endDate = null): Collection

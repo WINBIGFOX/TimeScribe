@@ -38,6 +38,7 @@ class GeneralController extends Controller
             'timezones' => DateTimeZone::listIdentifiers(),
             'timezone' => $settings->timezone,
             'defaultOverview' => $settings->default_overview,
+            'timelineDisplay' => $settings->timeline_display,
         ]);
     }
 
@@ -53,6 +54,7 @@ class GeneralController extends Controller
         $settings->appActivityTracking = $data['appActivityTracking'];
         $settings->timezone = $data['timezone'];
         $settings->default_overview = $data['default_overview'] ?? 'week';
+        $settings->timeline_display = $data['timeline_display'];
 
         if ($data['theme'] !== $settings->theme ?? SystemThemesEnum::SYSTEM->value) {
             $settings->theme = $data['theme'];

@@ -2,9 +2,19 @@
 import { PageHeader } from '@/Components/ui-custom/page-header'
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { Switch } from '@/Components/ui/switch'
-import { Enum } from '@/types'
+import { Enum, TimelineDisplay } from '@/types'
 import { Head, router, useForm } from '@inertiajs/vue3'
-import { AppWindowMac, CalendarMinus, Eye, Globe, KeyRound, Languages, PanelsTopLeft, SunMoon } from '@lucide/vue'
+import {
+    AppWindowMac,
+    CalendarMinus,
+    Eye,
+    Globe,
+    KeyRound,
+    Languages,
+    PanelsTopLeft,
+    SunMoon,
+    Timeline
+} from '@lucide/vue'
 import { useDebounceFn } from '@vueuse/core'
 import { ref, watch } from 'vue'
 
@@ -19,6 +29,7 @@ const props = defineProps<{
     timezones?: string[]
     timezone: string
     defaultOverview: string
+    timelineDisplay: TimelineDisplay
 }>()
 
 const form = useForm({
@@ -29,7 +40,8 @@ const form = useForm({
     locale: props.locale,
     appActivityTracking: props.appActivityTracking ?? false,
     timezone: props.timezone,
-    default_overview: props.defaultOverview ?? 'week'
+    default_overview: props.defaultOverview ?? 'week',
+    timeline_display: props.timelineDisplay ?? 'detailed'
 })
 
 const submit = () => {
@@ -51,7 +63,8 @@ watch(
         form.holidayRegion,
         form.appActivityTracking,
         form.timezone,
-        form.default_overview
+        form.default_overview,
+        form.timeline_display
     ],
     debouncedSubmit,
     { deep: true }
@@ -191,6 +204,27 @@ watch(holidayCheck, () => {
                         </SelectItem>
                         <SelectItem value="year">
                             {{ $t('app.yearly overview') }}
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
+        </div>
+        <div class="flex items-center space-x-4 py-4">
+            <Timeline class="rtl:-scale-x-100" />
+            <div class="flex flex-1 items-center gap-4">
+                <label class="flex-1 text-sm leading-none font-medium" for="timeline-display">
+                    {{ $t('app.timeline display') }}
+                </label>
+                <Select size="5" v-model="form.timeline_display">
+                    <SelectTrigger class="w-1/2" id="timeline-display">
+                        <SelectValue :placeholder="$t('app.timeline display')" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="detailed">
+                            {{ $t('app.detailed') }}
+                        </SelectItem>
+                        <SelectItem value="simple">
+                            {{ $t('app.simple') }}
                         </SelectItem>
                     </SelectContent>
                 </Select>

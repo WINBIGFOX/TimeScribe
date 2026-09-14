@@ -34,6 +34,8 @@ class GeneralSettings extends Settings
 
     public string $default_overview = 'week';
 
+    public string $timeline_display = 'detailed';
+
     public static function group(): string
     {
         return 'general';

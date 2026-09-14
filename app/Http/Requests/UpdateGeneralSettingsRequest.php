@@ -35,6 +35,7 @@ class UpdateGeneralSettingsRequest extends FormRequest
             'appActivityTracking' => ['required', 'boolean'],
             'timezone' => ['required', 'string', 'timezone'],
             'default_overview' => ['required', Rule::in(['day', 'week', 'month', 'year'])],
+            'timeline_display' => ['required', Rule::in(['detailed', 'simple'])],
         ];
     }
 }

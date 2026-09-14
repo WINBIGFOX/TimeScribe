@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import ConfirmationDialog from '@/Components/dialogs/ConfirmationDialog.vue'
 import Timeline from '@/Components/Timeline.vue'
-import TimestampListItem from '@/Components/TimestampListItem.vue'
+import TimestampListItemDetailed from '@/Components/TimestampListItemDetailed.vue'
+import TimestampListItemSimple from '@/Components/TimestampListItemSimple.vue'
 import TimestampListPlaceholderItem from '@/Components/TimestampListPlaceholderItem.vue'
 import TimestampTypeBadge from '@/Components/TimestampTypeBadge.vue'
 import { PageHeader } from '@/Components/ui-custom/page-header'
 import { TimeWheel } from '@/Components/ui-custom/time-wheel'
 import { Button } from '@/Components/ui/button'
-import { Absence, GetTimeWithDetails, Timestamp } from '@/types'
+import { Absence, GetTimeWithDetails, TimelineDisplay, Timestamp } from '@/types'
 import { Head, Link, router } from '@inertiajs/vue3'
 import moment from 'moment/min/moment-with-locales'
 
@@ -21,6 +22,7 @@ const props = defineProps<{
     dayNoWorkTime: number
     isHoliday: boolean
     hasWorkSchedules: boolean
+    timelineDisplay: TimelineDisplay
 }>()
 
 const calcDuration = (startTimestamp: string, endTimestamp?: string) =>
@@ -104,9 +106,16 @@ if (window.Native) {
                         index > 0 && timestamp.started_at.formatted !== props.timestamps[index - 1].ended_at?.formatted
                     "
                 />
-                <TimestampListItem
+                <TimestampListItemDetailed
+                    :timestamp="timestamp"
+                    :timestamp-after="props.timestamps[index + 1] ?? undefined"
+                    :timestamp-before="index > 0 ? props.timestamps[index - 1] : undefined"
+                    v-if="props.timelineDisplay === 'detailed'"
+                />
+                <TimestampListItemSimple
                     :timestamp="timestamp"
                     :timestamp-before="index > 0 ? props.timestamps[index - 1] : undefined"
+                    v-else
                 />
             </template>
             <TimestampListPlaceholderItem

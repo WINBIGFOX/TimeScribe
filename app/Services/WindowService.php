@@ -40,15 +40,15 @@ class WindowService
             ->rememberState()
             ->maximizable(false)
             ->fullscreen(false)
-            ->resizable(false)
+            ->resizable(true)
             ->fullscreenable(false)
             ->backgroundColor($darkMode ? '#171717' : '#fafafa')
             ->showDevTools(false);
 
         if (Environment::isWindows()) {
-            $window->height(634)->width(1083)->hideMenu();
+            $window->height(634)->minHeight(634)->width(1083)->minWidth(1083)->maxWidth(1083)->hideMenu();
         } else {
-            $window->height(600)->width(1070)->titleBarHidden();
+            $window->height(600)->minHeight(600)->width(1070)->minWidth(1070)->maxWidth(1070)->titleBarHidden();
         }
     }
 

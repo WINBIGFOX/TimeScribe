@@ -22,10 +22,10 @@ const props = defineProps<{
 <template>
     <div
         :class="{
-            'py-1 not-rtl:pl-4 rtl:pr-4': props.duration,
-            'py-1 not-rtl:pl-2 rtl:pr-2': !props.duration
+            'py-1 not-rtl:pl-4.75 rtl:pr-4.75': props.duration,
+            'py-1 not-rtl:pl-2.75 rtl:pr-2.75': !props.duration
         }"
-        class="border-muted-foreground text-muted-foreground mx-6 flex items-center gap-2 border-dotted text-sm not-rtl:border-l-3 rtl:border-r-3"
+        class="border-muted-foreground text-muted-foreground mx-3.25 flex items-center gap-2 border-dotted text-sm not-rtl:border-l-3 rtl:border-r-3"
         v-if="(props.duration ?? 0) > 0 || !props.timestampAfter || !props.timestampBefore"
     >
         <div v-if="props.duration">

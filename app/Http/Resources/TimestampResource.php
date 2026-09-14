@@ -26,6 +26,7 @@ class TimestampResource extends JsonResource
             'started_at' => DateHelper::toResourceArray($this->started_at, true, 'Gi'),
             'ended_at' => DateHelper::toResourceArray($this->ended_at, true, 'Gi') ?? null,
             'duration' => $this->duration,
+            'app_usage' => $this->whenAppended('app_usage'),
             'billable_amount' => $this->whenLoaded(
                 'project',
                 fn (): int|float => $this->duration / 60 * $this->project->hourly_rate / 60,

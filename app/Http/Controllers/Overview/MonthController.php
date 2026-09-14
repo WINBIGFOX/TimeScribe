@@ -49,14 +49,12 @@ class MonthController extends Controller
             $breakTime = TimestampService::getBreakTime($rangeDate);
 
             foreach ($workTime['projects'] as $projectId => $projectDuration) {
-                if (! isset($projectDurations[$projectId])) {
-                    $projectDurations[$projectId] = [
-                        'sum' => 0,
-                        'name' => $projectDuration['name'],
-                        'color' => $projectDuration['color'],
-                        'icon' => $projectDuration['icon'],
-                    ];
-                }
+                $projectDurations[$projectId] ??= [
+                    'sum' => 0,
+                    'name' => $projectDuration['name'],
+                    'color' => $projectDuration['color'],
+                    'icon' => $projectDuration['icon'],
+                ];
                 $projectDurations[$projectId]['sum'] += $projectDuration['sum'];
             }
 

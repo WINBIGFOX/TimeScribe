@@ -7,6 +7,8 @@ export interface Date {
 
 export type Enum = Record<string, string>
 
+export type TimelineDisplay = 'detailed' | 'simple'
+
 export interface GetTimeWithDetails {
     sum: number
     projects: Record<string, GetTimeProjectDetails>
@@ -51,12 +53,21 @@ export interface Timestamp {
     started_at: Date
     ended_at?: Date
     duration: number
+    app_usage?: AppUsage[]
     billable_amount?: number
     description?: string
     last_ping_at?: Date
     source?: string
     project?: Project
     paid: boolean
+}
+
+export interface AppUsage {
+    app_name: string
+    app_identifier: string
+    app_icon: string
+    app_category?: string
+    duration: number
 }
 
 export interface ActivityHistory {
