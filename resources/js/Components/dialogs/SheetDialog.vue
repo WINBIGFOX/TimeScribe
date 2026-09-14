@@ -81,7 +81,7 @@ const internalSubmit = () => {
                 'sm:max-w-[425px]': props.size === 'md',
                 'sm:max-w-none': props.size === 'lg'
             }"
-            class="inset-y-2 right-2 h-auto rounded-lg border"
+            class="h-auto border-l"
         >
             <form @submit.prevent="internalSubmit" class="flex h-full flex-col gap-4 pb-4 outline-none">
                 <SheetHeader class="pb-0">
