@@ -17,6 +17,7 @@ const props = defineProps<{
     currentType?: 'work' | 'break'
     workTime: number
     breakTime: number
+    currentProjectTime: number
     currentProject?: Project
     currentAppActivity?: ActivityHistory
     activeAppActivity: boolean
@@ -28,9 +29,11 @@ let timer: NodeJS.Timeout
 
 const workSeconds = ref(props.workTime)
 const breakSeconds = ref(props.breakTime)
+const projectSeconds = ref(props.currentProjectTime)
 
 const workTimeFormatted = computed(() => secToFormat(workSeconds.value))
 const breakTimeFormatted = computed(() => secToFormat(breakSeconds.value, true))
+const projectTimeFormatted = computed(() => secToFormat(projectSeconds.value))
 const openProjectList = ref(false)
 const showProject = ref(!!props.currentProject)
 
@@ -60,6 +63,7 @@ const showProjectList = () => {
 const tick = () => {
     if (props.currentType === 'work') {
         workSeconds.value += 1
+        projectSeconds.value += 1
     } else if (props.currentType === 'break') {
         breakSeconds.value += 1
     }
@@ -68,7 +72,7 @@ const tick = () => {
 const reload = () => {
     router.flushAll()
     router.reload({
-        only: ['workTime', 'breakTime', 'currentType', 'currentProject'],
+        only: ['workTime', 'breakTime', 'currentType', 'currentProject', 'currentProjectTime'],
         showProgress: false,
         onFinish: clearAutoFocus
     })
@@ -113,6 +117,12 @@ watch(
     () => props.breakTime,
     (newVal) => {
         breakSeconds.value = newVal
+    }
+)
+watch(
+    () => props.currentProjectTime,
+    (newVal) => {
+        projectSeconds.value = newVal
     }
 )
 
@@ -290,6 +300,7 @@ const removeProject = () => {
                         <div class="line-clamp-1">
                             {{ props.currentProject.name }}
                         </div>
+                        <span class="text-muted-foreground shrink-0 tabular-nums">· {{ projectTimeFormatted }}</span>
                         <Button
                             @click="removeProject"
                             class="mr-0.5 ml-auto px-2! shadow-none"
