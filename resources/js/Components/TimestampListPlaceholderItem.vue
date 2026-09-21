@@ -7,7 +7,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from '@/Components/ui/dropdown-menu'
-import { Timestamp } from '@/types'
+import { TimelineDisplay, Timestamp } from '@/types'
 import { Link } from '@inertiajs/vue3'
 import { BetweenHorizontalEnd, BriefcaseBusiness, Coffee, Plus } from '@lucide/vue'
 
@@ -16,16 +16,21 @@ const props = defineProps<{
     startOfDay?: string
     timestampBefore?: Timestamp
     timestampAfter?: Timestamp
+    viewMode?: TimelineDisplay
 }>()
 </script>
 
 <template>
     <div
         :class="{
-            'py-1 not-rtl:pl-4 rtl:pr-4': props.duration,
-            'py-1 not-rtl:pl-2 rtl:pr-2': !props.duration
+            'mx-3.25': props.viewMode === 'detailed',
+            'mx-6': props.viewMode === 'simple',
+            'not-rtl:pl-4.75 rtl:pr-4.75': props.duration && props.viewMode === 'detailed',
+            'not-rtl:pl-2.75 rtl:pr-2.75': !props.duration && props.viewMode === 'detailed',
+            'not-rtl:pl-6 rtl:pr-6': props.duration && props.viewMode === 'simple',
+            'not-rtl:pl-4 rtl:pr-4': !props.duration && props.viewMode === 'simple'
         }"
-        class="border-muted-foreground text-muted-foreground mx-6 flex items-center gap-2 border-dotted text-sm not-rtl:border-l-3 rtl:border-r-3"
+        class="border-muted-foreground text-muted-foreground flex items-center gap-2 border-dotted py-1 text-sm not-rtl:border-l-3 rtl:border-r-3"
         v-if="(props.duration ?? 0) > 0 || !props.timestampAfter || !props.timestampBefore"
     >
         <div v-if="props.duration">

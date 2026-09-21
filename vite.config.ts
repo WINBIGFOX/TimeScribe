@@ -18,7 +18,18 @@ export default defineConfig({
         tailwindcss(),
         laravel({
             input: ['resources/js/app.ts', 'resources/css/app.css'],
-            refresh: true
+            refresh: [
+                {
+                    paths: [
+                        'app/Livewire/**',
+                        'app/View/Components/**',
+                        'lang/**/*.php',
+                        'resources/lang/**/*.php',
+                        'resources/views/**',
+                        'routes/**'
+                    ]
+                }
+            ]
         }),
         vue({
             template: {
@@ -53,6 +64,7 @@ export default defineConfig({
             overlay: false
         },
         watch: {
+            ignored: ['**/vendor/**'],
             usePolling: false
         }
     },

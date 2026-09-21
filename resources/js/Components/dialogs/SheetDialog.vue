@@ -82,7 +82,7 @@ const internalSubmit = () => {
                 'sm:max-w-none': props.size === 'lg'
             }"
             :side="page.props.direction === 'rtl' ? 'left' : 'right'"
-            class="inset-y-2 h-auto rounded-lg border ltr:right-2 rtl:left-2"
+            class="h-auto not-rtl:border-l rtl:border-r"
         >
             <form @submit.prevent="internalSubmit" class="flex h-full flex-col gap-4 pb-4 outline-none">
                 <SheetHeader class="pb-0">

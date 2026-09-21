@@ -57,7 +57,7 @@ const amountOpen = computed(() => calcAmount(false))
         >
             <div class="flex items-center justify-between tabular-nums">
                 <div class="flex flex-1 items-center gap-2">
-                    <span class="text-2xl" v-if="props.project.icon">{{ props.project.icon }}</span>
+                    <span class="shrink-0 text-2xl" v-if="props.project.icon">{{ props.project.icon }}</span>
                     <div class="flex-1 pe-2 font-medium">
                         <bdi>{{ props.project.name }}</bdi>
                     </div>

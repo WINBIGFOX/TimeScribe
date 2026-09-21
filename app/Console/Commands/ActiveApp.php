@@ -91,8 +91,18 @@ class ActiveApp extends Command
         }
 
         $info = shell_exec('lsappinfo info -only LSDisplayName, bundlePath -app '.$pid);
-        $appName = preg_match('/"?LSDisplayName"?="([^"]+)"/', $info, $matches) ? $matches[1] : null;
-        $appPath = preg_match('/"?LSBundlePath"?="([^"]+)"/', $info, $matches) ? $matches[1] : null;
+
+        if (! $info) {
+            return;
+        }
+
+        $appName = preg_match('/^\h*"([^"\r\n]+)"\h+ASN:/mu', $info, $matches) ? $matches[1] : null;
+        $appPath = preg_match('/^\h*bundle\h+path\h*=\h*"([^"\r\n]+)"/mu', $info, $matches) ? $matches[1] : null;
+
+        if ($appName === null || $appPath === null) {
+            $appName = preg_match('/"?LSDisplayName"?="([^"]+)"/', $info, $matches) ? $matches[1] : null;
+            $appPath = preg_match('/"?LSBundlePath"?="([^"]+)"/', $info, $matches) ? $matches[1] : null;
+        }
 
         $appName = $this->filterString($appName);
         $appPath = $this->filterString($appPath);
