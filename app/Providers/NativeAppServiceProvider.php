@@ -69,7 +69,7 @@ class NativeAppServiceProvider implements ProvidesPhpIni
             $settings->save();
         }
 
-        if ($settings->wizard_completed) {
+        if (! $settings->wizard_completed) {
             WindowService::openWelcome();
         } else {
             $flyTimerSettings = resolve(FlyTimerSettings::class);
