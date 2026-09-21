@@ -284,11 +284,13 @@ const removeProject = () => {
                         :style="'--project-color: ' + (props.currentProject.color ?? '#000000')"
                         class="transition-color mt-2 flex h-9 shrink-0 items-center gap-2 rounded-md border-l-6 border-l-(--project-color) bg-(--project-color)/10 pl-2 text-sm font-medium duration-1000 dark:bg-(--project-color)/20"
                     >
-                        <div class="flex h-9 shrink-0 items-center text-xl" v-if="props.currentProject.icon">
-                            {{ props.currentProject.icon }}
-                        </div>
-                        <div class="line-clamp-1">
-                            {{ props.currentProject.name }}
+                        <div @click="showProjectList" class="flex min-w-0 flex-1 items-center gap-2 text-left">
+                            <div class="flex h-9 shrink-0 items-center text-xl" v-if="props.currentProject.icon">
+                                {{ props.currentProject.icon }}
+                            </div>
+                            <div class="line-clamp-1">
+                                {{ props.currentProject.name }}
+                            </div>
                         </div>
                         <Button
                             @click="removeProject"
