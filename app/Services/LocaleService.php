@@ -14,7 +14,14 @@ use PrinsFrank\Standards\Country\CountryAlpha2;
 
 class LocaleService
 {
+    const array CANONICAL_LOCALES_BY_LANGUAGE = [
+        'ar' => 'ar_SA',
+        'he' => 'he_IL',
+    ];
+
     const array LOCALE_MAPPING = [
+        'ar_SA' => 'ar',
+        'he_IL' => 'he',
         'pl_PL' => 'pl',
         'da_DK' => 'da',
         'de_DE' => 'de',
@@ -58,7 +65,7 @@ class LocaleService
         $systemLocale = $this->detectSystemLocale();
         $locale = $this->settings->locale ?? $systemLocale;
 
-        $locale = $this->parseLocale($locale);
+        $locale = self::normalizeLocale($locale);
 
         if ($this->settings->locale !== $locale) {
             $this->settings->locale = $locale;
@@ -67,7 +74,9 @@ class LocaleService
 
         $language = $this->getLanguageLocale($locale);
         if (! Locales::isInstalled($language)) {
-            $this->settings->locale = $this->parseLocale(config('app.fallback_locale'));
+            $locale = self::normalizeLocale(config('app.fallback_locale'));
+            $language = $this->getLanguageLocale($locale);
+            $this->settings->locale = $locale;
             $this->settings->save();
         }
 
@@ -103,8 +112,8 @@ class LocaleService
 
         // Für HTTP Requests
         $locale = request()->server('HTTP_ACCEPT_LANGUAGE', config('app.fallback_locale'));
-        if (preg_match('/^([a-zA]{2}[-_][A-Z]{2})/', $locale, $matches)) {
-            return $matches[0];
+        if (preg_match('/^([a-zA-Z]{2}(?:[-_][A-Z]{2})?)(?:[,;]|$)/', $locale, $matches)) {
+            return $matches[1];
         }
 
         return config('app.fallback_locale');
@@ -119,12 +128,26 @@ class LocaleService
         return $locale;
     }
 
-    private function parseLocale(string $locale): string
+    public static function direction(string $locale): string
     {
+        $language = strtolower(explode('_', str_replace('-', '_', $locale))[0]);
+
+        return in_array($language, ['ar', 'he'], true) ? 'rtl' : 'ltr';
+    }
+
+    public static function normalizeLocale(string $locale): string
+    {
+        $locale = str_replace('-', '_', $locale);
+        $language = explode('_', $locale)[0];
+
+        if (array_key_exists($language, self::CANONICAL_LOCALES_BY_LANGUAGE)) {
+            return self::CANONICAL_LOCALES_BY_LANGUAGE[$language];
+        }
+
         if (strlen($locale) === 2) {
             return Locales::get($locale, true)->regional;
         }
 
-        return str_replace('-', '_', $locale);
+        return $locale;
     }
 }

@@ -146,11 +146,11 @@ const totalEntitlementPreview = computed(() => form.vacation.default_entitlement
             </Button>
             <Button @click="$emit('nextStep')" class="dark:hidden" size="lg" variant="secondary">
                 {{ $t('app.next') }}
-                <ArrowRight />
+                <ArrowRight class="rtl:-scale-x-100" />
             </Button>
             <Button @click="$emit('nextStep')" class="hidden dark:flex" size="lg">
                 {{ $t('app.next') }}
-                <ArrowRight />
+                <ArrowRight class="rtl:-scale-x-100" />
             </Button>
         </div>
     </div>

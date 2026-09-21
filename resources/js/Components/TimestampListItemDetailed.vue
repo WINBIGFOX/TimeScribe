@@ -188,7 +188,7 @@ watch(
                     </span>
                 </div>
                 <div
-                    class="bg-muted text-muted-foreground -ml-3 flex items-center gap-2 rounded-lg px-3 py-1 text-sm"
+                    class="bg-muted text-muted-foreground -ms-3 flex items-center gap-2 rounded-lg px-3 py-1 text-sm"
                     v-else
                 >
                     <div class="size-3 shrink-0 animate-pulse rounded-full bg-red-500" />
@@ -207,11 +207,11 @@ watch(
             :style="'--project-color: ' + (props.timestamp.project?.color ?? 'var(--color-sidebar)')"
             class="relative flex flex-1 flex-col overflow-clip rounded-md"
         >
-            <div class="absolute top-0.5 right-0 flex items-center justify-end not-rtl:ml-auto rtl:mr-auto">
+            <div class="absolute top-0.5 me-auto flex items-center justify-end not-rtl:right-0 rtl:left-0">
                 <TooltipProvider v-if="props.timestamp.source">
                     <Tooltip>
                         <TooltipTrigger as-child>
-                            <FolderInput class="text-muted-foreground mr-2 size-4" />
+                            <FolderInput class="text-muted-foreground me-2 size-4" />
                         </TooltipTrigger>
                         <TooltipContent>
                             <p>{{ $t('app.imported from :name', { name: props.timestamp.source }) }}</p>
@@ -246,7 +246,7 @@ watch(
             </div>
             <Link
                 :href="route('project.show', { project: props.timestamp.project.id })"
-                class="flex h-9 items-center gap-2 rounded-b-md px-2 pr-20 text-sm font-medium hover:bg-(--project-color)/20 dark:hover:bg-(--project-color)/30"
+                class="flex h-9 items-center gap-2 rounded-b-md px-2 pe-20 text-sm font-medium hover:bg-(--project-color)/20 dark:hover:bg-(--project-color)/30"
                 preserve-scroll
                 preserve-state
                 v-if="props.timestamp.project && !(canMerge() && props.timestampBefore)"

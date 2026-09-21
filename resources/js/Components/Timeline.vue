@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { formatMachineDate } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/Components/ui/tooltip'
 import { Timestamp } from '@/types'
 import { router } from '@inertiajs/vue3'
@@ -94,7 +95,10 @@ const dragStart = (index: string, type?: 'work' | 'break') => {
 }
 const dragOver = (index: string, type?: 'work' | 'break') => {
     if (drag.value && startDragIndex.value !== undefined) {
-        if (dragType.value !== type || (isToday && parseInt(moment().format('HHmm')) < parseInt(index.toString()))) {
+        if (
+            dragType.value !== type ||
+            (isToday && parseInt(formatMachineDate(moment(), 'HHmm')) < parseInt(index.toString()))
+        ) {
             dragStop()
             return
         }
@@ -104,11 +108,11 @@ const dragOver = (index: string, type?: 'work' | 'break') => {
 
 const dragStop = () => {
     if (startDragIndex.value !== undefined && currentDragIndex.value !== undefined && drag.value === true) {
-        let startDatetime = createDateTimeFromIndex(startDragIndex.value).format('YYYY-MM-DD HH:mm:ss')
-        let endDatetime = createDateTimeFromIndex(currentDragIndex.value, 10).format('YYYY-MM-DD HH:mm:ss')
+        let startDatetime = formatMachineDate(createDateTimeFromIndex(startDragIndex.value), 'YYYY-MM-DD HH:mm:ss')
+        let endDatetime = formatMachineDate(createDateTimeFromIndex(currentDragIndex.value, 10), 'YYYY-MM-DD HH:mm:ss')
         if (startDragIndex.value > currentDragIndex.value) {
-            startDatetime = createDateTimeFromIndex(currentDragIndex.value).format('YYYY-MM-DD HH:mm:ss')
-            endDatetime = createDateTimeFromIndex(startDragIndex.value, 10).format('YYYY-MM-DD HH:mm:ss')
+            startDatetime = formatMachineDate(createDateTimeFromIndex(currentDragIndex.value), 'YYYY-MM-DD HH:mm:ss')
+            endDatetime = formatMachineDate(createDateTimeFromIndex(startDragIndex.value, 10), 'YYYY-MM-DD HH:mm:ss')
         }
         router.visit(
             route('timestamp.create', {

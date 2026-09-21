@@ -80,7 +80,7 @@ watch(holidayCheck, () => {
     <Head title="Settings - General" />
     <PageHeader :title="$t('app.general settings')" />
     <div>
-        <div class="flex items-center space-x-4 py-4">
+        <div class="flex items-center gap-x-4 py-4">
             <KeyRound />
             <div class="flex-1">
                 <p class="text-sm leading-none font-medium">
@@ -89,7 +89,7 @@ watch(holidayCheck, () => {
             </div>
             <Switch v-model="form.openAtLogin" />
         </div>
-        <div class="flex items-center space-x-4 py-4">
+        <div class="flex items-center gap-x-4 py-4">
             <Languages />
             <div class="flex flex-1 items-center gap-4">
                 <p class="flex-1 text-sm leading-none font-medium">
@@ -100,41 +100,47 @@ watch(holidayCheck, () => {
                         <SelectValue :placeholder="$t('app.language')" />
                     </SelectTrigger>
                     <SelectContent>
+                        <SelectItem value="ar_SA">
+                            <bdi lang="ar">العربية</bdi>
+                        </SelectItem>
+                        <SelectItem value="he_IL">
+                            <bdi lang="he">עברית</bdi>
+                        </SelectItem>
                         <SelectItem value="da_DK">
-                            {{ $t('app.danish') }}
+                            <span lang="da">Dansk</span>
                         </SelectItem>
                         <SelectItem value="de_DE">
-                            {{ $t('app.german') }}
+                            <span lang="de">Deutsch</span>
                         </SelectItem>
                         <SelectItem value="en_GB">
-                            {{ $t('app.english (UK)') }}
+                            <span lang="en-GB">English (United Kingdom)</span>
                         </SelectItem>
                         <SelectItem value="en_US">
-                            {{ $t('app.english (US)') }}
+                            <span lang="en-US">English (United States)</span>
                         </SelectItem>
                         <SelectItem value="fr_CA">
-                            {{ $t('app.french (CA)') }}
+                            <span lang="fr-CA">Français (Canada)</span>
                         </SelectItem>
                         <SelectItem value="fr_FR">
-                            {{ $t('app.french (FR)') }}
+                            <span lang="fr-FR">Français (France)</span>
                         </SelectItem>
                         <SelectItem value="it_IT">
-                            {{ $t('app.italian') }}
+                            <span lang="it">Italiano</span>
                         </SelectItem>
                         <SelectItem value="pl_PL">
-                            {{ $t('app.polish') }}
+                            <span lang="pl">Polski</span>
                         </SelectItem>
                         <SelectItem value="pt_BR">
-                            {{ $t('app.portuguese (BR)') }}
+                            <span lang="pt-BR">Português (Brasil)</span>
                         </SelectItem>
                         <SelectItem value="zh_CN">
-                            {{ $t('app.chinese') }}
+                            <span lang="zh-Hans">简体中文（中国）</span>
                         </SelectItem>
                     </SelectContent>
                 </Select>
             </div>
         </div>
-        <div class="flex items-center space-x-4 py-4">
+        <div class="flex items-center gap-x-4 py-4">
             <Globe />
             <div class="flex flex-1 items-center gap-4">
                 <p class="flex-1 text-sm leading-none font-medium">
@@ -152,7 +158,7 @@ watch(holidayCheck, () => {
                 </Select>
             </div>
         </div>
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-start gap-x-4 py-4">
             <SunMoon class="rtl:-scale-x-100" />
             <div class="flex flex-1 gap-4">
                 <div class="flex-1 space-y-1">
@@ -182,7 +188,7 @@ watch(holidayCheck, () => {
                 </Select>
             </div>
         </div>
-        <div class="flex items-center space-x-4 py-4">
+        <div class="flex items-center gap-x-4 py-4">
             <PanelsTopLeft class="rtl:-scale-x-100" />
             <div class="flex flex-1 items-center gap-4">
                 <p class="flex-1 text-sm leading-none font-medium">
@@ -209,7 +215,7 @@ watch(holidayCheck, () => {
                 </Select>
             </div>
         </div>
-        <div class="flex items-center space-x-4 py-4">
+        <div class="flex items-center gap-x-4 py-4">
             <Timeline class="rtl:-scale-x-100" />
             <div class="flex flex-1 items-center gap-4">
                 <label class="flex-1 text-sm leading-none font-medium" for="timeline-display">
@@ -230,7 +236,7 @@ watch(holidayCheck, () => {
                 </Select>
             </div>
         </div>
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-start gap-x-4 py-4">
             <Eye />
             <div class="flex-1 space-y-1">
                 <p class="text-sm leading-none font-medium">
@@ -243,7 +249,7 @@ watch(holidayCheck, () => {
             <Switch class="self-center" v-model="form.showTimerOnUnlock" />
         </div>
 
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-start gap-x-4 py-4">
             <AppWindowMac />
             <div class="flex-1 space-y-1">
                 <p class="text-sm leading-none font-medium">
@@ -256,7 +262,7 @@ watch(holidayCheck, () => {
             <Switch class="self-center" v-model="form.appActivityTracking" />
         </div>
 
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-start gap-x-4 py-4">
             <CalendarMinus />
             <div class="flex-1 space-y-1">
                 <div class="flex items-center gap-10">
@@ -271,7 +277,7 @@ watch(holidayCheck, () => {
                     <Switch v-model="holidayCheck" />
                 </div>
                 <Select size="5" v-if="holidayCheck && props.holidayRegions" v-model="form.holidayRegion">
-                    <SelectTrigger class="mt-2 ml-auto w-1/2">
+                    <SelectTrigger class="ms-auto mt-2 w-1/2">
                         <SelectValue placeholder="Region" />
                     </SelectTrigger>
                     <SelectContent>

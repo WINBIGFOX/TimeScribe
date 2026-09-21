@@ -3,6 +3,7 @@ import { Button } from '@/Components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover'
 import { cn } from '@/lib/utils'
 import { Trash } from '@lucide/vue'
+import { useDirection } from 'reka-ui'
 import { HTMLAttributes, ref } from 'vue'
 import EmojiPicker from 'vue3-emoji-picker'
 
@@ -12,6 +13,7 @@ const props = defineProps<{
 }>()
 const modelValue = defineModel<string>()
 const open = ref(false)
+const direction = useDirection()
 const setEmoji = (emoji: { i: string }) => {
     modelValue.value = emoji.i
     open.value = false
@@ -30,7 +32,11 @@ const setEmoji = (emoji: { i: string }) => {
                     {{ !modelValue ? $t('app.select emoji') : modelValue }}
                 </Button>
             </PopoverTrigger>
-            <PopoverContent @focus-outside="open = false" class="w-auto p-0" side="left">
+            <PopoverContent
+                :side="direction === 'rtl' ? 'right' : 'left'"
+                @focus-outside="open = false"
+                class="w-auto p-0"
+            >
                 <EmojiPicker @select="setEmoji" class="shadow-none!" hide-group-names hide-search native theme="auto" />
             </PopoverContent>
         </Popover>

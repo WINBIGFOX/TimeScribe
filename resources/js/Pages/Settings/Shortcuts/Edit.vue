@@ -73,7 +73,7 @@ watch(
     <Head title="Settings - Shortcuts" />
     <PageHeader :title="$t('app.shortcuts')" />
     <div>
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-start gap-x-4 py-4">
             <Play />
             <div class="flex flex-1 items-start gap-4">
                 <div class="flex-1 space-y-1">
@@ -92,7 +92,7 @@ watch(
                 </div>
             </div>
         </div>
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-start gap-x-4 py-4">
             <Square />
             <div class="flex flex-1 items-start gap-4">
                 <div class="flex-1 space-y-1">
@@ -111,7 +111,7 @@ watch(
                 </div>
             </div>
         </div>
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-start gap-x-4 py-4">
             <Coffee />
             <div class="flex flex-1 items-start gap-4">
                 <div class="flex-1 space-y-1">
@@ -130,7 +130,7 @@ watch(
                 </div>
             </div>
         </div>
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-start gap-x-4 py-4">
             <ChartColumnBig />
             <div class="flex flex-1 items-start gap-4">
                 <div class="flex-1 space-y-1">
@@ -149,7 +149,7 @@ watch(
                 </div>
             </div>
         </div>
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-start gap-x-4 py-4">
             <Tag />
             <div class="flex flex-1 items-start gap-4">
                 <div class="flex-1 space-y-1">

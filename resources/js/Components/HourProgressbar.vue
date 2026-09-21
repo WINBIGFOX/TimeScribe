@@ -97,7 +97,7 @@ const percentages = computed(() => {
                 <TooltipTrigger as-child>
                     <div
                         :style="{ width: percentages.break + '%' }"
-                        class="ml-auto bg-pink-400"
+                        class="ms-auto bg-pink-400"
                         v-if="percentages.break"
                     />
                 </TooltipTrigger>
@@ -118,7 +118,7 @@ const percentages = computed(() => {
                 <TooltipTrigger as-child>
                     <div
                         :class="{
-                            'ml-auto': !percentages.break
+                            'ms-auto': !percentages.break
                         }"
                         :style="{ width: percentages.noWork + '%' }"
                         class="bg-rose-400"

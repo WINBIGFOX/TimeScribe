@@ -2,7 +2,7 @@
 import { Button } from '@/Components/ui/button'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/Components/ui/hover-card'
 import { Switch } from '@/Components/ui/switch'
-import { getCurrencySymbol, secToFormat } from '@/lib/utils'
+import { formatMachineDate, getCurrencySymbol, secToFormat } from '@/lib/utils'
 import { Project, Timestamp } from '@/types'
 import { Link, useForm } from '@inertiajs/vue3'
 import { BriefcaseBusiness, CircleCheckBig, ExternalLink, MoveRight, NotepadText, Timer } from '@lucide/vue'
@@ -42,7 +42,7 @@ watch(() => form.paid, submit)
                 :as="Link"
                 :href="
                     route('overview.day.show', {
-                        date: moment(props.timestamp.started_at.date, 'YYYY-MM-DD').format('YYYY-MM-DD')
+                        date: formatMachineDate(moment(props.timestamp.started_at.date, 'YYYY-MM-DD'))
                     })
                 "
                 size="sm"

@@ -20,7 +20,7 @@ const forwarded = useForwardProps(delegatedProps)
     <NumberFieldIncrement
         :class="
             cn(
-                'absolute top-1/2 right-0 -translate-y-1/2 p-3 disabled:cursor-not-allowed disabled:opacity-20',
+                'absolute end-0 top-1/2 -translate-y-1/2 p-3 disabled:cursor-not-allowed disabled:opacity-20',
                 props.class
             )
         "

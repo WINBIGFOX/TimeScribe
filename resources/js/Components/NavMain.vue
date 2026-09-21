@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { formatMachineDate } from '@/lib/utils'
 import {
     SidebarGroup,
     SidebarMenu,
@@ -13,11 +14,11 @@ import { AppWindowMac, ChartColumnBig, Cog, FileChartColumn, FileClock, Tag, Ten
 import moment from 'moment/min/moment-with-locales'
 import { ref } from 'vue'
 
-const date = ref(usePage().props.date ?? moment().format('YYYY-MM-DD'))
+const date = ref(usePage().props.date ?? formatMachineDate(moment()))
 const current = ref(route().current())
 
 router.on('navigate', () => {
-    date.value = usePage().props.date ?? moment().format('YYYY-MM-DD')
+    date.value = usePage().props.date ?? formatMachineDate(moment())
     current.value = route().current()
 })
 </script>
