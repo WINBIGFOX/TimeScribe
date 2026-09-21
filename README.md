@@ -85,12 +85,12 @@ Simply put: It's a professional time tracking tool that respects your privacy an
 
 ## 🌍 Supported Languages
 
-- Arabic (العربية)
+- 🇸🇦 Arabic (العربية)
 - 🇩🇰 Danish
 - 🇬🇧 English (UK/US)
 - 🇫🇷 French (FR/CA)
 - 🇩🇪 German
-- Hebrew (עברית)
+- 🇮🇱 Hebrew (עברית)
 - 🇮🇹 Italian
 - 🇵🇱 Polish
 - 🇧🇷 Portuguese (BR)
