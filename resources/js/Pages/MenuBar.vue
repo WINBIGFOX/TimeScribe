@@ -298,7 +298,7 @@ const removeProject = () => {
                             <div class="flex h-9 shrink-0 items-center text-xl" v-if="props.currentProject.icon">
                                 {{ props.currentProject.icon }}
                             </div>
-                            <div class="w-full truncate">
+                            <div class="me-auto truncate">
                                 {{ props.currentProject.name }}
                             </div>
                             <span class="text-muted-foreground shrink-0 tabular-nums">{{ projectTimeFormatted }}</span>
