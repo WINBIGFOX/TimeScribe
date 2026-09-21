@@ -29,7 +29,8 @@
 </p>
 
 <p align="center">
-  <a href="https://trendshift.io/repositories/13946" target="_blank"><img src="https://trendshift.io/api/badge/repositories/13946" alt="WINBIGFOX%2FTimeScribe | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+  <a href="https://trendshift.io/repositories/13946" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/13946/daily?language=PHP" alt="WINBIGFOX%2FTimeScribe | Trendshift" width="250" height="55"/></a>
+  <a href="https://trendshift.io/repositories/13946" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/13946" alt="WINBIGFOX%2FTimeScribe | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 </p>
 
 <h3 align="center">Download Now</h2>
