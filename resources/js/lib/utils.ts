@@ -66,11 +66,11 @@ export function weekdayTranslate(weekday: string) {
         return weekday
     }
 
-    const locales = ['ar', 'ar-sa', 'he', 'da', 'en', 'de', 'fr', 'it', 'pl', 'pt-br', 'zh-cn']
+    const weekdayLocales = ['ar-sa', 'he', 'da', 'en', 'de', 'fr', 'it', 'pl', 'pt-br', 'zh-cn']
 
     const currentLocale = moment.locale()
 
-    for (const locale of locales) {
+    for (const locale of weekdayLocales) {
         moment.locale(locale)
         const localizedWeekdays = moment.weekdays()
 
