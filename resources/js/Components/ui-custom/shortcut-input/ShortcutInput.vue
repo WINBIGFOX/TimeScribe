@@ -408,10 +408,12 @@ const hasClearButton = computed(() => Boolean(modelValue.value) && !props.requir
                 tabindex="0"
             >
                 <span :class="cn('truncate', !modelValue && !recording ? 'text-muted-foreground' : undefined)">
-                    {{
-                        displayValue ??
-                        (recording ? $t('app.press a shortcut...') : (props.placeholder ?? $t('app.select shortcut')))
-                    }}
+                    <bdi dir="ltr" v-if="displayValue">{{ displayValue }}</bdi>
+                    <template v-else>
+                        {{
+                            recording ? $t('app.press a shortcut...') : (props.placeholder ?? $t('app.select shortcut'))
+                        }}
+                    </template>
                 </span>
                 <span class="text-muted-foreground flex items-center gap-1 text-xs" v-if="recording">
                     <Keyboard class="size-4" />

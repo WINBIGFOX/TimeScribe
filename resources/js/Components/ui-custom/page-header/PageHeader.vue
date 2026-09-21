@@ -11,7 +11,10 @@ const props = defineProps<{
 <template>
     <div
         :class="
-            cn('bg-background/50 sticky inset-x-0 top-0 z-10 -mx-8 mb-3 px-8 pt-4 pb-1 backdrop-blur-sm', props.class)
+            cn(
+                'bg-background/50 sticky inset-x-0 top-0 z-20 -mx-8 mb-3 px-8 pt-4 pb-1 backdrop-blur-sm backdrop-saturate-150',
+                props.class
+            )
         "
         data-slot="page-header"
     >

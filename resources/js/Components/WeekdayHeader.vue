@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { formatMachineDate } from '@/lib/utils'
 import moment from 'moment/min/moment-with-locales'
 
 const props = defineProps<{
@@ -11,7 +12,7 @@ const momentDate = moment(props.date, 'YYYY-MM-DD')
 <template>
     <div
         :class="{
-            'ring-primary ring-2 ring-inset': props.date === moment().format('YYYY-MM-DD')
+            'ring-primary ring-2 ring-inset': props.date === formatMachineDate(moment())
         }"
         class="bg-sidebar border-muted text-muted-foreground flex size-14 flex-col items-center justify-center rounded-lg border text-center"
     >

@@ -10,6 +10,12 @@ import { createApp, DefineComponent, h } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import { ZiggyVue } from 'ziggy-js'
 
+if (window.Native) {
+    window.Native.on('App\\Events\\LocaleChanged', () => {
+        window.location.reload()
+    })
+}
+
 createInertiaApp({
     title: (title) => title,
     resolve: async (name) => {

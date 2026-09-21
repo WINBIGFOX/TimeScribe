@@ -29,7 +29,8 @@
 </p>
 
 <p align="center">
-  <a href="https://trendshift.io/repositories/13946" target="_blank"><img src="https://trendshift.io/api/badge/repositories/13946" alt="WINBIGFOX%2FTimeScribe | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+  <a href="https://trendshift.io/repositories/13946" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/13946/daily?language=PHP" alt="WINBIGFOX%2FTimeScribe | Trendshift" width="250" height="55"/></a>
+  <a href="https://trendshift.io/repositories/13946" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/13946" alt="WINBIGFOX%2FTimeScribe | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 </p>
 
 <h3 align="center">Download Now</h2>
@@ -85,14 +86,18 @@ Simply put: It's a professional time tracking tool that respects your privacy an
 
 ## 🌍 Supported Languages
 
+- 🇸🇦 Arabic (العربية)
 - 🇩🇰 Danish
 - 🇬🇧 English (UK/US)
 - 🇫🇷 French (FR/CA)
 - 🇩🇪 German
+- 🇮🇱 Hebrew (עברית)
 - 🇮🇹 Italian
 - 🇵🇱 Polish
 - 🇧🇷 Portuguese (BR)
 - 🇨🇳 Chinese (中文)
+
+Arabic and Hebrew support right-to-left application layouts. PDF exports still use Dompdf, whose [complex text layout support](https://github.com/dompdf/dompdf/issues/2619) is incomplete; RTL text in PDFs requires a separate rendering solution.
 
 ---
 

@@ -90,6 +90,7 @@ return [
     'required_with_all' => ':Attribute muss ausgefüllt werden, wenn :values ausgefüllt wurde.',
     'required_without' => ':Attribute muss ausgefüllt werden, wenn :values nicht ausgefüllt wurde.',
     'required_without_all' => ':Attribute muss ausgefüllt werden, wenn keines der Felder :values ausgefüllt wurde.',
+    'rule-name' => 'benutzerdefinierte-nachricht',
     'same' => ':Attribute und :other müssen übereinstimmen.',
     'starts_with' => ':Attribute muss mit einem der folgenden Anfänge aufweisen: :values',
     'string' => ':Attribute muss ein String sein.',

@@ -70,7 +70,7 @@ watch(
     <Head title="Settings - Vacation" />
     <PageHeader :title="$t('app.vacation settings')" />
     <div>
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-start gap-x-4 py-4">
             <CalendarSync />
             <div class="flex-1 space-y-1">
                 <p class="text-sm leading-none font-medium">
@@ -102,7 +102,7 @@ watch(
             </div>
         </div>
 
-        <div class="flex items-start space-x-4 border-t py-4">
+        <div class="flex items-start gap-x-4 border-t py-4">
             <Timer />
             <div class="flex-1 space-y-1">
                 <p class="text-sm leading-none font-medium">
@@ -135,7 +135,7 @@ watch(
             </div>
         </div>
 
-        <div class="flex items-start space-x-4 py-4">
+        <div class="flex items-start gap-x-4 py-4">
             <RedoDot class="rtl:-scale-x-100" />
             <div class="flex-1 space-y-1">
                 <p class="text-sm leading-none font-medium">
@@ -148,7 +148,7 @@ watch(
             <Switch class="self-center" v-model="form.auto_carryover" />
         </div>
 
-        <div class="mt-4 flex items-start space-x-4 border-t py-4 pt-8">
+        <div class="mt-4 flex items-start gap-x-4 border-t py-4 pt-8">
             <CircleDivide />
             <div class="flex-1 space-y-1">
                 <div class="flex items-center gap-10">

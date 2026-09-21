@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import SaFlag from '@/Components/flags/SaFlag.vue'
+import IlFlag from '@/Components/flags/IlFlag.vue'
 import BrFlag from '@/Components/flags/BrFlag.vue'
 import CaFlag from '@/Components/flags/CaFlag.vue'
 import CnFlag from '@/Components/flags/CnFlag.vue'
@@ -14,6 +16,8 @@ import { router } from '@inertiajs/vue3'
 import { ArrowRight } from '@lucide/vue'
 
 const locales = [
+    { code: 'ar_SA', component: SaFlag },
+    { code: 'he_IL', component: IlFlag },
     { code: 'da_DK', component: DkFlag },
     { code: 'de_DE', component: DeFlag },
     { code: 'en_GB', component: EnFlag },
@@ -50,11 +54,11 @@ const updateLocale = (locale) => {
 
         <Button @click="$emit('nextStep')" class="dark:hidden" size="lg" variant="secondary">
             {{ $t('app.get started') }}
-            <ArrowRight />
+            <ArrowRight class="rtl:-scale-x-100" />
         </Button>
         <Button @click="$emit('nextStep')" class="hidden dark:flex" size="lg">
             {{ $t('app.get started') }}
-            <ArrowRight />
+            <ArrowRight class="rtl:-scale-x-100" />
         </Button>
 
         <div class="grid grid-cols-3 items-center justify-center gap-6">
