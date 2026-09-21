@@ -100,41 +100,41 @@ watch(holidayCheck, () => {
                         <SelectValue :placeholder="$t('app.language')" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem :value="$page.props.language === 'ar' ? $page.props.locale : 'ar_SA'"
-                            ><bdi lang="ar">العربية</bdi></SelectItem
-                        >
-                        <SelectItem :value="$page.props.language === 'he' ? $page.props.locale : 'he_IL'"
-                            ><bdi lang="he">עברית</bdi></SelectItem
-                        >
+                        <SelectItem value="ar_SA">
+                            <bdi lang="ar">العربية</bdi>
+                        </SelectItem>
+                        <SelectItem value="he_IL">
+                            <bdi lang="he">עברית</bdi>
+                        </SelectItem>
                         <SelectItem value="da_DK">
-                            {{ $t('app.danish') }}
+                            <span lang="da">Dansk</span>
                         </SelectItem>
                         <SelectItem value="de_DE">
-                            {{ $t('app.german') }}
+                            <span lang="de">Deutsch</span>
                         </SelectItem>
                         <SelectItem value="en_GB">
-                            {{ $t('app.english (UK)') }}
+                            <span lang="en-GB">English (United Kingdom)</span>
                         </SelectItem>
                         <SelectItem value="en_US">
-                            {{ $t('app.english (US)') }}
+                            <span lang="en-US">English (United States)</span>
                         </SelectItem>
                         <SelectItem value="fr_CA">
-                            {{ $t('app.french (CA)') }}
+                            <span lang="fr-CA">Français (Canada)</span>
                         </SelectItem>
                         <SelectItem value="fr_FR">
-                            {{ $t('app.french (FR)') }}
+                            <span lang="fr-FR">Français (France)</span>
                         </SelectItem>
                         <SelectItem value="it_IT">
-                            {{ $t('app.italian') }}
+                            <span lang="it">Italiano</span>
                         </SelectItem>
                         <SelectItem value="pl_PL">
-                            {{ $t('app.polish') }}
+                            <span lang="pl">Polski</span>
                         </SelectItem>
                         <SelectItem value="pt_BR">
-                            {{ $t('app.portuguese (BR)') }}
+                            <span lang="pt-BR">Português (Brasil)</span>
                         </SelectItem>
                         <SelectItem value="zh_CN">
-                            {{ $t('app.chinese') }}
+                            <span lang="zh-Hans">简体中文（中国）</span>
                         </SelectItem>
                     </SelectContent>
                 </Select>

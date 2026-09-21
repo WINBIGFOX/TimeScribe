@@ -14,6 +14,11 @@ use PrinsFrank\Standards\Country\CountryAlpha2;
 
 class LocaleService
 {
+    const array CANONICAL_LOCALES_BY_LANGUAGE = [
+        'ar' => 'ar_SA',
+        'he' => 'he_IL',
+    ];
+
     const array LOCALE_MAPPING = [
         'ar_SA' => 'ar',
         'he_IL' => 'he',
@@ -60,7 +65,7 @@ class LocaleService
         $systemLocale = $this->detectSystemLocale();
         $locale = $this->settings->locale ?? $systemLocale;
 
-        $locale = $this->parseLocale($locale);
+        $locale = self::normalizeLocale($locale);
 
         if ($this->settings->locale !== $locale) {
             $this->settings->locale = $locale;
@@ -69,7 +74,7 @@ class LocaleService
 
         $language = $this->getLanguageLocale($locale);
         if (! Locales::isInstalled($language)) {
-            $locale = $this->parseLocale(config('app.fallback_locale'));
+            $locale = self::normalizeLocale(config('app.fallback_locale'));
             $language = $this->getLanguageLocale($locale);
             $this->settings->locale = $locale;
             $this->settings->save();
@@ -116,11 +121,6 @@ class LocaleService
 
     private function getLanguageLocale(string $locale): string
     {
-        $language = explode('_', $locale)[0];
-        if (in_array($language, ['ar', 'he'], true)) {
-            return $language;
-        }
-
         if (array_key_exists($locale, self::LOCALE_MAPPING)) {
             return self::LOCALE_MAPPING[$locale];
         }
@@ -135,12 +135,19 @@ class LocaleService
         return in_array($language, ['ar', 'he'], true) ? 'rtl' : 'ltr';
     }
 
-    private function parseLocale(string $locale): string
+    public static function normalizeLocale(string $locale): string
     {
+        $locale = str_replace('-', '_', $locale);
+        $language = explode('_', $locale)[0];
+
+        if (array_key_exists($language, self::CANONICAL_LOCALES_BY_LANGUAGE)) {
+            return self::CANONICAL_LOCALES_BY_LANGUAGE[$language];
+        }
+
         if (strlen($locale) === 2) {
             return Locales::get($locale, true)->regional;
         }
 
-        return str_replace('-', '_', $locale);
+        return $locale;
     }
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateGeneralSettingsRequest;
 use App\Http\Requests\UpdateLocaleRequest;
 use App\Jobs\CalculateWeekBalance;
+use App\Services\LocaleService;
 use App\Settings\GeneralSettings;
 use App\Settings\ProjectSettings;
 use DateTimeZone;
@@ -48,6 +49,7 @@ class GeneralController extends Controller
     public function update(UpdateGeneralSettingsRequest $request, GeneralSettings $settings): Redirector|RedirectResponse
     {
         $data = $request->validated();
+        $data['locale'] = LocaleService::normalizeLocale($data['locale']);
 
         $settings->showTimerOnUnlock = $data['showTimerOnUnlock'];
         $settings->holidayRegion = $data['holidayRegion'];
@@ -84,6 +86,8 @@ class GeneralController extends Controller
     public function updateLocale(UpdateLocaleRequest $request, GeneralSettings $settings, ProjectSettings $projectSettings): RedirectResponse
     {
         $data = $request->validated();
+        $data['locale'] = LocaleService::normalizeLocale($data['locale']);
+
         if ($data['locale'] !== $settings->locale) {
 
             $settings->locale = $data['locale'];

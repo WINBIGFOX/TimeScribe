@@ -58,7 +58,7 @@ const localeMapping = {
     'pt-BR': 'pt-br',
     'zh-CN': 'zh-cn'
 }
-const currentLocale = localeMapping[usePage().props.js_locale] ?? usePage().props.language
+const currentLocale = localeMapping[usePage().props.js_locale] ?? 'en'
 
 const buildSeries = () => {
     const series = [] as Record<string, string | number[]>[]

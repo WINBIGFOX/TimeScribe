@@ -51,7 +51,7 @@ const localeMapping = {
     'pt-BR': 'pt-br',
     'zh-CN': 'zh-cn'
 }
-const currentLocale = localeMapping[usePage().props.js_locale] ?? usePage().props.language
+const currentLocale = localeMapping[usePage().props.js_locale] ?? 'en'
 
 const showWeek = (opts) => {
     router.get(props.links[opts.dataPointIndex], {

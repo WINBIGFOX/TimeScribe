@@ -49,8 +49,8 @@ it('uses the same effective locale for the document and application', function (
     ['he-IL', 'he_IL', 'he', 'rtl'],
     ['he', 'he_IL', 'he', 'rtl'],
     ['ar_SA', 'ar_SA', 'ar', 'rtl'],
-    ['ar-EG', 'ar_EG', 'ar', 'rtl'],
-    ['ar', 'ar_AE', 'ar', 'rtl'],
+    ['ar-EG', 'ar_SA', 'ar', 'rtl'],
+    ['ar', 'ar_SA', 'ar', 'rtl'],
     ['en_US', 'en_US', 'en', 'ltr'],
     ['pt_BR', 'pt_BR', 'pt_BR', 'ltr'],
     ['zh_CN', 'zh_CN', 'zh_CN', 'ltr'],
@@ -70,7 +70,7 @@ it('uses the configured fallback consistently', function (): void {
         ->and($settings->refresh()->locale)->toBe('he_IL');
 });
 
-it('persists a language change before broadcasting and returns to the wizard', function (string $locale): void {
+it('normalizes and persists a language change before broadcasting and returns to the wizard', function (string $input, string $locale): void {
     $dispatched = false;
     Event::listen(LocaleChanged::class, function () use ($locale, &$dispatched): void {
         expect(resolve(GeneralSettings::class)->refresh()->locale)->toBe($locale);
@@ -78,7 +78,7 @@ it('persists a language change before broadcasting and returns to the wizard', f
     });
 
     $this->from(route('welcome.index'))
-        ->patch(route('settings.general.updateLocale'), ['locale' => $locale])
+        ->patch(route('settings.general.updateLocale'), ['locale' => $input])
         ->assertRedirect(route('welcome.index'));
 
     expect(resolve(GeneralSettings::class)->refresh()->locale)->toBe($locale)
@@ -89,7 +89,31 @@ it('persists a language change before broadcasting and returns to the wizard', f
         ->where('direction', 'rtl')
         ->where('locale', $locale)
     );
-})->with(['he_IL', 'ar_SA']);
+})->with([
+    ['he_IL', 'he_IL'],
+    ['ar_EG', 'ar_SA'],
+]);
+
+it('normalizes locale changes in general settings', function (): void {
+    Event::fake([LocaleChanged::class]);
+    $settings = resolve(GeneralSettings::class);
+    $settings->locale = 'en_US';
+    $settings->save();
+
+    $this->patch(route('settings.general.update'), [
+        'openAtLogin' => false,
+        'theme' => $settings->theme,
+        'showTimerOnUnlock' => $settings->showTimerOnUnlock,
+        'holidayRegion' => $settings->holidayRegion,
+        'locale' => 'ar_EG',
+        'appActivityTracking' => $settings->appActivityTracking,
+        'timezone' => 'UTC',
+        'default_overview' => 'week',
+        'timeline_display' => 'detailed',
+    ])->assertRedirect(route('settings.general.edit'));
+
+    expect($settings->refresh()->locale)->toBe('ar_SA');
+});
 
 it('switches back to left to right and preserves a configured project currency', function (): void {
     Event::fake([LocaleChanged::class]);
@@ -109,6 +133,7 @@ it('switches back to left to right and preserves a configured project currency',
         'appActivityTracking' => $settings->appActivityTracking,
         'timezone' => 'UTC',
         'default_overview' => 'week',
+        'timeline_display' => 'detailed',
     ])->assertRedirect(route('settings.general.edit'));
 
     expect($projectSettings->refresh()->defaultCurrency)->toBe('ILS');

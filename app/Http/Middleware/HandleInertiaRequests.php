@@ -37,13 +37,14 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $settings = resolve(GeneralSettings::class);
+        $language = app()->getLocale();
 
         return [
             ...parent::share($request),
             'js_locale' => str_replace('_', '-', $settings->locale ?? config('app.fallback_locale')),
             'locale' => $settings->locale ?? config('app.fallback_locale'),
-            'language' => app()->getLocale(),
-            'direction' => LocaleService::direction(app()->getLocale()),
+            'language' => $language,
+            'direction' => LocaleService::direction($language),
             'week_starts_on' => now()->firstWeekDay,
             'timezone' => $settings->timezone ?? config('app.timezone'),
             'app_version' => config('nativephp.version'),

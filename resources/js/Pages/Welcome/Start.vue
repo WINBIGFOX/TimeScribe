@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import SaFlag from '@/Components/flags/SaFlag.vue'
+import IlFlag from '@/Components/flags/IlFlag.vue'
 import BrFlag from '@/Components/flags/BrFlag.vue'
 import CaFlag from '@/Components/flags/CaFlag.vue'
 import CnFlag from '@/Components/flags/CnFlag.vue'
@@ -14,6 +16,8 @@ import { router } from '@inertiajs/vue3'
 import { ArrowRight } from '@lucide/vue'
 
 const locales = [
+    { code: 'ar_SA', component: SaFlag },
+    { code: 'he_IL', component: IlFlag },
     { code: 'da_DK', component: DkFlag },
     { code: 'de_DE', component: DeFlag },
     { code: 'en_GB', component: EnFlag },
@@ -58,20 +62,6 @@ const updateLocale = (locale) => {
         </Button>
 
         <div class="grid grid-cols-3 items-center justify-center gap-6">
-            <button
-                :aria-pressed="$page.props.locale === locale.code"
-                :class="{ 'border-white!': $page.props.locale === locale.code }"
-                :key="locale.code"
-                @click="updateLocale(locale.code)"
-                class="hover:text-primary rounded-lg border border-transparent p-1 transition-colors hover:bg-white"
-                type="button"
-                v-for="locale in [
-                    { code: 'ar_SA', name: 'العربية', lang: 'ar' },
-                    { code: 'he_IL', name: 'עברית', lang: 'he' }
-                ]"
-            >
-                <bdi :lang="locale.lang">{{ locale.name }}</bdi>
-            </button>
             <div :key="locale.code" class="flex items-center justify-center" v-for="locale in locales">
                 <div
                     :class="{
