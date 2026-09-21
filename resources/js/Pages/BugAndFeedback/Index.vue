@@ -15,6 +15,7 @@ import { Input } from '@/Components/ui/input'
 import { Head, Link, useForm } from '@inertiajs/vue3'
 import { Bug, DatabaseBackup, FolderOpen, Heart, Loader2, Save, Shredder, TriangleAlert } from '@lucide/vue'
 import { ref } from 'vue'
+import { Tooltip, TooltipTrigger, TooltipProvider, TooltipContent } from '@/Components/ui/tooltip'
 
 const confirmDeleteInput = ref('')
 const deleteForm = useForm({})
@@ -170,5 +171,34 @@ const handleDelete = () =>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
+    </div>
+    <div class="mt-80 mb-10 flex justify-center gap-1 text-3xl">
+        <TooltipProvider
+            ><Tooltip
+                ><TooltipTrigger>🧑🏼‍🚒</TooltipTrigger
+                ><TooltipContent
+                    class="bg-muted text-muted-foreground [&_.fill-primary]:fill-muted [&_.fill-primary]:bg-muted"
+                    >Jan</TooltipContent
+                ></Tooltip
+            ></TooltipProvider
+        >
+        <TooltipProvider
+            ><Tooltip
+                ><TooltipTrigger>❤️</TooltipTrigger
+                ><TooltipContent
+                    class="bg-muted text-muted-foreground [&_.fill-primary]:fill-muted [&_.fill-primary]:bg-muted"
+                    >FOREVER</TooltipContent
+                ></Tooltip
+            ></TooltipProvider
+        >
+        <TooltipProvider
+            ><Tooltip
+                ><TooltipTrigger>🧑🏼‍🚒</TooltipTrigger
+                ><TooltipContent
+                    class="bg-muted text-muted-foreground [&_.fill-primary]:fill-muted [&_.fill-primary]:bg-muted"
+                    >Adrian</TooltipContent
+                ></Tooltip
+            ></TooltipProvider
+        >
     </div>
 </template>
