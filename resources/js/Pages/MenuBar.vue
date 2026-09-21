@@ -33,7 +33,7 @@ const projectSeconds = ref(props.currentProjectTime)
 
 const workTimeFormatted = computed(() => secToFormat(workSeconds.value))
 const breakTimeFormatted = computed(() => secToFormat(breakSeconds.value, true))
-const projectTimeFormatted = computed(() => secToFormat(projectSeconds.value))
+const projectTimeFormatted = computed(() => secToFormat(projectSeconds.value, true))
 const openProjectList = ref(false)
 const showProject = ref(!!props.currentProject)
 
@@ -297,10 +297,10 @@ const removeProject = () => {
                         <div class="flex h-9 shrink-0 items-center text-xl" v-if="props.currentProject.icon">
                             {{ props.currentProject.icon }}
                         </div>
-                        <div class="line-clamp-1">
+                        <div class="w-full truncate">
                             {{ props.currentProject.name }}
                         </div>
-                        <span class="text-muted-foreground shrink-0 tabular-nums">· {{ projectTimeFormatted }}</span>
+                        <span class="text-muted-foreground shrink-0 tabular-nums">{{ projectTimeFormatted }}</span>
                         <Button
                             @click="removeProject"
                             class="mr-0.5 ml-auto px-2! shadow-none"
