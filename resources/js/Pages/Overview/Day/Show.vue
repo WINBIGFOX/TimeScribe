@@ -47,7 +47,7 @@ if (window.Native) {
 
 <template>
     <Head title="Day Overview" />
-    <PageHeader :title="$t('app.daily overview')">
+    <PageHeader :title="$t('app.daily overview')" class="bg-background mb-0">
         <div class="flex flex-1 items-center justify-center text-sm">
             <TimeWheel :date="props.date" route="overview.day.show" type="day" />
         </div>
@@ -62,36 +62,50 @@ if (window.Native) {
             {{ $t('app.today') }}
         </Button>
     </PageHeader>
-    <div class="flex grow flex-col overflow-hidden">
-        <Timeline
-            :date="props.date"
-            :overtime="props.hasWorkSchedules ? Math.max(props.dayWorkTime.sum - (props.dayPlan ?? 0) * 60 * 60, 0) : 0"
-            :timestamps="props.timestamps"
-            :work-time="props.dayWorkTime.sum"
-            class="mb-6 shrink-0"
-        />
-        <div class="mb-6 flex gap-2">
-            <TimestampTypeBadge type="holiday" v-if="props.isHoliday" />
-            <TimestampTypeBadge type="vacation" v-if="props.absences.length && props.absences[0].type === 'vacation'" />
-            <TimestampTypeBadge type="sick" v-if="props.absences.length && props.absences[0].type === 'sick'" />
-            <TimestampTypeBadge
-                :duration="props.dayWorkTime.sum"
-                :project-durations="props.dayWorkTime.projects"
-                type="work"
-                v-if="
-                    (!props.absences.length && !props.isHoliday) || (!props.hasWorkSchedules && props.dayWorkTime.sum)
+    <div class="flex grow flex-col">
+        <div
+            class="bg-background/50 after:bg-background sticky top-13 z-20 -mx-8 px-8 pt-3 pb-1 backdrop-blur-sm backdrop-saturate-150 after:absolute after:inset-0 after:-z-10 after:mask-b-from-20% after:mask-b-to-80% after:content-['']"
+        >
+            <Timeline
+                :date="props.date"
+                :overtime="
+                    props.hasWorkSchedules ? Math.max(props.dayWorkTime.sum - (props.dayPlan ?? 0) * 60 * 60, 0) : 0
                 "
+                :timestamps="props.timestamps"
+                :work-time="props.dayWorkTime.sum"
+                class="mb-6 shrink-0"
             />
-            <TimestampTypeBadge :duration="props.dayBreakTime" type="break" />
-            <TimestampTypeBadge :duration="props.dayNoWorkTime" type="noWork" />
-            <TimestampTypeBadge
-                :duration="Math.max(props.dayWorkTime.sum - (props.dayPlan ?? 0) * 60 * 60, 0)"
-                type="overtime"
-                v-if="props.hasWorkSchedules"
-            />
-            <TimestampTypeBadge :duration="(props.dayPlan ?? 0) * 60 * 60" type="plan" v-if="props.hasWorkSchedules" />
+            <div class="flex gap-2">
+                <TimestampTypeBadge type="holiday" v-if="props.isHoliday" />
+                <TimestampTypeBadge
+                    type="vacation"
+                    v-if="props.absences.length && props.absences[0].type === 'vacation'"
+                />
+                <TimestampTypeBadge type="sick" v-if="props.absences.length && props.absences[0].type === 'sick'" />
+                <TimestampTypeBadge
+                    :duration="props.dayWorkTime.sum"
+                    :project-durations="props.dayWorkTime.projects"
+                    type="work"
+                    v-if="
+                        (!props.absences.length && !props.isHoliday) ||
+                        (!props.hasWorkSchedules && props.dayWorkTime.sum)
+                    "
+                />
+                <TimestampTypeBadge :duration="props.dayBreakTime" type="break" />
+                <TimestampTypeBadge :duration="props.dayNoWorkTime" type="noWork" />
+                <TimestampTypeBadge
+                    :duration="Math.max(props.dayWorkTime.sum - (props.dayPlan ?? 0) * 60 * 60, 0)"
+                    type="overtime"
+                    v-if="props.hasWorkSchedules"
+                />
+                <TimestampTypeBadge
+                    :duration="(props.dayPlan ?? 0) * 60 * 60"
+                    type="plan"
+                    v-if="props.hasWorkSchedules"
+                />
+            </div>
         </div>
-        <div class="grow space-y-1 overflow-y-auto" scroll-region v-if="!isFuture">
+        <div class="mt-3 grow space-y-1" scroll-region v-if="!isFuture">
             <TimestampListPlaceholderItem
                 :start-of-day="startOfDay"
                 :view-mode="props.timelineDisplay"

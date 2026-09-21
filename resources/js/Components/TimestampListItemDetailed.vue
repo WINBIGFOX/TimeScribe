@@ -129,7 +129,7 @@ watch(
         }"
         class="flex gap-2"
     >
-        <div class="flex flex-col items-center gap-1">
+        <div class="z-0 flex flex-col items-center gap-1">
             <div
                 :class="{
                     'text-primary': props.timestamp.type === 'work',

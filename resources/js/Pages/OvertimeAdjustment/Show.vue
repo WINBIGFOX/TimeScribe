@@ -269,7 +269,7 @@ const closeEditModal = () => {
                     >
                         <div
                             @click="openCreateModal(weekday.date.date)"
-                            class="bg-background/50 text-foreground absolute inset-0 flex items-center justify-center opacity-0 backdrop-blur-xs transition-opacity duration-300 group-hover:opacity-100 group-data-[adjustment-type]:hidden"
+                            class="bg-background/50 text-foreground absolute inset-0 flex items-center justify-center opacity-0 backdrop-blur-xs backdrop-saturate-150 transition-opacity duration-300 group-hover:opacity-100 group-data-[adjustment-type]:hidden"
                         >
                             <ClipboardClock class="size-6" />
                         </div>
