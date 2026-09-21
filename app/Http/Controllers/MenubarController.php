@@ -56,6 +56,7 @@ class MenubarController extends Controller
             'workTime' => TimestampService::getWorkTime(),
             'breakTime' => TimestampService::getBreakTime(),
             'currentProject' => fn () => $currentProject ? ProjectResource::make($currentProject) : null,
+            'currentProjectTime' => fn (): float => $currentProject ? (float) TimestampService::getWorkTime(project: $currentProject) : 0.0,
             'currentAppActivity' => fn () => $currentAppActivity ? ActivityHistoryResource::make($currentAppActivity) : null,
             'activeAppActivity' => $settings->appActivityTracking,
             'updateAvailable' => $autoUpdaterSettings->isDownloaded,
