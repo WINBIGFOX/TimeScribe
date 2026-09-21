@@ -10,6 +10,12 @@ import { createApp, DefineComponent, h } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import { ZiggyVue } from 'ziggy-js'
 
+type LanguageJsonFile = {
+    default: Record<string, string>
+}
+
+const languages = import.meta.glob<LanguageJsonFile>('../../lang/*.json')
+
 if (window.Native) {
     window.Native.on('App\\Events\\LocaleChanged', () => {
         window.location.reload()
@@ -46,12 +52,8 @@ createInertiaApp({
             .use(VueApexCharts)
         app.use(i18nVue, {
             fallbackLang: 'en',
-            resolve: async (lang: string) => {
-                const languages = import.meta.glob('../../lang/*.json')
-                if (typeof languages[`../../lang/${lang}.json`] === 'function') {
-                    return await languages[`../../lang/${lang}.json`]()
-                }
-            },
+            resolve: (lang: string) =>
+                languages[`../../lang/${lang}.json`]?.() ?? Promise.resolve({ default: {} }),
             onLoad: () => {
                 if (!app._container) {
                     app.mount(el)
