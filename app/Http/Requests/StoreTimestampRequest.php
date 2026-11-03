@@ -31,6 +31,14 @@ class StoreTimestampRequest extends FormRequest
             'ended_at' => [Rule::requiredIf((bool) $this->route('timestamp')?->ended_at ?? false), 'date_format:H:i', 'after:started_at'],
             'description' => ['nullable', 'string'],
             'project_id' => ['nullable', 'exists:projects,id'],
+            'billable' => ['sometimes', 'boolean', Rule::when((bool) $this->route('timestamp')?->paid, ['accepted'])],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'billable.accepted' => __('app.remove the paid mark first.'),
         ];
     }
 }

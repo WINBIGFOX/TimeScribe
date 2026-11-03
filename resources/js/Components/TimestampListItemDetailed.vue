@@ -66,7 +66,8 @@ const canMerge = () => {
             Math.floor(
                 moment(props.timestamp.started_at.date).diff(props.timestampBefore.ended_at?.date).valueOf() / 1000 / 60
             ) === 0) &&
-        props.timestampBefore.paid === props.timestamp.paid
+        props.timestampBefore.paid === props.timestamp.paid &&
+        props.timestampBefore.billable === props.timestamp.billable
     )
 }
 

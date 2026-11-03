@@ -9,6 +9,7 @@ use App\Http\Requests\DestroyTimestampRequest;
 use App\Http\Requests\FillTimestampRequest;
 use App\Http\Requests\MergeTimestampRequest;
 use App\Http\Requests\StoreTimestampRequest;
+use App\Http\Requests\UpdateTimestampBillableRequest;
 use App\Http\Requests\UpdateTimestampPaidRequest;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TimestampResource;
@@ -156,7 +157,7 @@ class TimestampController extends Controller
 
         Inertia::share(['date' => $datetime->format('Y-m-d')]);
 
-        TimestampService::create($startTime, $endTime, TimestampTypeEnum::tryFrom($data['type']), $data['description'] ?? null, $data['project_id'] ?? null);
+        TimestampService::create($startTime, $endTime, TimestampTypeEnum::tryFrom($data['type']), $data['description'] ?? null, $data['project_id'] ?? null, $data['billable'] ?? true);
 
         dispatch(new CalculateWeekBalance);
 
@@ -275,6 +276,7 @@ class TimestampController extends Controller
         }
         $timestamp->description = $data['description'] ?? null;
         $timestamp->project_id = $data['project_id'] ?? null;
+        $timestamp->billable = $data['billable'] ?? $timestamp->billable;
         $timestamp->save();
 
         if (! $timestamp->ended_at && $timestamp->started_at->isToday() && $timestamp->project_id) {
@@ -360,11 +362,20 @@ class TimestampController extends Controller
         return to_route('overview.day.show', ['date' => $date]);
     }
 
-    public function updatePaid(UpdateTimestampPaidRequest $request, Timestamp $timestamp): void
+    public function updateBillable(UpdateTimestampBillableRequest $request, Timestamp $timestamp): RedirectResponse
+    {
+        $timestamp->update($request->validated());
+
+        return back();
+    }
+
+    public function updatePaid(UpdateTimestampPaidRequest $request, Timestamp $timestamp): RedirectResponse
     {
         $data = $request->validated();
 
         $timestamp->paid = $data['paid'];
         $timestamp->save();
+
+        return back();
     }
 }

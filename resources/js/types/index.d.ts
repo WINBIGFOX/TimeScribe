@@ -60,6 +60,7 @@ export interface Timestamp {
     source?: string
     project?: Project
     paid: boolean
+    billable: boolean
 }
 
 export interface AppUsage {

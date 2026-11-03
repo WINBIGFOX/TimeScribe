@@ -8,6 +8,51 @@ use App\Models\Timestamp;
 use App\Services\TimestampService;
 use Illuminate\Support\Facades\Date;
 
+it('only merges timestamps with the same billing status', function (bool $beforeBillable, bool $currentBillable, bool $canMerge): void {
+    $timestampBefore = Timestamp::create([
+        'type' => TimestampTypeEnum::WORK,
+        'started_at' => Date::parse('2025-01-01 09:00:00'),
+        'ended_at' => Date::parse('2025-01-01 10:00:00'),
+        'billable' => $beforeBillable,
+    ]);
+    $timestamp = Timestamp::create([
+        'type' => TimestampTypeEnum::WORK,
+        'started_at' => Date::parse('2025-01-01 10:00:00'),
+        'ended_at' => Date::parse('2025-01-01 11:00:00'),
+        'billable' => $currentBillable,
+    ]);
+
+    $merged = TimestampService::merge($timestamp, $timestampBefore);
+
+    expect($merged !== null)->toBe($canMerge);
+    $this->assertDatabaseCount('timestamps', $canMerge ? 1 : 2);
+    $this->assertDatabaseHas('timestamps', ['id' => $timestamp->id, 'billable' => $currentBillable]);
+})->with([
+    'both excluded' => [false, false, true],
+    'previous excluded' => [false, true, false],
+    'current excluded' => [true, false, false],
+]);
+
+it('rejects merging timestamps with different billing flags through the endpoint', function (): void {
+    $timestampBefore = Timestamp::create([
+        'type' => TimestampTypeEnum::WORK,
+        'started_at' => Date::parse('2025-01-01 09:00:00'),
+        'ended_at' => Date::parse('2025-01-01 10:00:00'),
+        'billable' => false,
+    ]);
+    $timestamp = Timestamp::create([
+        'type' => TimestampTypeEnum::WORK,
+        'started_at' => Date::parse('2025-01-01 10:00:00'),
+        'ended_at' => Date::parse('2025-01-01 11:00:00'),
+    ]);
+
+    $this->patch(route('timestamp.merge'), ['timestamp' => $timestamp->id, 'timestamp_before' => $timestampBefore->id])
+        ->assertSessionHasErrors('timestamp_before');
+
+    $this->assertDatabaseCount('timestamps', 2);
+    $this->assertDatabaseHas('timestamps', ['id' => $timestamp->id, 'started_at' => '2025-01-01 10:00:00']);
+});
+
 it('merges timestamps and deletes the previous one', function (): void {
     $beforeStart = Date::parse('2025-01-01 09:00:00');
     $beforeEnd = Date::parse('2025-01-01 10:00:00');

@@ -3,9 +3,11 @@ import SheetDialog from '@/Components/dialogs/SheetDialog.vue'
 import { TimeSelect } from '@/Components/ui-custom/time-select'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { Textarea } from '@/Components/ui/textarea'
+import { Switch } from '@/Components/ui/switch'
 import { Project } from '@/types'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { BriefcaseBusiness, Coffee, MoveRight } from '@lucide/vue'
+import { computed } from 'vue'
 
 const props = defineProps<{
     min_time: string
@@ -22,8 +24,14 @@ const form = useForm({
     ended_at: props.end_time ?? props.max_time,
     type: props.type ?? 'work',
     description: '',
-    project_id: '0' as string | number | undefined
+    project_id: '0' as string | number | undefined,
+    billable: true
 })
+
+const selectedProject = computed(() => props.projects.find((project) => String(project.id) === String(form.project_id)))
+const showBillable = computed(
+    () => form.type === 'work' && Number(selectedProject.value?.hourly_rate) > 0 && selectedProject.value?.currency
+)
 
 const submit = () => {
     router.flushAll()
@@ -119,6 +127,13 @@ const submit = () => {
                     </SelectItem>
                 </SelectContent>
             </Select>
+        </div>
+        <div class="flex flex-col gap-2 py-4" v-if="showBillable">
+            <div class="flex items-center justify-between gap-4">
+                <label class="text-sm font-medium" for="timestamp-billable">{{ $t('app.billable') }}</label>
+                <Switch id="timestamp-billable" v-model="form.billable" />
+            </div>
+            <p class="text-destructive text-sm" v-if="form.errors.billable">{{ form.errors.billable }}</p>
         </div>
     </SheetDialog>
 </template>

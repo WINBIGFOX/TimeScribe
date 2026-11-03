@@ -29,7 +29,7 @@ class TimestampResource extends JsonResource
             'app_usage' => $this->whenAppended('app_usage'),
             'billable_amount' => $this->whenLoaded(
                 'project',
-                fn (): int|float => $this->duration / 60 * $this->project->hourly_rate / 60,
+                fn (): float => $this->billable_amount,
                 null
             ),
             'description' => $this->description,
@@ -37,6 +37,7 @@ class TimestampResource extends JsonResource
             'source' => $this->source,
             'project' => ProjectResource::make($this->whenLoaded('project')),
             'paid' => $this->paid,
+            'billable' => $this->billable,
         ];
     }
 }

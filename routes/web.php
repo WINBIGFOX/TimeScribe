@@ -154,6 +154,7 @@ Route::post('timestamp/{datetime}', [TimestampController::class, 'store'])->name
 Route::patch('timestamp/merge', [TimestampController::class, 'merge'])->name('timestamp.merge');
 Route::resource('timestamp', TimestampController::class)->only(['edit', 'update', 'destroy']);
 Route::patch('timestamp/{timestamp}/paid', [TimestampController::class, 'updatePaid'])->name('timestamp.update.paid');
+Route::patch('timestamp/{timestamp}/billable', [TimestampController::class, 'updateBillable'])->name('timestamp.update.billable');
 Route::post('timestamp/fill', [TimestampController::class, 'fill'])->name('timestamp.fill');
 
 Route::name('bug-and-feedback.')->prefix('bug-and-feedback')->group(function (): void {

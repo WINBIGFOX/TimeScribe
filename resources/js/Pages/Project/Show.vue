@@ -73,11 +73,11 @@ const calcAmount = (paid: boolean) => {
     if (!props.project.hourly_rate) {
         return undefined
     }
-    const duration =
+    return (
         props.project.timestamps
             ?.filter((t) => t.paid === paid)
-            .reduce((partialSum, a) => partialSum + a.duration, 0) ?? 0
-    return ((duration / 60) * props.project.hourly_rate) / 60
+            .reduce((sum, t) => sum + (t.billable_amount ?? 0), 0) ?? 0
+    )
 }
 
 const amountPaid = computed(() => calcAmount(true))

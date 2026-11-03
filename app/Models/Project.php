@@ -60,6 +60,6 @@ class Project extends Model
 
     protected function getBillableAmountAttribute(): float
     {
-        return round($this->work_time / 60 / 60 * ($this->hourly_rate ?? 0.0), 2);
+        return round($this->timestampItems->loadMissing('project')->sum('billable_amount'), 2);
     }
 }

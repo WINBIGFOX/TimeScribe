@@ -4,10 +4,12 @@ import SheetDialog from '@/Components/dialogs/SheetDialog.vue'
 import { TimeSelect } from '@/Components/ui-custom/time-select'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select'
 import { Textarea } from '@/Components/ui/textarea'
+import { Switch } from '@/Components/ui/switch'
 import { Project, Timestamp } from '@/types'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { BriefcaseBusiness, Coffee, MoveRight } from '@lucide/vue'
 import moment from 'moment/min/moment-with-locales'
+import { computed } from 'vue'
 
 const props = defineProps<{
     min_time: string
@@ -24,8 +26,18 @@ const form = useForm({
         : undefined,
     type: props.timestamp.type,
     description: props.timestamp.description,
-    project_id: (props.timestamp.project?.id ?? '0') as string | number | undefined
+    project_id: (props.timestamp.project?.id ?? '0') as string | number | undefined,
+    billable: props.timestamp.billable
 })
+
+const selectedProject = computed(
+    () =>
+        props.projects.find((project) => String(project.id) === String(form.project_id)) ??
+        (String(props.timestamp.project?.id) === String(form.project_id) ? props.timestamp.project : undefined)
+)
+const showBillable = computed(
+    () => form.type === 'work' && Number(selectedProject.value?.hourly_rate) > 0 && selectedProject.value?.currency
+)
 
 const submit = () => {
     router.flushAll()
@@ -153,6 +165,21 @@ const destroy = () => {
                     </SelectItem>
                 </SelectContent>
             </Select>
+        </div>
+        <div class="flex flex-col gap-2 py-4" v-if="showBillable">
+            <div class="flex items-center justify-between gap-4">
+                <label class="text-sm font-medium" for="timestamp-billable">{{ $t('app.billable') }}</label>
+                <Switch
+                    :aria-describedby="props.timestamp.paid ? 'timestamp-billable-hint' : undefined"
+                    :disabled="props.timestamp.paid"
+                    id="timestamp-billable"
+                    v-model="form.billable"
+                />
+            </div>
+            <p class="text-muted-foreground text-sm" id="timestamp-billable-hint" v-if="props.timestamp.paid">
+                {{ $t('app.remove the paid mark first.') }}
+            </p>
+            <p class="text-destructive text-sm" v-if="form.errors.billable">{{ form.errors.billable }}</p>
         </div>
         <div class="flex flex-col gap-2 py-4" v-if="props.timestamp.source">
             <span class="text-sm leading-none font-medium">

@@ -49,6 +49,7 @@ class TimestampService
             if ($timestamp->last_ping_at->diffInMinutes(now()) < 60) {
                 Timestamp::create([
                     'type' => $timestamp->type,
+                    'billable' => $timestamp->billable,
                     'started_at' => today(),
                     'last_ping_at' => now(),
                 ]);
@@ -97,6 +98,7 @@ class TimestampService
                 ]);
                 Timestamp::create([
                     'type' => $timestamp->type,
+                    'billable' => $timestamp->billable,
                     'started_at' => today(),
                     'last_ping_at' => now(),
                 ]);
@@ -420,7 +422,7 @@ class TimestampService
         return $weekBalance->start_balance ?? 0;
     }
 
-    public static function create(Carbon $date, Carbon $endDate, TimestampTypeEnum $type, ?string $description = null, ?int $projectId = null): void
+    public static function create(Carbon $date, Carbon $endDate, TimestampTypeEnum $type, ?string $description = null, ?int $projectId = null, bool $billable = true): void
     {
         if ($endDate->lessThanOrEqualTo($date)) {
             return;
@@ -462,6 +464,7 @@ class TimestampService
                     'description' => $timestamp->description,
                     'source' => $timestamp->source,
                     'paid' => $timestamp->paid,
+                    'billable' => $timestamp->billable,
                     'started_at' => $end->copy(),
                     'ended_at' => $timestampEnd->copy(),
                     'last_ping_at' => $timestampEnd->copy(),
@@ -499,6 +502,7 @@ class TimestampService
             'ended_at' => $end->copy(),
             'last_ping_at' => $end->copy(),
             'description' => $description,
+            'billable' => $billable,
         ]);
     }
 
@@ -535,7 +539,8 @@ class TimestampService
             && $withinWindow
             && $timestampBefore->type === $timestamp->type
             && $timestampBefore->project_id === $timestamp->project_id
-            && $timestampBefore->paid === $timestamp->paid;
+            && $timestampBefore->paid === $timestamp->paid
+            && $timestampBefore->billable === $timestamp->billable;
     }
 
     private static function mergeDescription(?string $before, ?string $current): ?string

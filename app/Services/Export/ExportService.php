@@ -130,11 +130,12 @@ class ExportService
 
     public function exportAsExcel(string $filePath): void
     {
-        $style = (new Style)
-            ->setFontBold()
-            ->setFontSize(12)
-            ->setFontColor('0F172A')
-            ->setBackgroundColor('00C9DB');
+        $style = new Style(
+            fontBold: true,
+            fontSize: 12,
+            fontColor: '0F172A',
+            backgroundColor: '00C9DB',
+        );
 
         $writer = SimpleExcelWriter::create($filePath);
         $writer->setHeaderStyle($style);
@@ -198,7 +199,7 @@ class ExportService
             'import_source' => $timestamp['source'] ?? '',
             'duration' => $timestamp['ended_at'] ? gmdate('H:i:s', (int) $timestamp['started_at']->diffInSeconds($timestamp['ended_at'])) : '',
             'hourly_rate' => $timestamp['project']?->hourly_rate ? number_format($timestamp['project']->hourly_rate, 2) : '',
-            'billable_amount' => $timestamp['duration'] && $timestamp['project']?->hourly_rate ? number_format($timestamp['duration'] / 60 * $timestamp['project']?->hourly_rate / 60, 2) : '',
+            'billable_amount' => $timestamp['duration'] && $timestamp['project']?->hourly_rate ? number_format($timestamp->billable_amount, 2) : '',
             'currency' => $timestamp['project']?->hourly_rate ? $timestamp['project']?->currency ?? '' : '',
             'paid' => $timestamp['paid'] ? 'Yes' : '',
         ];

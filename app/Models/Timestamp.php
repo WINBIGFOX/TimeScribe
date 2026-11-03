@@ -16,6 +16,10 @@ class Timestamp extends Model
 {
     use SoftDeletes;
 
+    protected $attributes = [
+        'billable' => true,
+    ];
+
     protected $appends = [
         'duration',
     ];
@@ -31,6 +35,7 @@ class Timestamp extends Model
         'updated_at',
         'project_id',
         'paid',
+        'billable',
     ];
 
     protected $casts = [
@@ -39,6 +44,7 @@ class Timestamp extends Model
         'ended_at' => 'datetime',
         'last_ping_at' => 'datetime',
         'paid' => 'boolean',
+        'billable' => 'boolean',
     ];
 
     #[Scope]
@@ -51,6 +57,15 @@ class Timestamp extends Model
     {
         return Attribute::make(
             get: fn () => $this->started_at->diffInSeconds($this->ended_at ?? now())
+        );
+    }
+
+    protected function billableAmount(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): float => $this->billable && $this->type === TimestampTypeEnum::WORK
+                ? $this->duration / 3600 * ($this->project?->hourly_rate ?? 0.0)
+                : 0.0,
         );
     }
 

@@ -8,6 +8,7 @@ import { Link, useForm } from '@inertiajs/vue3'
 import { BriefcaseBusiness, CircleCheckBig, ExternalLink, MoveRight, NotepadText, Timer } from '@lucide/vue'
 import moment from 'moment/min/moment-with-locales'
 import { watch } from 'vue'
+import { Tooltip, TooltipTrigger, TooltipProvider, TooltipContent } from '@/Components/ui/tooltip'
 
 const props = defineProps<{
     project: Project
@@ -18,18 +19,48 @@ const form = useForm({
     paid: props.timestamp.paid
 })
 
-const submit = () => {
+const billableForm = useForm({
+    billable: props.timestamp.billable
+})
+
+const updatePaid = (paid: boolean) => {
+    form.paid = paid
     form.patch(route('timestamp.update.paid', { timestamp: props.timestamp.id }), {
         preserveState: true,
-        preserveScroll: true
+        preserveScroll: true,
+        onError: () => {
+            form.paid = props.timestamp.paid
+        }
     })
 }
 
-watch(() => form.paid, submit)
+const updateBillable = (billable: boolean) => {
+    billableForm.billable = billable
+    billableForm.patch(route('timestamp.update.billable', { timestamp: props.timestamp.id }), {
+        preserveState: true,
+        preserveScroll: true,
+        onError: () => {
+            billableForm.billable = props.timestamp.billable
+        }
+    })
+}
+
+watch(
+    () => props.timestamp.paid,
+    (paid) => {
+        form.paid = paid
+    }
+)
+watch(
+    () => props.timestamp.billable,
+    (billable) => {
+        billableForm.billable = billable
+    }
+)
 </script>
 
 <template>
-    <div class="bg-sidebar flex items-center gap-4 rounded-lg p-2.5">
+    <div :data-timestamp-id="props.timestamp.id" class="bg-sidebar flex flex-wrap items-center gap-4 rounded-lg p-2.5">
         <div class="text-primary-foreground bg-primary flex size-8 shrink-0 items-center justify-center rounded-md">
             <BriefcaseBusiness class="size-5" />
         </div>
@@ -109,27 +140,61 @@ watch(() => form.paid, submit)
         <div class="flex-1"></div>
         <div
             class="flex w-24 shrink-0 items-center justify-end gap-1 tabular-nums"
-            v-if="props.timestamp.billable_amount && props.project.currency"
+            v-if="Number(props.project.hourly_rate) > 0 && props.project.currency"
         >
-            <span
-                class="*:text-muted-foreground flex items-center gap-1 leading-none font-medium *:text-xs"
-                dir="ltr"
-                v-html="
-                    props.timestamp.billable_amount
-                        .toLocaleString($page.props.js_locale, {
-                            style: 'currency',
-                            currency: props.project.currency,
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        })
-                        .replace(
-                            getCurrencySymbol($page.props.js_locale, props.project.currency),
-                            '<span>$&amp;</span>'
-                        )
-                        .replace('&nbsp;', '')
-                "
-            >
-            </span>
+            <TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger as-child>
+                        <span
+                            :class="{
+                                'text-muted-foreground/30 decoration-foreground line-through': !props.timestamp.billable
+                            }"
+                            class="*:text-muted-foreground hover:bg-muted ring-muted flex items-center gap-1 rounded-xs leading-none font-medium *:text-xs hover:ring-6"
+                            dir="ltr"
+                            v-html="
+                                (props.timestamp.billable_amount ?? 0)
+                                    .toLocaleString($page.props.js_locale, {
+                                        style: 'currency',
+                                        currency: props.project.currency,
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    })
+                                    .replace(
+                                        getCurrencySymbol($page.props.js_locale, props.project.currency),
+                                        '<span>$&amp;</span>'
+                                    )
+                                    .replace('&nbsp;', '')
+                            "
+                        >
+                        </span>
+                    </TooltipTrigger>
+                    <TooltipContent
+                        class="bg-muted [&_.fill-primary]:fill-muted [&_.fill-primary]:bg-muted text-foreground"
+                    >
+                        <div class="flex items-center gap-2">
+                            <label :for="`timestamp-billable-${props.timestamp.id}`" class="text-xs">
+                                {{ $t('app.billable') }}
+                            </label>
+                            <Switch
+                                :aria-describedby="
+                                    props.timestamp.paid ? `timestamp-billable-hint-${props.timestamp.id}` : undefined
+                                "
+                                :disabled="props.timestamp.paid || form.processing || billableForm.processing"
+                                :id="`timestamp-billable-${props.timestamp.id}`"
+                                :model-value="billableForm.billable"
+                                @update:model-value="updateBillable"
+                            />
+                        </div>
+                        <p
+                            :id="`timestamp-billable-hint-${props.timestamp.id}`"
+                            class="text-muted-foreground mt-2 basis-full text-xs"
+                            v-if="props.timestamp.paid"
+                        >
+                            {{ $t('app.remove the paid mark first.') }}
+                        </p>
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
         </div>
         <div class="flex shrink-0 items-center gap-1 tabular-nums" dir="ltr">
             <Timer class="text-muted-foreground size-4" />
@@ -144,24 +209,18 @@ watch(() => form.paid, submit)
                 {{ props.timestamp.duration > 59 ? $t('app.h') : $t('app.s') }}
             </span>
         </div>
-        <div class="ml-auto flex items-center justify-end">
-            <!--
-            <Button
-                :as="Link"
-                href=""
-                class="text-muted-foreground size-8"
-                preserve-scroll
-                preserve-state
-                size="icon"
-                variant="ghost"
-            >
-                <Pencil />
-            </Button>-->
+        <div
+            class="ms-auto flex items-center justify-end gap-4"
+            v-if="props.timestamp.type === 'work' && Number(props.project.hourly_rate) > 0 && props.project.currency"
+        >
             <Switch
-                :disabled="!props.timestamp.ended_at"
+                :aria-label="$t('app.paid')"
+                :disabled="
+                    !props.timestamp.ended_at || !props.timestamp.billable || form.processing || billableForm.processing
+                "
+                :model-value="form.paid"
+                @update:model-value="updatePaid"
                 style="--primary: var(--color-emerald-500)"
-                v-if="props.project.hourly_rate && props.project.currency"
-                v-model="form.paid"
             >
                 <template #thumb>
                     <CircleCheckBig
@@ -174,5 +233,13 @@ watch(() => form.paid, submit)
                 </template>
             </Switch>
         </div>
+
+        <p
+            class="text-destructive basis-full text-sm"
+            role="alert"
+            v-if="billableForm.errors.billable || form.errors.paid"
+        >
+            {{ billableForm.errors.billable || form.errors.paid }}
+        </p>
     </div>
 </template>

@@ -44,6 +44,7 @@ class MergeTimestampRequest extends FormRequest
                             fn ($query) => $query->whereNull('project_id')
                         )
                         ->where('paid', $timestamp->paid)
+                        ->where('billable', $timestamp->billable)
                         ->whereBetween('ended_at', [$mergeWindowStart, $mergeWindowEnd])
                         ->where('id', '!=', $timestamp->id);
                 }),

@@ -7,6 +7,21 @@ use App\Models\Timestamp;
 use App\Services\TimestampService;
 use Illuminate\Support\Facades\Date;
 
+it('preserves the billing exclusion on both parts when splitting a timestamp', function (): void {
+    $timestamp = Timestamp::create([
+        'type' => TimestampTypeEnum::WORK,
+        'started_at' => Date::parse('2025-01-01 09:00:00'),
+        'ended_at' => Date::parse('2025-01-01 13:00:00'),
+        'last_ping_at' => Date::parse('2025-01-01 13:00:00'),
+        'billable' => false,
+    ]);
+
+    TimestampService::create(Date::parse('2025-01-01 10:00:00'), Date::parse('2025-01-01 12:00:00'), TimestampTypeEnum::BREAK);
+
+    $this->assertDatabaseHas('timestamps', ['id' => $timestamp->id, 'ended_at' => '2025-01-01 10:00:00', 'billable' => false]);
+    $this->assertDatabaseHas('timestamps', ['started_at' => '2025-01-01 12:00:00', 'ended_at' => '2025-01-01 13:00:00', 'billable' => false]);
+});
+
 it('deletes timestamps fully inside the new range', function (): void {
     $start = Date::parse('2025-01-01 10:00:00');
     $end = Date::parse('2025-01-01 12:00:00');
