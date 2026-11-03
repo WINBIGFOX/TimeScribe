@@ -25,8 +25,10 @@ class ActiveApp extends Command
         'explorer.exe',
     ];
 
+    #[\Override]
     protected $signature = 'app:active-app';
 
+    #[\Override]
     protected $description = 'Track active application window';
 
     public function handle(): void

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class OvertimeAdjustment extends Model
 {
+    #[\Override]
     protected $fillable = [
         'effective_date',
         'type',
@@ -16,6 +17,7 @@ class OvertimeAdjustment extends Model
         'note',
     ];
 
+    #[\Override]
     protected $casts = [
         'effective_date' => 'date:Y-m-d',
         'type' => OvertimeAdjustmentTypeEnum::class,

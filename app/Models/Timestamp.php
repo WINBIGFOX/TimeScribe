@@ -16,14 +16,17 @@ class Timestamp extends Model
 {
     use SoftDeletes;
 
+    #[\Override]
     protected $attributes = [
         'billable' => true,
     ];
 
+    #[\Override]
     protected $appends = [
         'duration',
     ];
 
+    #[\Override]
     protected $fillable = [
         'type',
         'started_at',
@@ -38,6 +41,7 @@ class Timestamp extends Model
         'billable',
     ];
 
+    #[\Override]
     protected $casts = [
         'type' => TimestampTypeEnum::class,
         'started_at' => 'datetime',

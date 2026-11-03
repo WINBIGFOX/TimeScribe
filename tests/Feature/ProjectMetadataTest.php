@@ -9,6 +9,7 @@ use App\Models\Timestamp;
 use App\Services\Export\ExportService;
 use App\Settings\ExportSettings;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\File;
 use Inertia\Testing\AssertableInertia as Assert;
 
 it('stores metadata when creating a project', function (): void {
@@ -127,7 +128,7 @@ it('exports project metadata as a dedicated column', function (): void {
         file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)
     );
 
-    unlink($path);
+    File::delete($path);
 
     expect($rows[0])->toBe(['Project', 'Metadata', 'Description'])
         ->and($rows[1])->toBe(['', '', 'Unassigned'])

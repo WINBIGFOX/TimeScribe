@@ -14,6 +14,7 @@ class CheckUpdate extends Command
      *
      * @var string
      */
+    #[\Override]
     protected $signature = 'app:check-update';
 
     /**
@@ -21,6 +22,7 @@ class CheckUpdate extends Command
      *
      * @var string
      */
+    #[\Override]
     protected $description = 'Check for updates';
 
     /**

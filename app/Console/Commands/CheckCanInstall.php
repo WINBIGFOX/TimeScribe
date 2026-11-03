@@ -16,6 +16,7 @@ class CheckCanInstall extends Command
      *
      * @var string
      */
+    #[\Override]
     protected $signature = 'app:check-can-install';
 
     /**
@@ -23,6 +24,7 @@ class CheckCanInstall extends Command
      *
      * @var string
      */
+    #[\Override]
     protected $description = 'Command description';
 
     /**

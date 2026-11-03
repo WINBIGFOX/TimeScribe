@@ -75,7 +75,7 @@ class GeneralController extends Controller
         $settings->save();
 
         if ($localeChanged) {
-            LocaleChanged::broadcast();
+            broadcast(new LocaleChanged);
         }
 
         dispatch(new CalculateWeekBalance);
@@ -94,7 +94,7 @@ class GeneralController extends Controller
             $settings->save();
             $projectSettings->defaultCurrency = null;
             $projectSettings->save();
-            LocaleChanged::broadcast();
+            broadcast(new LocaleChanged);
         }
 
         return back();

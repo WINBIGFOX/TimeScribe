@@ -24,7 +24,7 @@ it('only merges timestamps with the same billing status', function (bool $before
 
     $merged = TimestampService::merge($timestamp, $timestampBefore);
 
-    expect($merged !== null)->toBe($canMerge);
+    expect($merged instanceof Timestamp)->toBe($canMerge);
     $this->assertDatabaseCount('timestamps', $canMerge ? 1 : 2);
     $this->assertDatabaseHas('timestamps', ['id' => $timestamp->id, 'billable' => $currentBillable]);
 })->with([

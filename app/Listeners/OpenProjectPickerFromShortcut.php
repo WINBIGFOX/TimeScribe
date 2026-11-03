@@ -18,6 +18,6 @@ class OpenProjectPickerFromShortcut
     {
         new LocaleService;
         MenuBar::show();
-        MenubarProjectPickerRequested::broadcast();
+        broadcast(new MenubarProjectPickerRequested);
     }
 }

@@ -101,7 +101,7 @@ class BugAndFeedbackController extends Controller
 
         TimestampService::checkStopTimeReset();
         dispatch(new CalculateWeekBalance);
-        LocaleChanged::broadcast();
+        broadcast(new LocaleChanged);
 
         Alert::type('info')->show(__('app.restore successful.'));
 

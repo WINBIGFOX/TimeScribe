@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class WorkSchedule extends Model
 {
+    #[\Override]
     protected $fillable = [
         'sunday',
         'monday',
@@ -19,6 +20,7 @@ class WorkSchedule extends Model
         'valid_from',
     ];
 
+    #[\Override]
     protected $casts = [
         'sunday' => 'float',
         'monday' => 'float',

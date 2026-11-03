@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class WeekBalance extends Model
 {
+    #[\Override]
     protected $fillable = [
         'start_week_at',
         'end_week_at',
@@ -16,6 +17,7 @@ class WeekBalance extends Model
         'end_balance',
     ];
 
+    #[\Override]
     protected $casts = [
         'start_week_at' => 'datetime',
         'end_week_at' => 'datetime',

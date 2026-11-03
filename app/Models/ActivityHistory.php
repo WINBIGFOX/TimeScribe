@@ -11,11 +11,13 @@ use Illuminate\Support\Facades\Date;
 
 class ActivityHistory extends Model
 {
+    #[\Override]
     protected $appends = [
         'color',
         'category_color',
     ];
 
+    #[\Override]
     protected $fillable = [
         'app_name',
         'app_identifier',
@@ -26,6 +28,7 @@ class ActivityHistory extends Model
         'duration',
     ];
 
+    #[\Override]
     protected $casts = [
         'started_at' => 'datetime',
         'ended_at' => 'datetime',

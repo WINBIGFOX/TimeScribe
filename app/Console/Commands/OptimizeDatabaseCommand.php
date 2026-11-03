@@ -14,6 +14,7 @@ class OptimizeDatabaseCommand extends Command
      *
      * @var string
      */
+    #[\Override]
     protected $signature = 'db:optimize';
 
     /**
@@ -21,6 +22,7 @@ class OptimizeDatabaseCommand extends Command
      *
      * @var string
      */
+    #[\Override]
     protected $description = 'Optimize the database by running VACUUM and ANALYZE commands';
 
     /**

@@ -63,21 +63,21 @@ class TimestampService
     {
         self::makeEndings();
         self::start(TimestampTypeEnum::WORK);
-        TimerStarted::broadcast();
+        broadcast(new TimerStarted);
     }
 
     public static function startBreak(): void
     {
         self::makeEndings();
         self::start(TimestampTypeEnum::BREAK);
-        TimerStopped::broadcast();
+        broadcast(new TimerStopped);
     }
 
     public static function stop(): void
     {
         self::ping();
         self::makeEndings();
-        TimerStopped::broadcast();
+        broadcast(new TimerStopped);
     }
 
     public static function ping(): void

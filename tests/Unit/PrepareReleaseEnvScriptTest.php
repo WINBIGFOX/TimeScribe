@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\File;
+
 require_once dirname(__DIR__, 2).'/.github/scripts/prepare-release-env.php';
 
 it('replaces existing values and appends missing release environment values', function (): void {
@@ -33,6 +35,6 @@ it('replaces existing values and appends missing release environment values', fu
         ->toContain('EXISTING_VALUE=keep-me')
         ->toContain('NATIVEPHP_APP_DESCRIPTION="TimeScribe \\"Desktop\\" \\\\ Preview"');
 
-    @unlink($templatePath);
-    @unlink($outputPath);
+    File::delete($templatePath);
+    File::delete($outputPath);
 });

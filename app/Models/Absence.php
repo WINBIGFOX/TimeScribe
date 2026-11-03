@@ -10,12 +10,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Absence extends Model
 {
+    #[\Override]
     protected $fillable = [
         'type',
         'date',
         'duration',
     ];
 
+    #[\Override]
     protected $casts = [
         'type' => AbsenceTypeEnum::class,
         'date' => 'date',

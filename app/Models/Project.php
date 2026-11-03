@@ -14,6 +14,7 @@ class Project extends Model
 {
     use SoftDeletes;
 
+    #[\Override]
     protected $fillable = [
         'name',
         'description',

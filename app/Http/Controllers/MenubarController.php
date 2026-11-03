@@ -94,7 +94,7 @@ class MenubarController extends Controller
         $projectSettings->save();
         TimestampService::startWork();
 
-        ProjectChanged::broadcast();
+        broadcast(new ProjectChanged);
 
         return to_route('menubar.index');
     }
@@ -108,7 +108,7 @@ class MenubarController extends Controller
             TimestampService::startWork();
         }
 
-        ProjectChanged::broadcast();
+        broadcast(new ProjectChanged);
 
         return to_route('menubar.index');
     }

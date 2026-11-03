@@ -15,6 +15,7 @@ class TimestampPing extends Command
      *
      * @var string
      */
+    #[\Override]
     protected $signature = 'app:timestamp-ping';
 
     /**
@@ -22,6 +23,7 @@ class TimestampPing extends Command
      *
      * @var string
      */
+    #[\Override]
     protected $description = 'Command description';
 
     /**

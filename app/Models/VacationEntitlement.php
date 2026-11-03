@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class VacationEntitlement extends Model
 {
+    #[\Override]
     protected $fillable = [
         'year',
         'days',
         'carryover',
     ];
 
+    #[\Override]
     protected $casts = [
         'year' => 'integer',
         'days' => 'float',

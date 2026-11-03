@@ -12,6 +12,7 @@ use App\Services\TimestampService;
 use App\Settings\ExportSettings;
 use App\Settings\GeneralSettings;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Queue;
 use Inertia\Testing\AssertableInertia as Assert;
 use Spatie\LaravelPdf\Facades\Pdf;
@@ -215,7 +216,7 @@ it('exports excluded time with zero amount and its full duration', function (str
         ]);
     } finally {
         if (file_exists($path)) {
-            unlink($path);
+            File::delete($path);
         }
     }
 })->with([
