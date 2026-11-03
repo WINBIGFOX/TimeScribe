@@ -52,8 +52,7 @@ createInertiaApp({
             .use(VueApexCharts)
         app.use(i18nVue, {
             fallbackLang: 'en',
-            resolve: (lang: string) =>
-                languages[`../../lang/${lang}.json`]?.() ?? Promise.resolve({ default: {} }),
+            resolve: (lang: string) => languages[`../../lang/${lang}.json`]?.() ?? Promise.resolve({ default: {} }),
             onLoad: () => {
                 if (!app._container) {
                     app.mount(el)
