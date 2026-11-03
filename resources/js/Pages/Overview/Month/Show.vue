@@ -13,6 +13,7 @@ import he from 'apexcharts/dist/locales/he.json'
 import da from 'apexcharts/dist/locales/da.json'
 import de from 'apexcharts/dist/locales/de.json'
 import en from 'apexcharts/dist/locales/en.json'
+import es from 'apexcharts/dist/locales/es.json'
 import fr from 'apexcharts/dist/locales/fr.json'
 import it from 'apexcharts/dist/locales/it.json'
 import pl from 'apexcharts/dist/locales/pl.json'
@@ -51,6 +52,7 @@ const localeMapping = {
     'de-DE': 'de',
     'en-GB': 'en',
     'en-US': 'en',
+    'es-ES': 'es',
     'fr-FR': 'fr',
     'fr-CA': 'fr',
     'it-IT': 'it',
@@ -99,7 +101,7 @@ const data = {
             },
             background: 'transparent',
             fontFamily: 'var(--font-sans)',
-            locales: [ar, he, da, de, en, fr, it, pl, ptBr, zhCn],
+            locales: [ar, he, da, de, en, es, fr, it, pl, ptBr, zhCn],
             defaultLocale: currentLocale,
             type: 'bar',
             stacked: true,

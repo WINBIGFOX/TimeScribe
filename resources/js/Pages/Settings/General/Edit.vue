@@ -118,6 +118,9 @@ watch(holidayCheck, () => {
                         <SelectItem value="en_US">
                             <span lang="en-US">English (United States)</span>
                         </SelectItem>
+                        <SelectItem value="es_ES">
+                            <span lang="es-ES">Español (España)</span>
+                        </SelectItem>
                         <SelectItem value="fr_CA">
                             <span lang="fr-CA">Français (Canada)</span>
                         </SelectItem>

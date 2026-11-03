@@ -99,7 +99,7 @@ const destroy = () => {
 
         <div class="flex flex-col gap-2 py-4">
             <span class="text-sm leading-none font-medium">{{ $t('app.time span') }}</span>
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
                 <TimeSelect
                     :label="$t('app.start at:')"
                     :max="form.ended_at ?? max_time"

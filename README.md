@@ -95,6 +95,7 @@ Simply put: It's a professional time tracking tool that respects your privacy an
 - 🇮🇹 Italian
 - 🇵🇱 Polish
 - 🇧🇷 Portuguese (BR)
+- 🇪🇸 Spanish (Español)
 - 🇨🇳 Chinese (中文)
 
 Arabic and Hebrew support right-to-left application layouts. PDF exports still use Dompdf, whose [complex text layout support](https://github.com/dompdf/dompdf/issues/2619) is incomplete; RTL text in PDFs requires a separate rendering solution.

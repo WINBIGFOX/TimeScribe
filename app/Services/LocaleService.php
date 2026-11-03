@@ -27,6 +27,7 @@ class LocaleService
         'de_DE' => 'de',
         'en_US' => 'en',
         'en_GB' => 'en',
+        'es_ES' => 'es',
         'fr_CA' => 'fr',
         'fr_FR' => 'fr',
         'it_IT' => 'it',

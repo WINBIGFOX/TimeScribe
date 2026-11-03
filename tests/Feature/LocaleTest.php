@@ -54,13 +54,14 @@ it('uses the same effective locale for the document and application', function (
     ['en_US', 'en_US', 'en', 'ltr'],
     ['pt_BR', 'pt_BR', 'pt_BR', 'ltr'],
     ['zh_CN', 'zh_CN', 'zh_CN', 'ltr'],
-    ['es_ES', 'en_US', 'en', 'ltr'],
+    ['es_ES', 'es_ES', 'es', 'ltr'],
+    ['nl_NL', 'en_US', 'en', 'ltr'],
 ]);
 
 it('uses the configured fallback consistently', function (): void {
     config(['app.fallback_locale' => 'he_IL']);
     $settings = resolve(GeneralSettings::class);
-    $settings->locale = 'es_ES';
+    $settings->locale = 'nl_NL';
     $settings->save();
 
     new LocaleService;

@@ -7,6 +7,7 @@ import CnFlag from '@/Components/flags/CnFlag.vue'
 import DeFlag from '@/Components/flags/DeFlag.vue'
 import DkFlag from '@/Components/flags/DkFlag.vue'
 import EnFlag from '@/Components/flags/EnFlag.vue'
+import EsFlag from '@/Components/flags/EsFlag.vue'
 import FrFlag from '@/Components/flags/FrFlag.vue'
 import ItFlag from '@/Components/flags/ItFlag.vue'
 import PlFlag from '@/Components/flags/PlFlag.vue'
@@ -22,6 +23,7 @@ const locales = [
     { code: 'de_DE', component: DeFlag },
     { code: 'en_GB', component: EnFlag },
     { code: 'en_US', component: UsFlag },
+    { code: 'es_ES', component: EsFlag },
     { code: 'fr_FR', component: FrFlag },
     { code: 'fr_CA', component: CaFlag },
     { code: 'it_IT', component: ItFlag },
