@@ -1,4 +1,4 @@
-# How to Find Test Framework Features
+# How to find test framework features
 
 Pest adds features faster than this skill can list them. Find an existing feature before implementing the behavior by hand.
 
@@ -19,11 +19,11 @@ Search for a feature in this table before you write the code by hand.
 | Reduce the time of a slow suite | parallel, profiling |
 | Run one test while you debug | filtering, `--bail`, `--dirty` |
 
-## Built-in Laravel Assertion Methods
+## Built-in Laravel assertion methods
 
-Laravel provides assertions for each part of the framework. Fetch `https://laravel.com/framework/docs/testing` for the complete list, and search for an assertion before building a check by hand. Examples include `assertDatabaseHas()`, `assertModelExists()`, `assertSoftDeleted()`, response assertions such as `assertRedirectToRoute()` and `assertJsonPath()`, and fake assertions such as `Queue::assertPushed()` and `Notification::assertSentTo()`.
+Laravel provides assertions for each part of the framework. Fetch `https://laravel.com/framework/docs/testing` for the complete list, and search for an assertion before you build a check by hand. Examples include `assertDatabaseHas()`, `assertModelExists()`, `assertSoftDeleted()`, response assertions such as `assertRedirectToRoute()` and `assertJsonPath()`, and fake assertions such as `Queue::assertPushed()` and `Notification::assertSentTo()`.
 
-A hand-built check fails with `false is not true`, which identifies nothing. A framework assertion names the incorrect table, value, or response, so the failure indicates what to fix.
+A hand-built check fails with `false is not true`. That message identifies nothing. A framework assertion names the incorrect table, value, or response, so the failure shows what to fix.
 
 ```php
 // The failure says that false is not true. Instead of this...
