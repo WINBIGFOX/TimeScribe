@@ -105,7 +105,7 @@ class LocaleService
     {
         if (app()->runningInConsole()) {
             // Für Console Commands, versuche die System-Locale zu ermitteln
-            $sysLocale = setlocale(LC_ALL, 0);
+            $sysLocale = setlocale(LC_ALL, '0');
             if (preg_match('/^([a-zA-Z]{2}_[A-Z]{2})/', $sysLocale, $matches)) {
                 return $matches[1];
             }
