@@ -16,11 +16,13 @@ class LocaleService
 {
     const array CANONICAL_LOCALES_BY_LANGUAGE = [
         'ar' => 'ar_SA',
+        'fa' => 'fa_IR',
         'he' => 'he_IL',
     ];
 
     const array LOCALE_MAPPING = [
         'ar_SA' => 'ar',
+        'fa_IR' => 'fa',
         'he_IL' => 'he',
         'pl_PL' => 'pl',
         'da_DK' => 'da',
@@ -133,7 +135,7 @@ class LocaleService
     {
         $language = strtolower(explode('_', str_replace('-', '_', $locale))[0]);
 
-        return in_array($language, ['ar', 'he'], true) ? 'rtl' : 'ltr';
+        return in_array($language, ['ar', 'fa', 'he'], true) ? 'rtl' : 'ltr';
     }
 
     public static function normalizeLocale(string $locale): string

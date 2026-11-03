@@ -106,6 +106,9 @@ watch(holidayCheck, () => {
                         <SelectItem value="he_IL">
                             <bdi lang="he">עברית</bdi>
                         </SelectItem>
+                        <SelectItem value="fa_IR">
+                            <bdi lang="fa">فارسی</bdi>
+                        </SelectItem>
                         <SelectItem value="da_DK">
                             <span lang="da">Dansk</span>
                         </SelectItem>

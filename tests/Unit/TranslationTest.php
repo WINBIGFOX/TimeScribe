@@ -20,4 +20,4 @@ it('provides all strings and preserves replacement placeholders', function (stri
         }
     }
     expect($placeholderMismatches)->toBe([]);
-})->with(['he', 'ar', 'es'])->with(['app', 'region', 'validation']);
+})->with(['he', 'ar', 'fa'])->with(['app', 'region', 'validation']);
