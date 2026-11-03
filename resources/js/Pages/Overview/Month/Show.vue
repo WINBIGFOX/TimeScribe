@@ -10,6 +10,7 @@ import { useCssVar } from '@vueuse/core'
 import { ApexOptions } from 'apexcharts'
 import ar from 'apexcharts/dist/locales/ar.json'
 import he from 'apexcharts/dist/locales/he.json'
+import fa from 'apexcharts/dist/locales/fa.json'
 import da from 'apexcharts/dist/locales/da.json'
 import de from 'apexcharts/dist/locales/de.json'
 import en from 'apexcharts/dist/locales/en.json'
@@ -47,6 +48,7 @@ const showWeek = (opts) => {
 const localeMapping = {
     'ar-SA': 'ar',
     'he-IL': 'he',
+    'fa-IR': 'fa',
     'da-DK': 'da',
     'de-DE': 'de',
     'en-GB': 'en',
@@ -99,7 +101,7 @@ const data = {
             },
             background: 'transparent',
             fontFamily: 'var(--font-sans)',
-            locales: [ar, he, da, de, en, fr, it, pl, ptBr, zhCn],
+            locales: [ar, he, fa, da, de, en, fr, it, pl, ptBr, zhCn],
             defaultLocale: currentLocale,
             type: 'bar',
             stacked: true,
