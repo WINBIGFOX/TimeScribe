@@ -6,6 +6,9 @@
 *.md diff=markdown
 *.php diff=php
 
+# Keep real-world Clockify exports byte-identical (CRLF line endings).
+tests/Fixtures/clockify/*.csv -text
+
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore

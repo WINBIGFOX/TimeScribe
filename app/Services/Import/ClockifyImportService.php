@@ -19,41 +19,73 @@ class ClockifyImportService
 
     private ?string $currency = null;
 
+    /** Normalized header name => column index. */
+    private array $columns = [];
+
+    /** Canonical column => known Clockify header names (Clockify localizes exports). */
+    private const array HEADER_ALIASES = [
+        'project' => ['project', 'projekt'],
+        'start_date' => ['start date', 'startdatum'],
+        'start_time' => ['start time', 'startzeit'],
+        'end_date' => ['end date', 'enddatum'],
+        'end_time' => ['end time', 'endzeit'],
+        'billable_rate' => ['billable rate', 'abrechenbarer tarif'],
+    ];
+
+    private const array REQUIRED_COLUMNS = [
+        'start_date' => 'Start Date',
+        'start_time' => 'Start Time',
+        'end_date' => 'End Date',
+        'end_time' => 'End Time',
+    ];
+
     public function __construct(private readonly string $csvPath)
     {
         Log::info('ClockifyImportService: Importing CSV file', [
             'csv_path' => $this->csvPath,
         ]);
-        if (! $this->verifyFormat()) {
-            throw new \Exception('Invalid CSV format');
-        }
+        $this->resolveColumns();
         $this->checkCurrency();
         $this->timestamps = collect();
     }
 
-    private function verifyFormat(): bool
+    /**
+     * Maps columns by header name instead of position, so extra, missing
+     * optional, reordered, or localized columns no longer break the import.
+     *
+     * @throws \Exception naming the missing columns
+     */
+    private function resolveColumns(): void
     {
         $csvFile = fopen($this->csvPath, 'r');
         $header = fgetcsv($csvFile, escape: '\\');
-        $firstRow = fgetcsv($csvFile, escape: '\\');
         fclose($csvFile);
 
-        if (count($header) !== 17 || count($firstRow) !== 17) {
-            return false;
+        if ($header === false) {
+            throw new \Exception('Clockify CSV file is empty.');
         }
 
-        $dateRegex = '/\d{2}\/\d{2}\/\d{4}/';
-        $timeRegex = '/\d{2}:\d{2}:\d{2}/';
-
-        if (preg_match($dateRegex, (string) $header[9]) || preg_match($dateRegex, (string) $header[11])) {
-            return false;
+        foreach ($header as $index => $name) {
+            $normalized = strtolower(trim(str_replace("\u{FEFF}", '', (string) $name)));
+            // Strip suffixes like " (USD)": "Billable Rate (USD)" => "billable rate".
+            $normalized = (string) preg_replace('/\s*\(.*\)$/', '', $normalized);
+            foreach (self::HEADER_ALIASES as $canonical => $aliases) {
+                if (in_array($normalized, $aliases, true)) {
+                    $this->columns[$canonical] ??= $index;
+                }
+            }
         }
 
-        if (! preg_match($dateRegex, (string) $firstRow[9]) || ! preg_match($dateRegex, (string) $firstRow[11])) {
-            return false;
+        $missing = [];
+        foreach (self::REQUIRED_COLUMNS as $canonical => $display) {
+            if (! array_key_exists($canonical, $this->columns)) {
+                $missing[] = $display;
+            }
         }
 
-        return preg_match($timeRegex, (string) $firstRow[10]) && preg_match($timeRegex, (string) $firstRow[12]);
+        if ($missing !== []) {
+            throw new \Exception('Clockify CSV is missing required columns: '.implode(', ', $missing).'.');
+        }
     }
 
     private function checkCurrency(): void
@@ -62,8 +94,12 @@ class ClockifyImportService
         $header = fgetcsv($csvFile, escape: '\\');
         fclose($csvFile);
 
-        if (isset($header[15]) && ($header[15] !== '' && $header[15] !== '0')) {
-            $currencyString = preg_match('/\(([A-Z]{3})\)/', $header[15], $matches) ? $matches[1] : null;
+        $rateHeader = is_array($header) && array_key_exists('billable_rate', $this->columns)
+            ? (string) $header[$this->columns['billable_rate']]
+            : '';
+
+        if ($rateHeader !== '') {
+            $currencyString = preg_match('/\(([A-Z]{3})\)/', $rateHeader, $matches) ? $matches[1] : null;
 
             if ($currencyString && CurrencyAlpha3::from($currencyString)) {
                 $this->currency = strtoupper($currencyString);
@@ -80,11 +116,17 @@ class ClockifyImportService
         $csvFile = fopen($this->csvPath, 'r');
         fgetcsv($csvFile, escape: '\\');
 
+        $rowNumber = 1;
         while (($row = fgetcsv($csvFile, escape: '\\')) !== false) {
-            $this->readTimestamps($row);
+            $rowNumber++;
+            $this->readTimestamps($row, $rowNumber);
         }
 
         fclose($csvFile);
+
+        if ($this->timestamps->isEmpty()) {
+            throw new \Exception('No time entries found in the Clockify CSV file.');
+        }
 
         $this->sortTimestamps();
         $this->fixOverlap();
@@ -97,42 +139,66 @@ class ClockifyImportService
         Log::info('CSV file imported');
     }
 
-    private function readTimestamps(array $row): void
+    private function readTimestamps(array $row, int $rowNumber): void
     {
-        try {
-            $startAt = $this->dateFormat($row[9], $row[10]);
-            $endAt = $this->dateFormat($row[11], $row[12]);
+        $startAt = $this->dateFormat(
+            (string) ($row[$this->columns['start_date']] ?? ''),
+            (string) ($row[$this->columns['start_time']] ?? ''),
+            $rowNumber
+        );
+        $endAt = $this->dateFormat(
+            (string) ($row[$this->columns['end_date']] ?? ''),
+            (string) ($row[$this->columns['end_time']] ?? ''),
+            $rowNumber
+        );
 
-            if ($startAt >= now() || $endAt >= now()) {
-                return;
-            }
-
-            $timestamp = [
-                'type' => 'work',
-                'started_at' => $startAt->format('Y-m-d H:i:s'),
-                'ended_at' => $endAt->format('Y-m-d H:i:s'),
-                'source' => 'Clockify',
-            ];
-
-            if (! empty($row[0])) {
-                $timestamp['project_name'] = $row[0];
-                $timestamp['hourly_rate'] = $row[15];
-            }
-        } catch (\Throwable) {
+        if ($startAt >= now() || $endAt >= now()) {
             return;
+        }
+
+        $timestamp = [
+            'type' => 'work',
+            'started_at' => $startAt->format('Y-m-d H:i:s'),
+            'ended_at' => $endAt->format('Y-m-d H:i:s'),
+            'source' => 'Clockify',
+        ];
+
+        $project = array_key_exists('project', $this->columns)
+            ? trim((string) ($row[$this->columns['project']] ?? ''))
+            : '';
+
+        if ($project !== '') {
+            $timestamp['project_name'] = $project;
+            $rate = array_key_exists('billable_rate', $this->columns)
+                ? trim((string) ($row[$this->columns['billable_rate']] ?? ''))
+                : '';
+            $timestamp['hourly_rate'] = is_numeric($rate) ? $rate : null;
         }
 
         $this->timestamps->push($timestamp);
     }
 
-    private function dateFormat(string $date, string $time): Carbon
+    private function dateFormat(string $date, string $time, int $rowNumber): Carbon
     {
-        $dateTime = Date::createFromFormat('d/m/Y H:i:s', $date.' '.$time);
-        if ($dateTime === false) {
-            throw new \Exception('Invalid date format');
+        $date = trim($date);
+        $time = trim($time);
+
+        foreach (['m/d/Y', 'd/m/Y', 'd.m.Y', 'Y-m-d'] as $dateFormat) {
+            foreach (['H:i:s', 'H:i', 'h:i:s A', 'h:i A', 'g:i:s A', 'g:i A'] as $timeFormat) {
+                try {
+                    $dateTime = Date::createFromFormat($dateFormat.' '.$timeFormat, $date.' '.$time);
+                } catch (\Throwable) {
+                    continue;
+                }
+                $errors = Carbon::getLastErrors();
+                $clean = $errors === false || (($errors['warning_count'] ?? 0) === 0 && ($errors['error_count'] ?? 0) === 0);
+                if ($dateTime !== false && $clean) {
+                    return $dateTime;
+                }
+            }
         }
 
-        return $dateTime;
+        throw new \Exception("Row {$rowNumber}: could not parse date/time '{$date} {$time}'.");
     }
 
     private function fixOverlap(): void

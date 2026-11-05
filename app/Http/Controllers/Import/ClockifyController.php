@@ -42,10 +42,10 @@ class ClockifyController extends Controller
 
         try {
             new ClockifyImportService($clockifyCsvPath)->import();
-        } catch (\Throwable) {
+        } catch (\Throwable $e) {
             Alert::error(
                 __('app.import failed'),
-                __('app.an error occurred while importing the file. please check the file format and try again.')
+                $e->getMessage()
             );
 
             return to_route('import-export.index');
